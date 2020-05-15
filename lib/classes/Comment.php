@@ -1,5 +1,7 @@
 <?php
 
+use system\Core;
+
 /**
  * Created by PhpStorm.
  * User: Chakratos
@@ -16,7 +18,7 @@ class Comment extends DataObject
     public function save()
     {
         parent::save();
-        $oDBH = Database::getInstance();
-        return $oDBH->lastInsertId();
+
+        return Core::getDB()->getInsertID();
     }
 }

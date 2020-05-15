@@ -5,7 +5,7 @@ $map->load();
 $difficulty = new Difficulty();
 $difficulty->setID($build->getData('difficulty'));
 $difficulty->load();
-$votes = Votes::getBuildVoting($build->getID(), $oDBH);
+$votes = Votes::getBuildVoting($build->getID());
 $color = "";
 if ($votes > 0) {
     $color = ' style="color:green"';

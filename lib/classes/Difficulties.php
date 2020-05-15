@@ -1,5 +1,7 @@
 <?php
 
+use system\Core;
+
 /**
  * Created by PhpStorm.
  * User: Chakratos
@@ -8,11 +10,10 @@
  */
 class Difficulties
 {
-    /**
-     * @param PDO $oDBH
-     * @return array $difficulties
-     */
-    public static function getAllDifficulties($oDBH)
+	/**
+	 * @return array $difficulties
+	 */
+    public static function getAllDifficulties()
     {
 
         $query = sprintf('
@@ -21,7 +22,7 @@ class Difficulties
             FROM 
                 difficulties
             ');
-        $cmd = $oDBH->prepare($query);
+        $cmd = Core::getDB()->prepareStatement($query);
         $cmd->execute();
         $difficulties = array();
         while ($row = $cmd->fetch()) {

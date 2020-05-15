@@ -1,5 +1,7 @@
 <?php
 
+use system\Core;
+
 /**
  * Created by PhpStorm.
  * User: Chakratos
@@ -8,7 +10,7 @@
  */
 class Notifications
 {
-    public static function getNotificationsForUser($steamid, $oDBH)
+    public static function getNotificationsForUser($steamid)
     {
         $query = sprintf('
             SELECT
@@ -20,7 +22,7 @@ class Notifications
             ORDER BY id DESC
             
             ');
-        $cmd = $oDBH->prepare($query);
+        $cmd = Core::getDB()->prepareStatement($query);
         $cmd->execute(array($steamid));
         $notifications = array();
         while ($row = $cmd->fetch()) {
@@ -34,7 +36,7 @@ class Notifications
         return $notifications;
     }
 
-    public static function getUnreadNotificationsForUser($steamid, $oDBH)
+    public static function getUnreadNotificationsForUser($steamid)
     {
         $query = sprintf('
             SELECT
@@ -44,7 +46,7 @@ class Notifications
             WHERE
                 steamid = ? AND seen = 0
             ');
-        $cmd = $oDBH->prepare($query);
+        $cmd = Core::getDB()->prepareStatement($query);
         $cmd->execute(array($steamid));
         $notifications = array();
         while ($row = $cmd->fetch()) {
@@ -58,9 +60,9 @@ class Notifications
         return $notifications;
     }
 
-    public static function markAllNotificationsAsRead($steamid, $oDBH)
+    public static function markAllNotificationsAsRead($steamid)
     {
-        $unreadNotifications = self::getUnreadNotificationsForUser($steamid, $oDBH);
+        $unreadNotifications = self::getUnreadNotificationsForUser($steamid);
         foreach ($unreadNotifications as $notification) {
             $notification->setData('seen', 1);
             $notification->save();

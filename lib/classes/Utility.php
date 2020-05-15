@@ -23,6 +23,11 @@ class Utility
         return $content['response']['players'][0]['avatarmedium'];
     }
 
+	/**
+	 * @param int $steamID
+	 *
+	 * @return string
+	 */
     public static function getSteamName($steamID)
     {
         $url = file_get_contents("http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=" . STEAMAPIKEY . "&steamids=" . $steamID);

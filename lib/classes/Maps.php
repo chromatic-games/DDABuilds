@@ -1,5 +1,7 @@
 <?php
 
+use system\Core;
+
 /**
  * Created by PhpStorm.
  * User: Chakratos
@@ -8,11 +10,10 @@
  */
 class Maps
 {
-    /**
-     * @param PDO $oDBH
-     * @return array $difficulties
-     */
-    public static function getAllMaps($oDBH)
+	/**
+	 * @return array $difficulties
+	 */
+    public static function getAllMaps()
     {
 
         $query = sprintf('
@@ -22,7 +23,7 @@ class Maps
                 maps
             '
         );
-        $cmd = $oDBH->prepare($query);
+        $cmd = Core::getDB()->prepareStatement($query);
         $cmd->execute();
         $maps = array();
         while ($row = $cmd->fetch()) {
@@ -35,8 +36,9 @@ class Maps
         }
         return $maps;
     }
+
     //TODO: NEEDS FUNCTIONALITY
-    public static function getMapsWithCategory($mapCategoryID, $oDBH)
+    public static function getMapsWithCategory($mapCategoryID)
     {
         $query = sprintf('
             SELECT
@@ -50,7 +52,7 @@ class Maps
             ASC
             '
         );
-        $cmd = $oDBH->prepare($query);
+        $cmd = Core::getDB()->prepareStatement($query);
         $cmd->execute(array($mapCategoryID));
         $maps = array();
         while ($row = $cmd->fetch()) {

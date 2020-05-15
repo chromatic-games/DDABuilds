@@ -16,10 +16,8 @@ if (isset($_GET['creator']) && isset($_GET['customwave']) && isset($_GET['map'])
     $map->setID($mapID);
     $map->load();
     $mapName = $map->getData('name');
-    $oDBH = Database::getInstance();
 }else if (isset($_GET['thumbnail'])) {
     $size = 'col-lg-4';
-    $oDBH = Database::getInstance();
     $buildID = $_GET['thumbnail'];
     $build = new Build();
     $build->setID($buildID);

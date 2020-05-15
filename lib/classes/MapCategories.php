@@ -1,5 +1,7 @@
 <?php
 
+use system\Core;
+
 /**
  * Created by PhpStorm.
  * User: Chakratos
@@ -8,7 +10,7 @@
  */
 class MapCategories
 {
-    public static function getAllMapCategories($oDBH)
+    public static function getAllMapCategories()
     {
         $query = sprintf('
             SELECT
@@ -17,7 +19,7 @@ class MapCategories
                 mapcategories
             '
         );
-        $cmd = $oDBH->prepare($query);
+        $cmd = Core::getDB()->prepareStatement($query);
         $cmd->execute();
         $mapCategories = array();
         while ($row = $cmd->fetch()) {

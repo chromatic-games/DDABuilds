@@ -1,5 +1,7 @@
 <?php
 
+use system\Core;
+
 class Build extends DataObject
 {
     public function __construct()
@@ -10,8 +12,7 @@ class Build extends DataObject
     public function save()
     {
         $response = parent::save();
-        $oDBH = Database::getInstance();
-        $lastInsert = $oDBH->lastInsertId();
+        $lastInsert = Core::getDB()->getInsertID($this->tablename);
         if ($lastInsert != '0') {
             return $lastInsert;
         } else {

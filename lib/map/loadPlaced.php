@@ -1,7 +1,7 @@
 <?php
 if (!empty($_GET['load']) || isset($_GET['thumbnail'])) {
 
-    $placeds = Placeds::getPlacedsForBuild($build->getID(), $buildwave, $oDBH);
+    $placeds = Placeds::getPlacedsForBuild($build->getID(), $buildwave);
     foreach ($placeds as $oTowerPlaced) {
         $type = '';
         $curTower = new Tower();
@@ -18,21 +18,21 @@ if (!empty($_GET['load']) || isset($_GET['thumbnail'])) {
         } else if ($curTower->getID() <= 31 && $curTower->getID() >= 26) {
             $type = "summoner";
         }
-        
+
         $menu = '';
-        
+
         if ($type != 'aura' && $type != 'trap' && $type != 'summoner') {
             $menu = '<div class="menu">
                     <i class="fa fa-repeat"></i>
                 </div>';
         }
-        
+
         $du = $curTower->getData('unitcost');
-        
+
         if ($oTowerPlaced->getData('override_du') > 0 ) {
             $du = $oTowerPlaced->getData('override_du');
         }
-        
+
         echo '
             <div class="tower-container placed ' . $type . '" 
                 wave="' . $oTowerPlaced->getData('fk_buildwave') . '"

@@ -6,8 +6,7 @@
 <div class="container">
     <div class="list-group text-center">
         <?php
-        $oDBH = Database::getInstance();
-        $mapCategories = MapCategories::getAllMapCategories($oDBH);
+        $mapCategories = MapCategories::getAllMapCategories();
 
         foreach ($mapCategories as $mapCategory) {
             echo '<a href="#' . $mapCategory->getID() . '" class="list-group-item list-group-item-action category' . $mapCategory->getID() . '"> ' . $mapCategory->getData('name') . ' </a>';
@@ -19,7 +18,7 @@
 
 foreach ($mapCategories as $mapCategory) {
     include LIB_DIR.'/maps/loadMapsCategory.php';
-    $mapsForCategory = Maps::getMapsWithCategory($mapCategory->getID(), $oDBH);
+    $mapsForCategory = Maps::getMapsWithCategory($mapCategory->getID());
     $i = 0;
     foreach ($mapsForCategory as $map) {
         if ($i == 0) {

@@ -1,13 +1,15 @@
 <?php
 
+use system\Core;
+
 class Towers
 {
-    /**
-     * @param int $iClass 1 Squire 2 Apprentice 3 Huntress 4 Monk 5 Series-EV 6 Summoner 7 Jester 20 World 21 Hints 22 Arrows
-     * @param PDO $oDBH
-     * @return array $towers
-     */
-    public static function getTowersForClass($iClass, $oDBH)
+	/**
+	 * @param int $iClass 1 Squire 2 Apprentice 3 Huntress 4 Monk 5 Series-EV 6 Summoner 7 Jester 20 World 21 Hints 22 Arrows
+	 *
+	 * @return array $towers
+	 */
+    public static function getTowersForClass($iClass)
     {
 
         $query = sprintf('
@@ -18,7 +20,7 @@ class Towers
             WHERE
                 fk_class = ?
             ');
-        $cmd = $oDBH->prepare($query);
+        $cmd = Core::getDB()->prepareStatement($query);
         $cmd->execute(array($iClass));
         $towers = array();
         while ($row = $cmd->fetch()) {
@@ -32,12 +34,12 @@ class Towers
         return $towers;
     }
 
-    /**
-     * @param string $beam proton, reflection, shock, towerbuff
-     * @param $oDBH
-     * @return array
-     */
-    public static function getEVBeams($beam, $oDBH)
+	/**
+	 * @param string $beam proton, reflection, shock, towerbuff
+	 *
+	 * @return array
+	 */
+    public static function getEVBeams($beam)
     {
         $first = 0;
         $second = 0;
@@ -65,7 +67,7 @@ class Towers
             WHERE
                 id >= ? AND id <= ?
             ');
-        $cmd = $oDBH->prepare($query);
+        $cmd = Core::getDB()->prepareStatement($query);
         $cmd->execute(array($first ,$second));
         $towers = array();
         while ($row = $cmd->fetch()) {

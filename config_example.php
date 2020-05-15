@@ -13,7 +13,4 @@ CONST HIDETHIS = true;
 
 define('DOCROOT', $_SERVER['DOCUMENT_ROOT']);
 define('BASE_URL', 'http://127.0.0.4');
-
-spl_autoload_register(function ($class_name) {
-    include 'classes/' . $class_name . '.php';
-});
+define('DEBUG_MODE', false);

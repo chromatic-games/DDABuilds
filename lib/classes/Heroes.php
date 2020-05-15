@@ -1,5 +1,7 @@
 <?php
 
+use system\Core;
+
 /**
  * Created by PhpStorm.
  * User: Chakratos
@@ -8,7 +10,7 @@
  */
 class Heroes
 {
-    public static function getAllHeroes($oDBH)
+    public static function getAllHeroes()
     {
         $query = sprintf('
             SELECT
@@ -17,7 +19,7 @@ class Heroes
                 classes
             '
         );
-        $cmd = $oDBH->prepare($query);
+        $cmd = Core::getDB()->prepareStatement($query);
         $cmd->execute();
         $heroes = array();
         while ($row = $cmd->fetch()) {

@@ -1,8 +1,10 @@
 <?php
 
+use system\Core;
+
 class Votes
 {
-    public static function getVotesForBuild($buildID, $oDBH)
+    public static function getVotesForBuild($buildID)
     {
         $query = sprintf('
             SELECT
@@ -13,7 +15,7 @@ class Votes
 		        fk_build = ?
 
             ');
-        $cmd = $oDBH->prepare($query);
+        $cmd = Core::getDB()->prepareStatement($query);
         $cmd->execute(array($buildID));
         $votes = array();
         while ($row = $cmd->fetch()) {
@@ -27,7 +29,7 @@ class Votes
         return $votes;
     }
 
-    public static function getVotesForUser($steamid, $oDBH)
+    public static function getVotesForUser($steamid)
     {
         $query = sprintf('
             SELECT
@@ -38,7 +40,7 @@ class Votes
 		        steamid = ?
 
             ');
-        $cmd = $oDBH->prepare($query);
+        $cmd = Core::getDB()->prepareStatement($query);
         $cmd->execute(array($steamid));
         $votes = array();
         while ($row = $cmd->fetch()) {
@@ -52,7 +54,7 @@ class Votes
         return $votes;
     }
 
-    public static function userAlreadyVoted($buildid, $steamid, $oDBH)
+    public static function userAlreadyVoted($buildid, $steamid)
     {
         $query = sprintf('
             SELECT
@@ -63,7 +65,7 @@ class Votes
 		        fk_build = ? AND steamid = ?
 
             ');
-        $cmd = $oDBH->prepare($query);
+        $cmd = Core::getDB()->prepareStatement($query);
         $cmd->execute(array($buildid, $steamid));
         if ($row = $cmd->fetch()) {
             return $row['id'];
@@ -73,10 +75,10 @@ class Votes
         return false;
     }
 
-    public static function getBuildVoting($buildid, $oDBH)
+    public static function getBuildVoting($buildid)
     {
         $voteNumber = 0;
-        $votes = Votes::getVotesForBuild($buildid, $oDBH);
+        $votes = Votes::getVotesForBuild($buildid);
 
         foreach ($votes as $vote) {
             $voteNumber += $vote->getData('vote');

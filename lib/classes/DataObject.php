@@ -1,5 +1,7 @@
 <?php
 
+use system\Core;
+
 abstract class DataObject
 {
     protected $id;
@@ -48,7 +50,6 @@ abstract class DataObject
      */
     public function load()
     {
-        $oDBH = Database::getInstance();
         $query = '
             SELECT
                 *
@@ -57,7 +58,7 @@ abstract class DataObject
             WHERE
                 `id` = ?
             ';
-        $cmd = $oDBH->prepare($query);
+        $cmd = Core::getDB()->prepareStatement($query);
         $cmd->execute(array($this->id));
         $row = $cmd->fetch(PDO::FETCH_ASSOC);
         if ($row == false) {
@@ -85,7 +86,6 @@ abstract class DataObject
      */
     private function insert()
     {
-        $oDBH = Database::getInstance();
         $question = array_map(
             function () {
                 return '?';
@@ -100,11 +100,10 @@ abstract class DataObject
                 (' . $implode . ')
         ';
 
-        $cmd = $oDBH->prepare($query);
-        if ($cmd->execute(array_values($this->data))) {
-            return true;
-        }
-        return false;
+        $cmd = Core::getDB()->prepareStatement($query);
+	    $cmd->execute(array_values($this->data));
+
+        return true;
     }
 
     /**
@@ -112,7 +111,6 @@ abstract class DataObject
      */
     private function update()
     {
-        $oDBH = Database::getInstance();
         foreach ($this->data as $key => $value) {
             $set[] = $key . '=?';
         }
@@ -126,11 +124,10 @@ abstract class DataObject
                 id=' . $this->getID() . '
         ';
 
-        $cmd = $oDBH->prepare($query);
-        if ($cmd->execute(array_values($this->data))) {
-            return true;
-        }
-        return false;
+        $cmd = Core::getDB()->prepareStatement($query);
+	    $cmd->execute(array_values($this->data));
+
+        return true;
     }
 
     /**
@@ -138,16 +135,13 @@ abstract class DataObject
      */
     public function delete()
     {
-        $oDBH = Database::getInstance();
-
         $query = '
             DELETE FROM ' . $this->tablename . '
             WHERE id = ?';
 
-        $cmd = $oDBH->prepare($query);
-        if ($cmd->execute(array($this->getID()))) {
-            return true;
-        }
-        return false;
+        $cmd = Core::getDB()->prepareStatement($query);
+	    $cmd->execute(array($this->getID()));
+
+        return true;
     }
 }

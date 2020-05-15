@@ -109,7 +109,6 @@ if (!empty($_POST)) {
 
     $build = new Build();
     if (!empty($_POST['buildid'])) {
-        $oDBH = Database::getInstance();
         $build->setID($_POST['buildid']);
         if (!$build->load()) {
             http_response_code(404);
@@ -124,8 +123,8 @@ if (!empty($_POST)) {
             exit('The Build you try to edit is deleted!');
         }
         $buildID = $build->getID();
-        Placeds::deletePlacedsForBuild($_POST['buildid'], $oDBH);
-        BuildWaves::deleteBuildwavesForBuild($_POST['buildid'], $oDBH);
+        Placeds::deletePlacedsForBuild($_POST['buildid']);
+        BuildWaves::deleteBuildwavesForBuild($_POST['buildid']);
     }
     $build->setData('author', $_POST['author']);
     $build->setData('name', $_POST['buildname']);

@@ -1,13 +1,14 @@
 <?php
 
+use system\Core;
+
 class Placeds
 {
     /**
      * @param int $iBuild
-     * @param PDO $oDBH
      * @return array $towers
      */
-    public static function getAllPlacedsForBuild($iBuild, $oDBH)
+    public static function getAllPlacedsForBuild($iBuild)
     {
 
         $query = sprintf('
@@ -19,7 +20,7 @@ class Placeds
                 fk_build = ?
             '
         );
-        $cmd = $oDBH->prepare($query);
+        $cmd = Core::getDB()->prepareStatement($query);
         $cmd->execute(array($iBuild));
         $placeds = array();
         while ($row = $cmd->fetch()) {
@@ -35,10 +36,9 @@ class Placeds
 
     /**
      * @param int $iBuild
-     * @param PDO $oDBH
      * @return array $towers
      */
-    public static function getPlacedsForBuild($iBuild, $buildwave, $oDBH)
+    public static function getPlacedsForBuild($iBuild, $buildwave)
     {
 
         $query = sprintf('
@@ -50,7 +50,7 @@ class Placeds
                 fk_build = ? AND fk_buildwave = ?
             '
         );
-        $cmd = $oDBH->prepare($query);
+        $cmd = Core::getDB()->prepareStatement($query);
         $cmd->execute(array($iBuild, $buildwave));
         $placeds = array();
         while ($row = $cmd->fetch()) {
@@ -64,7 +64,7 @@ class Placeds
         return $placeds;
     }
 
-    public static function deletePlacedsForBuild($buildID, $oDBH)
+    public static function deletePlacedsForBuild($buildID)
     {
         $query = sprintf('
             SELECT
@@ -75,7 +75,7 @@ class Placeds
                 fk_build = ?
             '
         );
-        $cmd = $oDBH->prepare($query);
+        $cmd = Core::getDB()->prepareStatement($query);
         $cmd->execute(array($buildID));
         while ($row = $cmd->fetch()) {
 

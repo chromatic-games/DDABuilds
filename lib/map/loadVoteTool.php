@@ -1,7 +1,7 @@
 <?php
 $up = '';
 $down = '';
-$votedOption = Votes::userAlreadyVoted($build->getID(), $steamprofile['steamid'], $oDBH);
+$votedOption = Votes::userAlreadyVoted($build->getID(), $steamprofile['steamid']);
 if ($votedOption) {
     $vote = new Vote();
     $vote->setID($votedOption);

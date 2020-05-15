@@ -1,5 +1,4 @@
 <?php
-$oDBH = Database::getInstance();
 $sort = array();
 
 $order = 'DESC';
@@ -38,9 +37,9 @@ if (!empty($var = Parameter::_GET('by'))) {
     }
 }
 
-$pages = Builds::getPageNumbers($sort, $oDBH);
+$pages = Builds::getPageNumbers($sort);
 $site = intval(Parameter::_GET('pageNo'));
 if ($site < 1 || $site > $pages) {
     $site = 1;
 }
-$builds = Builds::getBuildsFor($sort, $site, $oDBH, $order, $by);
+$builds = Builds::getBuildsFor($sort, $site, $order, $by);

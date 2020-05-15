@@ -7,8 +7,7 @@ include LIB_DIR.'myBuilds/myBuildsGetHandler.php';
     <div class="row">
         <div class="col-lg-12 text-center">
             <?php
-            $oDBH = Database::getInstance();
-            include LIB_DIR.'list/loadBuilds.php';
+                include LIB_DIR.'list/loadBuilds.php';
             ?>
             <ul class="pagination">
                 <?php

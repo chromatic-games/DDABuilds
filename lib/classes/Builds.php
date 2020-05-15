@@ -1,5 +1,7 @@
 <?php
 
+use system\Core;
+
 class Builds
 {
     const LIMIT = 12;
@@ -18,13 +20,11 @@ class Builds
         return false;
     }
 
-    /**
-     * @param PDO $oDBH
-     * @return array $builds
-     */
-    public static function getAllBuilds($oDBH)
+	/**
+	 * @return array $builds
+	 */
+    public static function getAllBuilds()
     {
-
         $query = sprintf('
             SELECT
                 *
@@ -33,7 +33,7 @@ class Builds
             WHERE
                 deleted = 0
             ');
-        $cmd = $oDBH->prepare($query);
+        $cmd = Core::getDB()->prepareStatement($query);
         $cmd->execute();
         $builds = array();
         while ($row = $cmd->fetch()) {
@@ -47,12 +47,12 @@ class Builds
         return $builds;
     }
 
-    /**
-     * @param int $userID
-     * @param PDO $oDBH
-     * @return array $builds
-     */
-    public static function getAllBuildsForUser($userID, $oDBH)
+	/**
+	 * @param int $userID
+	 *
+	 * @return array $builds
+	 */
+    public static function getAllBuildsForUser($userID)
     {
 
         $query = sprintf('
@@ -63,7 +63,7 @@ class Builds
             WHERE
                 fk_user = ? AND deleted = 0
             ');
-        $cmd = $oDBH->prepare($query);
+        $cmd = Core::getDB()->prepareStatement($query);
         $cmd->execute(array($userID));
         $builds = array();
         while ($row = $cmd->fetch()) {
@@ -77,15 +77,15 @@ class Builds
         return $builds;
     }
 
-    /**
-     * @param $sort
-     * @param $pageNumber
-     * @param $oDBH
-     * @param string $order
-     * @param string $by
-     * @return array
-     */
-    public static function getBuildsFor($sort, $pageNumber, $oDBH, $order = 'ASC', $by = 'id')
+	/**
+	 * @param        $sort
+	 * @param        $pageNumber
+	 * @param string $order
+	 * @param string $by
+	 *
+	 * @return array
+	 */
+    public static function getBuildsFor($sort, $pageNumber, $order = 'ASC', $by = 'id')
     {
         $values = array();
         $set = array();
@@ -131,8 +131,7 @@ class Builds
                 b.id
             ORDER BY ' . $by . ' ' . $order . '
             ' . $limitcode);
-        $oDBH->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
-        $cmd = $oDBH->prepare($query);
+        $cmd = Core::getDB()->prepareStatement($query);
         $cmd->execute($values);
         $builds = array();
         while ($row = $cmd->fetch()) {
@@ -146,14 +145,14 @@ class Builds
         return $builds;
     }
 
-    /**
-     * @param $sort
-     * @param $oDBH
-     * @return int
-     */
-    public static function getPageNumbers($sort, $oDBH)
+	/**
+	 * @param $sort
+	 *
+	 * @return int
+	 */
+    public static function getPageNumbers($sort)
     {
-        return intval(ceil(count(self::getBuildsFor($sort, false, $oDBH)) / self::LIMIT));
+        return intval(ceil(count(self::getBuildsFor($sort, false)) / self::LIMIT));
     }
 
 }

@@ -1,5 +1,7 @@
 <?php
 
+use system\Core;
+
 /**
  * Created by PhpStorm.
  * User: Chakratos
@@ -30,10 +32,9 @@ class Comments
 
     /**
      * @param int $userID
-     * @param PDO $oDBH
      * @return array $comments
      */
-    public static function getAllCommentsForUser($userID, $oDBH)
+    public static function getAllCommentsForUser($userID)
     {
 
         $query = sprintf('
@@ -44,7 +45,7 @@ class Comments
             WHERE
                 steamid = ?
             ');
-        $cmd = $oDBH->prepare($query);
+        $cmd = Core::getDB()->prepareStatement($query);
         $cmd->execute(array($userID));
         $comments = array();
         while ($row = $cmd->fetch()) {
@@ -59,26 +60,22 @@ class Comments
     }
 
     /**
+     * TODO re-visit
+     *
      * @param int $buildID
-     * @param PDO $oDBH
      * @return array $comments
      */
-    public static function getAllCommentsForBuild($buildID, $oDBH)
+    public static function getAllCommentsForBuild($buildID)
     {
-
-        $query = sprintf('
-            SELECT
-                c.*, IFNULL(SUM(CASE WHEN commentvotes.vote = 1 THEN 1 ELSE 0 END), 0) AS positivevotes, IFNULL(SUM(CASE WHEN commentvotes.vote = -1 THEN -1 ELSE 0 END), 0) AS negativevotes 
-            FROM 
-                comments as c
-            LEFT JOIN
-                commentvotes ON commentvotes.fk_comment = c.id
-            WHERE
-                fk_build=?
-            GROUP BY
-                c.id
-             ');
-        $cmd = $oDBH->prepare($query);
+        $query = 'SELECT
+                c.*,
+                IFNULL(SUM(CASE WHEN commentvotes.vote = 1 THEN 1 ELSE 0 END), 0) AS positivevotes,
+                IFNULL(SUM(CASE WHEN commentvotes.vote = -1 THEN -1 ELSE 0 END), 0) AS negativevotes 
+            FROM comments c
+            LEFT JOIN commentvotes ON commentvotes.fk_comment = c.id
+            WHERE c.fk_build = ?
+            GROUP BY c.id';
+        $cmd = Core::getDB()->prepareStatement($query);
         $cmd->execute(array($buildID));
         $comments = array();
         while ($row = $cmd->fetch()) {
@@ -94,7 +91,7 @@ class Comments
         return $comments;
     }
 
-    public static function getAllUserInvolvedInBuildExcept($buildID, $exceptID, $oDBH)
+    public static function getAllUserInvolvedInBuildExcept($buildID, $exceptID)
     {
         $build = new Build();
         $build->setID($buildID);
@@ -110,7 +107,7 @@ class Comments
                 fk_build = ? AND steamid != ? AND steamid != ?
             GROUP BY steamid
             ');
-        $cmd = $oDBH->prepare($query);
+        $cmd = Core::getDB()->prepareStatement($query);
         $cmd->execute(array($buildID, $buildSteamID, $exceptID));
         $users = array();
         while ($row = $cmd->fetch()) {

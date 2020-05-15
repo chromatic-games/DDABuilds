@@ -30,9 +30,7 @@ if (!empty($_POST['buildid'])) {
         exit();
     }
 
-    $oDBH = Database::getInstance();
-
-    if ($voteid = Votes::userAlreadyVoted($_POST['buildid'], $steamprofile['steamid'], $oDBH)) {
+    if ($voteid = Votes::userAlreadyVoted($_POST['buildid'], $steamprofile['steamid'])) {
         $vote = new Vote();
         $vote->setID($voteid);
         $vote->load();
@@ -69,9 +67,7 @@ if (!empty($_POST['commentid'])) {
         exit();
     }
 
-    $oDBH = Database::getInstance();
-
-    if ($voteid = CommentVotes::userAlreadyVoted($_POST['commentid'], $steamprofile['steamid'], $oDBH)) {
+    if ($voteid = CommentVotes::userAlreadyVoted($_POST['commentid'], $steamprofile['steamid'])) {
         $vote = new CommentVote();
         $vote->setID($voteid);
         $vote->load();
@@ -81,7 +77,7 @@ if (!empty($_POST['commentid'])) {
         }
         $vote->setData('vote', $_POST['rating']);
         if ($vote->save()) {
-            $commentVotes = CommentVotes::getCommentVoting($_POST['commentid'], $oDBH);
+            $commentVotes = CommentVotes::getCommentVoting($_POST['commentid']);
             notificateUser(Comments::getCommentOwner($_POST['commentid']), $_POST['rating'], 3, Comments::getBuildFromComment($_POST['commentid']), $_POST['commentid']);
             exit(json_encode($commentVotes));
         }
@@ -92,7 +88,7 @@ if (!empty($_POST['commentid'])) {
     $vote->setData('fk_comment', $_POST['commentid']);
     $vote->setData('vote', $_POST['rating']);
     if ($vote->save()) {
-        $commentVotes = CommentVotes::getCommentVoting($_POST['commentid'], $oDBH);
+        $commentVotes = CommentVotes::getCommentVoting($_POST['commentid']);
         notificateUser(Comments::getCommentOwner($_POST['commentid']), $_POST['rating'], 3, Comments::getBuildFromComment($_POST['commentid']), $_POST['commentid']);
         exit(json_encode($commentVotes));
     }

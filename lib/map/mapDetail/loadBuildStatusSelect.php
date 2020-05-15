@@ -2,7 +2,7 @@
     <label for="buildstatusselect">Build Status:</label>
     <select class="form-control" id="buildstatusselect">
         <?php
-        $buildStatuses = Buildstatuses::getAllStatuses($oDBH);
+        $buildStatuses = Buildstatuses::getAllStatuses();
         foreach ($buildStatuses as $buildStatus) {
             $buildStatusID = $buildStatus->getID();
             $statusName = $buildStatus->getData('name');

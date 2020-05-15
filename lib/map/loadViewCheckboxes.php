@@ -1,6 +1,5 @@
 <?php
-$oDBH = Database::getInstance();
-$heroes = Heroes::getAllHeroes($oDBH);
+$heroes = Heroes::getAllHeroes();
 
 $highlightChecked = '';
 if (isset($_SESSION['highlightTower']) && $_SESSION['highlightTower']) {

@@ -2,7 +2,7 @@
     <label for="difficultyselect">Difficulty:</label>
     <select class="form-control" id="difficultyselect">
         <?php
-        $difficulties = Difficulties::getAllDifficulties($oDBH);
+        $difficulties = Difficulties::getAllDifficulties();
         foreach ($difficulties as $difficulty) {
             $difficultyId = $difficulty->getID();
             $difficultyName = $difficulty->getData('name');

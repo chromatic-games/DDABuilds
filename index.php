@@ -3,10 +3,23 @@ require_once 'config.php';
 require 'steamauth/steamauth.php';
 
 define('LIB_DIR', __DIR__.'/lib/');
+spl_autoload_register(function ($className) {
+	if ( file_exists(LIB_DIR.'classes/'.$className.'.php') ) {
+		if ( DEBUG_MODE ) {
+			trigger_error('old class '.$className.' loaded');
+		}
+		require_once(LIB_DIR.'classes/'.$className.'.php');
+	}
+	else {
+		$classPath = LIB_DIR.implode('/', explode('\\', $className)).'.class.php';
 
-spl_autoload_register(function ($class_name) {
-	include LIB_DIR.'classes/'.$class_name.'.php';
+		if ( file_exists($classPath) ) {
+			require_once($classPath);
+		}
+	}
 });
+
+new \system\Core();
 
 if ( isset($_SESSION['steamid']) ) {
 	include('steamauth/userInfo.php');
@@ -14,13 +27,13 @@ if ( isset($_SESSION['steamid']) ) {
 
 $page = isset($_GET['page']) ? $_GET['page'] : 'home';
 // fallback page -> home
-if ( stristr('/', $page) || stristr('..', $page) || !file_exists('./lib/pages/'.$page.'.php') ) {
+if ( stristr($page, '/') || stristr($page, '..') || !file_exists('./lib/pages/'.$page.'.php') ) {
 	$page = 'home';
 }
 
 if ( !empty($_GET['action']) ) {
 	$action = $_GET['action'];
-	if ( stristr('/', $page) || stristr('..', $page) || !file_exists('./lib/actions/'.$action.'.php') ) {
+	if ( stristr($page, '/') || stristr($page, '..') || !file_exists('./lib/actions/'.$action.'.php') ) {
 		die(json_encode(['error' => 'invalid actions']));
 	}
 
@@ -81,7 +94,89 @@ if ( !empty($_GET['action']) ) {
 	</style>
 </head>
 <body>
-	<?php include 'navbar.php'; ?>
+	<!-- Navigation -->
+	<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+		<div class="container">
+			<!-- Brand and toggle get grouped for better mobile display -->
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle" data-toggle="collapse"
+				        data-target="#bs-example-navbar-collapse-1">
+					<span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="..">DDA Builder</a>
+			</div>
+			<!-- Collect the nav links, forms, and other content for toggling -->
+			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+				<ul class="nav navbar-nav">
+					<?php
+					if ( isset($_SESSION['steamid']) ) {
+						echo '
+                    <li>
+                        <a href="?page=maps">Create</a>
+                    </li>
+                ';
+					}
+					?>
+					<li>
+                    <a href="?page=list">List</a>
+                </li>
+				</ul>
+				<ul class="nav navbar-nav navbar-right">
+                <li>
+                    <?php
+                    if ( !isset($_SESSION['steamid']) ) {
+	                    echo '<div class="navbar-brand" style="margin-top:-8px";><a href="'.BASE_URL.'/?login">Login to Create or Vote on Builds:</a> ';
+	                    loginbutton('rectangle'); //login button
+	                    echo '</div>';
+                    }
+                    else {
+	                    echo '
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">'.$steamprofile['personaname'].'<span class="caret"></span></a>
+                                <ul class="dropdown-menu">
+                                    <li>
+                                        <a href="?page=myBuilds">My Builds</a>
+                                    </li>
+                                    <li>
+                                        <a href="?page=notifications">Notifications</a>
+                                    </li>
+                                    <li>
+                                        <a href="?page=logout">Logout</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            ';
+                    }
+                    ?>
+                </li>
+				</ul>
+			</div>
+			<!-- /.navbar-collapse -->
+		</div>
+		<!-- /.container -->
+	</nav>
+	<!-- /Navigation -->
+	<?php
+	if ( isset($_SESSION['steamid']) ) {
+		$newNotifications = count(Notifications::getUnreadNotificationsForUser($steamprofile['steamid']));
+		if ( $newNotifications ) {
+			echo '
+        <div class="container">
+            <div class="row text-middle">
+                <div class="col-md-7">
+                </div>
+                <div class="col-md-5">
+                    <div class="alert alert-success">
+                        Hello '.Utility::getSteamName($_SESSION['steamid']).' you have: <a href="notifications.php" class="alert-link">'.$newNotifications.' unread notifications</a>.
+                    </div>
+                </div>
+            </div>
+        </div>
+        ';
+		}
+	}
+
+	?>
 	<!-- Full Width Image Header with Logo -->
 	<!-- Image backgrounds are set within the full-width-pics.css file. -->
 	<header id="headerimage" class="image-bg-fluid-height">

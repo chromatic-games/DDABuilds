@@ -1,5 +1,7 @@
 <?php
 
+use system\Core;
+
 /**
  * Created by PhpStorm.
  * User: Chakratos
@@ -9,7 +11,7 @@
 class BuildWaves
 {
 
-    public static function getBuildwavesForBuild($buildID, $oDBH)
+    public static function getBuildwavesForBuild($buildID)
     {
 
         $query = sprintf('
@@ -20,7 +22,7 @@ class BuildWaves
             WHERE
                 fk_build = ?
             ');
-        $cmd = $oDBH->prepare($query);
+        $cmd = Core::getDB()->prepareStatement($query);
         $cmd->execute(array($buildID));
         $buildwaves = array();
         while ($row = $cmd->fetch()) {
@@ -34,7 +36,7 @@ class BuildWaves
         return $buildwaves;
     }
 
-    public static function deleteBuildwavesForBuild($buildID, $oDBH)
+    public static function deleteBuildwavesForBuild($buildID)
     {
         $query = sprintf('
             SELECT
@@ -45,7 +47,7 @@ class BuildWaves
                 fk_build = ?
             '
         );
-        $cmd = $oDBH->prepare($query);
+        $cmd = Core::getDB()->prepareStatement($query);
         $cmd->execute(array($buildID));
         while ($row = $cmd->fetch()) {
 

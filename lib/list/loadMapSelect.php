@@ -7,7 +7,7 @@
             echo '<option value="0">Any</option>';
         }
 
-        $maps = Maps::getAllMaps($oDBH);
+        $maps = Maps::getAllMaps();
         foreach ($maps as $map) {
             $mapId = $map->getID();
             $mapName = $map->getData('name');

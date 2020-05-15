@@ -1,5 +1,7 @@
 <?php
 
+use system\Core;
+
 /**
  * Created by PhpStorm.
  * User: Chakratos
@@ -8,12 +10,12 @@
  */
 class CommentVotes
 {
-    /**
-     * @param int $commentID
-     * @param PDO $oDBH
-     * @return array $votes
-     */
-    public static function getAllCommentVotesForComment($commentID, $oDBH)
+	/**
+	 * @param int $commentID
+	 *
+	 * @return array $votes
+	 */
+    public static function getAllCommentVotesForComment($commentID)
     {
 
         $query = sprintf('
@@ -24,7 +26,7 @@ class CommentVotes
             WHERE
                 fk_comment = ?
             ');
-        $cmd = $oDBH->prepare($query);
+        $cmd = Core::getDB()->prepareStatement($query);
         $cmd->execute(array($commentID));
         $votes = array();
         while ($row = $cmd->fetch()) {
@@ -38,12 +40,12 @@ class CommentVotes
         return $votes;
     }
 
-    public static function getCommentVoting($commentID, $oDBH)
+    public static function getCommentVoting($commentID)
     {
         $voteNumbers = array();
         $voteNumbers['upvotes'] = 0;
         $voteNumbers['downvotes'] = 0;
-        $votes = self::getAllCommentVotesForComment($commentID, $oDBH);
+        $votes = self::getAllCommentVotesForComment($commentID);
 
         foreach ($votes as $vote) {
             if ($vote->getData('vote') == 1) {
@@ -59,10 +61,9 @@ class CommentVotes
     /**
      * @param int $buildid
      * @param int $steamid
-     * @param PDO $oDBH
      * @return array|bool
      */
-    public static function getUserCommentVotesForBuild($buildid, $steamid, $oDBH)
+    public static function getUserCommentVotesForBuild($buildid, $steamid)
     {
         $query = sprintf('
             SELECT
@@ -76,9 +77,9 @@ class CommentVotes
             GROUP BY
                 c.id
              ');
-        $cmd = $oDBH->prepare($query);
-        $cmd->execute(array($steamid, $buildid));
-        $votes = false;
+        $cmd = Core::getDB()->prepareStatement($query);
+	    $cmd->execute([$steamid, $buildid]);
+	    $votes = false;
         while ($row = $cmd->fetch()) {
             $votes[$row['fk_comment']] = $row['vote'];
         }
@@ -88,10 +89,9 @@ class CommentVotes
     /**
      * @param int $commentid
      * @param int $steamid
-     * @param PDO $oDBH
      * @return array|bool
      */
-    public static function userAlreadyVoted($commentid, $steamid, $oDBH)
+    public static function userAlreadyVoted($commentid, $steamid)
     {
         $query = sprintf('
             SELECT
@@ -102,7 +102,7 @@ class CommentVotes
 		        fk_comment = ? AND steamid = ?
 
             ');
-        $cmd = $oDBH->prepare($query);
+        $cmd = Core::getDB()->prepareStatement($query);
         $cmd->execute(array($commentid, $steamid));
         if ($row = $cmd->fetch()) {
             return $row['id'];

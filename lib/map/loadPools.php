@@ -6,7 +6,7 @@
                         Disable View</label><br><button class="front-tower" value="squire">Front</button><button class="back-tower" value="squire">Back</button></div>
                 <div class="panel-body">
                     <?php
-                    $aTowers = Towers::getTowersForClass(1, $oDBH);
+                    $aTowers = Towers::getTowersForClass(1);
                     include 'loadPool.php';
                     ?>
                 </div>
@@ -21,7 +21,7 @@
                     <br><button class="front-tower" value="apprentice">Front</button><button class="back-tower" value="apprentice">Back</button></div>
                 <div class="panel-body">
                     <?php
-                    $aTowers = Towers::getTowersForClass(2, $oDBH);
+                    $aTowers = Towers::getTowersForClass(2);
                     include 'loadPool.php';
                     ?>
                 </div>
@@ -38,7 +38,7 @@
                     <br><button class="front-tower" value="monk">Front</button><button class="back-tower" value="monk">Back</button></div>
                 <div class="panel-body">
                     <?php
-                    $aTowers = Towers::getTowersForClass(4, $oDBH);
+                    $aTowers = Towers::getTowersForClass(4);
                     include 'loadPool.php';
                     ?>
                 </div>
@@ -53,7 +53,7 @@
                     <br><button class="front-tower" value="huntress">Front</button><button class="back-tower" value="huntress">Back</button></div>
                 <div class="panel-body">
                     <?php
-                    $aTowers = Towers::getTowersForClass(3, $oDBH);
+                    $aTowers = Towers::getTowersForClass(3);
                     include 'loadPool.php';
                     ?>
                 </div>
@@ -92,7 +92,7 @@
                     <br><button class="front-tower" value="summoner">Front</button><button class="back-tower" value="summoner">Back</button></div>
                 <div class="panel-body">
                     <?php
-                    $aTowers = Towers::getTowersForClass(6, $oDBH);
+                    $aTowers = Towers::getTowersForClass(6);
                     include 'loadPool.php';
                     ?>
                 </div>
@@ -107,7 +107,7 @@
                     <br><button class="front-tower" value="jester">Front</button><button class="back-tower" value="jester">Back</button></div>
                 <div class="panel-body">
                     <?php
-                    $aTowers = Towers::getTowersForClass(7, $oDBH);
+                    $aTowers = Towers::getTowersForClass(7);
                     include 'loadPool.php';
                     ?>
                 </div>
@@ -123,7 +123,7 @@
                     <br><button class="front-tower" value="world">Front</button><button class="back-tower" value="world">Back</button></div>
                 <div class="panel-body">
                     <?php
-                    $aTowers = Towers::getTowersForClass(20, $oDBH);
+                    $aTowers = Towers::getTowersForClass(20);
                     include 'loadPool.php';
                     ?>
                 </div>
@@ -138,7 +138,7 @@
                     <br><button class="front-tower" value="hints">Front</button><button class="back-tower" value="hints">Back</button></div>
                 <div class="panel-body">
                     <?php
-                    $aTowers = Towers::getTowersForClass(21, $oDBH);
+                    $aTowers = Towers::getTowersForClass(21);
                     include 'loadPool.php';
                     ?>
                 </div>
@@ -153,7 +153,7 @@
                     <br><button class="front-tower" value="arrow">Front</button><button class="back-tower" value="arrow">Back</button></div>
                 <div class="panel-body">
                     <?php
-                    $aTowers = Towers::getTowersForClass(22, $oDBH);
+                    $aTowers = Towers::getTowersForClass(22);
                     include 'loadPool.php';
                     ?>
                 </div>

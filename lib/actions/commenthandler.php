@@ -21,7 +21,6 @@ if (!$build->load()) {
     exit();
 }
 
-$oDBH = Database::getInstance();
 require LIB_DIR.'../steamauth/userInfo.php';
 
 $comment = new Comment();
@@ -29,7 +28,7 @@ $comment->setData('steamid', $steamprofile['steamid']);
 $comment->setData('fk_build', $_POST['buildid']);
 $comment->setData('comment', $_POST['comment']);
 if ($commentid = $comment->save()) {
-    $userInvolved = Comments::getAllUserInvolvedInBuildExcept($_POST['buildid'], $steamprofile['steamid'], $oDBH);
+    $userInvolved = Comments::getAllUserInvolvedInBuildExcept($_POST['buildid'], $steamprofile['steamid']);
     foreach ($userInvolved as $user) {
         $notification = new Notification();
         $notification->setData('steamid', $user);

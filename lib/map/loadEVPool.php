@@ -2,7 +2,7 @@
     <img class="dropbtn tower" src="images/tower/<?php echo $beam; ?>beam.png">
     <div class="dropdown-content">
         <?php
-        $aTowers = Towers::getEVBeams($beam, $oDBH);
+        $aTowers = Towers::getEVBeams($beam);
         include 'loadPool.php';
         ?>
     </div>

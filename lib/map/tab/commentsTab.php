@@ -7,7 +7,7 @@
  */
 
 if (isset($steamprofile['steamid']))
-    $votedOptions = CommentVotes::getUserCommentVotesForBuild($build->getID(), $steamprofile['steamid'], $oDBH);
+    $votedOptions = CommentVotes::getUserCommentVotesForBuild($build->getID(), $steamprofile['steamid']);
 
 foreach ($comments as $comment) {
     $up = '';

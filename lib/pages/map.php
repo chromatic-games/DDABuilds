@@ -1,5 +1,4 @@
 <?php
-$oDBH = Database::getInstance();
 $create = false;
 $isCreator = false;
 
@@ -32,7 +31,7 @@ if (isset($_GET['id']) && isset($steamprofile['steamid'])) { //Are they the crea
         http_response_code(404);
         exit('The Build you are trying to access got deleted. <br> If the deletion was made by mistake please contact the sites administrator!');
     }
-    $comments = Comments::getAllCommentsForBuild($build->getID(), $oDBH);
+    $comments = Comments::getAllCommentsForBuild($build->getID());
     $buildStatus = $build->getData('fk_buildstatus');
     $iMapID = $build->getData('map');
     $creator = $build->getData('fk_user');
@@ -175,7 +174,7 @@ if (isset($_GET['viewermode']) && !$create) {
             <li class="mainbuild <?php if (!isset($_GET['comments'])) {echo 'active';} ?>" wave="0"><a data-toggle="tab" href="#0">Build</a></li>
             <?php
             if (isset($build)) {
-                $buildwaves = BuildWaves::getBuildwavesForBuild($build->GetID(), $oDBH);
+                $buildwaves = BuildWaves::getBuildwavesForBuild($build->GetID());
                 foreach ($buildwaves as $buildwave) {
                     $wavename = htmlspecialchars($buildwave->getData("name"));
                     if ($create || $isCreator) {

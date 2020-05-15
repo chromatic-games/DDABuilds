@@ -4,7 +4,7 @@
  * User: Chakratos
  * Date: 09.06.2017
  * Time: 09:39
- * 
+ *
  * <option value="ev">Series-EV</option>
  * <option value="summoner">Summoner</option>
  * <option value="jester">Jester</option>
@@ -38,7 +38,7 @@ if ($create || $isCreator) {
         </div>
     </div>';
 } else {
-    $placeds = Placeds::getAllPlacedsForBuild($build->getID(), $oDBH);
+    $placeds = Placeds::getAllPlacedsForBuild($build->getID());
     $classesUsed = array();
     $classesUsed["squire"] = false;
     $classesUsed["apprentice"] = false;
