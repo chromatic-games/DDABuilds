@@ -33,7 +33,7 @@
 
                     <?php
                     if (!isset($_SESSION['steamid'])) {
-                        echo '<div class="navbar-brand" style="margin-top:-8px";><a href="https://builds.dundef.com/?login">Login to Create or Vote on Builds:</a> ';
+                        echo '<div class="navbar-brand" style="margin-top:-8px";><a href="'.BASE_URL.'/?login">Login to Create or Vote on Builds:</a> ';
                         loginbutton('rectangle'); //login button
                         echo '</div>';
                     } else {

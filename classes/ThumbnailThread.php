@@ -28,7 +28,7 @@ class ThumbnailThread extends Thread
 
     public function run(){
         $build = $this->build;
-        $build->setData('thumbnail', file_get_contents("https://builds.dundef.com/getthumbnail.php?build=" . $build->getID()));
+        $build->setData('thumbnail', file_get_contents(BASE_URL."/getthumbnail.php?build=" . $build->getID()));
         $build->save();
     }
 }
