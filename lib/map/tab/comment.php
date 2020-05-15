@@ -1,4 +1,3 @@
-
 <div id="<?php echo $comment->getID(); ?>" class="container">
     <div class="row">
         <div class="col-sm-8">

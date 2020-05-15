@@ -1,5 +1,7 @@
 <?php
 
+use system\steam\Steam;
+
 class Utility
 {
     public static function getGetParameter($removePage = true)
@@ -16,23 +18,28 @@ class Utility
         return $getParameter;
     }
 
+	/**
+	 * @param $steamID
+	 *
+	 * @return mixed
+	 * @throws Exception
+	 * @deprecated
+	 */
     public static function getSteamAvatarMedium($steamID)
     {
-        $url = file_get_contents("http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=" . STEAM_API_KEY . "&steamids=" . $steamID);
-        $content = json_decode($url, true);
-        return $content['response']['players'][0]['avatarmedium'];
+        return Steam::getInstance()->getAvatarMedium($steamID);
     }
 
 	/**
 	 * @param int $steamID
 	 *
 	 * @return string
+	 * @throws Exception
+	 * @deprecated
 	 */
     public static function getSteamName($steamID)
     {
-        $url = file_get_contents("http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=" . STEAM_API_KEY . "&steamids=" . $steamID);
-        $content = json_decode($url, true);
-        return $content['response']['players'][0]['personaname'];
+        return Steam::getInstance()->getDisplayName($steamID);
     }
 
     public static function varDump($var)

@@ -52,6 +52,18 @@ class Core {
 		return self::$dbObj;
 	}
 
+	public static final function handleException($e) {
+		\Utility::varDump($e);
+	}
+
+	public static final function handleError($severity, $message, $file, $line) {
+		// this is necessary for the shut-up operator
+		if ( error_reporting() == 0 ) {
+			return;
+		}
+		\Utility::varDump([$severity, $message, $file, $line]);
+	}
+
 	public static function destruct() {
 		try {// database has to be initialized
 			if ( !is_object(self::$dbObj) ) {

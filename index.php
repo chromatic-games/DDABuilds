@@ -27,6 +27,11 @@ spl_autoload_register(function ($className) {
 	}
 });
 
+// set exception handler
+set_exception_handler([Core::class, 'handleException']);
+// set php error handler
+set_error_handler([Core::class, 'handleError'], E_ALL);
+
 // initialize core
 new \system\Core();
 
@@ -131,12 +136,11 @@ if ( !empty($_GET['action']) ) {
                     <?php
                     if ( !isset($_SESSION['steamid']) ) {
 	                    echo '<div class="navbar-brand" style="margin-top:-8px";><a href="'.BASE_URL.'?page=login">Login to Create or Vote on Builds:</a> ';
-	                    echo Steam::getLoginButton(Steam::BUTTON_STYLE_RECTANGLE);
+	                    echo Steam::getInstance()->getLoginButton(Steam::BUTTON_STYLE_RECTANGLE);
 	                    echo '</div>';
                     }
                     else {
-	                    echo '
-                            <li class="dropdown">
+	                    echo '<li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">'.Core::getUser()->displayName.'<span class="caret"></span></a>
                                 <ul class="dropdown-menu">
                                     <li>
@@ -149,8 +153,7 @@ if ( !empty($_GET['action']) ) {
                                         <a href="?page=logout">Logout</a>
                                     </li>
                                 </ul>
-                            </li>
-                            ';
+                            </li>';
                     }
                     ?>
                 </li>
