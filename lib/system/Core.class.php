@@ -5,6 +5,8 @@ namespace system;
 use system\database\MySQLDatabase;
 use system\steam\SteamUser;
 
+require_once(LIB_DIR.'core.functions.php');
+
 class Core {
 	/**
 	 * @var MySQLDatabase
@@ -15,6 +17,8 @@ class Core {
 	 * @var SteamUser
 	 */
 	public static $userObj;
+
+	public static $tplVariables = [];
 
 	public function __construct() {
 		// do something on construct
@@ -61,7 +65,7 @@ class Core {
 		if ( error_reporting() == 0 ) {
 			return;
 		}
-		\Utility::varDump([$severity, $message, $file, $line]);
+		// \Utility::varDump([$severity, $message, $file, $line]);
 	}
 
 	public static function destruct() {

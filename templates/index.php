@@ -1,3 +1,9 @@
+<!-- Full Width Image Header with Logo -->
+<!-- Image backgrounds are set within the full-width-pics.css file. -->
+<header id="headerimage" class="image-bg-fluid-height">
+	<!-- <img class="img-responsive img-center" src="images/tower/crystal_core.png" alt="">-->
+</header>
+
 <div class="container">
 	<div class="row">
 		<div class="col-lg-12">
