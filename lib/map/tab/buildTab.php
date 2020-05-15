@@ -8,7 +8,6 @@
 <?php
 $size = 'col-lg-9';
 if (isset($_GET['creator']) && isset($_GET['customwave']) && isset($_GET['map'])) {
-    include_once(dirname(__FILE__) . "/../../config.php");
     $create = true;
     $isCreator = true;
     $buildwave = $_GET['customwave'];
@@ -20,7 +19,6 @@ if (isset($_GET['creator']) && isset($_GET['customwave']) && isset($_GET['map'])
     $oDBH = Database::getInstance();
 }else if (isset($_GET['thumbnail'])) {
     $size = 'col-lg-4';
-    include_once(dirname(__FILE__) . "/../../config.php");
     $oDBH = Database::getInstance();
     $buildID = $_GET['thumbnail'];
     $build = new Build();

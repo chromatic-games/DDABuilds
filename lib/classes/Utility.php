@@ -6,7 +6,7 @@ class Utility
     {
         $getParameter = '';
         foreach ($_GET as $key => $value) {
-            if ($removePage && $key == 'page') {
+            if ($removePage && $key == 'pageNo') {
 
             } else {
                 $getParameter = $getParameter . '&' . $key . '=' . $value;

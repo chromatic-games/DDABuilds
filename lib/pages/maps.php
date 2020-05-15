@@ -1,17 +1,8 @@
-<?php
-require_once 'config.php';
-include "header.php";
-?>
-
 <style>
     a:focus, a:hover {
         opacity: 0.8;
     }
 </style>
-<body>
-<?php
-include "navbar.php";
-?>
 <div class="container">
     <div class="list-group text-center">
         <?php
@@ -27,7 +18,7 @@ include "navbar.php";
 <?php
 
 foreach ($mapCategories as $mapCategory) {
-    include 'maps/loadMapsCategory.php';
+    include LIB_DIR.'/maps/loadMapsCategory.php';
     $mapsForCategory = Maps::getMapsWithCategory($mapCategory->getID(), $oDBH);
     $i = 0;
     foreach ($mapsForCategory as $map) {
@@ -35,7 +26,7 @@ foreach ($mapCategories as $mapCategory) {
             echo '<div class="row">';
         }
 
-        include 'maps/loadMapsItem.php';
+        include LIB_DIR.'/maps/loadMapsItem.php';
 
         $i++;
         if ($i == 4) {
@@ -51,10 +42,8 @@ foreach ($mapCategories as $mapCategory) {
 
 ?>
 
-</body>
 <script>
     $(document).ready(function () {
         $('.top').UItoTop();
     });
 </script>
-</html>

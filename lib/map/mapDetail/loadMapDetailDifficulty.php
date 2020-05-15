@@ -1,6 +1,6 @@
 <?php
 if ($create || $isCreator) {
-    include 'list/loadDifficultySelect.php';
+    include LIB_DIR.'list/loadDifficultySelect.php';
 } else {
     $buildDifficulty = new Difficulty();
     $buildDifficulty->setID($build->getData('difficulty'));

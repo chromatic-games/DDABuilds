@@ -1,8 +1,4 @@
 <?php
-require_once 'config.php';
-include 'map/mapPostHandler.php';
-include "header.php";
-
 $oDBH = Database::getInstance();
 $create = false;
 $isCreator = false;
@@ -128,14 +124,7 @@ if (isset($_GET['viewermode']) && !$create) {
 }
 
 ?>
-<body>
-
-<?php
-include "navbar.php";
-?>
-
 <div class="container-fluid">
-
     <div class="row">
         <div class="col-md-3 text-center">
             <h3>Map:
@@ -214,7 +203,7 @@ include "navbar.php";
             <div id="0" class="mainbuild tab-pane fade in <?php if (!isset($_GET['comments'])) {echo 'active';} ?>">
                 <?php
                 $buildwave = 0;
-                include 'map/tab/buildTab.php';
+                include LIB_DIR.'map/tab/buildTab.php';
                 ?>
             </div>
             <?php
@@ -222,7 +211,7 @@ include "navbar.php";
                 foreach ($buildwaves as $buildwave) {
                     echo '<div id="' . $buildwave->getID() . '" class="tab-pane fade in ' . $buildwave->getID() . '">';
                     $buildwave = $buildwave->getID();
-                    include 'map/tab/buildTab.php';
+                    include LIB_DIR.'map/tab/buildTab.php';
                     echo '</div>';
                 }
             }
@@ -234,7 +223,7 @@ include "navbar.php";
             } ?>">
                 <div class="container">
                     <?php if (isset($comments)) {
-                        include 'map/tab/commentsTab.php';
+                        include LIB_DIR.'map/tab/commentsTab.php';
                     } ?>
                 </div>
             </div>
@@ -243,7 +232,6 @@ include "navbar.php";
     </div>
 
 </div>
-</body>
 <script>
     $(document).ready(function () {
         var stats = [];
@@ -360,7 +348,7 @@ include "navbar.php";
                 'rating': "1"
             };
             $.post(
-                "rating.php", parameters,
+                "?action=rating", parameters,
                 function (data) {
                     $('#upvote').prop('disabled', true);
                     $('#downvote').prop('disabled', false);
@@ -377,7 +365,7 @@ include "navbar.php";
                 'rating': "-1"
             };
             $.post(
-                "rating.php", parameters,
+                "?action=rating", parameters,
                 function (data) {
                     $('#downvote').prop('disabled', true);
                     $('#upvote').prop('disabled', false);
@@ -398,7 +386,7 @@ include "navbar.php";
                 'map': mapname
             };
             $.get(
-                "map/tab/buildTab.php", parameters,
+                "?action=buildTab", parameters,
                 function (data) {
                     addNavTab(customWave);
                     addNavContent(data, customWave);
@@ -674,10 +662,10 @@ include "navbar.php";
                     }?>};
 
                     $.post(
-                        "map.php", parameters,
+                        "?action=map", parameters,
                         function (data) {
                             $('#save').prop('disabled', false);
-                            myUrl = '//' + location.host + location.pathname + "?load=" + Number(data);
+                            myUrl = '//' + location.host + location.pathname + "?page=map&load=" + Number(data);
                             window.location.replace(myUrl);
                         }
                     ).fail(function(jqXHR, textStatus, errorThrown){
@@ -700,9 +688,9 @@ include "navbar.php";
                     }?>"
                 };
                 $.post(
-                    "map.php", parameters,
+                    "?action=map", parameters,
                     function (data) {
-                        myUrl = '//' + location.host + '/list.php';
+                        myUrl = '//' + location.host + '/?page=list';
                         window.location.replace(myUrl);
                     }
                 );
@@ -770,7 +758,7 @@ include "navbar.php";
                 'rating': "1"
             };
             $.post(
-                "rating.php", parameters,
+                "?action=rating", parameters,
                 function (data) {
                     $('#upvote' + commentid).addClass('disabledlink');
                     $('#downvote' + commentid).removeClass('disabledlink');
@@ -787,7 +775,7 @@ include "navbar.php";
                 'rating': "-1"
             };
             $.post(
-                "rating.php", parameters,
+                "?action=rating", parameters,
                 function (data) {
                     $('#downvote' + commentid).addClass('disabledlink');
                     $('#upvote' + commentid).removeClass('disabledlink');
@@ -809,7 +797,7 @@ include "navbar.php";
                 'comment': commentbox
             };
             $.post(
-                "commenthandler.php", parameters,
+                "?action=commenthandler", parameters,
                 function (data) {
                     addQSParm('comments', 'y#' + data);
                     window.location.replace(myUrl);
@@ -862,4 +850,3 @@ include "navbar.php";
         }
     );
 </script>
-</html>

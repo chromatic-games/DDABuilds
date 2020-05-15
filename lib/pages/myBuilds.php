@@ -1,46 +1,15 @@
 <?php
 require_once 'config.php';
-include "header.php";
-include 'list/listGetHandler.php';
+include LIB_DIR.'myBuilds/myBuildsGetHandler.php';
 ?>
 
-<body>
-<?php
-include "navbar.php";
-?>
 <div class="container">
     <div class="row">
-        <div class="col-md-1">
-
-        </div>
-        <div class="col-md-10 text-center">
+        <div class="col-lg-12 text-center">
             <?php
-            include 'list/loadListFilter.php';
+            $oDBH = Database::getInstance();
+            include LIB_DIR.'list/loadBuilds.php';
             ?>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-sm-12 text-center">
-            <?php
-                if (isset($_GET['view']) && $_GET['view'] == 'list') {
-                    $_SESSION['listview'] = 'list';
-                    include 'list/loadBuilds.php';
-                } else if (isset($_GET['view']) && $_GET['view'] == 'grid') {
-                    $_SESSION['listview'] = 'grid';
-                    include 'list/loadNewBuilds.php';
-                } else {
-                    if (isset($_SESSION['listview'])) {
-                        if ($_SESSION['listview'] == 'list') {
-                            include 'list/loadBuilds.php';
-                        } else if ($_SESSION['listview'] == 'grid') {
-                            include 'list/loadNewBuilds.php';
-                        }
-                    } else {
-                        include 'list/loadNewBuilds.php';
-                    }
-                }
-            ?>
-
             <ul class="pagination">
                 <?php
                 $curSite = '';
@@ -48,7 +17,7 @@ include "navbar.php";
                     if ($site == $i) {
                         $curSite = 'active';
                     }
-                    echo '<li class="' . $curSite . '"><a href="?page=' . $i . Utility::getGetParameter() . '">' . $i . '</a></li>';
+                    echo '<li class="' . $curSite . '"><a href="?pageNo=' . $i . Utility::getGetParameter() . '">' . $i . '</a></li>';
                     $curSite = '';
                 }
                 ?>
@@ -56,60 +25,9 @@ include "navbar.php";
         </div>
     </div>
 </div>
-</body>
 <script>
     $(document).ready(function () {
-
         var myUrl = window.location.href;
-
-        $('#mapselect').flexdatalist({
-            minLength: 1,
-            searchContain: true,
-            maxShownResults: 10,
-            valueProperty: 'value'
-        });
-
-        $('#gridView').on('click', function (event) {
-            event.preventDefault();
-            addQSParm('view', 'grid');
-            window.location.replace(myUrl);
-        });
-
-        $('#listView').on('click', function (event) {
-            event.preventDefault();
-            addQSParm('view', 'list');
-            window.location.replace(myUrl);
-        });
-
-
-        $('#search').on('click', function (event) {
-            event.preventDefault();
-            myUrl = '//' + location.host + location.pathname;
-            var bname = $('#bname').val();
-            var author = $('#author').val();
-            var difficulty = $('#difficultyselect').val();
-            var map = $('#mapselect').val();
-
-            if (GET.view == 'list') {
-                addQSParm('view', 'list');
-            } else if (GET.view == 'grid') {
-                addQSParm('view', 'grid');
-            }
-            if (bname) {
-                addQSParm('bname', bname);
-            }
-            if (author) {
-                addQSParm('author', author);
-            }
-            if (difficulty != 0) {
-                addQSParm('difficulty', difficulty);
-            }
-            if (map != 0) {
-                addQSParm('map', map);
-            }
-            
-            window.location.replace(myUrl);
-        });
 
         $('#sortName').on('click', function (event) {
             event.preventDefault();
@@ -193,27 +111,6 @@ include "navbar.php";
             }
         };
 
-        fillFilter();
-
-        function fillFilter() {
-            var bname = GET.bname;
-            var author = GET.author;
-            var difficulty = GET.difficulty;
-            var map = GET.map;
-            if (bname) {
-                $('#bname').val(bname);
-            }
-            if (author) {
-                $('#author').val(author);
-            }
-            if (difficulty) {
-                $('#difficultyselect').val(difficulty);
-            }
-            if (map) {
-                $('#mapselect').val(map);
-            }
-        }
-
         function addQSParm(name, value) {
             var re = new RegExp("([?&]" + name + "=)[^&]+", "");
 
@@ -237,4 +134,3 @@ include "navbar.php";
         }
     });
 </script>
-</html>

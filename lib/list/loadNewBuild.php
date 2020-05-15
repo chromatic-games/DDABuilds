@@ -29,7 +29,7 @@ if (!file_exists(DOCROOT . $thumbnail)) {
 
 <div class="col-md-4">
     <div class="row">
-        <h3><a href="map.php?load=<?php echo $id?>"><?php echo $name;?></h3>
+        <h3><a href="?page=map&load=<?php echo $id?>"><?php echo $name;?></h3>
     </div>
     <div class="row">
         <div class="col-md-7">

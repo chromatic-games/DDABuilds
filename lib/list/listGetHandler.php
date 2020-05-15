@@ -1,22 +1,27 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Chakratos
- * Date: 24.04.2017
- * Time: 18:55
- */
-if (!isset($steamprofile['steamid'])) {
-    http_response_code(404);
-    exit();
-}
 $oDBH = Database::getInstance();
 $sort = array();
 
 $order = 'DESC';
 $by = 'id';
 
-$sort['fk_user'] = $steamprofile['steamid'];
+$sort['fk_buildstatus'] = 1;
 
+if (!empty($var = Parameter::_GET('bname'))) {
+    $sort['name'] = $var;
+}
+if (!empty($var = Parameter::_GET('map')) && is_numeric($var)) {
+    $sort['map'] = $var;
+}
+if (!empty($var = Parameter::_GET('difficulty')) && is_numeric($var)) {
+    $sort['difficulty'] = $var;
+}
+if (!empty($var = Parameter::_GET('rating')) && is_numeric($var)) {
+    $sort['rating'] = $var;
+}
+if (!empty($var = Parameter::_GET('author'))) {
+    $sort['author'] = $var;
+}
 if (!empty($var = Parameter::_GET('order'))) {
     if ($var === 'DESC' || $var === 'ASC') {
         $order = $var;
@@ -34,7 +39,7 @@ if (!empty($var = Parameter::_GET('by'))) {
 }
 
 $pages = Builds::getPageNumbers($sort, $oDBH);
-$site = intval(Parameter::_GET('page'));
+$site = intval(Parameter::_GET('pageNo'));
 if ($site < 1 || $site > $pages) {
     $site = 1;
 }

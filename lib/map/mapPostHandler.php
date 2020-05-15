@@ -1,6 +1,5 @@
 <?php
 if (!empty($_POST)) {
-    require_once 'steamauth/steamauth.php';
     require_once 'steamauth/userInfo.php';
 
     if (!empty($_POST['highlightTower'])) {
@@ -304,5 +303,5 @@ function saveScreenshot($base64, $buildID) {
 
     imagecopyresampled($lastimg, $newimg, 0, 0, 0, 0, 200, 200, $new_width, $new_height);
 
-    return imagepng($lastimg, DOCROOT . 'images/thumbnails/' . $buildID . '.png');
+    return imagepng($lastimg, DOCROOT . 'assets/images/thumbnails/' . $buildID . '.png');
 }

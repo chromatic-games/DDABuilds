@@ -19,18 +19,17 @@
                 if (isset($_SESSION['steamid'])) {
                     echo '
                     <li>
-                        <a href="/maps.php">Create</a>
+                        <a href="?page=maps">Create</a>
                     </li>
                 ';
                 }
                 ?>
                 <li>
-                    <a href="/list.php">List</a>
+                    <a href="?page=list">List</a>
                 </li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li>
-
                     <?php
                     if (!isset($_SESSION['steamid'])) {
                         echo '<div class="navbar-brand" style="margin-top:-8px";><a href="'.BASE_URL.'/?login">Login to Create or Vote on Builds:</a> ';
@@ -42,13 +41,13 @@
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">' . $steamprofile['personaname'] . '<span class="caret"></span></a>
                                 <ul class="dropdown-menu">
                                     <li>
-                                        <a href="myBuilds.php">My Builds</a>
+                                        <a href="?page=myBuilds">My Builds</a>
                                     </li>
                                     <li>
-                                        <a href="notifications.php">Notifications</a>
+                                        <a href="?page=notifications">Notifications</a>
                                     </li>
                                     <li>
-                                        <a href="index.php?logout=">Logout</a>
+                                        <a href="?page=logout">Logout</a>
                                     </li>
                                 </ul>
                             </li>

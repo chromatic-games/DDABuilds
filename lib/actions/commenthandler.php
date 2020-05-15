@@ -6,9 +6,6 @@
  * Time: 16:01
  */
 
-require 'steamauth/steamauth.php';
-require_once 'config.php';
-
 if (!isset($_SESSION['steamid']) ||
     empty($_POST) ||
     empty($_POST['buildid']) ||
@@ -25,7 +22,7 @@ if (!$build->load()) {
 }
 
 $oDBH = Database::getInstance();
-require 'steamauth/userInfo.php';
+require LIB_DIR.'../steamauth/userInfo.php';
 
 $comment = new Comment();
 $comment->setData('steamid', $steamprofile['steamid']);

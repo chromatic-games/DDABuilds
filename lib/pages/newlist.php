@@ -1,7 +1,7 @@
 <?php
 require_once 'config.php';
 include "header.php";
-include 'myBuilds/myBuildsGetHandler.php';
+include 'list/listGetHandler.php';
 ?>
 
 <body>
@@ -10,11 +10,21 @@ include "navbar.php";
 ?>
 <div class="container">
     <div class="row">
-        <div class="col-lg-12 text-center">
+        <div class="col-md-1">
+
+        </div>
+        <div class="col-md-10 text-center">
             <?php
-            $oDBH = Database::getInstance();
-            include 'list/loadBuilds.php';
+            include 'list/loadListFilter.php';
             ?>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12 text-center">
+            <?php
+            include 'list/loadNewBuilds.php';
+            ?>
+
             <ul class="pagination">
                 <?php
                 $curSite = '';
@@ -22,7 +32,7 @@ include "navbar.php";
                     if ($site == $i) {
                         $curSite = 'active';
                     }
-                    echo '<li class="' . $curSite . '"><a href="?page=' . $i . Utility::getGetParameter() . '">' . $i . '</a></li>';
+                    echo '<li class="' . $curSite . '"><a href="?pageNo=' . $i . Utility::getGetParameter() . '">' . $i . '</a></li>';
                     $curSite = '';
                 }
                 ?>
@@ -33,7 +43,30 @@ include "navbar.php";
 </body>
 <script>
     $(document).ready(function () {
+
         var myUrl = window.location.href;
+        $('#search').on('click', function (event) {
+            event.preventDefault();
+            myUrl = '//' + location.host + location.pathname;
+            var bname = $('#bname').val();
+            var author = $('#author').val();
+            var difficulty = $('#difficultyselect').val();
+            var map = $('#mapselect').val();
+
+            if (bname) {
+                addQSParm('bname', bname);
+            }
+            if (author) {
+                addQSParm('author', author);
+            }
+            if (difficulty != 0) {
+                addQSParm('difficulty', difficulty);
+            }
+            if (map != 0) {
+                addQSParm('map', map);
+            }
+            window.location.replace(myUrl);
+        });
 
         $('#sortName').on('click', function (event) {
             event.preventDefault();
@@ -116,6 +149,28 @@ include "navbar.php";
                 return '';
             }
         };
+
+        fillFilter();
+
+        function fillFilter() {
+            var bname = GET.bname;
+            var author = GET.author;
+            var difficulty = GET.difficulty;
+            var map = GET.map;
+            if (bname) {
+                $('#bname').val(bname);
+            }
+            if (author) {
+                $('#author').val(author);
+            }
+            if (difficulty) {
+                $('#difficultyselect').val(difficulty);
+            }
+            if (map) {
+                $('#mapselect').val(map);
+            }
+            console.log(map)
+        }
 
         function addQSParm(name, value) {
             var re = new RegExp("([?&]" + name + "=)[^&]+", "");

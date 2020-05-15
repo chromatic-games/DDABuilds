@@ -18,7 +18,7 @@ foreach ($heroes as $hero) {
     echo '
         <label>
         <input type="checkbox" class="disableckbx" value="' . $heroToLower . '" />
-        <img src="images/heroes/' . $heroToLower . '.png" title="' . $hero->getData('name') . '" class="disablecheckbox"/>
+        <img src="/assets/images/heroes/' . $heroToLower . '.png" title="' . $hero->getData('name') . '" class="disablecheckbox"/>
         </label>';
 }
 

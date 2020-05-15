@@ -1,6 +1,4 @@
 <?php
-require 'steamauth/steamauth.php';
-require_once 'config.php';
 
 if (!isset($_SESSION['steamid']) ||
     empty($_POST) ||
@@ -16,8 +14,6 @@ if (empty($_POST['buildid']) && empty($_POST['commentid'])) {
     http_response_code(404);
     exit();
 }
-
-require 'steamauth/userInfo.php';
 
 //Vote process for builds
 

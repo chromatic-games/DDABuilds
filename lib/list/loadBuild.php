@@ -14,7 +14,7 @@ if ($votes > 0) {
 }
 echo '
     <tr>
-        <td><a href="map.php?load=' . $build->getID() . '">' . htmlspecialchars($build->getData('name')) . '</a></td>
+        <td><a href="?page=map&load=' . $build->getID() . '">' . htmlspecialchars($build->getData('name')) . '</a></td>
         <td>' . $map->getData('name') . '</td>
         <td>' . $difficulty->getData('name') . '</td>
         <td><span' . $color . '>' . $votes . '</span></td>

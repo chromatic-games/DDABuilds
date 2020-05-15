@@ -18,7 +18,7 @@ $data = $notification->getData('data');
 $build = new Build();
 $build->setID($notification->getData('fk_build'));
 $build->load();
-$linkToBuild = 'http://' . $_SERVER['HTTP_HOST'] . '/map.php?load=' . $build->getID();
+$linkToBuild = 'http://' . $_SERVER['HTTP_HOST'] . '/?page=map&load=' . $build->getID();
 $buildName = htmlspecialchars($build->getData('name'));
 
 $vote[-1] = 'down';
