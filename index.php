@@ -58,13 +58,13 @@ if ( !empty($_GET['action']) ) {
         <script src="assets/js/ckeditor/ckeditor.js"></script>
         ';
 	}
-	elseif ( $_SERVER['SCRIPT_NAME'] == 'home' ) {
-		echo '<link href="assets/css/full-width-pics.css" rel="stylesheet">';
+	elseif ( $page == 'home' ) {
+		echo '<link href="/assets/css/full-width-pics.css" rel="stylesheet">';
 	}
-	elseif ( $_SERVER['SCRIPT_NAME'] == 'maps' ) {
+	elseif ( $page == 'maps' ) {
 		echo '<script src="assets/js/scroll-top.js"></script>';
 	}
-	elseif ( $_SERVER['SCRIPT_NAME'] == 'list' ) {
+	elseif ( $page == 'list' ) {
 		echo '<script type="text/javascript" src="assets/js/jquery.flexdatalist.min.js"></script>';
 		echo '<link href="assets/css/jquery.flexdatalist.min.css" rel="stylesheet">';
 	}
