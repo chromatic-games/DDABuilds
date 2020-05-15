@@ -1,5 +1,4 @@
 <?php
-require_once 'config.php';
 include LIB_DIR.'myBuilds/myBuildsGetHandler.php';
 ?>
 

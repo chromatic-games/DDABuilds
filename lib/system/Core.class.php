@@ -3,24 +3,32 @@
 namespace system;
 
 use system\database\MySQLDatabase;
+use system\steam\SteamUser;
 
 class Core {
 	/**
-	 * @var
+	 * @var MySQLDatabase
 	 */
 	public static $dbObj;
+
+	/**
+	 * @var SteamUser
+	 */
+	public static $userObj;
 
 	public function __construct() {
 		// do something on construct
 	}
 
 	/**
-	 * TODO
-	 *
-	 * @return null
+	 * @return SteamUser
 	 */
 	public static function getUser() {
-		return null;
+		if ( self::$userObj === null ) {
+			self::$userObj = new SteamUser(null, isset($_SESSION['steam_profile']) ? $_SESSION['steam_profile'] : []);
+		}
+
+		return self::$userObj;
 	}
 
 	/**

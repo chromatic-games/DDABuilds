@@ -6,6 +6,9 @@
 -->
 
 <?php
+
+use system\Core;
+
 $size = 'col-lg-9';
 if (isset($_GET['creator']) && isset($_GET['customwave']) && isset($_GET['map'])) {
     $create = true;
@@ -27,10 +30,10 @@ if (isset($_GET['creator']) && isset($_GET['customwave']) && isset($_GET['map'])
     $map->setID($build->getData('map'));
     $map->load();
     $mapName = $map->getData('name');
-    echo '<link href="/css/bootstrap.min.css" rel="stylesheet">
-    <link href="/css/chakratos.css" rel="stylesheet">
-    <link href="/css/font-awesome.min.css" rel="stylesheet">
-    <link href="/css/full-width-pics.css" rel="stylesheet">';
+    echo '<link href="/assets/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/assets/css/chakratos.css" rel="stylesheet">
+    <link href="/assets/css/font-awesome.min.css" rel="stylesheet">
+    <link href="/assets/css/full-width-pics.css" rel="stylesheet">';
 } else if(!isset($buildwave)) {
     http_response_code(404);
     exit();
@@ -58,7 +61,7 @@ if (isset($_GET['thumbnail'])) {
         include(dirname(__FILE__)."/../loadPools.php");
     } else {
         include(dirname(__FILE__)."/../loadViewCheckboxes.php");
-        if (isset($steamprofile)) {
+        if (Core::getUser()->steamID) {
             include(dirname(__FILE__)."/../loadVoteTool.php");
         }
     }

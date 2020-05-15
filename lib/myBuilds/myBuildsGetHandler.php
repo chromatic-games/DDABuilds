@@ -5,16 +5,19 @@
  * Date: 24.04.2017
  * Time: 18:55
  */
-if ( !isset($steamprofile['steamid']) ) {
-	http_response_code(404);
-	exit();
+
+use system\Core;
+
+if ( !Core::getUser()->steamID ) {
+	echo 'permission denied'; // TODO
+	return;
 }
 $sort = [];
 
 $order = 'DESC';
 $by = 'id';
 
-$sort['fk_user'] = $steamprofile['steamid'];
+$sort['fk_user'] = Core::getUser()->steamID;
 
 if ( !empty($var = Parameter::_GET('order')) ) {
 	if ( $var === 'DESC' || $var === 'ASC' ) {

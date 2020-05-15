@@ -18,7 +18,7 @@ class Utility
 
     public static function getSteamAvatarMedium($steamID)
     {
-        $url = file_get_contents("http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=" . STEAMAPIKEY . "&steamids=" . $steamID);
+        $url = file_get_contents("http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=" . STEAM_API_KEY . "&steamids=" . $steamID);
         $content = json_decode($url, true);
         return $content['response']['players'][0]['avatarmedium'];
     }
@@ -30,7 +30,7 @@ class Utility
 	 */
     public static function getSteamName($steamID)
     {
-        $url = file_get_contents("http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=" . STEAMAPIKEY . "&steamids=" . $steamID);
+        $url = file_get_contents("http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=" . STEAM_API_KEY . "&steamids=" . $steamID);
         $content = json_decode($url, true);
         return $content['response']['players'][0]['personaname'];
     }

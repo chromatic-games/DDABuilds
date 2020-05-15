@@ -6,14 +6,13 @@
  * Time: 16:01
  */
 
-if (!isset($_SESSION['steamid']) ||
-    empty($_POST) ||
-    empty($_POST['buildid']) ||
-    empty($_POST['comment'])
-) {
+use system\Core;
+
+if ( !Core::getUser()->steamID || empty($_POST) || empty($_POST['buildid']) || empty($_POST['comment']) ) {
     http_response_code(404);
     exit();
 }
+
 $build = new Build();
 $build->setID($_POST['buildid']);
 if (!$build->load()) {
@@ -21,27 +20,25 @@ if (!$build->load()) {
     exit();
 }
 
-require LIB_DIR.'../steamauth/userInfo.php';
-
 $comment = new Comment();
-$comment->setData('steamid', $steamprofile['steamid']);
+$comment->setData('steamid', Core::getUser()->steamID);
 $comment->setData('fk_build', $_POST['buildid']);
 $comment->setData('comment', $_POST['comment']);
 if ($commentid = $comment->save()) {
-    $userInvolved = Comments::getAllUserInvolvedInBuildExcept($_POST['buildid'], $steamprofile['steamid']);
+    $userInvolved = Comments::getAllUserInvolvedInBuildExcept($_POST['buildid'], Core::getUser()->steamID);
     foreach ($userInvolved as $user) {
         $notification = new Notification();
         $notification->setData('steamid', $user);
-        $notification->setData('data', $steamprofile['steamid']);
+        $notification->setData('data', Core::getUser()->steamID);
         $notification->setData('type', 4);
         $notification->setData('fk_build', $_POST['buildid']);
         $notification->setData('fk_comment', $commentid);
         $notification->save();
     }
-    if ($steamprofile['steamid'] != Builds::getBuildOwner($_POST['buildid'])) {
+    if (Core::getUser()->steamID != Builds::getBuildOwner($_POST['buildid'])) {
         $notification = new Notification();
         $notification->setData('steamid', Builds::getBuildOwner($_POST['buildid']));
-        $notification->setData('data', $steamprofile['steamid']);
+        $notification->setData('data', Core::getUser()->steamID);
         $notification->setData('type', 1);
         $notification->setData('fk_build', $_POST['buildid']);
         $notification->setData('fk_comment', $commentid);

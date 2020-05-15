@@ -1,21 +1,21 @@
 <?php
-if (!empty($_POST)) {
-    require_once 'steamauth/userInfo.php';
 
+use system\Core;
+
+if (!empty($_POST)) {
     if (!empty($_POST['highlightTower'])) {
-        session_start();
         $bool = filter_var($_POST['highlightTower'], FILTER_VALIDATE_BOOLEAN);
         $_SESSION['highlightTower'] = $bool;
         exit('Error 400');
     }
 
-    if (empty($steamprofile['steamid'])) {
+    if (!Core::getUser()->steamID) {
         http_response_code(404);
         exit('Not logged into steam');
     }
 
     if (!empty($_POST['buildid']) && !empty($_POST['delete'])) {
-        if (Builds::getBuildOwner($_POST['buildid']) == $steamprofile['steamid']) {
+        if (Builds::getBuildOwner($_POST['buildid']) == Core::getUser()->steamID) {
             $build = new Build();
             $build->setID($_POST['buildid']);
             $build->load();
@@ -114,10 +114,12 @@ if (!empty($_POST)) {
             http_response_code(404);
             exit("The Build you try to edit doesn't exists!");
         }
-        if ($build->getData('fk_user') != $steamprofile['steamid'] && $steamprofile['steamid'] != "76561198004171907") {
+
+        if ($build->getData('fk_user') != Core::getUser()->steamID && Core::getUser()->steamID != "76561198004171907") {
             http_response_code(404);
             exit('You are not the owner of the build!');
         }
+
         if ($build->getData('deleted')) {
             http_response_code(404);
             exit('The Build you try to edit is deleted!');
@@ -133,7 +135,7 @@ if (!empty($_POST)) {
     $build->setData('difficulty', $_POST['difficulty']);
     $build->setData('description', $_POST['builddescription']);
     //if ($steamprofile['steamid'] != "76561198004171907") {
-        $build->setData('fk_user', $steamprofile['steamid']);
+        $build->setData('fk_user', Core::getUser()->steamID);
     //}
     $build->setData('fk_buildstatus', $_POST['buildstatus']);
     $build->setData('campaign', $campaign);

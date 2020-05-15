@@ -1,7 +1,10 @@
 <?php
+
+use system\Core;
+
 $up = '';
 $down = '';
-$votedOption = Votes::userAlreadyVoted($build->getID(), $steamprofile['steamid']);
+$votedOption = Votes::userAlreadyVoted($build->getID(), Core::getUser()->steamID);
 if ($votedOption) {
     $vote = new Vote();
     $vote->setID($votedOption);

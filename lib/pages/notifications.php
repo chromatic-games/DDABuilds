@@ -6,7 +6,9 @@
  * Time: 03:01
  */
 
-if (empty($steamprofile['steamid'])) {
+use system\Core;
+
+if (!Core::getUser()->steamID) {
     http_response_code(404);
     exit('Not logged into steam');
 }
@@ -15,11 +17,11 @@ if (empty($steamprofile['steamid'])) {
     <div class="row">
         <div class="col-md-12">
             <?php
-            $notifications = Notifications::getNotificationsForUser($steamprofile['steamid']);
+            $notifications = Notifications::getNotificationsForUser(Core::getUser()->steamID);
             foreach ($notifications as $notification) {
                 include LIB_DIR.'notifications/notification.php';
             }
-            Notifications::markAllNotificationsAsRead($steamprofile['steamid'])
+            Notifications::markAllNotificationsAsRead(Core::getUser()->steamID)
             ?>
         </div>
     </div>

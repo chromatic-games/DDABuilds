@@ -1,8 +1,10 @@
 <?php
 
-if (!isset($_SESSION['steamid']) ||
-    empty($_POST) ||
-    empty($_POST['rating']) ||
+use system\Core;
+
+if ( !isset($_SESSION['steamid']) ||
+     empty($_POST) ||
+     empty($_POST['rating']) ||
     $_POST['rating'] < -1 ||
     $_POST['rating'] > 1
 ) {
@@ -25,12 +27,12 @@ if (!empty($_POST['buildid'])) {
         exit();
     }
 
-    if (Builds::getBuildOwner($_POST['buildid']) == $steamprofile['steamid']) {
+    if (Builds::getBuildOwner($_POST['buildid']) == Core::getUser()->steamID) {
         http_response_code(404);
         exit();
     }
 
-    if ($voteid = Votes::userAlreadyVoted($_POST['buildid'], $steamprofile['steamid'])) {
+    if ($voteid = Votes::userAlreadyVoted($_POST['buildid'], Core::getUser()->steamID)) {
         $vote = new Vote();
         $vote->setID($voteid);
         $vote->load();
@@ -45,7 +47,7 @@ if (!empty($_POST['buildid'])) {
     }
 
     $vote = new Vote();
-    $vote->setData('steamid', $steamprofile['steamid']);
+    $vote->setData('steamid', Core::getUser()->steamID);
     $vote->setData('fk_build', $_POST['buildid']);
     $vote->setData('vote', $_POST['rating']);
     $vote->save();
@@ -62,12 +64,12 @@ if (!empty($_POST['commentid'])) {
         http_response_code(404);
         exit();
     }
-    if ($steamprofile['steamid'] == Comments::getCommentOwner($_POST['commentid'])) {
+    if (Core::getUser()->steamID == Comments::getCommentOwner($_POST['commentid'])) {
         http_response_code(404);
         exit();
     }
 
-    if ($voteid = CommentVotes::userAlreadyVoted($_POST['commentid'], $steamprofile['steamid'])) {
+    if ($voteid = CommentVotes::userAlreadyVoted($_POST['commentid'], Core::getUser()->steamID)) {
         $vote = new CommentVote();
         $vote->setID($voteid);
         $vote->load();
@@ -84,7 +86,7 @@ if (!empty($_POST['commentid'])) {
     }
 
     $vote = new CommentVote();
-    $vote->setData('steamid', $steamprofile['steamid']);
+    $vote->setData('steamid', Core::getUser()->steamID);
     $vote->setData('fk_comment', $_POST['commentid']);
     $vote->setData('vote', $_POST['rating']);
     if ($vote->save()) {

@@ -1,4 +1,8 @@
 <?php
+
+use system\Core;
+use system\steam\Steam;
+
 require_once 'config.inc.php';
 
 // defines
@@ -6,6 +10,7 @@ define('MAIN_DIR', __DIR__.'/');
 define('LIB_DIR', MAIN_DIR.'lib/');
 
 // spl auto loader
+session_start();
 spl_autoload_register(function ($className) {
 	if ( file_exists(LIB_DIR.'classes/'.$className.'.php') ) {
 		if ( DEBUG_MODE ) {
@@ -24,10 +29,6 @@ spl_autoload_register(function ($className) {
 
 // initialize core
 new \system\Core();
-
-if ( isset($_SESSION['steamid']) ) {
-	include('steamauth/userInfo.php');
-}
 
 $page = isset($_GET['page']) ? $_GET['page'] : 'home';
 // fallback page -> home
@@ -129,14 +130,14 @@ if ( !empty($_GET['action']) ) {
                 <li>
                     <?php
                     if ( !isset($_SESSION['steamid']) ) {
-	                    echo '<div class="navbar-brand" style="margin-top:-8px";><a href="'.BASE_URL.'?login">Login to Create or Vote on Builds:</a> ';
-	                    loginbutton('rectangle'); //login button
+	                    echo '<div class="navbar-brand" style="margin-top:-8px";><a href="'.BASE_URL.'?page=login">Login to Create or Vote on Builds:</a> ';
+	                    echo Steam::getLoginButton(Steam::BUTTON_STYLE_RECTANGLE);
 	                    echo '</div>';
                     }
                     else {
 	                    echo '
                             <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">'.$steamprofile['personaname'].'<span class="caret"></span></a>
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">'.Core::getUser()->displayName.'<span class="caret"></span></a>
                                 <ul class="dropdown-menu">
                                     <li>
                                         <a href="?page=myBuilds">My Builds</a>
@@ -161,8 +162,8 @@ if ( !empty($_GET['action']) ) {
 	</nav>
 	<!-- /Navigation -->
 	<?php
-	if ( isset($_SESSION['steamid']) ) {
-		$newNotifications = count(Notifications::getUnreadNotificationsForUser($steamprofile['steamid']));
+	if ( Core::getUser()->steamID ) {
+		$newNotifications = count(Notifications::getUnreadNotificationsForUser(Core::getUser()->steamID));
 		if ( $newNotifications ) {
 			echo '
         <div class="container">

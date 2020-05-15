@@ -1,4 +1,7 @@
 <?php
+
+use system\Core;
+
 $create = false;
 $isCreator = false;
 
@@ -17,7 +20,7 @@ if (isset($_GET['name'])) {
     }
 }
 
-if (isset($_GET['id']) && isset($steamprofile['steamid'])) { //Are they the creator?
+if (isset($_GET['id']) && Core::getUser()->steamID) { //Are they the creator?
     $iMapID = $_GET['id'];
     $create = true;
 } else if (isset($_GET['load'])) { //If not creator, new build.
@@ -35,7 +38,7 @@ if (isset($_GET['id']) && isset($steamprofile['steamid'])) { //Are they the crea
     $buildStatus = $build->getData('fk_buildstatus');
     $iMapID = $build->getData('map');
     $creator = $build->getData('fk_user');
-    if (isset($steamprofile) && isset($steamprofile['steamid']) && $steamprofile['steamid'] == $creator) {
+    if (Core::getUser()->steamID == $creator) {
         $isCreator = true;
     } else {
         $build->increaseViewCount();
@@ -114,7 +117,7 @@ $aMap->load();
 $mapName = $aMap->getData('name');
 //$mapScale = $aMap->getData('scale');
 
-if (isset($steamprofile['steamid']) && $steamprofile['steamid'] == "76561198051185047" && !$create) {
+if ( Core::getUser()->steamID == "76561198051185047" && !$create) {
     $isCreator = true;
 }
 
@@ -154,7 +157,7 @@ if (isset($_GET['viewermode']) && !$create) {
                 if (!empty($_GET['load'])) {
                     $value = ' value="' . $build->getData('author') . '"';
                 } else {
-                    $value = ' value="' . $steamprofile['personaname'] . '"';
+                    $value = ' value="' . Core::getUser()->displayName . '"';
                 }
                 echo '<label>Author:</label>';
                 echo '<input type="text" placeholder="Author" class="form-control" id="author" maxlength="20"' . $value . '>';
