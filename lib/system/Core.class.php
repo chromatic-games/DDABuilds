@@ -69,7 +69,12 @@ class Core {
 			if ( !is_object(self::$dbObj) ) {
 				return;
 			}
+
+			if ( DEBUG_MODE ) {
+				\Utility::varDump(['queries' => self::getDB()->getQueryCount()]);
+			}
 		} catch ( \Exception $e ) {
+			\Utility::varDump(['destruct error' => $e]);
 		}
 	}
 }

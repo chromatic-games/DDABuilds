@@ -1,4 +1,5 @@
 <?php
+ // TODO CHECK IF UNSUED
 /**
  * Created by PhpStorm.
  * User: Chakratos
@@ -8,7 +9,6 @@
 if (!isset($_GET['build'])) {
     exit();
 }
-include_once 'config.php';
 
 $screenshot = $_POST['screenshot'];
 $img = imagecreatefrompng($screenshot->getScreenshotLink());
@@ -59,5 +59,4 @@ $newimg = imagecreatetruecolor(
 imagecopy($newimg, $img, 0, 0, $left, $top, imagesx($newimg), imagesy($newimg));
 
 $newimg = imagescale($newimg, 200);
-
-$sucess = imagepng($newimg, dirname(__FILE__) . '/assets/images/thumbnails/' . $_GET['build'] . '.png');
+$success = imagepng($newimg, dirname(__FILE__) . '/assets/images/thumbnails/' . $_GET['build'] . '.png');

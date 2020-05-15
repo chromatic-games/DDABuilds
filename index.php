@@ -27,6 +27,8 @@ spl_autoload_register(function ($className) {
 	}
 });
 
+// set shutdown function
+register_shutdown_function([Core::class, 'destruct']);
 // set exception handler
 set_exception_handler([Core::class, 'handleException']);
 // set php error handler
