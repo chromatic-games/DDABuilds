@@ -28,7 +28,17 @@ class Core {
 	 */
 	public static function getDB() {
 		if ( self::$dbObj === null ) {
-			self::$dbObj = new MySQLDatabase('localhost', 'root', '', 'ddabuilds', 3306); // TODO replace with config.php
+			$dbPort = 3306;
+			/**
+			 * variables from mysql.inc.php:
+			 *
+			 * @var string $dbPassword
+			 * @var string $dbHost
+			 * @var string $dbUser
+			 * @var string $dbName
+			 */
+			require_once(MAIN_DIR.'mysql.inc.php');
+			self::$dbObj = new MySQLDatabase($dbHost, $dbUser, $dbPassword, $dbName, $dbPort);
 		}
 
 		return self::$dbObj;

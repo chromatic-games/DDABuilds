@@ -1,5 +1,6 @@
 # project files
-config.php
+config.inc.php
+mysql.inc.php
 steamauth/SteamConfig.php
 assets/images/thumbnails
 

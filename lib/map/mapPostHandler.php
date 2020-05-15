@@ -302,5 +302,5 @@ function saveScreenshot($base64, $buildID) {
 
     imagecopyresampled($lastimg, $newimg, 0, 0, 0, 0, 200, 200, $new_width, $new_height);
 
-    return imagepng($lastimg, DOCROOT . 'assets/images/thumbnails/' . $buildID . '.png');
+    return imagepng($lastimg, MAIN_DIR . 'assets/images/thumbnails/' . $buildID . '.png');
 }

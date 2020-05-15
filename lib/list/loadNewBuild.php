@@ -21,7 +21,7 @@ $author = $build->getData('author');
 $views = $build->getData('views');
 $thumbnail = '/assets/images/thumbnails/' . $build->getID() . '.png';
 //Utility::varDump($thumbnail);
-if (!file_exists(DOCROOT . $thumbnail)) {
+if (!file_exists(MAIN_DIR . $thumbnail)) {
     $thumbnail = 'http://via.placeholder.com/262x262?text=Placeholder';
 }
 

@@ -1,8 +1,11 @@
 <?php
-require_once 'config.php';
-require 'steamauth/steamauth.php';
+require_once 'config.inc.php';
 
-define('LIB_DIR', __DIR__.'/lib/');
+// defines
+define('MAIN_DIR', __DIR__.'/');
+define('LIB_DIR', MAIN_DIR.'lib/');
+
+// spl auto loader
 spl_autoload_register(function ($className) {
 	if ( file_exists(LIB_DIR.'classes/'.$className.'.php') ) {
 		if ( DEBUG_MODE ) {
@@ -19,6 +22,7 @@ spl_autoload_register(function ($className) {
 	}
 });
 
+// initialize core
 new \system\Core();
 
 if ( isset($_SESSION['steamid']) ) {
@@ -125,7 +129,7 @@ if ( !empty($_GET['action']) ) {
                 <li>
                     <?php
                     if ( !isset($_SESSION['steamid']) ) {
-	                    echo '<div class="navbar-brand" style="margin-top:-8px";><a href="'.BASE_URL.'/?login">Login to Create or Vote on Builds:</a> ';
+	                    echo '<div class="navbar-brand" style="margin-top:-8px";><a href="'.BASE_URL.'?login">Login to Create or Vote on Builds:</a> ';
 	                    loginbutton('rectangle'); //login button
 	                    echo '</div>';
                     }
