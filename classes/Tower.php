@@ -9,6 +9,6 @@ class Tower extends DataObject
 
     public function getImage()
     {
-        return '/images/tower/' . strtolower(str_replace(' ', '_', $this->getData('name'))) . '.png';
+        return '/assets/images/tower/' . strtolower(str_replace(' ', '_', $this->getData('name'))) . '.png';
     }
 }

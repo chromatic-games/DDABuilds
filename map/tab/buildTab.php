@@ -45,7 +45,7 @@ if (isset($_GET['creator']) && isset($_GET['customwave']) && isset($_GET['map'])
 <div class="<?php echo $size; ?>">
     <div class="canvas">
         <img class="ddmap"
-             src="<?php echo "/images/map/" . str_replace(' ', '_', $mapName); ?>.png">
+             src="<?php echo "/assets/images/map/" . str_replace(' ', '_', $mapName); ?>.png">
         <?php
         include(dirname(__FILE__)."/../loadPlaced.php");
         ?>

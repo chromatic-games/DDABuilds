@@ -60,4 +60,4 @@ imagecopy($newimg, $img, 0, 0, $left, $top, imagesx($newimg), imagesy($newimg));
 
 $newimg = imagescale($newimg, 200);
 
-$sucess = imagepng($newimg, dirname(__FILE__) . '/images/thumbnails/' . $_GET['build'] . '.png');
+$sucess = imagepng($newimg, dirname(__FILE__) . '/assets/images/thumbnails/' . $_GET['build'] . '.png');

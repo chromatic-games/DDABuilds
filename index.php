@@ -35,7 +35,7 @@ include "navbar.php";
     $(document).ready(function () {
         var imagecount = 1;
         var rnd = Math.floor((Math.random() * imagecount) + 1);
-        $('#headerimage').css('background-image', 'url("../images/index/' + rnd + '.jpg"');
+        $('#headerimage').css('background-image', 'url("/assets/images/index/' + rnd + '.jpg"');
     });
 </script>
 

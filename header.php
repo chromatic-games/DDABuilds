@@ -14,34 +14,34 @@ if (isset($_SESSION['steamid'])) {
     <meta name="author" content="">
 
     <title>DDA Builds</title>
-    <link rel="icon" type="image/png" href="images/tower/crystal_core.png">
+    <link rel="icon" type="image/png" href="assets/images/tower/crystal_core.png">
 
     <!-- Bootstrap Core CSS -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
-    <link href="css/chakratos.css" rel="stylesheet">
-    <link href="css/font-awesome.min.css" rel="stylesheet">
+    <link href="assets/css/bootstrap.min.css" rel="stylesheet">
+    <link href="assets/css/chakratos.css" rel="stylesheet">
+    <link href="assets/css/font-awesome.min.css" rel="stylesheet">
 
     <!-- jQuery Version 1.11.1 -->
-    <script src="js/jquery.js"></script>
+    <script src="assets/js/jquery.js"></script>
     <?php
     if ($_SERVER['SCRIPT_NAME'] == '/map.php') {
         echo '
-        <script src="js/html2canvas.js"></script>
-        <script src="js/jquery-ui.js"></script>
-        <script src="js/jQueryRotate.js"></script>
-        <script src="ckeditor/ckeditor.js"></script>
+        <script src="assets/js/html2canvas.js"></script>
+        <script src="assets/js/jquery-ui.js"></script>
+        <script src="assets/js/jQueryRotate.js"></script>
+        <script src="assets/js/ckeditor/ckeditor.js"></script>
         ';
     } else if ($_SERVER['SCRIPT_NAME'] == '/index.php') {
-        echo '<link href="css/full-width-pics.css" rel="stylesheet">';
+        echo '<link href="assets/css/full-width-pics.css" rel="stylesheet">';
     } else if ($_SERVER['SCRIPT_NAME'] == '/maps.php') {
-        echo '<script src="js/scroll-top.js"></script>';
+        echo '<script src="assets/js/scroll-top.js"></script>';
     } else if ($_SERVER['SCRIPT_NAME'] == '/list.php') {
-        echo '<script type="text/javascript" src="js/jquery.flexdatalist.min.js"></script>';
-        echo '<link href="css/jquery.flexdatalist.min.css" rel="stylesheet">';
+        echo '<script type="text/javascript" src="assets/js/jquery.flexdatalist.min.js"></script>';
+        echo '<link href="assets/css/jquery.flexdatalist.min.css" rel="stylesheet">';
     }
     ?>
     <!-- Bootstrap Core JavaScript -->
-    <script src="js/bootstrap.min.js"></script>
+    <script src="assets/js/bootstrap.min.js"></script>
 
     <!-- Custom CSS -->
     <style>
