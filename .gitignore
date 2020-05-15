@@ -1,6 +1,7 @@
 # project files
 config.php
 steamauth/SteamConfig.php
+images/thumbnails
 
 # ide files
 .idea

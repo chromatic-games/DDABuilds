@@ -552,8 +552,6 @@ include "navbar.php";
             } else {
                 hardcore.prop('disabled', false);
             }
-            
-
         }
 
         $(document).on('click', 'li', function (e) {
