@@ -70,7 +70,7 @@ class Core {
 		return self::$dbObj;
 	}
 
-	public static final function handleException(Exception $e) {
+	public static final function handleException($e) {
 		if ( $e instanceof UserException ) {
 			$e->show();
 			exit;

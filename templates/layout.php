@@ -70,7 +70,7 @@
 				<ul class="nav navbar-nav">
 					<?php
 					if ( Core::getUser()->steamID ) {
-						echo ' <li> <a href="'.LinkHandler::getInstance()->getLink('Maps').'">Create</a></li>';
+						echo ' <li> <a href="'.LinkHandler::getInstance()->getLink('BuildAddSelectMap').'">Create</a></li>';
 					}
 					?>
 					<li>
@@ -112,7 +112,7 @@
 	</nav>
 	<!-- /Navigation -->
 	<?php
-	if ( Core::getUser()->steamID ) {
+	if ( Core::getUser()->steamID && false ) { // TODO re-add notifications
 		$newNotifications = count(Notifications::getUnreadNotificationsForUser(Core::getUser()->steamID));
 		if ( $newNotifications ) {
 			echo '

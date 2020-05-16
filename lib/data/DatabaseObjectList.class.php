@@ -5,7 +5,7 @@ namespace data;
 use system\Core;
 use system\database\util\PreparedStatementConditionBuilder;
 
-class DatabaseObjectList implements \Countable {
+class DatabaseObjectList implements \Countable, \SeekableIterator {
 	/**
 	 * class name
 	 * @var    string
@@ -77,6 +77,12 @@ class DatabaseObjectList implements \Countable {
 	 * @var    string
 	 */
 	public $sqlConditionJoins = '';
+
+	/**
+	 * current iterator index
+	 * @var    integer
+	 */
+	protected $index = 0;
 
 	public function __construct() {
 		// set class name
@@ -237,7 +243,44 @@ class DatabaseObjectList implements \Countable {
 		return $this->conditionBuilder;
 	}
 
+	/** @inheritDoc */
 	public function count() {
 		return count($this->objects);
+	}
+
+	/** @inheritDoc */
+	public function current() {
+		$objectID = $this->indexToObject[$this->index];
+
+		return $this->objects[$objectID];
+	}
+
+	/** @inheritDoc */
+	public function next() {
+		++$this->index;
+	}
+
+	/** @inheritDoc */
+	public function key() {
+		return $this->indexToObject[$this->index];
+	}
+
+	/** @inheritDoc */
+	public function valid() {
+		return isset($this->indexToObject[$this->index]);
+	}
+
+	/** @inheritDoc */
+	public function rewind() {
+		$this->index = 0;
+	}
+
+	/** @inheritDoc */
+	public function seek($index) {
+		$this->index = $index;
+
+		if ( !$this->valid() ) {
+			throw new \OutOfBoundsException();
+		}
 	}
 }
