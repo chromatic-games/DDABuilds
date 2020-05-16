@@ -5,6 +5,7 @@ namespace system\template;
 use system\Core;
 use system\exception\NamedUserException;
 use system\request\LinkHandler;
+use system\util\StringUtil;
 
 class TemplateRenderer {
 	protected $templateName;
@@ -24,7 +25,7 @@ class TemplateRenderer {
 	}
 
 	public function escapeHtml($string) {
-		return @htmlspecialchars($string, ENT_COMPAT, 'UTF-8');
+		return StringUtil::encodeHTML($string);
 	}
 
 	/**
@@ -49,6 +50,10 @@ class TemplateRenderer {
 
 	public function render($templateName, array $variables = []) {
 		return (new TemplateRenderer($templateName, $variables))->__toString();
+	}
+
+	public function number($number) {
+		return StringUtil::formatNumeric($number);
 	}
 
 	public function renderPages(array $options) {

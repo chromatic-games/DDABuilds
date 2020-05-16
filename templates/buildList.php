@@ -110,8 +110,8 @@ if ( $this->showFilter ) {
 <td>'.$this->escapeHtml($build->name).'</td>
 <td>'.$this->escapeHtml($build->getMap()->name).'</td>
 <td>'.$this->escapeHtml($build->getDifficulty()->name).'</td>
-<td class="text-right">???</td>
-<td class="text-right">'.$build->views.'</td>
+<td class="text-right">'.$this->number($build->votes).'</td>
+<td class="text-right">'.$this->number($build->views).'</td>
 <td class="text-right">'.$build->getDate().'</td>
 <td colspan="2">'.$this->escapeHtml($build->author).'</td>
 </tr>';
@@ -136,8 +136,8 @@ if ( $this->showFilter ) {
 						<?php
 						echo '<h4><p>'.$this->escapeHtml($build->getMap()->name).'</p>';
 						echo '<p>'.$this->escapeHtml($build->getDifficulty()->name).'<p>';
-						echo '<p><small>Rating:</small> ???</p>';
-						echo '<p><small>Views:</small> '.$build->views.'</p>';
+						echo '<p><small>Rating:</small> '.$this->number($build->votes).'</p>';
+						echo '<p><small>Views:</small> '.$this->number($build->views).'</p>';
 						echo '<p>'.$build->getDate().'</p>';
 						echo '<p>'.$build->author.'</p></h4></a>';
 						?>

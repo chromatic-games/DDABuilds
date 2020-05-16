@@ -1,0 +1,7 @@
+ALTER TABLE classes
+	ADD COLUMN isDisabled TINYINT(1) UNSIGNED NOT NULL DEFAULT 0 AFTER name;
+
+ALTER TABLE builds
+	ADD COLUMN votes INT(10) UNSIGNED NOT NULL AFTER views;
+
+UPDATE builds SET votes = (SELECT IFNULL(SUM(vote), 0) FROM votes WHERE fk_build = builds.id);

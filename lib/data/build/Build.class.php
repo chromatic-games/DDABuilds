@@ -19,6 +19,7 @@ use data\map\Map;
  * @property-read integer $views
  * @property-read integer $map
  * @property-read integer $difficulty
+ * @property-read integer $votes
  */
 class Build extends DatabaseObject implements IRouteObject {
 	protected static $databaseTableName = 'builds';
