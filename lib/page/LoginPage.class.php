@@ -3,6 +3,8 @@
 namespace page;
 
 use system\Core;
+use system\exception\NamedUserException;
+use system\exception\PermissionDeniedException;
 use system\steam\LightOpenID;
 use system\steam\SteamUser;
 
@@ -11,7 +13,7 @@ class LoginPage extends AbstractPage {
 		parent::readParameters();
 
 		if ( Core::getUser()->steamID ) {
-			throw new \Exception('namedexception -> already logged in');
+			throw new PermissionDeniedException();
 		}
 	}
 
@@ -26,7 +28,7 @@ class LoginPage extends AbstractPage {
 				header('Location: '.$openid->authUrl());
 			}
 			elseif ( $openid->mode == 'cancel' ) {
-				Core::getTPL()->assign('error', 'User has canceled authentication!');
+				throw new NamedUserException('User has canceled authentication!');
 			}
 			elseif ( $openid->validate() ) {
 				$id = $openid->identity;
@@ -40,7 +42,7 @@ class LoginPage extends AbstractPage {
 				exit;
 			}
 			else {
-				Core::getTPL()->assign('error', 'User is not logged in.');
+				throw new NamedUserException('User is not logged in.');
 			}
 		} catch ( \Exception $e ) {
 			echo $e->getMessage();

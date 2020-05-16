@@ -12,8 +12,6 @@ use system\util\HeaderUtil;
 class BuildListPage extends SortablePage {
 	public $objectListClassName = BuildList::class;
 
-	public $itemsPerPage = 3;
-
 	public $defaultSortField = 'id';
 
 	public $defaultSortOrder = 'DESC';
