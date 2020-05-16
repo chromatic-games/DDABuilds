@@ -122,7 +122,7 @@
                 </div>
                 <div class="col-md-5">
                     <div class="alert alert-success">
-                        Hello '.Utility::getSteamName($_SESSION['steamid']).' you have: <a href="notifications.php" class="alert-link">'.$newNotifications.' unread notifications</a>.
+                        Hello '.Core::getUser()->displayName.' you have: <a href="notifications.php" class="alert-link">'.$newNotifications.' unread notifications</a>.
                     </div>
                 </div>
             </div>
@@ -137,11 +137,11 @@
 	</section>
 
 	<?php
-
 	if ( DEBUG_MODE ) {
-		echo '<div class="container">'.Utility::varDump(['queries' => Core::getDB()->getQueryCount()]).'</div>';
+		echo '<div class="container"><pre>';
+		var_dump(['queries' => Core::getDB()->getQueryCount()]);
+		echo '</pre></div>';
 	}
-
 	?>
 
 	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-39334248-36"></script>

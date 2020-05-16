@@ -7,6 +7,7 @@
  */
 
 use system\request\LinkHandler;
+use system\steam\Steam;
 
 /**
  * Notification Types:
@@ -41,13 +42,13 @@ if ($notification->getData('type') == 2) {
 }
 
 if ($notification->getData('type') == 1) {
-    $message = '<u>' . Utility::getSteamName($notification->getData("data")) . '</u> wrote a comment on your build: <u>' . $buildName . '</u>';
+    $message = '<u>' . Steam::getInstance()->getDisplayName($notification->getData("data")) . '</u> wrote a comment on your build: <u>' . $buildName . '</u>';
 } else if ($notification->getData('type') == 2) {
     $message = 'Your build: <u>' . $buildName . '</u> got voted <u>' . $vote[$data] . '</u>';
 } else if ($notification->getData('type') == 3) {
     $message = 'Your comment on the build: <u>' . $buildName . '</u> got voted <u>' . $vote[$data] . '</u>';
 } else if ($notification->getData('type') == 4) {
-    $message = '<u>' . Utility::getSteamName($notification->getData("data")) . '</u> also wrote a comment on the build: <u>' . $buildName . '</u>';
+    $message = '<u>' . Steam::getInstance()->getDisplayName($notification->getData("data")) . '</u> also wrote a comment on the build: <u>' . $buildName . '</u>';
 } else {
     $message = 'error';
 }

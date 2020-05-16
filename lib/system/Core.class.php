@@ -94,7 +94,9 @@ class Core {
 			throw new NamedUserException('test'); // replace with systemexception
 		}
 		else {
-			\Utility::varDump(implode(', ', [$severity, $message, $file, $line]));
+			echo '<pre>';
+			var_dump(implode(', ', [$severity, $message, $file, $line]));
+			echo '</pre>';
 		}
 	}
 
