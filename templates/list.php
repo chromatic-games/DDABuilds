@@ -89,36 +89,6 @@ include LIB_DIR.'list/listGetHandler.php';
 			window.location.replace(myUrl);
 		});
 
-		$('#search').on('click', function (event) {
-			event.preventDefault();
-			myUrl = '//' + location.host + location.pathname;
-			var bname = $('#bname').val();
-			var author = $('#author').val();
-			var difficulty = $('#difficultyselect').val();
-			var map = $('#mapselect').val();
-
-			if (GET.view == 'list') {
-				addQSParm('view', 'list');
-			}
-			else if (GET.view == 'grid') {
-				addQSParm('view', 'grid');
-			}
-			if (bname) {
-				addQSParm('bname', bname);
-			}
-			if (author) {
-				addQSParm('author', author);
-			}
-			if (difficulty != 0) {
-				addQSParm('difficulty', difficulty);
-			}
-			if (map != 0) {
-				addQSParm('map', map);
-			}
-
-			window.location.replace(myUrl);
-		});
-
 		$('#sortName').on('click', function (event) {
 			event.preventDefault();
 			addQSParm('by', 'name');

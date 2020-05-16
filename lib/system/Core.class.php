@@ -90,7 +90,12 @@ class Core {
 			return;
 		}
 
-		wcfDebug($severity, $message, $file, $line);
+		if ( !DEBUG_MODE ) {
+			throw new NamedUserException('test'); // replace with systemexception
+		}
+		else {
+			\Utility::varDump(implode(', ', [$severity, $message, $file, $line]));
+		}
 	}
 
 	public static function destruct() {

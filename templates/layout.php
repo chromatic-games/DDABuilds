@@ -37,7 +37,7 @@
 	elseif ( $this->templateName == 'maps' ) {
 		echo '<script src="assets/js/scroll-top.js"></script>';
 	}
-	elseif ( $this->templateName == 'list' ) {
+	elseif ( $this->templateName == 'list' || $this->templateName == 'buildList' ) {
 		echo '<script type="text/javascript" src="assets/js/jquery.flexdatalist.min.js"></script>';
 		echo '<link href="assets/css/jquery.flexdatalist.min.css" rel="stylesheet">';
 	}
@@ -74,7 +74,7 @@
 					}
 					?>
 					<li>
-                    <a href="<?php echo LinkHandler::getInstance()->getLink('List') ?>">List</a>
+                    <a href="<?php echo LinkHandler::getInstance()->getLink('BuildList') ?>">List</a>
                 </li>
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
@@ -139,7 +139,7 @@
 	<?php
 
 	if ( DEBUG_MODE ) {
-		var_dump(['queries' => Core::getDB()->getQueryCount()]);
+		echo '<div class="container">'.Utility::varDump(['queries' => Core::getDB()->getQueryCount()]).'</div>';
 	}
 
 	?>

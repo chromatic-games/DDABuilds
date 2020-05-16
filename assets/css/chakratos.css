@@ -15,8 +15,6 @@ html{position:relative;min-height:100%;}
 .arrow.placed{width:80px;height:80px;line-height:80px;}
 .disablecheckbox{width:64px;height:64px;line-height:64px;}
 .pagination a{color:black;float:left;padding:8px 16px;text-decoration:none;transition:background-color .3s;}
-.pagination a.active{background-color:#4CAF50;color:white;}
-.pagination a:hover:not(.active){background-color:#ddd;}
 .ddmap{width:1024px;height:1024px;}
 .first-box{padding:35px;background:#9C0;}
 .second-box{padding:35px;background:#39F;}

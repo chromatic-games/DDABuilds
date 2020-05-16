@@ -12,7 +12,7 @@ use system\Core;
 use Vote;
 use Votes;
 
-class RatingAction extends AbstractAction {
+class RatingAction extends AjaxAction {
 	public $loginRequired = true;
 
 	public function execute() {

@@ -1,8 +1,8 @@
 <div class="form-group">
-	<label for="difficultyselect">Difficulty:</label>
-	<select class="form-control" id="difficultyselect" name="difficulty">
+	<label for="difficultySelect">Difficulty:</label>
+	<select class="form-control" id="difficultySelect" name="difficulty">
 		<?php
-		if ( $this->templateName !== 'map' ) {
+		if ( $this->showAny ) {
 			echo '<option value="0">Any</option>';
 		}
 
@@ -11,7 +11,7 @@
 			$difficultyId = $difficulty->getID();
 			$difficultyName = $difficulty->getData('name');
 			$selected = '';
-			if ( !empty($_GET['load']) && $difficultyId == $build->getData('difficulty') ) {
+			if ( $this->selectedDifficulty === $difficultyId ) {
 				$selected = ' selected="selected"';
 			}
 			echo '<option value="'.$difficultyId.'"'.$selected.'>'.$difficultyName.'</option>';

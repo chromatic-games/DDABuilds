@@ -2,6 +2,7 @@
 
 namespace system\request;
 
+use data\IRouteObject;
 use system\SingletonFactory;
 
 class LinkHandler extends SingletonFactory {
@@ -47,18 +48,15 @@ class LinkHandler extends SingletonFactory {
 			$controller = 'Index';
 		}
 
-		// handle object // TODO
-		/*if (isset($parameters['object'])) {
-			if (!($parameters['object'] instanceof IRouteController) && $parameters['object'] instanceof DatabaseObjectDecorator && $parameters['object']->getDecoratedObject() instanceof IRouteController) {
-				$parameters['object'] = $parameters['object']->getDecoratedObject();
-			}
-
-			if ($parameters['object'] instanceof IRouteController) {
+		// handle object
+		if ( isset($parameters['object']) ) {
+			if ( $parameters['object'] instanceof IRouteObject ) {
 				$parameters['id'] = $parameters['object']->getObjectID();
 				$parameters['title'] = $parameters['object']->getTitle();
 			}
+
+			unset($parameters['object']);
 		}
-		unset($parameters['object']);*/
 
 		if ( isset($parameters['title']) ) {
 			// remove illegal characters
@@ -77,7 +75,7 @@ class LinkHandler extends SingletonFactory {
 		$parameters['controller'] = $controller;
 
 		$routeURL = RouteHandler::getInstance()->buildLink($parameters);
-		if (!$isRaw && !empty($url)) {
+		if ( !$isRaw && !empty($url) ) {
 			$routeURL .= (strpos($routeURL, '?') === false) ? '?' : '&';
 		}
 

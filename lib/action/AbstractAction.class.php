@@ -4,6 +4,7 @@ namespace action;
 
 use Exception;
 use system\Core;
+use system\exception\PermissionDeniedException;
 
 abstract class AbstractAction {
 	/** @var bool */
@@ -35,7 +36,7 @@ abstract class AbstractAction {
 	 */
 	public function execute() {
 		if ( $this->loginRequired && !Core::getUser()->steamID ) {
-			throw new Exception('PermissionDenied'); // TODO replace with own exception
+			throw new PermissionDeniedException();
 		}
 	}
 }

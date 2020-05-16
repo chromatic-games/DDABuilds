@@ -1,6 +1,6 @@
 <div class="form-group">
     <label for="mapselect">Map:</label>
-    <input class="form-control" id="mapselect" list="maps" name="maps">
+    <input class="form-control" id="mapselect" list="maps" name="map">
     <datalist id="maps">
         <?php
         if ($default) {
