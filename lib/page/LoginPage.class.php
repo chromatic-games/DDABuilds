@@ -7,7 +7,6 @@ use system\steam\LightOpenID;
 use system\steam\SteamUser;
 
 class LoginPage extends AbstractPage {
-
 	public function readParameters() {
 		parent::readParameters();
 
@@ -27,7 +26,7 @@ class LoginPage extends AbstractPage {
 				header('Location: '.$openid->authUrl());
 			}
 			elseif ( $openid->mode == 'cancel' ) {
-				Core::getTPL()->assignVariables('error', 'User has canceled authentication!');
+				Core::getTPL()->assign('error', 'User has canceled authentication!');
 			}
 			elseif ( $openid->validate() ) {
 				$id = $openid->identity;
@@ -41,7 +40,7 @@ class LoginPage extends AbstractPage {
 				exit;
 			}
 			else {
-				Core::getTPL()->assignVariables('error', 'User is not logged in.');
+				Core::getTPL()->assign('error', 'User is not logged in.');
 			}
 		} catch ( \Exception $e ) {
 			echo $e->getMessage();

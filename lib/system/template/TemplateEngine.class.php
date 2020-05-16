@@ -5,7 +5,7 @@ namespace system\template;
 class TemplateEngine {
 	public $variables = [];
 
-	public function assignVariables($vars, $value = null) {
+	public function assign($vars, $value = null) {
 		if ( is_string($vars) ) {
 			$this->variables[$vars] = $value;
 		}
@@ -17,5 +17,17 @@ class TemplateEngine {
 		else {
 			throw new \Exception('system exception');
 		}
+	}
+
+	public function display($templateName) {
+		$context = new TemplateRenderer($templateName);
+		$closure = function () {
+			ob_start();
+			include(MAIN_DIR.'templates/layout.php');
+
+			return ob_end_flush();
+		};
+		$closure = $closure->bindTo($context, $context);
+		$closure();
 	}
 }

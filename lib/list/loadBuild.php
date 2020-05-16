@@ -15,7 +15,7 @@ if ($votes > 0) {
 } else if ($votes < 0) {
     $color = ' style="color:red"';
 }
-$mapLink = LinkHandler::getInstance()->getLink('Map', ['id' => $build->getID()]);
+$mapLink = LinkHandler::getInstance()->getLink('Map', ['load' => $build->getID()]);
 echo '
     <tr>
         <td><a href="' . $mapLink . '">' . htmlspecialchars($build->getData('name')) . '</a></td>

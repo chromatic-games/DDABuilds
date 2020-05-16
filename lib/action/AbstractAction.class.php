@@ -38,12 +38,4 @@ abstract class AbstractAction {
 			throw new Exception('PermissionDenied'); // TODO replace with own exception
 		}
 	}
-
-	/**
-	 * Sends JSON-Encoded response.
-	 */
-	protected function sendResponse() {
-		header('Content-type: application/json');
-		die(json_encode($this->response));
-	}
 }

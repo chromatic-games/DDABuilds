@@ -3,7 +3,7 @@
 namespace page;
 
 use system\Core;
-use system\template\TemplateRenderer;
+use system\exception\PermissionDeniedException;
 
 abstract class AbstractPage {
 	/**
@@ -45,7 +45,7 @@ abstract class AbstractPage {
 
 	public function show() {
 		if ( $this->loginRequired && !Core::getUser()->steamID ) {
-			throw new \Exception('PermissionDeniedException'); // todo
+			throw new PermissionDeniedException();
 		}
 
 		// read data
@@ -66,14 +66,6 @@ abstract class AbstractPage {
 			$this->templateName = lcfirst($className);
 		}
 
-		$context = new TemplateRenderer($this->templateName);
-		$closure = function () {
-			ob_start();
-			include(MAIN_DIR.'templates/layout.php');
-
-			return ob_end_flush();
-		};
-		$closure = $closure->bindTo($context, $context);
-		$closure();
+		Core::getTPL()->display($this->templateName);
 	}
 }

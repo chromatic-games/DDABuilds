@@ -1,6 +1,8 @@
 <?php
 
 use system\Core;
+use system\exception\IllegalLinkException;
+use system\exception\PermissionDeniedException;
 use system\request\LinkHandler;
 
 $create = false;
@@ -40,15 +42,14 @@ if (isset($_GET['id']) && Core::getUser()->steamID) { //Are they the creator?
         $build->increaseViewCount();
     }
     if ($buildStatus == 3 && !$isCreator) {
-        exit('Sorry, this build is private');
+	    throw new PermissionDeniedException();
     }
 } else {
-    exit('Please Login before trying to create a build!');
+    throw new PermissionDeniedException();
 }
 
 if (!is_numeric($iMapID) || $iMapID < 0 || $iMapID != round($iMapID, 0)) {
-    http_response_code(404);
-    exit('404');
+    throw new IllegalLinkException();
 }
 $squireStats = [0, 0, 0, 0];
 $apprenticeStats = [0, 0, 0, 0];

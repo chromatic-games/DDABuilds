@@ -2,8 +2,10 @@
 
 namespace system;
 
+use Exception;
 use system\database\MySQLDatabase;
-use system\request\RequestHandler;
+use system\exception\NamedUserException;
+use system\exception\UserException;
 use system\steam\SteamUser;
 use system\template\TemplateEngine;
 
@@ -68,8 +70,18 @@ class Core {
 		return self::$dbObj;
 	}
 
-	public static final function handleException($e) {
-		\Utility::varDump($e);
+	public static final function handleException(Exception $e) {
+		if ( $e instanceof UserException ) {
+			$e->show();
+			exit;
+		}
+
+		// discard any output
+		while ( ob_get_level() ) {
+			ob_end_clean();
+		}
+
+		throw new NamedUserException($e->getMessage(), $e->getCode(), $e);
 	}
 
 	public static final function handleError($severity, $message, $file, $line) {
@@ -77,7 +89,8 @@ class Core {
 		if ( error_reporting() == 0 ) {
 			return;
 		}
-		// \Utility::varDump([$severity, $message, $file, $line]);
+
+		wcfDebug($severity, $message, $file, $line);
 	}
 
 	public static function destruct() {
@@ -85,12 +98,8 @@ class Core {
 			if ( !is_object(self::$dbObj) ) {
 				return;
 			}
-
-			if ( DEBUG_MODE && !RequestHandler::getInstance()->isXMLHttpRequest ) {
-				\Utility::varDump(['queries' => self::getDB()->getQueryCount()]);
-			}
-		} catch ( \Exception $e ) {
-			\Utility::varDump(['destruct error' => $e]);
+		} catch ( Exception $e ) {
+			// do nothing
 		}
 	}
 }

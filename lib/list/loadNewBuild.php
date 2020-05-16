@@ -32,7 +32,7 @@ if (!file_exists(MAIN_DIR . $thumbnail)) {
 
 <div class="col-md-4">
     <div class="row">
-        <h3><a href="<?php echo LinkHandler::getInstance()->getLink('Map', ['id' => $id]); ?>"><?php echo $name;?></h3>
+        <h3><a href="<?php echo LinkHandler::getInstance()->getLink('Map', ['load' => $id]); ?>"><?php echo $name;?></h3>
     </div>
     <div class="row">
         <div class="col-md-7">

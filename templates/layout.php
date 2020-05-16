@@ -136,6 +136,14 @@
 		<?php echo $this->content; ?>
 	</section>
 
+	<?php
+
+	if ( DEBUG_MODE ) {
+		var_dump(['queries' => Core::getDB()->getQueryCount()]);
+	}
+
+	?>
+
 	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-39334248-36"></script>
 	<script>
 		window.dataLayer = window.dataLayer || [];

@@ -2,5 +2,9 @@
 
 namespace page;
 
-class MapsPage extends AbstractPage{
+use system\Core;
+use system\exception\PermissionDeniedException;
+
+class MapsPage extends AbstractPage {
+	public $loginRequired = true;
 }

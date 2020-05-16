@@ -8,15 +8,9 @@
 
 use system\Core;
 
-if ( !Core::getUser()->steamID ) {
-	echo 'permission denied'; // TODO
-	return;
-}
 $sort = [];
-
 $order = 'DESC';
 $by = 'id';
-
 $sort['fk_user'] = Core::getUser()->steamID;
 
 if ( !empty($var = Parameter::_GET('order')) ) {

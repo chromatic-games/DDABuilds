@@ -4,6 +4,7 @@ namespace system\request;
 
 use action\AbstractAction;
 use page\AbstractPage;
+use system\exception\IllegalLinkException;
 use system\SingletonFactory;
 
 class RouteHandler extends SingletonFactory {
@@ -211,49 +212,44 @@ class RouteHandler extends SingletonFactory {
 	 * @throws \Exception
 	 */
 	public function handle() {
-		try {
-			if ( !$this->matches(self::getPathInfo()) ) {
-				throw new \Exception('illegal link?'); // todo illegallinkexception
-			}
-
-			$routeData = $this->routeData;
-			if ( empty($routeData['controller']) ) {
-				$routeData['controller'] = 'index';
-			}
-
-			$controller = $routeData['controller'];// form controller
-			$parts = explode('-', $controller);
-			$parts = array_map('ucfirst', $parts);
-			$controller = implode('', $parts);
-
-			// resolve controller
-			$classData = $this->getClassData($controller, 'page');
-			if ( $classData === null ) {
-				$classData = $this->getClassData($controller, 'form');
-			}
-			if ( $classData === null ) {
-				$classData = $this->getClassData($controller, 'action');
-			}
-
-			// no controller found
-			if ( $classData === null ) {
-				throw new \Exception('illegal link exception'); // TODO
-			}
-
-			// registers route data within $_GET and $_REQUEST
-			foreach ( $this->routeData as $key => $value ) {
-				$_GET[$key] = $value;
-				$_REQUEST[$key] = $value;
-			}
-
-			/** @var AbstractPage|AbstractAction $requestObject */
-			$requestObject = new $classData['className']();
-			$requestObject->__run();
-			exit;
-		} catch ( \Exception $e ) { // todo nameduserexception
-			// todo show exception
-			throw new \Exception($e->getMessage());
+		if ( !$this->matches(self::getPathInfo()) ) {
+			throw new \Exception('illegal link?'); // todo illegallinkexception
 		}
+
+		$routeData = $this->routeData;
+		if ( empty($routeData['controller']) ) {
+			$routeData['controller'] = 'index';
+		}
+
+		$controller = $routeData['controller'];// form controller
+		$parts = explode('-', $controller);
+		$parts = array_map('ucfirst', $parts);
+		$controller = implode('', $parts);
+
+		// resolve controller
+		$classData = $this->getClassData($controller, 'page');
+		if ( $classData === null ) {
+			$classData = $this->getClassData($controller, 'form');
+		}
+		if ( $classData === null ) {
+			$classData = $this->getClassData($controller, 'action');
+		}
+
+		// no controller found
+		if ( $classData === null ) {
+			throw new IllegalLinkException();
+		}
+
+		// registers route data within $_GET and $_REQUEST
+		foreach ( $this->routeData as $key => $value ) {
+			$_GET[$key] = $value;
+			$_REQUEST[$key] = $value;
+		}
+
+		/** @var AbstractPage|AbstractAction $requestObject */
+		$requestObject = new $classData['className']();
+		$requestObject->__run();
+		exit;
 	}
 
 	/**
