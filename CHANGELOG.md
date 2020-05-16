@@ -1,0 +1,6 @@
+- no notification text
+- error handling with design
+- optimized steam requests
+- seo urls
+- fixed grid view in my builds (#5)
+- fixed author with special characters in search breaks after initial search (#2)

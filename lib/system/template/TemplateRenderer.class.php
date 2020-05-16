@@ -74,7 +74,7 @@ class TemplateRenderer {
 		}
 
 		$html = '<ul class="pagination">';
-		for ( $page = 1;$page < $this->pages;$page++ ) {
+		for ( $page = 1;$page <= $this->pages;$page++ ) {
 			$isActive = $this->pageNo === $page;
 			$html .= '<li'.($isActive ? ' class="active"' : '').'>';
 			if ( !$isActive ) {

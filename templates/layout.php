@@ -18,11 +18,11 @@
 	<!-- jQuery Version 1.11.1 -->
 	<script src="assets/js/jquery.js"></script>
 	<?php
-	// TODO re-add with $page
 	use system\Core;
 	use system\request\LinkHandler;
 	use system\steam\Steam;
 
+	// TODO move to controller (form/page)
 	if ( $this->templateName == 'map' ) {
 		echo '
         <script src="assets/js/html2canvas.js"></script>
@@ -94,7 +94,7 @@
                                     <a href="'.LinkHandler::getInstance()->getLink('MyBuildList').'">My Builds</a>
                                 </li>
                                 <li>
-                                    <a href="'.LinkHandler::getInstance()->getLink('Notifications').'">Notifications</a>
+                                    <a href="'.LinkHandler::getInstance()->getLink('NotificationList').'">Notifications</a>
                                 </li>
                                 <li>
                                     <a href="'.LinkHandler::getInstance()->getLink('Logout').'">Logout</a>
@@ -112,23 +112,16 @@
 	</nav>
 	<!-- /Navigation -->
 	<?php
-	if ( Core::getUser()->steamID && false ) { // TODO re-add notifications
-		$newNotifications = count(Notifications::getUnreadNotificationsForUser(Core::getUser()->steamID));
-		if ( $newNotifications ) {
-			echo '
-        <div class="container">
-            <div class="row text-middle">
-                <div class="col-md-7">
-                </div>
-                <div class="col-md-5">
+	if ( Core::getUser()->steamID && $this->templateName !== 'notificationList' && Core::getUser()->getUnreadNotifications() ) {
+		echo '<div class="container">
+            <div class="row">
+                <div class="col-xs-12 col-sm-5 col-sm-offset-7">
                     <div class="alert alert-success">
-                        Hello '.Core::getUser()->displayName.' you have: <a href="notifications.php" class="alert-link">'.$newNotifications.' unread notifications</a>.
+                        Hello '.Core::getUser()->displayName.' you have: <a href="'.LinkHandler::getInstance()->getLink('NotificationList').'" class="alert-link">'.Core::getUser()->getUnreadNotifications().' unread notifications</a>.
                     </div>
                 </div>
             </div>
-        </div>
-        ';
-		}
+        </div>';
 	}
 	?>
 	<!-- Content Section -->

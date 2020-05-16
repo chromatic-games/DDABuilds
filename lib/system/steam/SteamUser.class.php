@@ -2,6 +2,8 @@
 
 namespace system\steam;
 
+use data\notification\NotificationList;
+
 /**
  * Class SteamUser
  * @package system\steam
@@ -13,6 +15,11 @@ namespace system\steam;
  * @property int    $lastUpdate
  */
 class SteamUser {
+	/**
+	 * @var null|int
+	 */
+	protected $unreadNotifications;
+
 	/**
 	 * @var array
 	 */
@@ -47,6 +54,17 @@ class SteamUser {
 		}
 
 		$this->_data = $data;
+	}
+
+	public function getUnreadNotifications() {
+		if ( $this->unreadNotifications === null ) {
+			$this->unreadNotifications = 0;
+			$notificationList = new NotificationList();
+			$notificationList->getConditionBuilder()->add('steamID = ? AND seen = 0', [$this->steamID]);
+			$this->unreadNotifications = $notificationList->countObjects();
+		}
+
+		return $this->unreadNotifications;
 	}
 
 	public function getData() {
