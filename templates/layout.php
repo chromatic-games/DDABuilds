@@ -91,7 +91,7 @@
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">'.Core::getUser()->displayName.'<span class="caret"></span></a>
                             <ul class="dropdown-menu">
                                 <li>
-                                    <a href="'.LinkHandler::getInstance()->getLink('MyBuilds').'">My Builds</a>
+                                    <a href="'.LinkHandler::getInstance()->getLink('MyBuildList').'">My Builds</a>
                                 </li>
                                 <li>
                                     <a href="'.LinkHandler::getInstance()->getLink('Notifications').'">Notifications</a>

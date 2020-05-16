@@ -27,13 +27,13 @@ if ( $this->showFilter ) {
 			<div class="panel-body">
 				<form method="post" action="<?php echo LinkHandler::getInstance()->getLink('BuildList'); ?>">
 					<div class="row">
-						<div class="col-md-2">
+						<div class="col-md-3">
 							<div class="form-group">
 								<label for="bname">Build Name:</label>
 								<input type="text" placeholder="Build Name" class="form-control" name="name" value="<?php echo $this->escapeHtml($this->name); ?>">
 							</div>
 						</div>
-						<div class="col-md-2">
+						<div class="col-md-3">
 							<div class="form-group">
 								<label for="author">Author:</label>
 								<input type="text" placeholder="Author" class="form-control" name="author" value="<?php echo $this->escapeHtml($this->author); ?>">
@@ -61,6 +61,11 @@ if ( $this->showFilter ) {
 	<table class="table table-responsive table-hover">
 		<thead>
 		<tr>
+			<?php if ( !$this->hideAuthor ) { ?>
+				<th>
+					<a href="<?php echo LinkHandler::getInstance()->getLink($this->controller, [], 'pageNo='.$this->pageNo.'&sortField=author&sortOrder='.($this->sortField === 'author' && $this->sortOrder === 'ASC' ? 'DESC' : 'ASC').$additionalParameters); ?>">Author</a>
+				</th>
+			<?php } ?>
 			<th>
 				<a href="<?php echo LinkHandler::getInstance()->getLink($this->controller, [], 'pageNo='.$this->pageNo.'&sortField=name&sortOrder='.($this->sortField === 'name' && $this->sortOrder === 'ASC' ? 'DESC' : 'ASC').$additionalParameters); ?>">Build Name</a>
 			</th>
@@ -78,9 +83,6 @@ if ( $this->showFilter ) {
 			</th>
 			<th>
 				<a href="<?php echo LinkHandler::getInstance()->getLink($this->controller, [], 'pageNo='.$this->pageNo.'&sortField=date&sortOrder='.($this->sortField === 'date' && $this->sortOrder === 'ASC' ? 'DESC' : 'ASC').$additionalParameters); ?>">Date</a>
-			</th>
-			<th>
-				<a href="<?php echo LinkHandler::getInstance()->getLink($this->controller, [], 'pageNo='.$this->pageNo.'&sortField=author&sortOrder='.($this->sortField === 'author' && $this->sortOrder === 'ASC' ? 'DESC' : 'ASC').$additionalParameters); ?>">Author</a>
 			</th>
 			<th class="text-right">
 				<?php if ( $this->viewMode !== 'grid' ) {
@@ -106,14 +108,17 @@ if ( $this->showFilter ) {
 			<?php
 			/** @var \data\build\Build $build */
 			foreach ( $this->objects->getObjects() as $build ) {
-				echo '<tr>
-<td>'.$this->escapeHtml($build->name).'</td>
+				echo '<tr>';
+				if ( !$this->hideAuthor ) {
+					echo '<td>'.$this->escapeHtml($build->author).'</td>';
+				}
+
+				echo '<td>'.$this->escapeHtml($build->name).'</td>
 <td>'.$this->escapeHtml($build->getMap()->name).'</td>
 <td>'.$this->escapeHtml($build->getDifficulty()->name).'</td>
 <td class="text-right">'.$this->number($build->votes).'</td>
 <td class="text-right">'.$this->number($build->views).'</td>
-<td class="text-right">'.$build->getDate().'</td>
-<td colspan="2">'.$this->escapeHtml($build->author).'</td>
+<td class="text-right" colspan="2">'.$build->getDate().'</td>
 </tr>';
 			}
 			?>
@@ -152,7 +157,6 @@ if ( $this->showFilter ) {
 		'controller' => $this->controller,
 		'url'        => 'pageNo=%d&sortField='.$this->sortField.'&sortOrder='.$this->sortOrder.$additionalParameters,
 		'print'      => true,
-		'assign'     => 'pagesLinks',
 	]);
 	?>
 </div>
