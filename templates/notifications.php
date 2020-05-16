@@ -18,10 +18,16 @@ if (!Core::getUser()->steamID) {
         <div class="col-md-12">
             <?php
             $notifications = Notifications::getNotificationsForUser(Core::getUser()->steamID);
-            foreach ($notifications as $notification) {
-                include LIB_DIR.'notifications/notification.php';
+            if ( $notifications ) {
+	            foreach ($notifications as $notification) {
+		            include LIB_DIR.'notifications/notification.php';
+	            }
+
+	            Notifications::markAllNotificationsAsRead(Core::getUser()->steamID);
             }
-            Notifications::markAllNotificationsAsRead(Core::getUser()->steamID)
+            else {
+            	echo 'No notifications';
+            }
             ?>
         </div>
     </div>

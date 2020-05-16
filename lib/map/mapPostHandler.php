@@ -1,6 +1,7 @@
 <?php
 
 use system\Core;
+use system\request\LinkHandler;
 
 if (!empty($_POST)) {
     if (!empty($_POST['highlightTower'])) {
@@ -241,12 +242,12 @@ if (!empty($_POST)) {
         if (isset($_POST['image']) && !empty($_POST['image'])) {
             saveScreenshot($_POST['image'], $buildID);
         }
-        exit($buildID);
+	    exit(LinkHandler::getInstance()->getLink('Map', ['load' => $buildID]));
     } else {
         if (isset($_POST['image']) && !empty($_POST['image'])) {
             saveScreenshot($_POST['image'], $_POST['buildid']);
         }
-        exit($_POST['buildid']);
+        exit(LinkHandler::getInstance()->getLink('Map', ['load' => $_POST['buildid']]));
     }
 }
 

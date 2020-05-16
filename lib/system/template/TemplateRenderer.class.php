@@ -15,8 +15,8 @@ class TemplateRenderer {
 		if ( $name === 'content' ) {
 			return $this->__toString();
 		}
-		elseif ( isset(Core::$tplVariables[$name]) ) {
-			return Core::$tplVariables[$name];
+		elseif ( isset(Core::getTPL()->variables[$name]) ) {
+			return Core::getTPL()->variables[$name];
 		}
 
 		return null;

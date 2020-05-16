@@ -1,43 +1,23 @@
 <?php
-include LIB_DIR.'list/listGetHandler.php';
+
+use system\request\LinkHandler;
+
+include LIB_DIR.'myBuilds/myBuildsGetHandler.php';
 ?>
+
 <div class="container">
 	<div class="row">
-		<div class="col-md-1">
-
-		</div>
-		<div class="col-md-10 text-center">
+		<div class="col-lg-12 text-center">
 			<?php
-			include LIB_DIR.'list/loadListFilter.php';
-			?>
-		</div>
-	</div>
-	<div class="row">
-		<div class="col-sm-12 text-center">
-			<?php
-			if ( isset($_GET['view']) && $_GET['view'] == 'list' ) {
-				$_SESSION['listview'] = 'list';
-				include LIB_DIR.'list/loadBuilds.php';
+			include LIB_DIR.'list/loadBuilds.php';
+			$linkParams = ['pageNo' => $i,];
+			if ( isset($_REQUEST['by']) ) {
+				$linkParams['by'] = $_REQUEST['by'];
 			}
-			elseif ( isset($_GET['view']) && $_GET['view'] == 'grid' ) {
-				$_SESSION['listview'] = 'grid';
-				include LIB_DIR.'list/loadNewBuilds.php';
-			}
-			else {
-				if ( isset($_SESSION['listview']) ) {
-					if ( $_SESSION['listview'] == 'list' ) {
-						include LIB_DIR.'list/loadBuilds.php';
-					}
-					elseif ( $_SESSION['listview'] == 'grid' ) {
-						include LIB_DIR.'list/loadNewBuilds.php';
-					}
-				}
-				else {
-					include LIB_DIR.'list/loadNewBuilds.php';
-				}
+			if ( isset($_REQUEST['order']) ) {
+				$linkParams['order'] = $_REQUEST['order'];
 			}
 			?>
-
 			<ul class="pagination">
 				<?php
 				$curSite = '';
@@ -45,7 +25,8 @@ include LIB_DIR.'list/listGetHandler.php';
 					if ( $site == $i ) {
 						$curSite = 'active';
 					}
-					echo '<li class="'.$curSite.'"><a href="?pageNo='.$i.Utility::getGetParameter().'">'.$i.'</a></li>';
+
+					echo '<li class="'.$curSite.'"><a href="'.LinkHandler::getInstance()->getLink('MyBuilds', $linkParams).'">'.$i.'</a></li>';
 					$curSite = '';
 				}
 				?>
@@ -53,60 +34,9 @@ include LIB_DIR.'list/listGetHandler.php';
 		</div>
 	</div>
 </div>
-
 <script>
 	$(document).ready(function () {
-
 		var myUrl = window.location.href;
-
-		$('#mapselect').flexdatalist({
-			minLength: 1,
-			searchContain: true,
-			maxShownResults: 10,
-			valueProperty: 'value'
-		});
-
-		$('#gridView').on('click', function (event) {
-			event.preventDefault();
-			addQSParm('view', 'grid');
-			window.location.replace(myUrl);
-		});
-
-		$('#listView').on('click', function (event) {
-			event.preventDefault();
-			addQSParm('view', 'list');
-			window.location.replace(myUrl);
-		});
-
-		$('#search').on('click', function (event) {
-			event.preventDefault();
-			myUrl = '//' + location.host + location.pathname;
-			var bname = $('#bname').val();
-			var author = $('#author').val();
-			var difficulty = $('#difficultyselect').val();
-			var map = $('#mapselect').val();
-
-			if (GET.view == 'list') {
-				addQSParm('view', 'list');
-			}
-			else if (GET.view == 'grid') {
-				addQSParm('view', 'grid');
-			}
-			if (bname) {
-				addQSParm('bname', bname);
-			}
-			if (author) {
-				addQSParm('author', author);
-			}
-			if (difficulty != 0) {
-				addQSParm('difficulty', difficulty);
-			}
-			if (map != 0) {
-				addQSParm('map', map);
-			}
-
-			window.location.replace(myUrl);
-		});
 
 		$('#sortName').on('click', function (event) {
 			event.preventDefault();
@@ -197,27 +127,6 @@ include LIB_DIR.'list/listGetHandler.php';
 				return '';
 			}
 		};
-
-		fillFilter();
-
-		function fillFilter() {
-			var bname = GET.bname;
-			var author = GET.author;
-			var difficulty = GET.difficulty;
-			var map = GET.map;
-			if (bname) {
-				$('#bname').val(bname);
-			}
-			if (author) {
-				$('#author').val(author);
-			}
-			if (difficulty) {
-				$('#difficultyselect').val(difficulty);
-			}
-			if (map) {
-				$('#mapselect').val(map);
-			}
-		}
 
 		function addQSParm(name, value) {
 			var re = new RegExp('([?&]' + name + '=)[^&]+', '');

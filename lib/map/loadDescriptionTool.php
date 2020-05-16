@@ -9,7 +9,10 @@
             }
             echo '</textarea>';
         } else {
-            echo $build->getData('description');
+            $description = $build->getData('description');
+            if ( !$description ) {
+            	echo '<i>No description</i>';
+            }
         }
         ?>
     </div>

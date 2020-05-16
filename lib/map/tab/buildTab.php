@@ -8,6 +8,7 @@
 <?php
 
 use system\Core;
+use system\request\LinkHandler;
 
 $size = 'col-lg-9';
 if (isset($_GET['creator']) && isset($_GET['customwave']) && isset($_GET['map'])) {
@@ -19,7 +20,7 @@ if (isset($_GET['creator']) && isset($_GET['customwave']) && isset($_GET['map'])
     $map->setID($mapID);
     $map->load();
     $mapName = $map->getData('name');
-}else if (isset($_GET['thumbnail'])) {
+}elseif (isset($_GET['thumbnail'])) {
     $size = 'col-lg-4';
     $buildID = $_GET['thumbnail'];
     $build = new Build();
@@ -34,7 +35,7 @@ if (isset($_GET['creator']) && isset($_GET['customwave']) && isset($_GET['map'])
     <link href="/assets/css/chakratos.css" rel="stylesheet">
     <link href="/assets/css/font-awesome.min.css" rel="stylesheet">
     <link href="/assets/css/full-width-pics.css" rel="stylesheet">';
-} else if(!isset($buildwave)) {
+} elseif(!isset($buildwave)) {
     http_response_code(404);
     exit();
 }
@@ -87,7 +88,7 @@ if (isset($_GET['thumbnail'])) {
     if ($isCreator && $buildwave === 0) {
         $viewerButton = '
             <div class="col-md-4 text-center">
-                <button type="button" id="viewer" class="btn btn-info">Viewer Mode</button>
+                <a href="'.LinkHandler::getInstance()->getLink('Map', ['load' => $build->getID(), 'viewermode' => '']).'" id="viewer" class="btn btn-info">Viewer Mode</a>
             </div>';
     }
     if ($isCreator && $buildwave === 0) {

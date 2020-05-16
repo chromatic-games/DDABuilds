@@ -35,6 +35,6 @@ class Steam extends SingletonFactory {
 	}
 
 	public function getLoginButton($style = self::BUTTON_STYLE_SQUARE) {
-		return '<a href="'.BASE_URL.'?page=login"><img alt="Login" src="https://steamcommunity-a.akamaihd.net/public/images/signinthroughsteam/sits_'.$style.'.png"></a>';
+		return '<img alt="Login" src="https://steamcommunity-a.akamaihd.net/public/images/signinthroughsteam/sits_'.$style.'.png">';
 	}
 }

@@ -20,9 +20,10 @@
 	<?php
 	// TODO re-add with $page
 	use system\Core;
+	use system\request\LinkHandler;
 	use system\steam\Steam;
 
-	/*if ( $page == 'map' ) {
+	if ( $this->templateName == 'map' ) {
 		echo '
         <script src="assets/js/html2canvas.js"></script>
         <script src="assets/js/jquery-ui.js"></script>
@@ -30,16 +31,16 @@
         <script src="assets/js/ckeditor/ckeditor.js"></script>
         ';
 	}
-	elseif ( $page == 'home' ) {
+	elseif ( $this->templateName == 'home' ) {
 		echo '<link href="/assets/css/full-width-pics.css" rel="stylesheet">';
 	}
-	elseif ( $page == 'maps' ) {
+	elseif ( $this->templateName == 'maps' ) {
 		echo '<script src="assets/js/scroll-top.js"></script>';
 	}
-	elseif ( $page == 'list' ) {
+	elseif ( $this->templateName == 'list' ) {
 		echo '<script type="text/javascript" src="assets/js/jquery.flexdatalist.min.js"></script>';
 		echo '<link href="assets/css/jquery.flexdatalist.min.css" rel="stylesheet">';
-	}*/
+	}
 	?>
 	<!-- Bootstrap Core JavaScript -->
 	<script src="assets/js/bootstrap.min.js"></script>
@@ -68,41 +69,38 @@
 			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 				<ul class="nav navbar-nav">
 					<?php
-					if ( isset($_SESSION['steamid']) ) {
-						echo '
-                    <li>
-                        <a href="?page=maps">Create</a>
-                    </li>
-                ';
+					if ( Core::getUser()->steamID ) {
+						echo ' <li> <a href="'.LinkHandler::getInstance()->getLink('Maps').'">Create</a></li>';
 					}
 					?>
 					<li>
-                    <a href="?page=list">List</a>
+                    <a href="<?php echo LinkHandler::getInstance()->getLink('List') ?>">List</a>
                 </li>
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
                 <li>
                     <?php
-                    if ( !isset($_SESSION['steamid']) ) {
-	                    echo '<div class="navbar-brand" style="margin-top:-8px";><a href="'.BASE_URL.'?page=login">Login to Create or Vote on Builds:</a> ';
-	                    echo Steam::getInstance()->getLoginButton(Steam::BUTTON_STYLE_RECTANGLE);
+                    if ( !Core::getUser()->steamID ) {
+	                    $loginLink = LinkHandler::getInstance()->getLink('Login');
+	                    echo '<div class="navbar-brand" style="margin-top:-8px";><a href="'.$loginLink.'">Login to Create or Vote on Builds: </a>';
+	                    echo '<a href="'.$loginLink.'">'.Steam::getInstance()->getLoginButton(Steam::BUTTON_STYLE_RECTANGLE).'</a>';
 	                    echo '</div>';
                     }
                     else {
 	                    echo '<li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">'.Core::getUser()->displayName.'<span class="caret"></span></a>
-                                <ul class="dropdown-menu">
-                                    <li>
-                                        <a href="?page=myBuilds">My Builds</a>
-                                    </li>
-                                    <li>
-                                        <a href="?page=notifications">Notifications</a>
-                                    </li>
-                                    <li>
-                                        <a href="?page=logout">Logout</a>
-                                    </li>
-                                </ul>
-                            </li>';
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">'.Core::getUser()->displayName.'<span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a href="'.LinkHandler::getInstance()->getLink('MyBuilds').'">My Builds</a>
+                                </li>
+                                <li>
+                                    <a href="'.LinkHandler::getInstance()->getLink('Notifications').'">Notifications</a>
+                                </li>
+                                <li>
+                                    <a href="'.LinkHandler::getInstance()->getLink('Logout').'">Logout</a>
+                                </li>
+                            </ul>
+                        </li>';
                     }
                     ?>
                 </li>

@@ -1,5 +1,9 @@
+<?php
+use system\request\LinkHandler;
+?>
+
 <div class="col-md-3 portfolio-item">
-    <a href="?page=map&id=<?php echo $map->getID(); ?>">
+    <a href="<?php echo LinkHandler::getInstance()->getLink('Map', ['id' => $map->getID()]); ?>">
         <?php echo $map->getData('name'); ?>
         <img class="img-responsive" src="/assets/images/map/<?php echo str_replace(' ', '_', $map->getData('name')); ?>.png">
     </a>

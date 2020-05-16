@@ -6,6 +6,8 @@
  * Time: 03:11
  */
 
+use system\request\LinkHandler;
+
 /**
  * Notification Types:
  * 1 = A user commented your build X
@@ -18,7 +20,7 @@ $data = $notification->getData('data');
 $build = new Build();
 $build->setID($notification->getData('fk_build'));
 $build->load();
-$linkToBuild = 'http://' . $_SERVER['HTTP_HOST'] . '/?page=map&load=' . $build->getID();
+$linkToBuild = LinkHandler::getInstance()->getLink('map', ['id' => $build->getID()]);
 $buildName = htmlspecialchars($build->getData('name'));
 
 $vote[-1] = 'down';

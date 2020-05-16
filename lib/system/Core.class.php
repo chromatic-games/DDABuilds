@@ -3,7 +3,9 @@
 namespace system;
 
 use system\database\MySQLDatabase;
+use system\request\RequestHandler;
 use system\steam\SteamUser;
+use system\template\TemplateEngine;
 
 require_once(LIB_DIR.'core.functions.php');
 
@@ -11,12 +13,14 @@ class Core {
 	/**
 	 * @var MySQLDatabase
 	 */
-	public static $dbObj;
+	protected static $dbObj;
 
 	/**
 	 * @var SteamUser
 	 */
-	public static $userObj;
+	protected static $userObj;
+
+	protected static $tplObj;
 
 	public static $tplVariables = [];
 
@@ -33,6 +37,14 @@ class Core {
 		}
 
 		return self::$userObj;
+	}
+
+	public static function getTPL() {
+		if ( self::$tplObj === null ) {
+			self::$tplObj = new TemplateEngine();
+		}
+
+		return self::$tplObj;
 	}
 
 	/**
@@ -74,7 +86,7 @@ class Core {
 				return;
 			}
 
-			if ( DEBUG_MODE ) {
+			if ( DEBUG_MODE && !RequestHandler::getInstance()->isXMLHttpRequest ) {
 				\Utility::varDump(['queries' => self::getDB()->getQueryCount()]);
 			}
 		} catch ( \Exception $e ) {

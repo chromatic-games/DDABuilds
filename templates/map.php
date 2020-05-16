@@ -1,23 +1,19 @@
 <?php
 
 use system\Core;
+use system\request\LinkHandler;
 
 $create = false;
 $isCreator = false;
 
-if (isset($_GET['name'])) {
-//TODO: Name lookup functionality
-    $nope = 1;
-} else {
-    if (!empty($_GET['id']) && !empty($_GET['load'])) {
-        http_response_code(404);
-        exit('404');
-    }
+if (!empty($_GET['id']) && !empty($_GET['load'])) {
+    http_response_code(404);
+    exit('404');
+}
 
-    if (empty($_GET['id']) && empty($_GET['load'])) {
-        http_response_code(404);
-        exit('404');
-    }
+if (empty($_GET['id']) && empty($_GET['load'])) {
+    http_response_code(404);
+    exit('404');
 }
 
 if (isset($_GET['id']) && Core::getUser()->steamID) { //Are they the creator?
@@ -291,11 +287,9 @@ if (isset($_GET['viewermode']) && !$create) {
 
 
         $('#viewer').on("click", function (event) {
-            event.preventDefault();
-            if (window.confirm('All unsaved changes will be Lost.\n\nStill Continue to Viewer Mode?'))
+            if (!window.confirm('All unsaved changes will be Lost.\n\nStill Continue to Viewer Mode?'))
             {
-                myUrl += '&viewermode';
-                window.location.replace(myUrl);
+	            event.preventDefault();
             }
         });
 
@@ -350,7 +344,7 @@ if (isset($_GET['viewermode']) && !$create) {
                 'rating': "1"
             };
             $.post(
-                "?action=rating", parameters,
+                "<?php echo LinkHandler::getInstance()->getLink('Rating'); ?>", parameters,
                 function (data) {
                     $('#upvote').prop('disabled', true);
                     $('#downvote').prop('disabled', false);
@@ -367,7 +361,7 @@ if (isset($_GET['viewermode']) && !$create) {
                 'rating': "-1"
             };
             $.post(
-                "?action=rating", parameters,
+                "<?php echo LinkHandler::getInstance()->getLink('Rating'); ?>", parameters,
                 function (data) {
                     $('#downvote').prop('disabled', true);
                     $('#upvote').prop('disabled', false);
@@ -388,7 +382,7 @@ if (isset($_GET['viewermode']) && !$create) {
                 'map': mapname
             };
             $.get(
-                "?action=buildTab", parameters,
+                "?build-tab", parameters,
                 function (data) {
                     addNavTab(customWave);
                     addNavContent(data, customWave);
@@ -664,11 +658,10 @@ if (isset($_GET['viewermode']) && !$create) {
                     }?>};
 
                     $.post(
-                        "?action=map", parameters,
+                        "?save-map", parameters,
                         function (data) {
                             $('#save').prop('disabled', false);
-                            myUrl = '//' + location.host + location.pathname + "?page=map&load=" + Number(data);
-                            window.location.replace(myUrl);
+                            window.location.replace(data);
                         }
                     ).fail(function(jqXHR, textStatus, errorThrown){
                         if(jqXHR.status == 404) {
@@ -760,7 +753,7 @@ if (isset($_GET['viewermode']) && !$create) {
                 'rating': "1"
             };
             $.post(
-                "?action=rating", parameters,
+                "<?php echo LinkHandler::getInstance()->getLink('Rating'); ?>", parameters,
                 function (data) {
                     $('#upvote' + commentid).addClass('disabledlink');
                     $('#downvote' + commentid).removeClass('disabledlink');
@@ -777,7 +770,7 @@ if (isset($_GET['viewermode']) && !$create) {
                 'rating': "-1"
             };
             $.post(
-                "?action=rating", parameters,
+                "<?php echo LinkHandler::getInstance()->getLink('Rating'); ?>", parameters,
                 function (data) {
                     $('#downvote' + commentid).addClass('disabledlink');
                     $('#upvote' + commentid).removeClass('disabledlink');
@@ -799,7 +792,7 @@ if (isset($_GET['viewermode']) && !$create) {
                 'comment': commentbox
             };
             $.post(
-                "?action=commenthandler", parameters,
+                "?comment", parameters,
                 function (data) {
                     addQSParm('comments', 'y#' + data);
                     window.location.replace(myUrl);

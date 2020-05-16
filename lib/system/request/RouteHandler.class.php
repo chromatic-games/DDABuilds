@@ -240,6 +240,12 @@ class RouteHandler extends SingletonFactory {
 				throw new \Exception('illegal link exception'); // TODO
 			}
 
+			// registers route data within $_GET and $_REQUEST
+			foreach ( $this->routeData as $key => $value ) {
+				$_GET[$key] = $value;
+				$_REQUEST[$key] = $value;
+			}
+
 			/** @var AbstractPage|AbstractAction $requestObject */
 			$requestObject = new $classData['className']();
 			$requestObject->__run();
