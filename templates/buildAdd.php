@@ -66,7 +66,6 @@ $build = $this->build;
 	<div class="tab-content">
 		<?php if ( $this->action !== 'add' ) { ?>
 			<div id="comments" class="tab-pane">
-				test comments
 			</div>
 		<?php } ?>
 		<div id="buildTab" class="tab-pane active">
@@ -278,7 +277,8 @@ $build = $this->build;
 										<h4>Mana Used: <strong id="manaUsed"></strong></h4>
 										<h4>Mana to Upgrade: <strong id="manaUpgrade"></strong></h4>
 										<br />
-										More Builds from <a href="<?php echo LinkHandler::getInstance()->getLink('BuildList', ['author' => $this->author]) ?>"><?php echo $this->escapeHtml($this->author); ?></a>
+										More Builds from
+										<a href="<?php echo LinkHandler::getInstance()->getLink('BuildList', ['author' => $this->author]) ?>"><?php echo $this->escapeHtml($this->author); ?></a>
 									<?php } ?>
 								</div>
 							</div>
@@ -331,6 +331,8 @@ if ( $this->action !== 'view' ) {
 	<script>
 		window.__DEFENSE_STATS = <?php echo json_encode($buildStats); ?>;
 		window.__DEFENSE_WAVE_TEMPLATE = '<?php echo $tabTemplate; ?>';
+		window.__DEFENSE_MAP_ID = <?php echo $this->map->getObjectID(); ?>;
+		window.__DEFENSE_OBJECT_IDS = [<?php echo $this->action !== 'add' ? $build->getObjectID() : ''; ?>];
 	</script>
 	<?php
 }
@@ -487,28 +489,29 @@ if ( $this->action !== 'view' ) {
 				html2canvas($('.canvas'), {
 					onrendered: function (canvas) {
 						showWave(currentWave);
-						var parameters = {
-							mapID: <?php echo $this->map->getObjectID(); ?>,
-							author,
-							buildName,
-							gamemode,
-							customWaves,
-							description: description,
-							difficulty: $('#difficulty').val(),
-							hardcore: $('#hardcore').prop('checked'),
-							afkAble: $('#afkAble').prop('checked'),
-							buildStatus: $('#buildStatus').val(),
-							timePerRun: $('#timePerRun').val(),
-							expPerRun: $('#expPerRun').val(),
-							towers,
-							stats: window.__DEFENSE_STATS,
-							image: canvas.toDataURL('image/png')
-						};
-
-						console.log(parameters.image);
-
 						$.post(
-							'?save-map', parameters,
+							'?ajax', {
+								className: '\\data\\build\\BuildAction',
+								actionName: 'save',
+								objectIDs: window.__DEFENSE_OBJECT_IDS,
+								parameters: {
+									mapID: window.__DEFENSE_MAP_ID,
+									author,
+									buildName,
+									gamemode,
+									customWaves,
+									description: description,
+									difficulty: $('#difficulty').val(),
+									hardcore: $('#hardcore').prop('checked'),
+									afkAble: $('#afkAble').prop('checked'),
+									buildStatus: $('#buildStatus').val(),
+									timePerRun: $('#timePerRun').val(),
+									expPerRun: $('#expPerRun').val(),
+									towers,
+									stats: window.__DEFENSE_STATS,
+									image: canvas.toDataURL('image/png')
+								}
+							},
 							function (data) {
 								$('.btn-save').prop('disabled', false);
 							}

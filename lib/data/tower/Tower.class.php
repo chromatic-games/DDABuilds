@@ -30,7 +30,7 @@ class Tower extends DatabaseObject {
 
 		if ( $placed ) {
 			$dummy = false;
-			$style .= ' style="position:absolute;top:'.$placed['y'].'px;left:'.$placed['x'].'px;"';
+			$style .= ' style="position:absolute;top:'.$placed['y'].'px;left:'.$placed['x'].'px;transform: rotate(' . $placed['rotation'] . 'deg);transform-origin: 50% 50% 0;"';
 			$wave = $placed['fk_buildwave'];
 		}
 

@@ -25,6 +25,9 @@ ALTER TABLE builds
 	CHANGE COLUMN timeperrun timePerRun VARCHAR(20) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT '' AFTER votes,
 	CHANGE COLUMN expperrun expPerRun VARCHAR(20) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT '' AFTER timePerRun;
 
+ALTER TABLE builds
+	ADD COLUMN comments INT(10) UNSIGNED NOT NULL AFTER votes;
+
 -- update hero state @formatter:off
 UPDATE classes SET isHero = 1 WHERE id IN (1, 2, 3, 4);
 UPDATE builds SET votes = (SELECT IFNULL(SUM(vote), 0) FROM votes WHERE fk_build = builds.id);

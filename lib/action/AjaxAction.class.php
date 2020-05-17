@@ -2,14 +2,79 @@
 
 namespace action;
 
+use data\DatabaseObjectAction;
 use system\Core;
 use system\exception\AJAXException;
 use system\exception\IllegalLinkException;
 use system\exception\NamedUserException;
 use system\exception\PermissionDeniedException;
 use system\exception\UserInputException;
+use system\util\ArrayUtil;
+use system\util\StringUtil;
+use wcf\system\exception\ParentClassException;
 
 class AjaxAction extends AbstractAction {
+	/**
+	 * list of object ids
+	 * @var integer[]
+	 */
+	public $objectIDs = [];
+
+	/**
+	 * additional parameters
+	 * @var mixed[]
+	 */
+	public $parameters;
+
+	/**
+	 * @var string
+	 */
+	public $actionName;
+
+	/**
+	 * @var string
+	 */
+	public $className;
+
+	/**
+	 * @var DatabaseObjectAction
+	 */
+	public $objectAction;
+
+	/** @inheritDoc */
+	public function readParameters() {
+		parent::readParameters();
+
+		if ( isset($_POST['objectIDs']) && is_array($_POST['objectIDs']) ) {
+			$this->objectIDs = ArrayUtil::toIntegerArray($_POST['objectIDs']);
+		}
+		if ( isset($_POST['parameters']) && is_array($_POST['parameters']) ) {
+			$this->parameters = $_POST['parameters'];
+		}
+		if ( isset($_POST['actionName']) ) {
+			$this->actionName = StringUtil::trim($_POST['actionName']);
+		}
+		if ( isset($_POST['className']) ) {
+			$this->className = StringUtil::trim($_POST['className']);
+		}
+
+		if (empty($this->className) || !class_exists($this->className)) {
+			throw new UserInputException('className');
+		}
+	}
+
+	/** @inheritDoc */
+	public function execute() {
+		if (!is_subclass_of($this->className, DatabaseObjectAction::class)) {
+			throw new ParentClassException($this->className, DatabaseObjectAction::class);
+		}
+
+		$this->objectAction = new $this->className($this->objectIDs, $this->actionName, $this->parameters);
+		$this->objectAction->validateAction();
+
+		$this->response = $this->objectAction->executeAction();
+	}
+
 	/**
 	 * @inheritDoc
 	 */

@@ -18,14 +18,31 @@
 	width: 100%;
 }
 
-.tower-container{position:relative;display:inline-block;}
-.tower{width:35px;height:35px;cursor:pointer;}
+.tower-container {
+	position: relative;
+	display: inline-block;
+}
+
+.tower {
+	width: 35px;
+	height: 35px;
+	cursor: pointer;
+}
 
 .tower-container[data-class="3"].ui-draggable-dragging img.tower,
-.canvas .tower-container[data-class="3"] img.tower {width:45px;height:45px;line-height:45px;}
+.canvas .tower-container[data-class="3"] img.tower {
+	width: 45px;
+	height: 45px;
+	line-height: 45px;
+}
 
 .tower-container[data-class="4"].ui-draggable-dragging img.tower,
-.canvas .tower-container[data-class="4"] img.tower {width:100px;height:100px;line-height:100px;opacity:0.8;}
+.canvas .tower-container[data-class="4"] img.tower {
+	width: 100px;
+	height: 100px;
+	line-height: 100px;
+	opacity: 0.8;
+}
 
 .tower-container .menu {
 	display: none;
@@ -44,11 +61,14 @@
 	transition-delay: 0s;
 }
 
+.pointer {
+	cursor: pointer;
+}
+
 /*
 html{position:relative;min-height:100%;}
 .defense{width:35px;height:35px;cursor:pointer;}
 .tower{width:35px;height:35px;cursor:pointer;}
-.pointer { cursor:pointer;}
 .beam{width:auto;height:auto;}
 .defense-placeholder{height:35px;display:inline-block;vertical-align:top;text-align:center;line-height:35px;padding:0;}
 #canvas > img{max-width:1024px;}

@@ -101,4 +101,24 @@ class StringUtil {
 	public static function encodeHTML($string) {
 		return @htmlspecialchars($string, ENT_COMPAT, 'UTF-8');
 	}
+
+	/**
+	 * Removes Unicode whitespace characters from the beginning
+	 * and ending of the given string.
+	 *
+	 * @param string $text
+	 *
+	 * @return string
+	 */
+	public static function trim($text) {
+		// These regular expressions use character properties
+		// to find characters defined as space in the unicode
+		// specification.
+		// Do not merge the expressions, they are separated for
+		// performance reasons.
+		$text = preg_replace('/^[\p{Zs}\s]+/u', '', $text);
+		$text = preg_replace('/[\p{Zs}\s]+$/u', '', $text);
+
+		return $text;
+	}
 }

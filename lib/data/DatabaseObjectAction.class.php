@@ -132,9 +132,9 @@ class DatabaseObjectAction {
 	}
 
 	/**
-	 * @inheritDoc
+	 * Updates data.
 	 */
-	public function update(array $parameters = []) {
+	public function update() {
 		if ( empty($this->objects) ) {
 			$this->readObjects();
 		}
@@ -179,7 +179,7 @@ class DatabaseObjectAction {
 		$statement = Core::getDB()->prepareStatement($sql);
 		$statement->execute($this->objectIDs);
 		while ( $object = $statement->fetchObject($this->className) ) {
-			$this->objects[] = new $this->className($object);
+			$this->objects[] = $object;
 		}
 	}
 

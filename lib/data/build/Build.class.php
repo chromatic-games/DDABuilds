@@ -24,6 +24,7 @@ use system\Core;
  * @property-read string  $description
  * @property-read integer $views
  * @property-read integer $map
+ * @property-read integer $comments
  * @property-read integer $afkable
  * @property-read integer $hardcore
  * @property-read integer $difficulty
