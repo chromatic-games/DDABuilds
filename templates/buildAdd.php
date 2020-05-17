@@ -19,7 +19,7 @@ $build = $this->build;
 		<div class="col-md-2 text-center">
 			<h3>Map: <b><?php echo $this->map->name; ?></b></h3>
 		</div>
-		<div class="col-md-4 text-center">
+		<div class="col-md-<?php echo $isView ? 7 : 5; ?> text-center">
 			<?php if ( $isView ) { ?>
 				<h3><?php echo $this->escapeHtml($this->buildName); ?></h3>
 			<?php } else { ?>
@@ -27,7 +27,7 @@ $build = $this->build;
 				<input type="text" id="buildName" placeholder="Build Name" class="form-control" maxlength="128" value="<?php echo $this->escapeHtml($this->buildName); ?>" />
 			<?php } ?>
 		</div>
-		<div class="col-md-4 text-center">
+		<div class="col-md-<?php echo $isView ? 2 : 4; ?> text-center">
 			<?php if ( $isView ) { ?>
 				<h3>Author: <a href="https://steamcommunity.com/profiles/<?php echo $build->fk_user; ?>" target="_blank"><?php echo $this->escapeHtml($this->author); ?></a></h3>
 			<?php } else { ?>
@@ -35,11 +35,11 @@ $build = $this->build;
 				<input type="text" id="authorName" placeholder="Author" class="form-control" maxlength="20" value="<?php echo $this->escapeHtml($this->author); ?>" />
 			<?php } ?>
 		</div>
-		<div class="col-md-2 text-center">
+		<div class="col-md-1 text-center">
 			<h3>
-				DU: <b><span id="currentDefenseUnits" style="color: rgb(0, 0, 0);">0</span>/<span id="maxDefenseUnits"><?php echo $this->map->units ?></span></b>
-				<?php if ( $this->showMU ) { ?>
-					MU: <b><span id="currentMinionUnits" style="color: rgb(0, 0, 0);">0</span>/<span><?php echo $this->map->units ?></span></b>
+				DU: <b><span id="currentDefenseUnits">0</span>/<span id="maxDefenseUnits"><?php echo $this->map->units ?></span></b>
+				<?php if ( $this->showMU) { ?>
+					MU: <b><span id="currentMinionUnits">0</span>/<span><?php echo $this->map->units ?></span></b>
 				<?php } ?>
 			</h3>
 		</div>
@@ -139,7 +139,7 @@ $build = $this->build;
 							foreach ( $build->getPlacedTowers() as $placed ) {
 								/** @var \data\tower\Tower $tower */
 								$tower = $this->availableTowers[$placed['fk_tower']];
-								echo $tower->getHtml($placed);
+								echo $tower->getHtml($placed, false, $this->action === 'view');
 								if ( !in_array($tower->fk_class, $usedClasses) ) {
 									$usedClasses[] = $tower->fk_class;
 								}

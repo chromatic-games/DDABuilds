@@ -1,5 +1,6 @@
 <?php
 
+use system\Core;
 use system\steam\Steam;
 use system\util\StringUtil;
 
@@ -16,11 +17,11 @@ $comment = $this->comment;
 			<small class="text-muted time"><?php echo $comment->getDate(); ?></small>
 		</div>
 	</div>
-	<div class="post-description">
-		<p><?php echo StringUtil::removeInsecureHtml($comment->comment); ?></p>
-		<div class="stats">
-			<a href="#" class="btn btn-default btn-disabled js-vote"><i class="fa fa-thumbs-up icon"></i> <span>???</span></a>
-			<a href="#" class="btn btn-default btn-disabled js-vote"><i class="fa fa-thumbs-down icon"></i> <span>???</span></a>
+	<div class="post-description marginTop">
+		<?php echo StringUtil::removeInsecureHtml($comment->comment); ?>
+		<div class="stats marginTop">
+			<a href="#" class="btn btn-default btn-disabled js-vote"<?php echo $comment->steamid === Core::getUser()->steamID ? ' disabled' : ''; ?>><i class="fa fa-thumbs-up icon"></i> <span>???</span></a>
+			<a href="#" class="btn btn-default btn-disabled js-vote"<?php echo $comment->steamid === Core::getUser()->steamID ? ' disabled' : ''; ?>><i class="fa fa-thumbs-down icon"></i> <span>???</span></a>
 		</div>
 	</div>
 </div>

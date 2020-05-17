@@ -24,18 +24,22 @@ class Tower extends DatabaseObject {
 		return '/assets/images/tower/'.strtolower(str_replace(' ', '_', $this->name)).'.png';
 	}
 
-	public function getHtml($placed = null, $dummy = true) {
+	public function getHtml($placed = null, $dummy = true, $hideMenu = false) {
 		$wave = 0;
 		$menu = $style = '';
 
 		if ( $placed ) {
 			$dummy = false;
-			$style .= ' style="position:absolute;top:'.$placed['y'].'px;left:'.$placed['x'].'px;transform: rotate(' . $placed['rotation'] . 'deg);transform-origin: 50% 50% 0;"';
+			$style .= ' style="position:absolute;top:'.$placed['y'].'px;left:'.$placed['x'].'px;transform: rotate('.$placed['rotation'].'deg);transform-origin: 50% 50% 0;"';
 			$wave = $placed['fk_buildwave'];
 		}
 
 		if ( $this->fk_class !== 4 && $this->fk_class !== 3 /*&& $tower->fk_class !== ????*/ ) { // TODO replace with database column
 			$menu = '<div class="menu"><i class="fa fa-repeat"></i></div>';
+		}
+
+		if ( $hideMenu ) {
+			$menu = '';
 		}
 
 		if ( $this->mu ) {

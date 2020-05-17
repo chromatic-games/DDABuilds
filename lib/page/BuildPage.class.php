@@ -41,6 +41,12 @@ class BuildPage extends BuildAddPage {
 		if ( $this->build->isCreator() && !isset($_REQUEST['view']) ) {
 			$this->action = 'edit';
 		}
+
+		if ( $this->action === 'view' && !$this->build->isCreator() ) {
+			$this->build->update([
+				'views' => $this->build->views + 1,
+			]);
+		}
 	}
 
 	public function readData() {

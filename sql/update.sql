@@ -20,6 +20,8 @@ CREATE TABLE build_stats (
 -- change steam ids to strings
 ALTER TABLE builds
 	MODIFY COLUMN fk_user VARCHAR(20) NOT NULL AFTER date;
+ALTER TABLE comments
+	MODIFY COLUMN steamid VARCHAR(20) NOT NULL AFTER id;
 
 ALTER TABLE builds
 	CHANGE COLUMN timeperrun timePerRun VARCHAR(20) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT '' AFTER votes,
@@ -31,3 +33,4 @@ ALTER TABLE builds
 -- update hero state @formatter:off
 UPDATE classes SET isHero = 1 WHERE id IN (1, 2, 3, 4);
 UPDATE builds SET votes = (SELECT IFNULL(SUM(vote), 0) FROM votes WHERE fk_build = builds.id);
+UPDATE builds SET comments = (SELECT COUNT(id) FROM comments WHERE fk_build = builds.id);
