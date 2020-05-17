@@ -7,7 +7,7 @@ use data\map\Map;
 use data\map\MapList;
 use system\Core;
 
-class BuildAddSelectMapPage extends AbstractPage {
+class BuildAddSelectPage extends AbstractPage {
 	public $loginRequired = true;
 
 	public function assignVariables() {

@@ -20,7 +20,7 @@ class MySQLDatabase extends Database {
 			];
 			if ( !$this->failsafeTest ) {
 				$driverOptions = [
-					\PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8mb4', SESSION sql_mode = 'ANSI,STRICT_ALL_TABLES'", // TODO re-add ONLY_FULL_GROUP_BY
+					\PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8mb4', SESSION sql_mode = 'ANSI,STRICT_ALL_TABLES,ONLY_FULL_GROUP_BY'",
 				];
 			}
 

@@ -21,6 +21,9 @@ class UserInputException extends \Exception {
 		if ( $errorMessage === 'empty' ) {
 			$this->errorMessage = 'Please fill in this field.';
 		}
+		elseif ( $errorMessage === 'invalid' ) {
+			$this->errorMessage = 'The value in this field is invalid.';
+		}
 		elseif ( $errorMessage === 'noValidSelection' ) {
 			$this->errorMessage = 'Choose one of the available options.';
 		}

@@ -23,7 +23,7 @@
 	use system\steam\Steam;
 
 	// TODO move to controller (form/page)
-	if ( $this->templateName == 'map' ) {
+	if ( $this->templateName == 'map' || $this->templateName === 'buildAdd') {
 		echo '
         <script src="assets/js/html2canvas.js"></script>
         <script src="assets/js/jquery-ui.js"></script>
@@ -70,7 +70,7 @@
 				<ul class="nav navbar-nav">
 					<?php
 					if ( Core::getUser()->steamID ) {
-						echo ' <li> <a href="'.LinkHandler::getInstance()->getLink('BuildAddSelectMap').'">Create</a></li>';
+						echo ' <li> <a href="'.LinkHandler::getInstance()->getLink('BuildAddSelect').'">Create</a></li>';
 					}
 					?>
 					<li>

@@ -20,7 +20,7 @@
 		/** @var \data\map\Map $map */
 		foreach ($maps as $map) {
 			echo '<div class="col-md-3 portfolio-item">
-    <a href="'.LinkHandler::getInstance()->getLink('BuildAddForm', ['object' => $map]).'">'.$this->escapeHtml($map->name).'
+    <a href="'.LinkHandler::getInstance()->getLink('BuildAdd', ['object' => $map]).'">'.$this->escapeHtml($map->name).'
         <img class="img-responsive" src="'.$map->getImage().'">
     </a>
 </div>';

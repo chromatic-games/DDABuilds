@@ -61,6 +61,101 @@ class DatabaseObject {
 	}
 
 	/**
+	 * Creates a new object.
+	 *
+	 * @param array $parameters
+	 *
+	 * @return DatabaseObject
+	 * @throws Exception
+	 */
+	public static function create(array $parameters = []) {
+		$keys = $values = '';
+		$statementParameters = [];
+		foreach ( $parameters as $key => $value ) {
+			if ( !empty($keys) ) {
+				$keys .= ',';
+				$values .= ',';
+			}
+
+			$keys .= $key;
+			$values .= '?';
+			$statementParameters[] = $value;
+		}
+
+		// save object
+		$sql = "INSERT INTO	".static::getDatabaseTableName()."
+					(".$keys.")
+			VALUES		(".$values.")";
+		$statement = Core::getDB()->prepareStatement($sql);
+		$statement->execute($statementParameters);
+
+		// return new object
+		if ( static::getDatabaseTableIndexIsIdentity() ) {
+			$id = Core::getDB()->getInsertID();
+		}
+		else {
+			$id = $parameters[static::getDatabaseTableIndexName()];
+		}
+
+		return new static($id);
+	}
+
+	/**
+	 * @param array $parameters
+	 *
+	 * @throws Exception
+	 */
+	public function update(array $parameters) {
+		if ( empty($parameters) ) {
+			return;
+		}
+
+		$updateSQL = '';
+		$statementParameters = [];
+		foreach ( $parameters as $key => $value ) {
+			if ( !empty($updateSQL) ) {
+				$updateSQL .= ', ';
+			}
+
+			$updateSQL .= $key.' = ?';
+			$statementParameters[] = $value;
+		}
+		$statementParameters[] = $this->getObjectID();
+
+		$sql = "UPDATE	".static::getDatabaseTableName()."
+			SET	".$updateSQL."
+			WHERE	".static::getDatabaseTableIndexName()." = ?";
+		$statement = Core::getDB()->prepareStatement($sql);
+		$statement->execute($statementParameters);
+	}
+
+	/**
+	 * Deletes this object.
+	 */
+	public function delete() {
+		static::deleteAll([$this->getObjectID()]);
+	}
+
+	/**
+	 * Deletes all objects with the given ids and returns the number of deleted objects.
+	 */
+	public static function deleteAll(array $objectIDs = []) {
+		$sql = "DELETE FROM	".static::getDatabaseTableName()."
+			WHERE		".static::getDatabaseTableIndexName()." = ?";
+		$statement = Core::getDB()->prepareStatement($sql);
+
+		$affectedCount = 0;
+		Core::getDB()->beginTransaction();
+		foreach ($objectIDs as $objectID) {
+			$statement->execute([$objectID]);
+			$affectedCount += $statement->getAffectedRows();
+		}
+		Core::getDB()->commitTransaction();
+
+		return $affectedCount;
+	}
+
+	/**
 	 * Stores the data of a database row.
 	 *
 	 * @param array $data
