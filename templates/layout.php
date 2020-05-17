@@ -18,18 +18,17 @@
 	<!-- jQuery Version 1.11.1 -->
 	<script src="assets/js/jquery.js"></script>
 	<?php
+
 	use system\Core;
 	use system\request\LinkHandler;
 	use system\steam\Steam;
 
 	// TODO move to controller (form/page)
 	if ( $this->templateName == 'map' || $this->templateName === 'buildAdd') {
-		echo '
-        <script src="assets/js/html2canvas.js"></script>
+		echo '<script src="assets/js/html2canvas.js"></script>
         <script src="assets/js/jquery-ui.js"></script>
         <script src="assets/js/jQueryRotate.js"></script>
-        <script src="assets/js/ckeditor/ckeditor.js"></script>
-        ';
+        <script src="assets/js/ckeditor/ckeditor.js"></script>';
 	}
 	elseif ( $this->templateName == 'home' ) {
 		echo '<link href="/assets/css/full-width-pics.css" rel="stylesheet">';
@@ -132,7 +131,10 @@
 	<?php
 	if ( DEBUG_MODE ) {
 		echo '<div class="container"><pre>';
-		var_dump(['queries' => Core::getDB()->getQueryCount()]);
+		var_dump([
+			'queries'        => Core::getDB()->getQueryCount(),
+			'steam requests' => Steam::getInstance()->getRequests(),
+		]);
 		echo '</pre></div>';
 	}
 	?>

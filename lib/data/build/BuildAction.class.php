@@ -12,6 +12,7 @@ use data\map\Map;
 use system\Core;
 use system\exception\PermissionDeniedException;
 use system\exception\UserInputException;
+use system\util\StringUtil;
 
 class BuildAction extends DatabaseObjectAction {
 	public function validateSave() {
@@ -98,7 +99,7 @@ class BuildAction extends DatabaseObjectAction {
 			'difficulty'     => $this->parameters['difficulty'],
 			'afkable'        => $this->parameters['afkAble'] ? 1 : 0,
 			'hardcore'       => $this->parameters['hardcore'] ? 1 : 0,
-			'description'    => isset($this->parameters['description']) ? $this->parameters['description'] : '',
+			'description'    => isset($this->parameters['description']) ? StringUtil::removeInsecureHtml($this->parameters['description']) : '',
 			'timePerRun'     => isset($this->parameters['timePerRun']) ? $this->parameters['timePerRun'] : '',
 			'expPerRun'      => isset($this->parameters['expPerRun']) ? $this->parameters['expPerRun'] : '',
 			'date'           => date('Y-m-d H:i:s'),

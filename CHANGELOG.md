@@ -1,4 +1,5 @@
-- no notification text
+- text if user has no notifications
+- hide description if build has no description
 - error handling with design
 - optimized steam requests
 - seo urls

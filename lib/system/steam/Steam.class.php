@@ -9,10 +9,13 @@ class Steam extends SingletonFactory {
 
 	const BUTTON_STYLE_SQUARE    = '02';
 
+	protected $requests = 0;
+
 	protected $_runtimeCache = [];
 
 	public function getPlayerSummary($steamID) {
 		if ( !isset($this->_runtimeCache[$steamID]) ) {
+			$this->requests++;
 			$url = file_get_contents("http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=".STEAM_API_KEY."&steamids=".$steamID);
 			$data = json_decode($url, true);
 			$this->_runtimeCache[$steamID] = $data;
@@ -32,6 +35,13 @@ class Steam extends SingletonFactory {
 	 */
 	public function getDisplayName($steamID) {
 		return $this->getPlayerSummary($steamID)['response']['players'][0]['personaname'];
+	}
+
+	/**
+	 * @return int
+	 */
+	public function getRequests() {
+		return $this->requests;
 	}
 
 	public function getLoginButton($style = self::BUTTON_STYLE_SQUARE) {

@@ -2,6 +2,7 @@
 
 use data\build\stats\BuildStats;
 use data\heroClass\HeroClass;
+use system\Core;
 use system\request\LinkHandler;
 
 $isView = $this->action === 'view';
@@ -65,7 +66,24 @@ $build = $this->build;
 	</ul>
 	<div class="tab-content">
 		<?php if ( $this->action !== 'add' ) { ?>
-			<div id="comments" class="tab-pane">
+			<div id="comments" class="tab-pane container">
+				<div class="marginTop">
+					<?php if ( Core::getUser()->steamID ) { ?>
+						<div class="panel panel-default">
+							<div class="panel-heading text-center"><b>Write a comment:</b></div>
+							<div class="panel-body">
+								<textarea class="form-control" rows="2" id="comment-main"></textarea>
+								<br>
+								<div class="text-center">
+									<button type="button" class="btn btn-primary">Send</button>
+								</div>
+							</div>
+						</div>
+						<script>
+							CKEDITOR.replace('comment-main');
+						</script>
+					<?php } ?>
+				</div>
 			</div>
 		<?php } ?>
 		<div id="buildTab" class="tab-pane active">
@@ -92,7 +110,7 @@ $build = $this->build;
 					</div>
 				</div>
 				<div class="col-lg-3" id="towerControlPanel">
-					<div class="row">
+					<div class="row marginTop">
 						<div class="col-sm-12">
 							<div class="panel panel-default">
 								<div class="panel-heading">Disable Tower</div>
@@ -309,23 +327,25 @@ $build = $this->build;
 					</div>
 				</div>
 			</div>
-			<div class="container build-description-container">
-				<div class="panel panel-default">
-					<div class="panel-heading text-center"><strong>Description</strong></div>
-					<div class="panel-body">
-						<?php
-						if ( $this->action !== 'view' ) {
-							echo '<textarea class="form-control" rows="20" id="builddescription">';
-							echo $this->description;
-							echo '</textarea>';
-						}
-						elseif ( !$this->description ) {
-							echo '<i>No description</i>';
-						}
-						?>
+			<?php if ( $this->action !== 'view' || $this->description ) { ?>
+				<div class="container build-description-container">
+					<div class="panel panel-default">
+						<div class="panel-heading text-center"><strong>Description</strong></div>
+						<div class="panel-body">
+							<?php
+							if ( $this->action !== 'view' ) {
+								echo '<textarea class="form-control" rows="20" id="builddescription">';
+								echo $this->description;
+								echo '</textarea>';
+							}
+							else {
+								echo $this->description;
+							}
+							?>
+						</div>
 					</div>
 				</div>
-			</div>
+			<?php } ?>
 		</div>
 	</div>
 </div>

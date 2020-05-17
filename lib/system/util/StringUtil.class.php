@@ -3,6 +3,14 @@
 namespace system\util;
 
 class StringUtil {
+	public static function removeInsecureHtml($html) {
+		$html = preg_replace('#<script(.*?)>(.*?)</script>#is', '', $html);
+		$html = preg_replace('#<style(.*?)>(.*?)</style>#is', '', $html);
+		$html = preg_replace('#<link(.*?)>(.*?)</link>#is', '', $html);
+
+		return $html;
+	}
+
 	/**
 	 * Formats a numeric.
 	 *
