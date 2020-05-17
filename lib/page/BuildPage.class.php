@@ -5,6 +5,7 @@ namespace page;
 use data\build\Build;
 use system\Core;
 use system\exception\IllegalLinkException;
+use system\exception\NamedUserException;
 
 class BuildPage extends BuildAddPage {
 	public $loginRequired = false;
@@ -27,6 +28,10 @@ class BuildPage extends BuildAddPage {
 		$this->build = new Build($_REQUEST['id']);
 		if ( !$this->build->getObjectID() ) {
 			throw new IllegalLinkException();
+		}
+
+		if ( $this->build->fk_buildstatus === 3 && !$this->build->isCreator() ) {
+			throw new NamedUserException('Sorry, this build is private');
 		}
 
 		$this->map = $this->build->getMap();
