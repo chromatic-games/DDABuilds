@@ -4,6 +4,7 @@ namespace data\build;
 
 use data\build\stats\BuildStats;
 use data\build\status\BuildStatus;
+use data\comment\Comment;
 use data\DatabaseObject;
 use data\difficulty\Difficulty;
 use data\IRouteObject;
@@ -25,6 +26,8 @@ use system\Core;
  * @property-read integer $views
  * @property-read integer $map
  * @property-read integer $comments
+ * @property-read integer $deleted
+ * @property-read integer $fk_buildstatus
  * @property-read integer $afkable
  * @property-read integer $hardcore
  * @property-read integer $difficulty
@@ -38,6 +41,9 @@ class Build extends DatabaseObject implements IRouteObject {
 
 	/** @var BuildStats[] */
 	protected $__stats;
+
+	/** @var Comment[] */
+	protected $__comments;
 
 	/** @var array */
 	protected $__placedTowers;
@@ -114,6 +120,24 @@ class Build extends DatabaseObject implements IRouteObject {
 		}
 
 		return $this->__customWaves;
+	}
+
+	/**
+	 * @return Comment[]
+	 * @throws \Exception
+	 */
+	public function getComments() {
+		if ( !$this->getObjectID() ) {
+			return [];
+		}
+
+		if ( $this->__comments === null ) {
+			$statement = Core::getDB()->prepareStatement('SELECT * FROM comments WHERE fk_build = ? ORDER BY date DESC LIMIT 10');
+			$statement->execute([$this->getObjectID()]);
+			$this->__comments = $statement->fetchObjects(Comment::class);
+		}
+
+		return $this->__comments;
 	}
 
 	public function isCreator() {

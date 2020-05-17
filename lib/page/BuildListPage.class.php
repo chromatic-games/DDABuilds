@@ -102,6 +102,8 @@ class BuildListPage extends SortablePage {
 	protected function initObjectList() {
 		parent::initObjectList();
 
+		$this->objectList->getConditionBuilder()->add('deleted = 0');
+
 		if ( !$this->showFilter ) {
 			return;
 		}

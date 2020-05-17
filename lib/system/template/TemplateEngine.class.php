@@ -2,6 +2,9 @@
 
 namespace system\template;
 
+use Exception;
+use system\exception\NamedUserException;
+
 class TemplateEngine {
 	public $variables = [];
 
@@ -15,8 +18,21 @@ class TemplateEngine {
 			}
 		}
 		else {
-			throw new \Exception('system exception');
+			throw new Exception('system exception');
 		}
+	}
+
+	/**
+	 * render the given template
+	 *
+	 * @param string $templateName
+	 * @param array  $variables
+	 *
+	 * @return false|string
+	 * @throws NamedUserException
+	 */
+	public function render($templateName, array $variables = []) {
+		return (new TemplateRenderer($templateName, $variables))->__toString();
 	}
 
 	public function display($templateName) {

@@ -49,7 +49,7 @@ class TemplateRenderer {
 	}
 
 	public function render($templateName, array $variables = []) {
-		return (new TemplateRenderer($templateName, $variables))->__toString();
+		return Core::getTPL()->render($templateName, $variables);
 	}
 
 	public function number($number) {

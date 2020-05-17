@@ -66,23 +66,65 @@ $build = $this->build;
 	</ul>
 	<div class="tab-content">
 		<?php if ( $this->action !== 'add' ) { ?>
-			<div id="comments" class="tab-pane container">
-				<div class="marginTop">
+			<div id="comments" class="tab-pane">
+				<div class="marginTop container">
 					<?php if ( Core::getUser()->steamID ) { ?>
 						<div class="panel panel-default">
 							<div class="panel-heading text-center"><b>Write a comment:</b></div>
 							<div class="panel-body">
-								<textarea class="form-control" rows="2" id="comment-main"></textarea>
+								<textarea class="form-control" rows="2" id="commentMain"></textarea>
 								<br>
 								<div class="text-center">
-									<button type="button" class="btn btn-primary">Send</button>
+									<button type="button" class="btn btn-primary btn-comment">Send</button>
 								</div>
 							</div>
 						</div>
 						<script>
-							CKEDITOR.replace('comment-main');
+							CKEDITOR.replace('commentMain');
+
+							$(document).ready(function () {
+								$('.btn-comment').on('click', () => {
+									let text = CKEDITOR.instances.commentMain.getData().trim();
+									if (text.length) {
+										$('.btn-comment').prop('disabled', true);
+										$.post(
+											'?ajax', {
+												className: '\\data\\comment\\CommentAction',
+												actionName: 'add',
+												parameters: {
+													buildID: window.__DEFENSE_OBJECT_IDS[0],
+													text
+												}
+											},
+											function (data) {
+												CKEDITOR.instances.commentMain.setData('');
+												$('#commentList').prepend(data.returnValues);
+												$('.btn-comment').prop('disabled', false);
+											}
+										).fail(function (jqXHR, textStatus, errorThrown) {
+											try {
+												alert('Error while saving: ' + JSON.parse(jqXHR.responseText).message);
+											}
+											catch (e ) {
+												alert('Unknown error while saving...');
+											}
+										});
+									}
+									else {
+										alert('comment text is empty :(');
+									}
+								});
+							});
 						</script>
 					<?php } ?>
+					<div id="commentList">
+						<?php
+						/** @var \data\comment\Comment $comment */
+						foreach ( $build->getComments() as $comment ) {
+							echo Core::getTPL()->render('comment', ['comment' => $comment]);
+						}
+                        ?>
+					</div>
 				</div>
 			</div>
 		<?php } ?>
@@ -580,10 +622,13 @@ if ( $this->action !== 'view' ) {
 								$('.btn-save').prop('disabled', false);
 							}
 						).fail(function (jqXHR, textStatus, errorThrown) {
-							if (jqXHR.status == 404) {
-								alert('Error while saving: ' + jqXHR.responseText);
-								$('.btn-save').prop('disabled', false);
+							try {
+								alert('Error while saving: ' + JSON.parse(jqXHR.responseText).message);
 							}
+							catch (e ) {
+								alert('Unknown error while saving...');
+							}
+							$('.btn-save').prop('disabled', false);
 						});
 					}
 				});

@@ -33,6 +33,9 @@ class BuildPage extends BuildAddPage {
 		if ( $this->build->fk_buildstatus === 3 && !$this->build->isCreator() ) {
 			throw new NamedUserException('Sorry, this build is private');
 		}
+		elseif ( $this->build->deleted ) {
+			throw new NamedUserException('The Build you are trying to access got deleted. If the deletion was made by mistake please contact the site administrator.');
+		}
 
 		$this->map = $this->build->getMap();
 		if ( $this->build->isCreator() && !isset($_REQUEST['view']) ) {
