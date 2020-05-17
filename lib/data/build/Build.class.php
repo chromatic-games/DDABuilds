@@ -3,6 +3,7 @@
 namespace data\build;
 
 use data\build\stats\BuildStats;
+use data\build\status\BuildStatus;
 use data\DatabaseObject;
 use data\difficulty\Difficulty;
 use data\IRouteObject;
@@ -201,8 +202,8 @@ class Build extends DatabaseObject implements IRouteObject {
 	}
 
 	/**
-	 * get the name of map
-	 * TODO use runtimecache/cachebuilder stuff
+	 * get the map object from this build
+	 * TODO CACHE
 	 *
 	 * @return Map
 	 */
@@ -211,13 +212,22 @@ class Build extends DatabaseObject implements IRouteObject {
 	}
 
 	/**
-	 * get the name of difficulty
-	 * TODO use runtimecache/cachebuilder stuff
+	 * get the difficulty object from this build
+	 * TODO CACHE
 	 *
 	 * @return Difficulty
 	 */
 	public function getDifficulty() {
 		return new Difficulty($this->difficulty);
+	}
+	/**
+	 * get the build status object from this build
+	 * TODO CACHE
+	 *
+	 * @return BuildStatus
+	 */
+	public function getBuildStatus() {
+		return new BuildStatus($this->fk_buildstatus);
 	}
 
 	public function getTitle() {

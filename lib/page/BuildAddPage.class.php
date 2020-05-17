@@ -87,10 +87,21 @@ class BuildAddPage extends AbstractPage {
 		$this->towerList = new TowerList();
 		$this->towerList->readObjects();
 		$this->towers = [];
+
+		$useMU = false;
+
 		/** @var Tower $tower */
 		foreach ( $this->towerList as $tower ) {
-			$this->towers[$tower->fk_class][] = $tower;
+			if ( $this->heroClasses->search($tower->fk_class) ) {
+				$this->towers[$tower->fk_class][] = $tower;
+
+				if ( $tower->mu ) {
+					$useMU = true;
+				}
+			}
 		}
+
+		Core::getTPL()->assign('showMU', $useMU);
 	}
 
 	/**

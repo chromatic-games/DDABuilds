@@ -5,7 +5,6 @@ namespace page;
 use data\build\Build;
 use system\Core;
 use system\exception\IllegalLinkException;
-use system\exception\NamedUserException;
 
 class BuildPage extends BuildAddPage {
 	public $loginRequired = false;
@@ -33,10 +32,6 @@ class BuildPage extends BuildAddPage {
 		$this->map = $this->build->getMap();
 		if ( $this->build->isCreator() && !isset($_REQUEST['view']) ) {
 			$this->action = 'edit';
-		}
-
-		if ( $this->action === 'view' ) {
-			throw new NamedUserException('currently not implemented');
 		}
 	}
 

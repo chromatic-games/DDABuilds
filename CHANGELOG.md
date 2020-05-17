@@ -4,3 +4,8 @@
 - seo urls
 - fixed grid view in my builds (#5)
 - fixed author with special characters in search breaks after initial search (#2)
+- open author's steam profile in new tab
+- images in description box have max width
+- moved delete wave button to wave tab menu
+- edit wave name now with a button (prevent wrong caret position) (#6)
+- comments tab only visible in view/edit mode (#4)

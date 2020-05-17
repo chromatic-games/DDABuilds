@@ -3,8 +3,9 @@
 use data\build\stats\BuildStats;
 use data\heroClass\HeroClass;
 
+$isView = $this->action === 'view';
 $tabTemplate = '<li class="customwave" data-target="#buildTab"><a data-wave="%id%"><span>%name%</span>'
-               .($this->action !== 'view' ? ' <i class="fa fa-pencil pointer edit-wave"></i> <i class="fa fa-trash pointer delete-wave"></i>' : '')
+               .(!$isView ? ' <i class="fa fa-pencil pointer edit-wave"></i> <i class="fa fa-trash pointer delete-wave"></i>' : '')
                .'</a></li>';
 
 /** @var \data\build\Build $build */
@@ -13,36 +14,50 @@ $build = $this->build;
 ?>
 <div class="container-fluid">
 	<div class="row">
-		<div class="col-md-3 text-center">
+		<div class="col-md-2 text-center">
 			<h3>Map: <b><?php echo $this->map->name; ?></b></h3>
 		</div>
-		<div class="col-md-3 text-center">
-			<label>Build Name:</label>
-			<input type="text" id="buildName" placeholder="Build Name" class="form-control" maxlength="128" value="<?php echo $this->escapeHtml($this->buildName); ?>" />
+		<div class="col-md-4 text-center">
+			<?php if ( $isView ) { ?>
+				<h3><?php echo $this->escapeHtml($this->buildName); ?></h3>
+			<?php } else { ?>
+				<label>Build Name:</label>
+				<input type="text" id="buildName" placeholder="Build Name" class="form-control" maxlength="128" value="<?php echo $this->escapeHtml($this->buildName); ?>" />
+			<?php } ?>
 		</div>
-		<div class="col-md-3 text-center">
-			<label>Author:</label>
-			<input type="text" id="authorName" placeholder="Author" class="form-control" maxlength="20" value="<?php echo $this->escapeHtml($this->author); ?>" />
+		<div class="col-md-4 text-center">
+			<?php if ( $isView ) { ?>
+				<h3>Author: <a href="https://steamcommunity.com/profiles/<?php echo $build->fk_user; ?>" target="_blank"><?php echo $this->escapeHtml($this->author); ?></a></h3>
+			<?php } else { ?>
+				<label>Author:</label>
+				<input type="text" id="authorName" placeholder="Author" class="form-control" maxlength="20" value="<?php echo $this->escapeHtml($this->author); ?>" />
+			<?php } ?>
 		</div>
-		<div class="col-md-3 text-center">
-			<h3>DU: <b><span id="currentDefenseUnits" style="color: rgb(0, 0, 0);">0</span>/<span id="maxDefenseUnits"><?php echo $this->map->units ?></span></b> MU:
-				<b><span id="currentMinionUnits" style="color: rgb(0, 0, 0);">0</span>/<span><?php echo $this->map->units ?></span></b>
+		<div class="col-md-2 text-center">
+			<h3>
+				DU: <b><span id="currentDefenseUnits" style="color: rgb(0, 0, 0);">0</span>/<span id="maxDefenseUnits"><?php echo $this->map->units ?></span></b>
+				<?php if ( $this->showMU ) { ?>
+					MU: <b><span id="currentMinionUnits" style="color: rgb(0, 0, 0);">0</span>/<span><?php echo $this->map->units ?></span></b>
+				<?php } ?>
 			</h3>
 		</div>
 	</div>
 
 	<ul class="nav nav-tabs" role="tablist" id="waveTabList">
-		<li class="active" data-target="#buildTab"><a href="#buildTab" data-wave="0">Build</a></li>
+		<li class="active pointer" data-target="#buildTab"><a href="#buildTab" data-wave="0">Build</a></li>
 		<?php
 		if ( $build ) {
 			foreach ( $build->getCustomWaves() as $id => $wave ) {
 				echo str_replace(['%name%', '%id%'], [$this->escapeHtml($wave['name']), $id + 1], $tabTemplate);
 			}
 		}
-		?>
-		<li id="newWave"><a href="#">+</a></li>
-		<?php if ( $this->action !== 'add' ) { ?>
-			<li data-target="#comments">
+
+		if ( !$isView ) {
+			echo '<li class="pointer" id="newWave"><a href="#">+</a></li>';
+		}
+
+		if ( $this->action !== 'add' ) { ?>
+			<li class="pointer" data-target="#comments">
 		        <a role="tab" data-toggle="tab" href="#comments">Comments (<span><?php echo $build->comments ?></span>)</a>
 		    </li>
 		<?php } ?>
@@ -72,158 +87,203 @@ $build = $this->build;
 				<div class="col-lg-3" id="towerControlPanel">
 					<div class="row">
 						<?php
-						/** @var \data\tower\Tower[] $towers */
-						foreach ( $this->towers as $classID => $towers ) {
-							/** @var HeroClass $class */
-							$class = $this->heroClasses[$classID];
-							?>
-							<div class="col-sm-6">
-								<div class="panel panel-default">
-									<div class="panel-heading"><?php echo $this->escapeHtml($class->name); ?>
-										<label><input type="checkbox" class="disableckbx" value="squire" /> Disable View</label>
-										<!-- TODO re_add, these has currently no effects :( -->
-										<!--<br>
-										<button class="front-tower" value="squire">Front</button>
-										<button class="back-tower" value="squire">Back</button>-->
-									</div>
-									<div class="panel-body">
-										<?php
-										foreach ( $towers as $tower ) {
-											$menu = '';
-											if ( $tower->fk_class !== 4 && $tower->fk_class !== 3 /*&& $tower->fk_class !== ????*/ ) { // TODO replace with database column
-												$menu = '<div class="menu"> <i class="fa fa-repeat"></i> </div>';
-											}
+						if ( !$isView ) {
+							/** @var \data\tower\Tower[] $towers */
+							foreach ( $this->towers as $classID => $towers ) {
+								/** @var HeroClass $class */
+								$class = $this->heroClasses[$classID];
+								?>
+								<div class="col-sm-6">
+									<div class="panel panel-default">
+										<div class="panel-heading"><?php echo $this->escapeHtml($class->name); ?>
+											<label><input type="checkbox" class="disableckbx" value="squire" /> Disable View</label>
+											<!-- TODO re_add, these has currently no effects :( -->
+											<!--<br>
+											<button class="front-tower" value="squire">Front</button>
+											<button class="back-tower" value="squire">Back</button>-->
+										</div>
+										<div class="panel-body">
+											<?php
+											foreach ( $towers as $tower ) {
+												$menu = '';
+												if ( $tower->fk_class !== 4 && $tower->fk_class !== 3 /*&& $tower->fk_class !== ????*/ ) { // TODO replace with database column
+													$menu = '<div class="menu"> <i class="fa fa-repeat"></i> </div>';
+												}
 
-											echo $tower->getHtml();
-										}
-										?>
+												echo $tower->getHtml();
+											}
+											?>
+										</div>
 									</div>
 								</div>
-							</div>
-							<?php
+								<?php
+							}
 						}
 						?>
-
 						<div class="col-sm-12">
 							<div class="panel panel-default">
 								<div class="panel-heading">Details</div>
 								<div class="panel-body">
-									<div class="form-group">
-										<label for="requiredStatsClass">Required Attributes:</label>
-										<select class="form-control" id="requiredStatsClass">
-											<?php
-											/** @var HeroClass $heroClass */
-											foreach ( $this->heroClasses as $heroClass ) {
-												if ( $heroClass->isHero ) {
-													echo '<option value="'.$heroClass->getObjectID().'">'.$this->escapeHtml($heroClass->name).'</option>';
+									<?php if ( !$isView ) { ?>
+										<div class="form-group">
+											<label for="requiredStatsClass">Required Attributes:</label>
+											<select class="form-control" id="requiredStatsClass">
+												<?php
+												/** @var HeroClass $heroClass */
+												foreach ( $this->heroClasses as $heroClass ) {
+													if ( $heroClass->isHero ) {
+														echo '<option value="'.$heroClass->getObjectID().'">'.$this->escapeHtml($heroClass->name).'</option>';
+													}
 												}
+												?>
+											</select>
+											<div class="col-md-3">
+												<label for="requiredStatsHp">Fortify:</label>
+												<input class="form-control" id="requiredStatsHp" value="0">
+											</div>
+											<div class="col-md-3">
+												<label for="requiredStatsDamage">Power:</label>
+												<input class="form-control" id="requiredStatsDamage" value="0">
+											</div>
+											<div class="col-md-3">
+												<label for="requiredStatsRange">Range:</label>
+												<input class="form-control" id="requiredStatsRange" value="0">
+											</div>
+											<div class="col-md-3">
+												<label for="requiredStatsRate">Def. Rate:</label>
+												<input class="form-control" id="requiredStatsRate" value="0">
+											</div>
+										</div>
+
+										<!-- build status -->
+										<div class="form-group">
+											<label for="buildStatus">Build Status:</label>
+											<select class="form-control" id="buildStatus">
+												<?php
+												/** @var \data\build\status\BuildStatus $buildStatus */
+												foreach ( $this->buildStatuses as $buildStatus ) {
+													$selected = '';
+													if ( $build && $build->getObjectID() && $buildStatus->getObjectID() == $build->fk_buildstatus ) {
+														$selected = 'selected="selected"';
+													}
+
+													echo '<option '.$selected.' value="'.$buildStatus->getObjectID().'">'.$this->escapeHtml($buildStatus->name).'</option>';
+												}
+												?>
+											</select>
+										</div>
+
+										<!-- difficulty -->
+										<div class="form-group">
+											<label for="difficulty">Difficulty:</label>
+											<select class="form-control" id="difficulty">
+												<?php
+												/** @var \data\difficulty\Difficulty $difficulty */
+												foreach ( $this->difficulties as $difficulty ) {
+													$difficultyId = $difficulty->getObjectID();
+													$difficultyName = $difficulty->name;
+													$selected = '';
+													if ( $build && $build->difficulty === $difficultyId ) {
+														$selected = ' selected="selected"';
+													}
+													echo '<option value="'.$difficultyId.'"'.$selected.'>'.$difficultyName.'</option>';
+												}
+												?>
+											</select>
+										</div>
+										<div class="form-group">
+											<?php
+											echo '<label for="campaign">Game Mode:</label><br>';
+											$first = true;
+											foreach ( \data\build\Build::getGamemodes() as $mode ) {
+												$checked = '';
+												if ( ($this->action === 'add' && $first) || $build && $build->{$mode['key']} ) {
+													$checked = ' checked';
+													$first = false;
+												}
+												echo '<label class="radio-inline"><input type="radio" class="gamemode" name="gamemode" value="'.$mode['key'].'"'.$checked.'>'.$this->escapeHtml($mode['name']).'</label>';
 											}
 											?>
-										</select>
-										<div class="col-md-3">
-											<label for="requiredStatsHp">Fortify:</label>
-											<input class="form-control" id="requiredStatsHp" value="0">
 										</div>
-										<div class="col-md-3">
-											<label for="requiredStatsDamage">Power:</label>
-											<input class="form-control" id="requiredStatsDamage" value="0">
-										</div>
-										<div class="col-md-3">
-											<label for="requiredStatsRange">Range:</label>
-											<input class="form-control" id="requiredStatsRange" value="0">
-										</div>
-										<div class="col-md-3">
-											<label for="requiredStatsRate">Def. Rate:</label>
-											<input class="form-control" id="requiredStatsRate" value="0">
-										</div>
-									</div>
 
-									<!-- build status -->
-									<div class="form-group">
-										<label for="buildStatus">Build Status:</label>
-										<select class="form-control" id="buildStatus">
-											<?php
-											/** @var \data\build\status\BuildStatus $buildStatus */
-											foreach ( $this->buildStatuses as $buildStatus ) {
-												$selected = '';
-												if ( $build && $build->getObjectID() && $buildStatus->getObjectID() == $build->fk_buildstatus ) {
-													$selected = 'selected="selected"';
-												}
+										<div class="form-group">
+											<div class="checkbox">
+												<label>
+													<input type="checkbox" id="hardcore" value="1"<?php echo $build && $build->hardcore ? ' checked' : ''; ?>> Hardcore
+												</label>
+											</div>
+										</div>
+										<div class="form-group">
+											<div class="checkbox">
+												<label>
+													<input type="checkbox" id="afkAble" value="1"<?php echo $build && $build->afkable ? ' checked' : ''; ?>> AFK Able
+												</label>
+											</div>
+										</div>
 
-												echo '<option '.$selected.' value="'.$buildStatus->getObjectID().'">'.$this->escapeHtml($buildStatus->name).'</option>';
-											}
-											?>
-										</select>
-									</div>
+										<div class="form-group">
+											<label>XP Per Run:</label>
+											<input type="text" placeholder="XP Per Run" class="form-control" id="expPerRun" maxlength="20" value="<?php echo $this->escapeHtml($this->expPerRun); ?>" />
+										</div>
+										<div class="form-group">
+											<label>Time Per Run:</label>
+											<input type="text" placeholder="XP Per Run" class="form-control" id="timePerRun" maxlength="20" value="<?php echo $this->escapeHtml($this->timePerRun); ?>" />
+										</div>
 
-									<!-- difficulty -->
-									<div class="form-group">
-										<label for="difficulty">Difficulty:</label>
-										<select class="form-control" id="difficulty">
-											<?php
-											/** @var \data\difficulty\Difficulty $difficulty */
-											foreach ( $this->difficulties as $difficulty ) {
-												$difficultyId = $difficulty->getObjectID();
-												$difficultyName = $difficulty->name;
-												$selected = '';
-												if ( $build && $build->difficulty === $difficultyId ) {
-													$selected = ' selected="selected"';
-												}
-												echo '<option value="'.$difficultyId.'"'.$selected.'>'.$difficultyName.'</option>';
-											}
-											?>
-										</select>
-									</div>
-									<div class="form-group">
+										<h4>Mana Used: <strong id="manaUsed">0</strong></h4>
+										<h4>Mana to Upgrade: <strong id="manaUpgrade">0</strong></h4>
+
+										<button class="btn btn-primary btn-save">save</button>
 										<?php
-										echo '<label for="campaign">Game Mode:</label><br>';
-										$first = true;
-										foreach ( \data\build\Build::getGamemodes() as $mode ) {
-											$checked = '';
-											if ( ($this->action === 'add' && $first) || $build && $build->{$mode['key']} ) {
-												$checked = ' checked';
-												$first = false;
-											}
-											echo '<label class="radio-inline"><input type="radio" class="gamemode" name="gamemode" value="'.$mode['key'].'"'.$checked.'>'.$this->escapeHtml($mode['name']).'</label>';
-										}
-										?>
-									</div>
+									}
+									else {
+										$heroBuildStats = $build->getStats();
+										if ( !empty($heroBuildStats) ) { ?>
+											<table class="table table-responsive table-hover">
+												<caption class="text-center">Required Hero Stats</caption>
+												<thead>
+												<tr>
+													<th>Hero</th>
+													<th>HP</th>
+													<th>Damage</th>
+													<th>Range</th>
+													<th>Rate</th>
+												</tr>
+												</thead>
+												<tbody>
+												<?php
+												/** @var BuildStats $buildStats */
+												foreach ( $heroBuildStats as $buildStats ) {
+													echo '<tr>
+														<td>'.$this->escapeHtml($buildStats->getClass()->name).'</td>
+														<td>'.$this->number($buildStats->hp).'</td>
+														<td>'.$this->number($buildStats->damage).'</td>
+														<td>'.$this->number($buildStats->range).'</td>
+														<td>'.$this->number($buildStats->rate).'</td>
+													</tr>';
+												}
+												?>
+												</tbody>
+											</table>
+										<?php } ?>
 
-									<div class="form-group">
-										<div class="checkbox">
-											<label>
-												<input type="checkbox" id="hardcore" value="1"<?php echo $build && $build->hardcore ? ' checked' : ''; ?>> Hardcore
-											</label>
-										</div>
-									</div>
-									<div class="form-group">
-										<div class="checkbox">
-											<label>
-												<input type="checkbox" id="afkAble" value="1"<?php echo $build && $build->afkable ? ' checked' : ''; ?>> AFK Able
-											</label>
-										</div>
-									</div>
-
-									<div class="form-group">
-										<label>XP Per Run:</label>
-										<input type="text" placeholder="XP Per Run" class="form-control" id="expPerRun" maxlength="20" value="<?php echo $this->escapeHtml($this->expPerRun); ?>" />
-									</div>
-									<div class="form-group">
-										<label>Time Per Run:</label>
-										<input type="text" placeholder="XP Per Run" class="form-control" id="timePerRun" maxlength="20" value="<?php echo $this->escapeHtml($this->timePerRun); ?>" />
-									</div>
-
-									<h4>Mana Used: <strong id="manaUsed">0</strong></h4>
-									<h4>Mana to Upgrade: <strong id="manaUpgrade">0</strong></h4>
-
-									<button class="btn btn-primary btn-save">save</button>
+										<h4>Build Status: <strong><?php echo $this->escapeHtml($build->getBuildStatus()->name) ?></strong></h4>
+										<h4>Difficulty: <strong><?php echo $this->escapeHtml($build->getDifficulty()->name) ?></strong></h4>
+										<h4>Game Mode: <strong><?php echo '???' ?></strong></h4>
+										<h4>Hardcore: <strong><?php echo $build->hardcore ? 'Yes' : 'No' ?></strong></h4>
+										<h4>AFK Able: <strong><?php echo $build->afkable ? 'Yes' : 'No' ?></strong></h4>
+										<h4>XP Per Run: <strong><?php echo $this->escapeHtml($build->expPerRun) ?></strong></h4>
+										<h4>Time Per Run: <strong><?php echo $this->escapeHtml($build->timePerRun) ?></strong></h4>
+										<h4>Mana Used: <strong id="manaUsed"></strong></h4>
+										<h4>Mana to Upgrade: <strong id="manaUpgrade"></strong></h4>
+									<?php } ?>
 								</div>
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
-			<div class="container">
+			<div class="container build-description-container">
 				<div class="panel panel-default">
 					<div class="panel-heading text-center"><strong>Description</strong></div>
 					<div class="panel-body">
@@ -248,7 +308,7 @@ $build = $this->build;
 if ( $this->action !== 'view' ) {
 	/** @var BuildStats[] $buildStats */
 	$buildStats = $build ? $build->getStats() : [];
-	$stats = [];
+	$buildStats = [];
 	/** @var HeroClass $heroClass */
 	foreach ( $this->heroClasses as $heroClass ) {
 		if ( !$heroClass->isHero ) {
@@ -256,7 +316,7 @@ if ( $this->action !== 'view' ) {
 		}
 
 		$heroID = $heroClass->getObjectID();
-		$stats[$heroID] = isset($buildStats[$heroID]) ? $buildStats[$heroID]->getStats() : [
+		$buildStats[$heroID] = isset($buildStats[$heroID]) ? $buildStats[$heroID]->getStats() : [
 			'hp'     => 0,
 			'damage' => 0,
 			'range'  => 0,
@@ -266,7 +326,7 @@ if ( $this->action !== 'view' ) {
 
 	?>
 	<script>
-		window.__DEFENSE_STATS = <?php echo json_encode($stats); ?>;
+		window.__DEFENSE_STATS = <?php echo json_encode($buildStats); ?>;
 		window.__DEFENSE_WAVE_TEMPLATE = '<?php echo $tabTemplate; ?>';
 	</script>
 	<?php
@@ -282,7 +342,7 @@ if ( $this->action !== 'view' ) {
 		$('.canvas .tower-container:visible').each(function (_, el) {
 			var du = el.getAttribute('data-du');
 			var requiredMana = parseInt(el.getAttribute('data-mana'));
-			if (el.getAttribute('data-mu')) {
+			if (el.hasAttribute('data-mu')) {
 				minionUnits += parseInt(du);
 			}
 			else {

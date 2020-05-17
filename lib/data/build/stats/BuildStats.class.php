@@ -3,6 +3,7 @@
 namespace data\build\stats;
 
 use data\DatabaseObject;
+use data\heroClass\HeroClass;
 
 /**
  * @package data\build\stats
@@ -22,5 +23,15 @@ class BuildStats extends DatabaseObject {
 			'rate'   => $this->rate,
 			'range'  => $this->range,
 		];
+	}
+
+	/**
+	 * TODO CACHE!
+	 *
+	 * @return HeroClass
+	 * @throws \Exception
+	 */
+	public function getClass() {
+		return new HeroClass($this->classID);
 	}
 }

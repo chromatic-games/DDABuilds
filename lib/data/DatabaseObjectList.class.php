@@ -283,4 +283,13 @@ class DatabaseObjectList implements \Countable, \SeekableIterator {
 			throw new \OutOfBoundsException();
 		}
 	}
+
+	public function search($objectID) {
+		$index = array_search($objectID, $this->indexToObject);
+		if ( $index !== false ) {
+			return $this->objects[$this->indexToObject[$index]];
+		}
+
+		return null;
+	}
 }
