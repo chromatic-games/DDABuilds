@@ -10,6 +10,14 @@
 	height: 1024px;
 }
 
+#towerControlPanel {
+	margin-top: 15px;
+}
+
+.build-description-container img {
+	width: 100%;
+}
+
 .tower-container{position:relative;display:inline-block;}
 .tower{width:35px;height:35px;cursor:pointer;}
 

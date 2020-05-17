@@ -30,12 +30,16 @@ class Tower extends DatabaseObject {
 
 		if ( $placed ) {
 			$dummy = false;
-			$style = ' style="position:absolute;top:'.$placed['y'].'px;left:'.$placed['x'].'px;"';
+			$style .= ' style="position:absolute;top:'.$placed['y'].'px;left:'.$placed['x'].'px;"';
 			$wave = $placed['fk_buildwave'];
 		}
 
 		if ( $this->fk_class !== 4 && $this->fk_class !== 3 /*&& $tower->fk_class !== ????*/ ) { // TODO replace with database column
 			$menu = '<div class="menu"><i class="fa fa-repeat"></i></div>';
+		}
+
+		if ( $this->mu ) {
+			$style .= ' data-mu';
 		}
 
 		return '<div class="tower-container'.($dummy ? ' dummy' : '').'" data-tower-id="'.$this->getObjectID().'" data-class="'.$this->fk_class.'"

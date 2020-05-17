@@ -52,6 +52,7 @@ class BuildAction extends DatabaseObjectAction {
 			$heroClasses = new HeroClassList();
 			$heroClasses->readObjects();
 			$heroClasses = $heroClasses->getObjects();
+			$statement = Core::getDB()->prepareStatement('INSERT INTO build_stats (buildID, classID, hp, damage, rate, `range`) VALUES (?, ?, ?, ?, ?, ?)');
 
 			/** @var HeroClass[] $heroClasses */
 			foreach ( $this->parameters['stats'] as $key => $statsValue ) {
@@ -59,14 +60,23 @@ class BuildAction extends DatabaseObjectAction {
 					continue;
 				}
 
-				$statement = Core::getDB()->prepareStatement('INSERT INTO build_stats (buildID, classID, hp, damage, rate, `range`) VALUES (?, ?, ?, ?, ?, ?)');
+				$hp = isset($statsValue['hp']) ? (int) $statsValue['hp'] : 0;
+				$rate = isset($statsValue['rate']) ? (int) $statsValue['rate'] : 0;
+				$range = isset($statsValue['range']) ? (int) $statsValue['range'] : 0;
+				$damage = isset($statsValue['damage']) ? (int) $statsValue['damage'] : 0;
+
+				// skip empty stats
+				if ( max($hp, $rate, $range, $damage) === 0 ) {
+					continue;
+				}
+
 				$statement->execute([
 					$build->getObjectID(),
 					$key,
-					isset($statsValue['hp']) ? $statsValue['hp'] : 0,
-					isset($statsValue['rate']) ? $statsValue['rate'] : 0,
-					isset($statsValue['range']) ? $statsValue['range'] : 0,
-					isset($statsValue['damage']) ? $statsValue['damage'] : 0,
+					$hp,
+					$rate,
+					$range,
+					$damage,
 				]);
 			}
 		}
