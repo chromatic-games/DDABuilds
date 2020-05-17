@@ -1,6 +1,6 @@
 <?php
 
-namespace wcf\system\exception;
+namespace system\exception;
 
 /**
  * Exception implementation for cases when a class is expected to have a certain class

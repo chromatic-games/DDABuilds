@@ -86,7 +86,12 @@ class BuildAction extends DatabaseObjectAction {
 
 	public function save() {
 		$gamemode = $this->parameters['gamemode'];
-		$this->parameters['data'] = [
+		$gamemodeData = [];
+		foreach ( Build::getGamemodes() as $mode ) {
+			$gamemodeData[$mode['key']] = null;
+		}
+
+		$this->parameters['data'] = array_merge($gamemodeData, [
 			'author'         => $this->parameters['author'],
 			'name'           => $this->parameters['buildName'],
 			'map'            => $this->parameters['mapID'],
@@ -96,13 +101,11 @@ class BuildAction extends DatabaseObjectAction {
 			'description'    => isset($this->parameters['description']) ? $this->parameters['description'] : '',
 			'timePerRun'     => isset($this->parameters['timePerRun']) ? $this->parameters['timePerRun'] : '',
 			'expPerRun'      => isset($this->parameters['expPerRun']) ? $this->parameters['expPerRun'] : '',
-			'views'          => 0,
-			'votes'          => 0,
 			'date'           => date('Y-m-d H:i:s'),
 			'fk_user'        => Core::getUser()->steamID,
 			'fk_buildstatus' => $this->parameters['buildStatus'],
 			$gamemode        => 1,
-		];
+		]);
 
 		$deleteOldEntries = false;
 		if ( empty($this->getObjectIDs()) ) {
@@ -141,7 +144,7 @@ class BuildAction extends DatabaseObjectAction {
 						],
 					]);
 					$wave->executeAction();
-					$validWaves[$waveId] = $i++;
+					$validWaves[$waveId + 1] = $i++;
 				}
 			}
 

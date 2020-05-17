@@ -5,8 +5,8 @@ use data\heroClass\HeroClass;
 use system\request\LinkHandler;
 
 $isView = $this->action === 'view';
-$tabTemplate = '<li class="customwave" data-target="#buildTab"><a data-wave="%id%"><span>%name%</span>'
-               .(!$isView ? ' <i class="fa fa-pencil pointer edit-wave"></i> <i class="fa fa-trash pointer delete-wave"></i>' : '')
+$tabTemplate = '<li class="customwave waveTab pointer" data-target="#buildTab"><a data-wave="%id%"><span>%name%</span>'
+               .(!$isView ? ' <i class="fa fa-pencil edit-wave"></i> <i class="fa fa-trash delete-wave"></i>' : '')
                .'</a></li>';
 
 /** @var \data\build\Build $build */
@@ -45,7 +45,7 @@ $build = $this->build;
 	</div>
 
 	<ul class="nav nav-tabs" role="tablist" id="waveTabList">
-		<li class="active pointer" data-target="#buildTab"><a href="#buildTab" data-wave="0">Build</a></li>
+		<li class="active pointer waveTab" data-target="#buildTab"><a href="#buildTab" data-wave="0">Build</a></li>
 		<?php
 		if ( $build ) {
 			foreach ( $build->getCustomWaves() as $id => $wave ) {
@@ -74,29 +74,53 @@ $build = $this->build;
 					<div class="canvas">
 						<img class="ddmap" src="<?php echo $this->map->getImage(); ?>">
 						<?php
+						$usedClasses = [];
 						if ( $build !== null ) {
 							foreach ( $build->getPlacedTowers() as $placed ) {
 								/** @var \data\tower\Tower $tower */
 								$tower = $this->availableTowers[$placed['fk_tower']];
 								echo $tower->getHtml($placed);
+								if ( !in_array($tower->fk_class, $usedClasses) ) {
+									$usedClasses[] = $tower->fk_class;
+								}
 							}
+						}
+						if ( $this->action !== 'view' ) {
+							$usedClasses = $this->heroClasses->getObjectIDs();
 						}
 						?>
 					</div>
 				</div>
 				<div class="col-lg-3" id="towerControlPanel">
 					<div class="row">
+						<div class="col-sm-12">
+							<div class="panel panel-default">
+								<div class="panel-heading">Disable Tower</div>
+								<div class="panel-body">
+									<?php
+
+									/** @var HeroClass $heroClass */
+									foreach ( $this->heroClasses as $heroClass ) {
+										if ( in_array($heroClass->getObjectID(), $usedClasses) ) {
+											echo '<img src="'.$heroClass->getImage().'" title="'.$this->escapeHtml($heroClass->name).'" class="disableTowerCheckbox" data-class="'.$heroClass->getObjectID().'" />';
+										}
+									}
+									?>
+								</div>
+							</div>
+						</div>
 						<?php
 						if ( !$isView ) {
+							/** @var HeroClass[] $heros */
 							/** @var \data\tower\Tower[] $towers */
+							$heros = $this->heroClasses->getObjects();
 							foreach ( $this->towers as $classID => $towers ) {
-								/** @var HeroClass $class */
-								$class = $this->heroClasses[$classID];
+								$class = $heros[$classID];
+								$size = count($towers) > 5 ? 12 : 6;
 								?>
-								<div class="col-sm-6">
+								<div class="col-sm-<?php echo $size; ?>">
 									<div class="panel panel-default">
 										<div class="panel-heading"><?php echo $this->escapeHtml($class->name); ?>
-											<label><input type="checkbox" class="disableckbx" value="squire" /> Disable View</label>
 											<!-- TODO re_add, these has currently no effects :( -->
 											<!--<br>
 											<button class="front-tower" value="squire">Front</button>
@@ -118,8 +142,7 @@ $build = $this->build;
 								</div>
 								<?php
 							}
-						}
-						?>
+						} ?>
 						<div class="col-sm-12">
 							<div class="panel panel-default">
 								<div class="panel-heading">Details</div>
@@ -338,6 +361,8 @@ if ( $this->action !== 'view' ) {
 }
 ?>
 <script>
+	'use strict';
+
 	let currentWave = 0;
 
 	function calculateDefenseUnits() {
@@ -375,9 +400,17 @@ if ( $this->action !== 'view' ) {
 		$('#manaUpgrade').html(manaUpgrade);
 	}
 
+	function getWaveTowers(waveID) {
+		return $('.canvas .tower-container[data-wave=' + waveID + ']');
+	}
+
 	function showWave(waveID) {
 		$('.canvas .tower-container').hide();
-		$('.canvas .tower-container[data-wave=' + waveID + ']').show();
+		getWaveTowers(waveID).show();
+		$('.disableTowerCheckbox.disabled').each(function (_, el) {
+			let classID = $(el).attr('data-class');
+			$('.canvas .tower-container[data-class=' + classID + ']').hide();
+		});
 	}
 
 	$(document).ready(function () {
@@ -388,6 +421,11 @@ if ( $this->action !== 'view' ) {
 			currentWave = waveID;
 			showWave(waveID);
 			calculateDefenseUnits();
+		});
+
+		$('.disableTowerCheckbox').on('click', function () {
+			$(this).toggleClass('disabled');
+			showWave(currentWave);
 		});
 
 		$(document)
@@ -405,6 +443,8 @@ if ( $this->action !== 'view' ) {
 				return false;
 			});
 
+		var recoupLeft;
+		var recoupTop;
 		$('.canvas .tower-container').draggable({
 			containment: 'parent',
 			start: function (event, ui) {
@@ -430,7 +470,11 @@ if ( $this->action !== 'view' ) {
 if ( $this->action !== 'view' ) {
 	?>
 	<script>
+		'use strict';
+
 		$(document).ready(function () {
+			let waves = $('#waveTabList .waveTab').length - 1;
+
 			function getRotationDegrees(obj) {
 				var matrix = obj.css('transform');
 				var angle = 0;
@@ -569,8 +613,8 @@ if ( $this->action !== 'view' ) {
 
 			// add a new wave
 			$('#newWave').on('click', function () {
-				var nextWave = $('.customwave').length + 1;
-				var newTab = $(window.__DEFENSE_WAVE_TEMPLATE);
+				var nextWave = ++waves;
+				var newTab = $(window.__DEFENSE_WAVE_TEMPLATE.replace('%id%', nextWave).replace('%name%', 'custom wave ' + nextWave));
 				$('#newWave').before(newTab);
 				newTab.tab('show');
 			});
@@ -580,7 +624,7 @@ if ( $this->action !== 'view' ) {
 				.on('click', '.btn-save', save)
 				.on('mousedown', '.menu', function (e) {
 					var rotating_defense = $(this).parent();
-					offset = rotating_defense.offset();
+					var offset = rotating_defense.offset();
 					$(document).on('mousemove', function (e) {
 						var mouse_x = e.pageX - offset.left - rotating_defense.width() / 2;
 						var mouse_y = e.pageY - offset.top - rotating_defense.height() / 2;
@@ -588,6 +632,26 @@ if ( $this->action !== 'view' ) {
 						var rotate_angle = mouse_cur_angle * (180 / Math.PI) + 90;
 						rotating_defense.css('transform', 'rotate(' + rotate_angle + 'deg)');
 					});
+				})
+				.on('mouseover', '.canvas .tower-container', function (e) {
+					var rotating_defense = $(this);
+					$(document).on('wheel', function (e) {
+						e.preventDefault();
+
+						let delta = 3;
+						if (e.shiftKey) {
+							delta /= 2;
+						}
+						else if (e.ctrlKey) {
+							delta *= 2;
+						}
+
+						var rotate_angle = getRotationDegrees(rotating_defense) + (e.originalEvent.deltaY * delta);
+						rotating_defense.css('transform', 'rotate(' + rotate_angle + 'deg)');
+					});
+				})
+				.on('mouseout', '.canvas .tower-container', function (e) {
+					$(document).unbind('wheel');
 				})
 				.on('mouseover', '.menu', function (e) {
 					$(this).parent().draggable('disable');
@@ -599,10 +663,11 @@ if ( $this->action !== 'view' ) {
 					$(document).unbind('mousemove');
 				})
 				.on('click', '.delete-wave', function () {
-					if (confirm('Want delete this wave?')) {
-						let deleteWave = $(this).closest('a[data-wave]');
+					let deleteWave = $(this).closest('a[data-wave]');
+					let waveID = deleteWave.attr('data-wave');
+					let towers = getWaveTowers(waveID);
+					if (towers.length === 0 || confirm('Want delete this wave?')) {
 						let currentWave = $('#waveTabList li.active');
-						let waveID = deleteWave.attr('data-wave');
 						// delete current active wave - select tab before
 						if (currentWave.find('a[data-wave]').attr('data-wave') === waveID) {
 							let before = null;
@@ -616,7 +681,7 @@ if ( $this->action !== 'view' ) {
 						}
 
 						deleteWave.closest('li').remove();
-						$('.canvas .tower-container[data-wave=' + waveID + ']').remove();
+						towers.remove();
 					}
 				})
 				.on('click', '.edit-wave', function () {
@@ -651,7 +716,5 @@ if ( $this->action !== 'view' ) {
 		});
 	</script>
 <?php } else { ?>
-	<script>
-		// view mode
-	</script>
+
 <?php } ?>

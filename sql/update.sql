@@ -26,7 +26,7 @@ ALTER TABLE builds
 	CHANGE COLUMN expperrun expPerRun VARCHAR(20) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT '' AFTER timePerRun;
 
 ALTER TABLE builds
-	ADD COLUMN comments INT(10) UNSIGNED NOT NULL AFTER votes;
+	ADD COLUMN comments INT(10) UNSIGNED DEFAULT 0 NOT NULL AFTER votes;
 
 -- update hero state @formatter:off
 UPDATE classes SET isHero = 1 WHERE id IN (1, 2, 3, 4);

@@ -4,6 +4,8 @@ namespace system\database\statement;
 
 use data\DatabaseObject;
 use system\database\Database;
+use system\exception\DatabaseException;
+use system\exception\DatabaseQueryExecutionException;
 
 // use system\database\exception\DatabaseQueryException;
 // use system\database\exception\DatabaseQueryExecutionException;
@@ -69,7 +71,7 @@ class PreparedStatement {
 		try {
 			return call_user_func_array([$this->pdoStatement, $name], $arguments);
 		} catch ( \PDOException $e ) {
-			throw new \Exception("Could call '".$name."' on '".$this->query."'"); // TODO DatabaseQueryException
+			throw new DatabaseException("Could call '".$name."' on '".$this->query."'",$e);
 		}
 	}
 
@@ -89,10 +91,10 @@ class PreparedStatement {
 
 			if ( !$result ) {
 				$errorInfo = $this->pdoStatement->errorInfo();
-				throw new \Exception("Could not execute statement '".$this->query."': ".$errorInfo[0].' '.$errorInfo[2]); // TODO DatabaseQueryExecutionException
+				throw new DatabaseQueryExecutionException("Could not execute statement '".$this->query."': ".$errorInfo[0].' '.$errorInfo[2], $parameters);
 			}
 		} catch ( \PDOException $e ) {
-			throw new \Exception("Could not execute statement '".$this->query."'", $parameters, $e); // TODO DatabaseQueryExecutionException
+			throw new DatabaseQueryExecutionException("Could not execute statement '".$this->query."'", $parameters, $e);
 		}
 	}
 
@@ -229,7 +231,7 @@ class PreparedStatement {
 		try {
 			return $this->pdoStatement->rowCount();
 		} catch ( \PDOException $e ) {
-			throw new \Exception("Could fetch affected rows for '".$this->query."'"); // TODO DatabaseQueryException
+			throw new DatabaseException("Could fetch affected rows for '".$this->query."'", $e);
 		}
 	}
 

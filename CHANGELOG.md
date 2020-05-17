@@ -9,3 +9,5 @@
 - moved delete wave button to wave tab menu
 - edit wave name now with a button (prevent wrong caret position) (#6)
 - comments tab only visible in view/edit mode (#4)
+- rotate towers with mouse wheel (+ shift = slower, ctrl = faster)
+- new disable tower view

@@ -122,7 +122,7 @@ class BuildAddPage extends AbstractPage {
 			'timePerRun'      => $this->timePerRun,
 			'description'     => $this->description,
 			'availableTowers' => $this->towerList->getObjects(),
-			'heroClasses'     => $this->heroClasses->getObjects(),
+			'heroClasses'     => $this->heroClasses,
 		]);
 	}
 }

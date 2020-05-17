@@ -29,6 +29,7 @@
 	cursor: pointer;
 }
 
+/* traps */
 .tower-container[data-class="3"].ui-draggable-dragging img.tower,
 .canvas .tower-container[data-class="3"] img.tower {
 	width: 45px;
@@ -36,6 +37,7 @@
 	line-height: 45px;
 }
 
+/* monk aura */
 .tower-container[data-class="4"].ui-draggable-dragging img.tower,
 .canvas .tower-container[data-class="4"] img.tower {
 	width: 100px;
@@ -65,6 +67,17 @@
 	cursor: pointer;
 }
 
+.disableTowerCheckbox {
+	width: 48px;
+	height: 48px;
+	line-height: 64px;
+	cursor: pointer;
+}
+
+.disableTowerCheckbox.disabled {
+	opacity: 0.2;
+}
+
 /*
 html{position:relative;min-height:100%;}
 .defense{width:35px;height:35px;cursor:pointer;}
@@ -82,7 +95,6 @@ html{position:relative;min-height:100%;}
 .pool{opacity:1;}
 .description{background-color:#C8C8C8;}
 .arrow.placed{width:80px;height:80px;line-height:80px;}
-.disablecheckbox{width:64px;height:64px;line-height:64px;}
 .pagination a{color:black;float:left;padding:8px 16px;text-decoration:none;transition:background-color .3s;}
 .first-box{padding:35px;background:#9C0;}
 .second-box{padding:35px;background:#39F;}

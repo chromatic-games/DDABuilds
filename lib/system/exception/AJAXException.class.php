@@ -64,10 +64,13 @@ class AJAXException extends Exception {
 		// include a stacktrace on debug mode
 		if ( DEBUG_MODE ) {
 			$responseData['previous'] = [];
-			$responseData['stacktrace'] = nl2br($stacktrace, false);
+			$responseData['stacktrace'] = explode("\n", $stacktrace);
+			if ( method_exists($this, 'getExtraInformation') ) {
+				$responseData['extra'] = $this->getExtraInformation();
+			}
 			while ( $previous ) {
 				$data = ['message' => $previous->getMessage()];
-				$data['stacktrace'] = nl2br($previous->getTraceAsString(), false);
+				$data['stacktrace'] = explode("\n", $previous->getTraceAsString());
 
 				$responseData['previous'][] = $data;
 				$previous = $previous->getPrevious();

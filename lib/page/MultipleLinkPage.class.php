@@ -5,7 +5,7 @@ namespace page;
 use data\DatabaseObjectList;
 use system\Core;
 use system\exception\NamedUserException;
-use wcf\system\exception\ParentClassException;
+use system\exception\ParentClassException;
 
 /**
  * Provides default implementations for a multiple link page.

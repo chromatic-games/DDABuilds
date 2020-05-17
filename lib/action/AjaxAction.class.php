@@ -7,11 +7,11 @@ use system\Core;
 use system\exception\AJAXException;
 use system\exception\IllegalLinkException;
 use system\exception\NamedUserException;
+use system\exception\ParentClassException;
 use system\exception\PermissionDeniedException;
 use system\exception\UserInputException;
 use system\util\ArrayUtil;
 use system\util\StringUtil;
-use wcf\system\exception\ParentClassException;
 
 class AjaxAction extends AbstractAction {
 	/**
@@ -128,7 +128,7 @@ class AjaxAction extends AbstractAction {
 			]);
 		}
 		else {
-			throw new AJAXException($e->getMessage(), AJAXException::INTERNAL_ERROR, $e->getTraceAsString());
+			throw new AJAXException($e->getMessage(), AJAXException::INTERNAL_ERROR, $e->getTraceAsString(), [], $e);
 		}
 	}
 
