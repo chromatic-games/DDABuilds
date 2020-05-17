@@ -2,6 +2,7 @@
 
 use data\build\stats\BuildStats;
 use data\heroClass\HeroClass;
+use system\request\LinkHandler;
 
 $isView = $this->action === 'view';
 $tabTemplate = '<li class="customwave" data-target="#buildTab"><a data-wave="%id%"><span>%name%</span>'
@@ -269,13 +270,15 @@ $build = $this->build;
 
 										<h4>Build Status: <strong><?php echo $this->escapeHtml($build->getBuildStatus()->name) ?></strong></h4>
 										<h4>Difficulty: <strong><?php echo $this->escapeHtml($build->getDifficulty()->name) ?></strong></h4>
-										<h4>Game Mode: <strong><?php echo '???' ?></strong></h4>
+										<h4>Game Mode: <strong><?php echo $this->escapeHtml($build->getGamemode()) ?></strong></h4>
 										<h4>Hardcore: <strong><?php echo $build->hardcore ? 'Yes' : 'No' ?></strong></h4>
 										<h4>AFK Able: <strong><?php echo $build->afkable ? 'Yes' : 'No' ?></strong></h4>
 										<h4>XP Per Run: <strong><?php echo $this->escapeHtml($build->expPerRun) ?></strong></h4>
 										<h4>Time Per Run: <strong><?php echo $this->escapeHtml($build->timePerRun) ?></strong></h4>
 										<h4>Mana Used: <strong id="manaUsed"></strong></h4>
 										<h4>Mana to Upgrade: <strong id="manaUpgrade"></strong></h4>
+										<br />
+										More Builds from <a href="<?php echo LinkHandler::getInstance()->getLink('BuildList', ['author' => $this->author]) ?>"><?php echo $this->escapeHtml($this->author); ?></a>
 									<?php } ?>
 								</div>
 							</div>
@@ -333,6 +336,8 @@ if ( $this->action !== 'view' ) {
 }
 ?>
 <script>
+	let currentWave = 0;
+
 	function calculateDefenseUnits() {
 		var defenseUnits = 0;
 		var minionUnits = 0;
@@ -368,9 +373,12 @@ if ( $this->action !== 'view' ) {
 		$('#manaUpgrade').html(manaUpgrade);
 	}
 
-	$(document).ready(function () {
-		let currentWave = 0;
+	function showWave(waveID) {
+		$('.canvas .tower-container').hide();
+		$('.canvas .tower-container[data-wave=' + waveID + ']').show();
+	}
 
+	$(document).ready(function () {
 		// update tab menu
 		$(document).on('shown.bs.tab', '#waveTabList', function (e) {
 			var waveID = $(e.target).find('a').attr('data-wave');
@@ -379,11 +387,6 @@ if ( $this->action !== 'view' ) {
 			showWave(waveID);
 			calculateDefenseUnits();
 		});
-
-		function showWave(waveID) {
-			$('.canvas .tower-container').hide();
-			$('.canvas .tower-container[data-wave=' + waveID + ']').show();
-		}
 
 		$(document)
 			.on('click', '#waveTabList li', function (event) {

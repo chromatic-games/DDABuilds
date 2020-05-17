@@ -215,8 +215,6 @@ abstract class Database {
 			return new $this->preparedStatementClassName($this, $pdoStatement, $statement);
 		}
 		catch ( PDOException $e) {
-			echo '<pre>';
-			var_dump($e);
 			throw new Exception("Could not prepare statement '".$statement."'"); // TODO replace with own database exception? (DatabaseQueryException)
 		}
 	}

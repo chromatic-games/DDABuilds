@@ -185,6 +185,16 @@ class Build extends DatabaseObject implements IRouteObject {
 		return imagepng($lastimg, MAIN_DIR.'assets/images/thumbnails/'.$this->getObjectID().'.png');
 	}
 
+	public function getGamemode() {
+		foreach ( $this->getGamemodes() as $gamemode ) {
+			if ( $this->{$gamemode['key']} ) {
+				return $gamemode['name'];
+			}
+		}
+
+		return null;
+	}
+
 	/**
 	 * all available gamemodes (with modifier (hardcore/mix mode) combination information)
 	 * TODO move to database
@@ -220,6 +230,7 @@ class Build extends DatabaseObject implements IRouteObject {
 	public function getDifficulty() {
 		return new Difficulty($this->difficulty);
 	}
+
 	/**
 	 * get the build status object from this build
 	 * TODO CACHE
