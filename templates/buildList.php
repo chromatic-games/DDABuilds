@@ -1,5 +1,6 @@
 <?php
 
+use data\difficulty\Difficulty;
 use system\request\LinkHandler;
 
 $linkParameters = 'pageNo='.$this->pageNo.'&sortField='.$this->sortField.'&sortOrder='.$this->sortOrder;
@@ -40,7 +41,23 @@ if ( $this->showFilter ) {
 							</div>
 						</div>
 						<div class="col-md-3">
-							<?php echo $this->render('selectDifficulty', ['showAny' => true, 'selectedDifficulty' => $this->difficulty]); ?>
+							<div class="form-group">
+								<label for="difficultySelect">Difficulty:</label>
+								<select class="form-control" id="difficultySelect" name="difficulty">
+									<option value="0">Any</option>
+									<?php
+									/** @var Difficulty $difficulty */
+									foreach ( $this->difficulties as $difficulty ) {
+										$selected = '';
+										if ( $this->difficulty === $difficulty->getObjectID() ) {
+											$selected = ' selected="selected"';
+										}
+
+										echo '<option value="'.$difficulty->getObjectID().'"'.$selected.'>'.$this->escapeHtml($difficulty->name).'</option>';
+									}
+									?>
+								</select>
+							</div>
 						</div>
 						<div class="col-md-3">
 							<?php echo $this->render('selectMap', ['showAny' => true, 'selectedMap' => $this->map, 'maps' => $this->maps]); ?>

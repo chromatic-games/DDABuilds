@@ -81,7 +81,8 @@ class Core {
 			ob_end_clean();
 		}
 
-		throw new NamedUserException($e->getMessage(), $e->getCode(), $e);
+		$exception = new NamedUserException($e->getMessage(), $e->getCode(), $e);
+		$exception->show();
 	}
 
 	public static final function handleError($severity, $message, $file, $line) {

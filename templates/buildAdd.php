@@ -316,8 +316,10 @@ $build = $this->build;
 										<h4>Mana Used: <strong id="manaUsed">0</strong></h4>
 										<h4>Mana to Upgrade: <strong id="manaUpgrade">0</strong></h4>
 
-										<button class="btn btn-primary btn-save">save</button>
-										<?php
+										<button class="btn btn-primary btn-save">Save</button>
+										<?php if ( $build ) { ?>
+										<a href="<?php echo LinkHandler::getInstance()->getLink('Build', ['object' => $build], 'view') ?>" class="btn btn-info">Viewer Mode</a>
+										<?php }
 									}
 									else {
 										$heroBuildStats = $build->getStats();
@@ -362,6 +364,10 @@ $build = $this->build;
 										<br />
 										More Builds from
 										<a href="<?php echo LinkHandler::getInstance()->getLink('BuildList', ['author' => $this->author]) ?>"><?php echo $this->escapeHtml($this->author); ?></a>
+
+										<?php if ( $build->isCreator() ) { ?>
+											<br /><br /><a href="<?php echo LinkHandler::getInstance()->getLink('Build', ['object' => $build]) ?>" class="btn btn-info">Editor Mode</a>
+										<?php } ?>
 									<?php } ?>
 								</div>
 							</div>

@@ -3,6 +3,7 @@
 namespace page;
 
 use data\build\BuildList;
+use data\difficulty\DifficultyList;
 use data\map\Map;
 use data\map\MapList;
 use system\Core;
@@ -55,6 +56,10 @@ class BuildListPage extends SortablePage {
 		if ( !$this->showFilter ) {
 			return;
 		}
+
+		$difficulties = new DifficultyList();
+		$difficulties->readObjects();
+		Core::getTPL()->assign('difficulties', $difficulties);
 
 		$maps = new MapList();
 		$maps->readObjects();

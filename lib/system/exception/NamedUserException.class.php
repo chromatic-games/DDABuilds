@@ -12,14 +12,22 @@ class NamedUserException extends UserException {
 	 * Shows a styled page with the given error message.
 	 */
 	public function show() {
+		$stacktrace = $this->getTraceAsString();
+		$previous = $this->getPrevious();
+		while ( $previous ) {
+			$stacktrace .= $previous->getTraceAsString();
+			$previous = $previous->getPrevious();
+		}
+
 		Core::getTPL()->assign([
 			'name'         => get_class($this),
 			'file'         => $this->getFile(),
 			'line'         => $this->getLine(),
 			'message'      => $this->getMessage(),
-			'stacktrace'   => $this->getTraceAsString(),
+			'stacktrace'   => $stacktrace,
 			'templateName' => 'userException',
 		]);
 		Core::getTPL()->display('userException');
+		exit;
 	}
 }
