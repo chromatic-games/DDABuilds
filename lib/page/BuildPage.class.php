@@ -45,6 +45,9 @@ class BuildPage extends BuildAddPage {
 
 		$this->buildName = $this->build->name;
 		$this->author = $this->build->author;
+		$this->expPerRun = $this->build->expPerRun;
+		$this->timePerRun = $this->build->timePerRun;
+		$this->description = $this->build->description;
 	}
 
 	public function assignVariables() {

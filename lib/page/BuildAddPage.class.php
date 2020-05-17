@@ -21,10 +21,6 @@ class BuildAddPage extends AbstractPage {
 	/** @var TowerList */
 	public $towers;
 
-	public $buildName = '';
-
-	public $author = '';
-
 	/** @var HeroClassList */
 	public $heroClasses;
 
@@ -33,6 +29,19 @@ class BuildAddPage extends AbstractPage {
 
 	/** @var BuildStatusList */
 	public $buildStatuses;
+
+	/** @var TowerList */
+	public $towerList;
+
+	public $buildName = '';
+
+	public $author = '';
+
+	public $timePerRun = '';
+
+	public $expPerRun = '';
+
+	public $description = '';
 
 	/**
 	 * @throws IllegalLinkException
@@ -75,11 +84,11 @@ class BuildAddPage extends AbstractPage {
 		$this->difficulties->readObjects();
 
 		// get towers
-		$towers = new TowerList();
-		$towers->readObjects();
+		$this->towerList = new TowerList();
+		$this->towerList->readObjects();
 		$this->towers = [];
 		/** @var Tower $tower */
-		foreach ( $towers as $tower ) {
+		foreach ( $this->towerList as $tower ) {
 			$this->towers[$tower->fk_class][] = $tower;
 		}
 	}
@@ -91,14 +100,18 @@ class BuildAddPage extends AbstractPage {
 		parent::assignVariables();
 
 		Core::getTPL()->assign([
-			'action'        => 'add',
-			'map'           => $this->map,
-			'towers'        => $this->towers,
-			'buildName'     => $this->buildName,
-			'author'        => $this->author,
-			'difficulties'  => $this->difficulties,
-			'buildStatuses' => $this->buildStatuses,
-			'heroClasses'   => $this->heroClasses->getObjects(),
+			'action'          => 'add',
+			'map'             => $this->map,
+			'towers'          => $this->towers,
+			'buildName'       => $this->buildName,
+			'author'          => $this->author,
+			'difficulties'    => $this->difficulties,
+			'buildStatuses'   => $this->buildStatuses,
+			'expPerRun'       => $this->expPerRun,
+			'timePerRun'      => $this->timePerRun,
+			'description'     => $this->description,
+			'availableTowers' => $this->towerList->getObjects(),
+			'heroClasses'     => $this->heroClasses->getObjects(),
 		]);
 	}
 }

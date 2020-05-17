@@ -2,6 +2,7 @@
 
 namespace data\build;
 
+use data\build\stats\BuildStats;
 use data\DatabaseObject;
 use data\difficulty\Difficulty;
 use data\IRouteObject;
@@ -17,6 +18,9 @@ use system\Core;
  * @property-read string  $date
  * @property-read string  $author
  * @property-read string  $name
+ * @property-read string  $expPerRun
+ * @property-read string  $timePerRun
+ * @property-read string  $description
  * @property-read integer $views
  * @property-read integer $map
  * @property-read integer $difficulty
@@ -27,6 +31,12 @@ class Build extends DatabaseObject implements IRouteObject {
 	protected static $databaseTableName = 'builds';
 
 	protected static $databaseTableIndexName = 'id';
+
+	/** @var BuildStats[] */
+	protected $__stats;
+
+	/** @var array */
+	protected $__placedTowers;
 
 	public function getDate() {
 		return date('d F Y', strtotime($this->date));
@@ -39,6 +49,46 @@ class Build extends DatabaseObject implements IRouteObject {
 		}
 
 		return $filename;
+	}
+
+	/**
+	 * @return BuildStats[]
+	 * @throws \Exception
+	 */
+	public function getStats() {
+		if ( !$this->getObjectID() ) {
+			return [];
+		}
+
+		if ( $this->__stats === null ) {
+			$statement = Core::getDB()->prepareStatement('SELECT * FROM build_stats WHERE buildID = ?');
+			$statement->execute([$this->getObjectID()]);
+			$this->__stats = [];
+			/** @var BuildStats $buildStats */
+			foreach ( $statement->fetchObjects(BuildStats::class) as $buildStats ) {
+				$this->__stats[$buildStats->classID] = $buildStats;
+			}
+		}
+
+		return $this->__stats;
+	}
+
+	/**
+	 * @return array
+	 * @throws \Exception
+	 */
+	public function getPlacedTowers() {
+		if ( !$this->getObjectID() ) {
+			return [];
+		}
+
+		if ( $this->__stats === null ) {
+			$statement = Core::getDB()->prepareStatement('SELECT * FROM placed WHERE fk_build = ?');
+			$statement->execute([$this->getObjectID()]);
+			$this->__placedTowers = $statement->fetchAll();
+		}
+
+		return $this->__placedTowers;
 	}
 
 	public function isCreator() {
