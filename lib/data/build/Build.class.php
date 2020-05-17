@@ -23,6 +23,8 @@ use system\Core;
  * @property-read string  $description
  * @property-read integer $views
  * @property-read integer $map
+ * @property-read integer $afkable
+ * @property-read integer $hardcore
  * @property-read integer $difficulty
  * @property-read integer $votes
  * @property-read integer $fk_user
@@ -37,6 +39,9 @@ class Build extends DatabaseObject implements IRouteObject {
 
 	/** @var array */
 	protected $__placedTowers;
+
+	/** @var array */
+	protected $__customWaves;
 
 	public function getDate() {
 		return date('d F Y', strtotime($this->date));
@@ -89,6 +94,24 @@ class Build extends DatabaseObject implements IRouteObject {
 		}
 
 		return $this->__placedTowers;
+	}
+
+	/**
+	 * @return array
+	 * @throws \Exception
+	 */
+	public function getCustomWaves() {
+		if ( !$this->getObjectID() ) {
+			return [];
+		}
+
+		if ( $this->__customWaves === null ) {
+			$statement = Core::getDB()->prepareStatement('SELECT * FROM buildwaves WHERE fk_build = ? ORDER BY id ASC');
+			$statement->execute([$this->getObjectID()]);
+			$this->__customWaves = $statement->fetchAll();
+		}
+
+		return $this->__customWaves;
 	}
 
 	public function isCreator() {
@@ -163,6 +186,7 @@ class Build extends DatabaseObject implements IRouteObject {
 
 	/**
 	 * all available gamemodes (with modifier (hardcore/mix mode) combination information)
+	 * TODO move to database
 	 *
 	 * @return \string[][]
 	 */

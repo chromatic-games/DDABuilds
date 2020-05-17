@@ -3,6 +3,13 @@
 use data\build\stats\BuildStats;
 use data\heroClass\HeroClass;
 
+$tabTemplate = '<li class="customwave" data-target="#buildTab"><a data-wave="%id%"><span>%name%</span>'
+               .($this->action !== 'view' ? ' <i class="fa fa-pencil pointer edit-wave"></i> <i class="fa fa-trash pointer delete-wave"></i>' : '')
+               .'</a></li>';
+
+/** @var \data\build\Build $build */
+$build = $this->build;
+
 ?>
 <div class="container-fluid">
 	<div class="row">
@@ -26,10 +33,17 @@ use data\heroClass\HeroClass;
 
 	<ul class="nav nav-tabs" role="tablist" id="waveTabList">
 		<li class="active" data-target="#buildTab"><a href="#buildTab" data-wave="0">Build</a></li>
+		<?php
+		if ( $build ) {
+			foreach ( $build->getCustomWaves() as $id => $wave ) {
+				echo str_replace(['%name%', '%id%'], [$this->escapeHtml($wave['name']), $id + 1], $tabTemplate);
+			}
+		}
+		?>
 		<li id="newWave"><a href="#">+</a></li>
 		<?php if ( $this->action !== 'add' ) { ?>
 			<li data-target="#comments">
-		        <a role="tab" data-toggle="tab" href="#comments">Comments (<span><?php echo $this->build->comments ?></span>)</a>
+		        <a role="tab" data-toggle="tab" href="#comments">Comments (<span><?php echo $build->comments ?></span>)</a>
 		    </li>
 		<?php } ?>
 	</ul>
@@ -45,8 +59,8 @@ use data\heroClass\HeroClass;
 					<div class="canvas">
 						<img class="ddmap" src="<?php echo $this->map->getImage(); ?>">
 						<?php
-						if ( $this->build ) {
-							foreach ( $this->build->getPlacedTowers() as $placed ) {
+						if ( $build !== null ) {
+							foreach ( $build->getPlacedTowers() as $placed ) {
 								/** @var \data\tower\Tower $tower */
 								$tower = $this->availableTowers[$placed['fk_tower']];
 								echo $tower->getHtml($placed);
@@ -132,7 +146,7 @@ use data\heroClass\HeroClass;
 											/** @var \data\build\status\BuildStatus $buildStatus */
 											foreach ( $this->buildStatuses as $buildStatus ) {
 												$selected = '';
-												if ( $this->build && $this->build->getObjectID() && $buildStatus->getObjectID() == $this->build->fk_buildstatus ) {
+												if ( $build && $build->getObjectID() && $buildStatus->getObjectID() == $build->fk_buildstatus ) {
 													$selected = 'selected="selected"';
 												}
 
@@ -152,7 +166,7 @@ use data\heroClass\HeroClass;
 												$difficultyId = $difficulty->getObjectID();
 												$difficultyName = $difficulty->name;
 												$selected = '';
-												if ( $this->build && $this->build->difficulty === $difficultyId ) {
+												if ( $build && $build->difficulty === $difficultyId ) {
 													$selected = ' selected="selected"';
 												}
 												echo '<option value="'.$difficultyId.'"'.$selected.'>'.$difficultyName.'</option>';
@@ -164,10 +178,9 @@ use data\heroClass\HeroClass;
 										<?php
 										echo '<label for="campaign">Game Mode:</label><br>';
 										$first = true;
-										// TODO move to database
 										foreach ( \data\build\Build::getGamemodes() as $mode ) {
 											$checked = '';
-											if ( ($this->action === 'add' && $first) || $this->build && $this->build->{$mode['key']} ) {
+											if ( ($this->action === 'add' && $first) || $build && $build->{$mode['key']} ) {
 												$checked = ' checked';
 												$first = false;
 											}
@@ -179,14 +192,14 @@ use data\heroClass\HeroClass;
 									<div class="form-group">
 										<div class="checkbox">
 											<label>
-												<input type="checkbox" id="hardcore" value="1"<?php echo $this->build && $this->build->hardcore ? ' checked' : ''; ?>> Hardcore
+												<input type="checkbox" id="hardcore" value="1"<?php echo $build && $build->hardcore ? ' checked' : ''; ?>> Hardcore
 											</label>
 										</div>
 									</div>
 									<div class="form-group">
 										<div class="checkbox">
 											<label>
-												<input type="checkbox" id="afkAble" value="1"<?php echo $this->build && $this->build->afkable ? ' checked' : ''; ?>> AFK Able
+												<input type="checkbox" id="afkAble" value="1"<?php echo $build && $build->afkable ? ' checked' : ''; ?>> AFK Able
 											</label>
 										</div>
 									</div>
@@ -234,7 +247,7 @@ use data\heroClass\HeroClass;
 <?php
 if ( $this->action !== 'view' ) {
 	/** @var BuildStats[] $buildStats */
-	$buildStats = $this->build ? $this->build->getStats() : [];
+	$buildStats = $build ? $build->getStats() : [];
 	$stats = [];
 	/** @var HeroClass $heroClass */
 	foreach ( $this->heroClasses as $heroClass ) {
@@ -251,7 +264,12 @@ if ( $this->action !== 'view' ) {
 		];
 	}
 
-	echo '<script>window.__DEFENSE_STATS = '.json_encode($stats).';</script>';
+	?>
+	<script>
+		window.__DEFENSE_STATS = <?php echo json_encode($stats); ?>;
+		window.__DEFENSE_WAVE_TEMPLATE = '<?php echo $tabTemplate; ?>';
+	</script>
+	<?php
 }
 ?>
 <script>
@@ -307,16 +325,15 @@ if ( $this->action !== 'view' ) {
 			$('.canvas .tower-container[data-wave=' + waveID + ']').show();
 		}
 
-		$(document).on('click', '#waveTabList li', function (event) {
-			if ($(this).attr('id') === 'newWave' || event.target.classList.contains('fa')) {
-				return;
-			}
-
-			event.preventDefault();
-			$(this).tab('show');
-		});
-
 		$(document)
+			.on('click', '#waveTabList li', function (event) {
+				if ($(this).attr('id') === 'newWave' || event.target.classList.contains('fa')) {
+					return;
+				}
+
+				event.preventDefault();
+				$(this).tab('show');
+			})
 			.on('contextmenu', '.canvas .tower-container', function () {
 				$(this).remove();
 				calculateDefenseUnits();
@@ -338,7 +355,10 @@ if ( $this->action !== 'view' ) {
 				ui.position.top += recoupTop;
 			}
 		});
+
+		// initialize
 		calculateDefenseUnits();
+		showWave(0);
 	});
 </script>
 <?php
@@ -484,7 +504,7 @@ if ( $this->action !== 'view' ) {
 			// add a new wave
 			$('#newWave').on('click', function () {
 				var nextWave = $('.customwave').length + 1;
-				var newTab = $('<li class="customwave" data-target="#buildTab"><a data-wave="' + nextWave + '"><span>custom wave ' + nextWave + '</span> <i class="fa fa-pencil pointer edit-wave"></i> <i class="fa fa-trash pointer delete-wave"></i></a></li>');
+				var newTab = $(window.__DEFENSE_WAVE_TEMPLATE);
 				$('#newWave').before(newTab);
 				newTab.tab('show');
 			});
@@ -561,6 +581,7 @@ if ( $this->action !== 'view' ) {
 			if ($('#builddescription').length) {
 				CKEDITOR.replace('builddescription');
 			}
+
 		});
 	</script>
 <?php } else { ?>
