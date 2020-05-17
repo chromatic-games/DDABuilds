@@ -144,7 +144,7 @@ if ( $this->showFilter ) {
 						echo '<p><small>Rating:</small> '.$this->number($build->votes).'</p>';
 						echo '<p><small>Views:</small> '.$this->number($build->views).'</p>';
 						echo '<p>'.$build->getDate().'</p>';
-						echo '<p>'.$build->author.'</p></h4></a>';
+						echo '<p>'.$this->escapeHtml($build->author).'</p></h4></a>';
 						?>
 					</div>
 				</div>
