@@ -14,6 +14,8 @@ use data\DatabaseObject;
  * @property-read string $date
  */
 class Comment extends DatabaseObject {
+	const COMMENTS_PER_PAGE = 10;
+
 	protected static $databaseTableName = 'comments';
 
 	protected static $databaseTableIndexName = 'id';

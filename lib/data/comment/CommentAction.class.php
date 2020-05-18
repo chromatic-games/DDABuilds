@@ -10,6 +10,11 @@ use system\exception\UserInputException;
 use system\util\StringUtil;
 
 class CommentAction extends DatabaseObjectAction {
+	/**
+	 * @var Build
+	 */
+	public $build;
+
 	public function validateAdd() {
 		if ( empty($this->parameters['text']) ) {
 			throw new UserInputException('text');
@@ -23,11 +28,11 @@ class CommentAction extends DatabaseObjectAction {
 			throw new UserInputException('text');
 		}
 
-		$build = new Build($this->parameters['buildID']);
-		if ( !$build->getObjectID() || $build->deleted ) {
+		$this->build = new Build($this->parameters['buildID']);
+		if ( !$this->build->getObjectID() || $this->build->deleted ) {
 			throw new NamedUserException('This is an invalid or deleted build');
 		}
-		elseif ( $build->fk_buildstatus === 3 && !$build->isCreator() ) {
+		elseif ( $this->build->fk_buildstatus === 3 && !$this->build->isCreator() ) {
 			throw new NamedUserException('This is a private build, you cant comment on it');
 		}
 	}
@@ -42,8 +47,52 @@ class CommentAction extends DatabaseObjectAction {
 			],
 		]);
 
+		$this->build->updateCounters(['comments' => 1]);
+
 		return Core::getTPL()->render('comment', [
 			'comment' => $commentAction->executeAction()['returnValues'],
 		]);
+	}
+
+	public function validateLoadMore() {
+		if ( empty($this->parameters['buildID']) ) {
+			throw new UserInputException('buildID');
+		}
+
+		if ( empty($this->parameters['lastID']) ) {
+			throw new UserInputException('lastID');
+		}
+
+		$build = new Build($this->parameters['buildID']);
+		if ( !$build->getObjectID() ) {
+			throw new UserInputException('buildID');
+		}
+	}
+
+	public function loadMore() {
+		$commentList = new CommentList();
+		$commentList->getConditionBuilder()->add('fk_build = ?', [$this->parameters['buildID']]);
+		$commentList->getConditionBuilder()->add('id < ?', [$this->parameters['lastID']]);
+		$commentList->sqlLimit = Comment::COMMENTS_PER_PAGE + 1;
+		$commentList->sqlOrderBy = 'id desc';
+		$commentList->readObjects();
+
+		$html = '';
+		foreach ( array_slice($commentList->getObjects(), 0, -1) as $i => $comment ) {
+			$html .= Core::getTPL()->render('comment', ['comment' => $comment]);
+		}
+
+		$lastCommentID = 0;
+		/** @var Comment[] $lastComment */
+		$lastComment = array_slice($commentList->getObjects(), Comment::COMMENTS_PER_PAGE, 1);
+		if ( isset($lastComment[0]) ) {
+			$lastCommentID = $lastComment[0]->getObjectID();
+		}
+
+		return [
+			'html'    => $html,
+			'lastID'  => $lastCommentID,
+			'hasMore' => $commentList->count() > Comment::COMMENTS_PER_PAGE,
+		];
 	}
 }

@@ -1,6 +1,7 @@
 <?php
 
 use data\build\stats\BuildStats;
+use data\comment\Comment;
 use data\heroClass\HeroClass;
 use system\Core;
 use system\request\LinkHandler;
@@ -38,7 +39,7 @@ $build = $this->build;
 		<div class="col-md-1 text-center">
 			<h3>
 				DU: <b><span id="currentDefenseUnits">0</span>/<span id="maxDefenseUnits"><?php echo $this->map->units ?></span></b>
-				<?php if ( $this->showMU) { ?>
+				<?php if ( $this->showMU ) { ?>
 					MU: <b><span id="currentMinionUnits">0</span>/<span><?php echo $this->map->units ?></span></b>
 				<?php } ?>
 			</h3>
@@ -80,13 +81,14 @@ $build = $this->build;
 							</div>
 						</div>
 						<script>
-							CKEDITOR.replace('commentMain');
-
 							$(document).ready(function () {
+								CKEDITOR.replace('commentMain');
+
 								$('.btn-comment').on('click', () => {
 									let text = CKEDITOR.instances.commentMain.getData().trim();
 									if (text.length) {
 										$('.btn-comment').prop('disabled', true);
+										Core.AjaxStatus.show();
 										$.post(
 											'?ajax', {
 												className: '\\data\\comment\\CommentAction',
@@ -100,14 +102,16 @@ $build = $this->build;
 												CKEDITOR.instances.commentMain.setData('');
 												$('#commentList').prepend(data.returnValues);
 												$('.btn-comment').prop('disabled', false);
+												Core.AjaxStatus.hide();
 											}
 										).fail(function (jqXHR, textStatus, errorThrown) {
 											try {
 												alert('Error while saving: ' + JSON.parse(jqXHR.responseText).message);
 											}
-											catch (e ) {
+											catch (e) {
 												alert('Unknown error while saving...');
 											}
+											Core.AjaxStatus.hide();
 										});
 									}
 									else {
@@ -120,11 +124,53 @@ $build = $this->build;
 					<div id="commentList">
 						<?php
 						/** @var \data\comment\Comment $comment */
-						foreach ( $build->getComments() as $comment ) {
+						foreach ( array_slice($build->getComments(), 0, -1) as $comment ) {
 							echo Core::getTPL()->render('comment', ['comment' => $comment]);
 						}
-                        ?>
+						?>
 					</div>
+					<?php
+					$lastCommentID = 0;
+					if ( count($build->getComments()) > Comment::COMMENTS_PER_PAGE ) {
+						$lastComment = array_slice($build->getComments(), -2, 1)[0];
+						$lastCommentID = $lastComment->getObjectID();
+						echo '<div class="text-center" id="moreComments"><button class="btn btn-primary">More comments</button></div>';
+					}
+					?>
+					<script>
+						$(document).ready(function () {
+							let lastCommentID = <?php echo $lastCommentID; ?>;
+							$('#moreComments .btn').on('click', () => {
+								Core.AjaxStatus.show();
+								$.post(
+									'?ajax', {
+										className: '\\data\\comment\\CommentAction',
+										actionName: 'loadMore',
+										parameters: {
+											buildID: window.__DEFENSE_OBJECT_IDS[0],
+											lastID: lastCommentID
+										}
+									},
+									function (data) {
+										$('#commentList').append(data.returnValues.html);
+										lastCommentID = data.returnValues.lastID;
+										if (!data.returnValues.hasMore) {
+											$('#moreComments').html('');
+										}
+										Core.AjaxStatus.hide();
+									}
+								).fail(function (jqXHR, textStatus, errorThrown) {
+									try {
+										alert('Error while saving: ' + JSON.parse(jqXHR.responseText).message);
+									}
+									catch (e) {
+										alert('Unknown error while saving...');
+									}
+									Core.AjaxStatus.hide();
+								});
+							});
+						});
+					</script>
 				</div>
 			</div>
 		<?php } ?>
@@ -318,7 +364,7 @@ $build = $this->build;
 
 										<button class="btn btn-primary btn-save">Save</button>
 										<?php if ( $build ) { ?>
-										<a href="<?php echo LinkHandler::getInstance()->getLink('Build', ['object' => $build], 'view') ?>" class="btn btn-info">Viewer Mode</a>
+											<a href="<?php echo LinkHandler::getInstance()->getLink('Build', ['object' => $build], 'view') ?>" class="btn btn-info">Viewer Mode</a>
 										<?php }
 									}
 									else {
@@ -366,7 +412,8 @@ $build = $this->build;
 										<a href="<?php echo LinkHandler::getInstance()->getLink('BuildList', ['author' => $this->author]) ?>"><?php echo $this->escapeHtml($this->author); ?></a>
 
 										<?php if ( $build->isCreator() ) { ?>
-											<br /><br /><a href="<?php echo LinkHandler::getInstance()->getLink('Build', ['object' => $build]) ?>" class="btn btn-info">Editor Mode</a>
+											<br /><br />
+											<a href="<?php echo LinkHandler::getInstance()->getLink('Build', ['object' => $build]) ?>" class="btn btn-info">Editor Mode</a>
 										<?php } ?>
 									<?php } ?>
 								</div>
@@ -601,6 +648,7 @@ if ( $this->action !== 'view' ) {
 				html2canvas($('.canvas'), {
 					onrendered: function (canvas) {
 						showWave(currentWave);
+						Core.AjaxStatus.show();
 						$.post(
 							'?ajax', {
 								className: '\\data\\build\\BuildAction',
@@ -626,15 +674,17 @@ if ( $this->action !== 'view' ) {
 							},
 							function (data) {
 								$('.btn-save').prop('disabled', false);
+								Core.AjaxStatus.hide();
 							}
 						).fail(function (jqXHR, textStatus, errorThrown) {
 							try {
 								alert('Error while saving: ' + JSON.parse(jqXHR.responseText).message);
 							}
-							catch (e ) {
+							catch (e) {
 								alert('Unknown error while saving...');
 							}
 							$('.btn-save').prop('disabled', false);
+							Core.AjaxStatus.hide();
 						});
 					}
 				});

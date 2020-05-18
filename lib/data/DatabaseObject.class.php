@@ -130,6 +130,36 @@ class DatabaseObject {
 	}
 
 	/**
+	 * Updates the counters of this object.
+	 *
+	 * @param array $counters
+	 *
+	 * @throws Exception
+	 */
+	public function updateCounters(array $counters = []) {
+		if ( empty($counters) ) {
+			return;
+		}
+
+		$updateSQL = '';
+		$statementParameters = [];
+		foreach ( $counters as $key => $value ) {
+			if ( !empty($updateSQL) ) {
+				$updateSQL .= ', ';
+			}
+			$updateSQL .= $key.' = '.$key.' + ?';
+			$statementParameters[] = $value;
+		}
+		$statementParameters[] = $this->getObjectID();
+
+		$sql = "UPDATE	".static::getDatabaseTableName()."
+			SET	".$updateSQL."
+			WHERE	".static::getDatabaseTableIndexName()." = ?";
+		$statement = Core::getDB()->prepareStatement($sql);
+		$statement->execute($statementParameters);
+	}
+
+	/**
 	 * Deletes this object.
 	 */
 	public function delete() {
@@ -146,7 +176,7 @@ class DatabaseObject {
 
 		$affectedCount = 0;
 		Core::getDB()->beginTransaction();
-		foreach ($objectIDs as $objectID) {
+		foreach ( $objectIDs as $objectID ) {
 			$statement->execute([$objectID]);
 			$affectedCount += $statement->getAffectedRows();
 		}

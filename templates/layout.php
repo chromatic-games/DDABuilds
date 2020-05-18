@@ -17,6 +17,7 @@
 
 	<!-- jQuery Version 1.11.1 -->
 	<script src="assets/js/jquery.js"></script>
+	<script src="assets/js/core.js"></script>
 	<?php
 
 	use system\Core;
@@ -127,6 +128,13 @@
 	<section>
 		<?php echo $this->content; ?>
 	</section>
+
+	<div id="loadingSpinner" style="display:none;">
+		<div class="loadingSpinner">
+			<span class="fa fa-4x fa-spinner fa-spin"></span> <span>Loading ...</span>
+		</div>
+		<div class="pageBackdrop"></div>
+	</div>
 
 	<?php
 	if ( DEBUG_MODE ) {

@@ -12,3 +12,4 @@
 - comments tab only visible in view/edit mode (#4)
 - rotate towers with mouse wheel (+ shift = slower, ctrl = faster)
 - new disable tower view
+- newest comment on top

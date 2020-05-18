@@ -55,6 +55,11 @@ class Build extends DatabaseObject implements IRouteObject {
 		return date('d F Y', strtotime($this->date));
 	}
 
+	/**
+	 * get the build thumbnail
+	 *
+	 * @return string
+	 */
 	public function getThumbnail() {
 		$filename = 'assets/images/thumbnails/'.$this->getObjectID().'.png';
 		if ( !file_exists(MAIN_DIR.$filename) ) {
@@ -132,7 +137,7 @@ class Build extends DatabaseObject implements IRouteObject {
 		}
 
 		if ( $this->__comments === null ) {
-			$statement = Core::getDB()->prepareStatement('SELECT * FROM comments WHERE fk_build = ? ORDER BY date DESC LIMIT 10');
+			$statement = Core::getDB()->prepareStatement('SELECT * FROM comments WHERE fk_build = ? ORDER BY date DESC LIMIT '.(Comment::COMMENTS_PER_PAGE + 1));
 			$statement->execute([$this->getObjectID()]);
 			$this->__comments = $statement->fetchObjects(Comment::class);
 		}
