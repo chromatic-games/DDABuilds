@@ -15,7 +15,7 @@ $tabTemplate = '<li class="customwave waveTab pointer" data-target="#buildTab"><
 $build = $this->build;
 
 ?>
-<div class="container-fluid">
+<div class="container-fluid jsObject" data-id="<?php echo $build ? $build->getObjectID() : 0; ?>" data-type="build">
 	<div class="row">
 		<div class="col-md-2 text-center">
 			<h3>Map: <b><?php echo $this->map->name; ?></b></h3>
@@ -249,6 +249,7 @@ $build = $this->build;
 								<?php
 							}
 						} ?>
+
 						<div class="col-sm-12">
 							<div class="panel panel-default">
 								<div class="panel-heading">Details</div>
@@ -364,7 +365,7 @@ $build = $this->build;
 
 										<button class="btn btn-primary btn-save">Save</button>
 										<?php if ( $build ) { ?>
-											<a href="<?php echo LinkHandler::getInstance()->getLink('Build', ['object' => $build], 'view') ?>" class="btn btn-info">Viewer Mode</a>
+											<a href="<?php echo LinkHandler::getInstance()->getLink('Build', ['object' => $build], 'view') ?>" class="btn btn-info btn-viewer-mode">Viewer Mode</a>
 										<?php }
 									}
 									else {
@@ -410,9 +411,13 @@ $build = $this->build;
 										<br />
 										More Builds from
 										<a href="<?php echo LinkHandler::getInstance()->getLink('BuildList', ['author' => $this->author]) ?>"><?php echo $this->escapeHtml($this->author); ?></a>
-
+										<br /><br />
+										<?php if ( $isView ) { ?>
+											<button class="btn btn-<?php echo $build->getLikeValue() === 1 ? 'success' : 'default'; ?> jsVote" data-type="like" data-count="<?php echo $build->likes ?>"<?php echo $build->fk_user === Core::getUser()->steamID ? ' disabled' : ''; ?>>
+												<i class="fa fa-thumbs-up icon"></i> <span class="likeValue"><?php echo $this->number($build->likes) ?></span>
+											</button>
+										<?php } ?>
 										<?php if ( $build->isCreator() ) { ?>
-											<br /><br />
 											<a href="<?php echo LinkHandler::getInstance()->getLink('Build', ['object' => $build]) ?>" class="btn btn-info">Editor Mode</a>
 										<?php } ?>
 									<?php } ?>
@@ -738,6 +743,12 @@ if ( $this->action !== 'view' ) {
 				var newTab = $(window.__DEFENSE_WAVE_TEMPLATE.replace('%id%', nextWave).replace('%name%', 'custom wave ' + nextWave));
 				$('#newWave').before(newTab);
 				newTab.tab('show');
+			});
+
+			$('.btn-viewer-mode').on('click', function (event) {
+				if (!confirm('All unsaved changes will be Lost.\n\nStill Continue to Viewer Mode?')) {
+					event.preventDefault();
+				}
 			});
 
 			// edit mode

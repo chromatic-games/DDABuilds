@@ -24,8 +24,12 @@
 	use system\request\LinkHandler;
 	use system\steam\Steam;
 
+	if ( Core::getUser()->steamID ) {
+		echo '<script src="assets/js/like.js"></script>';
+	}
+
 	// TODO move to controller (form/page)
-	if ( $this->templateName == 'map' || $this->templateName === 'buildAdd') {
+	if ( $this->templateName == 'map' || $this->templateName === 'buildAdd' ) {
 		echo '<script src="assets/js/html2canvas.js"></script>
         <script src="assets/js/jquery-ui.js"></script>
         <script src="assets/js/jQueryRotate.js"></script>
@@ -140,7 +144,9 @@
 	if ( DEBUG_MODE ) {
 		echo '<div class="container"><pre>';
 		var_dump([
-			'queries'        => Core::getDB()->getQueryCount(),
+			'execution_time' => microtime(true) - APPLICATION_START,
+			'query_count'    => Core::getDB()->getQueryCount(),
+			'queries'        => Core::getDB()->getQueries(),
 			'steam requests' => Steam::getInstance()->getRequests(),
 		]);
 		echo '</pre></div>';

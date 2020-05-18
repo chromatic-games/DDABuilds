@@ -88,6 +88,7 @@ class PreparedStatement {
 
 		try {
 			$result = $this->pdoStatement->execute($parameters);
+			$this->database->addQuery($this->pdoStatement->queryString, $parameters);
 
 			if ( !$result ) {
 				$errorInfo = $this->pdoStatement->errorInfo();

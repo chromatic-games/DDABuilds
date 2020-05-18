@@ -93,7 +93,7 @@ if ( $this->showFilter ) {
 				<a href="<?php echo LinkHandler::getInstance()->getLink($this->controller, [], 'pageNo='.$this->pageNo.'&sortField=difficulty&sortOrder='.($this->sortField === 'difficulty' && $this->sortOrder === 'ASC' ? 'DESC' : 'ASC').$additionalParameters); ?>">Difficulty</a>
 			</th>
 			<th>
-				<a href="<?php echo LinkHandler::getInstance()->getLink($this->controller, [], 'pageNo='.$this->pageNo.'&sortField=rating&sortOrder='.($this->sortField === 'rating' && $this->sortOrder === 'ASC' ? 'DESC' : 'ASC').$additionalParameters); ?>">Rating</a>
+				<a href="<?php echo LinkHandler::getInstance()->getLink($this->controller, [], 'pageNo='.$this->pageNo.'&sortField=likes&sortOrder='.($this->sortField === 'likes' && $this->sortOrder === 'ASC' ? 'DESC' : 'ASC').$additionalParameters); ?>">Likes</a>
 			</th>
 			<th>
 				<a href="<?php echo LinkHandler::getInstance()->getLink($this->controller, [], 'pageNo='.$this->pageNo.'&sortField=views&sortOrder='.($this->sortField === 'views' && $this->sortOrder === 'ASC' ? 'DESC' : 'ASC').$additionalParameters); ?>">Views</a>
@@ -130,10 +130,10 @@ if ( $this->showFilter ) {
 					echo '<td>'.$this->escapeHtml($build->author).'</td>';
 				}
 
-				echo '<td>'.$this->escapeHtml($build->name).'</td>
+				echo '<td><a href="'.LinkHandler::getInstance()->getLink('Build', ['object' => $build]).'">'.$this->escapeHtml($build->name).'</a></td>
 <td>'.$this->escapeHtml($build->getMap()->name).'</td>
 <td>'.$this->escapeHtml($build->getDifficulty()->name).'</td>
-<td class="text-right">'.$this->number($build->votes).'</td>
+<td class="text-right">'.$this->number($build->likes).'</td>
 <td class="text-right">'.$this->number($build->views).'</td>
 <td class="text-right" colspan="2">'.$build->getDate().'</td>
 </tr>';
@@ -158,7 +158,7 @@ if ( $this->showFilter ) {
 						<?php
 						echo '<h4><p>'.$this->escapeHtml($build->getMap()->name).'</p>';
 						echo '<p>'.$this->escapeHtml($build->getDifficulty()->name).'<p>';
-						echo '<p><small>Rating:</small> '.$this->number($build->votes).'</p>';
+						echo '<p><small>Likes:</small> '.$this->number($build->likes).'</p>';
 						echo '<p><small>Views:</small> '.$this->number($build->views).'</p>';
 						echo '<p>'.$build->getDate().'</p>';
 						echo '<p>'.$this->escapeHtml($build->author).'</p></h4></a>';

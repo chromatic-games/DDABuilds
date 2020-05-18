@@ -2,6 +2,8 @@
 
 namespace system\database;
 
+use system\exception\DatabaseException;
+
 /**
  * This is the database implementation for MySQL 5.1 or higher using PDO.
  */
@@ -11,8 +13,9 @@ class MySQLDatabase extends Database {
 	 */
 	public function connect() {
 		if ( !$this->port ) {
+			// mysql default port
 			$this->port = 3306;
-		} // mysql default port
+		}
 
 		try {
 			$driverOptions = [
@@ -44,8 +47,8 @@ class MySQLDatabase extends Database {
 				} catch ( \PDOException $e ) {
 					// 1049 = Unknown database
 					if ( $this->pdo->errorInfo()[1] == 1049 ) {
-						$this->pdo->exec("CREATE DATABASE ".$this->database);
-						$this->pdo->exec("USE ".$this->database);
+						$this->pdo->exec('CREATE DATABASE '.$this->database);
+						$this->pdo->exec('USE '.$this->database);
 					}
 					else {
 						throw $e;
@@ -53,7 +56,7 @@ class MySQLDatabase extends Database {
 				}
 			}
 		} catch ( \PDOException $e ) {
-			throw new \Exception("Connecting to MySQL server '".$this->host."' failed"); // TODO DatabaseException
+			throw new DatabaseException("Connecting to MySQL server '".$this->host."' failed", $e);
 		}
 	}
 

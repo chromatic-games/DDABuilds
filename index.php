@@ -8,6 +8,7 @@ require_once 'config.inc.php';
 // defines
 define('MAIN_DIR', __DIR__.'/');
 define('LIB_DIR', MAIN_DIR.'lib/');
+define('APPLICATION_START', microtime(true));
 
 // start session
 session_start();

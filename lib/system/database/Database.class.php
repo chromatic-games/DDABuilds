@@ -1,4 +1,5 @@
 <?php
+
 namespace system\database;
 // use system\database\exception\DatabaseException;
 // use system\database\exception\DatabaseQueryException;
@@ -7,6 +8,7 @@ use Exception;
 use PDO;
 use PDOException;
 use system\database\statement\PreparedStatement;
+use system\exception\DatabaseException;
 
 /**
  * Abstract implementation of a database access class using PDO.
@@ -14,61 +16,61 @@ use system\database\statement\PreparedStatement;
 abstract class Database {
 	/**
 	 * name of the class used for prepared statements
-	 * @var	string
+	 * @var    string
 	 */
 	protected $preparedStatementClassName = PreparedStatement::class;
 
 	/**
 	 * sql server hostname
-	 * @var	string
+	 * @var    string
 	 */
 	protected $host = '';
 
 	/**
 	 * sql server post
-	 * @var	integer
+	 * @var    integer
 	 */
 	protected $port = 0;
 
 	/**
 	 * sql server login name
-	 * @var	string
+	 * @var    string
 	 */
 	protected $user = '';
 
 	/**
 	 * sql server login password
-	 * @var	string
+	 * @var    string
 	 */
 	protected $password = '';
 
 	/**
 	 * database name
-	 * @var	string
+	 * @var    string
 	 */
 	protected $database = '';
 
 	/**
 	 * enables failsafe connection
-	 * @var	boolean
+	 * @var    boolean
 	 */
 	protected $failsafeTest = false;
 
 	/**
 	 * number of executed queries
-	 * @var	integer
+	 * @var    integer
 	 */
 	protected $queryCount = 0;
 
 	/**
 	 * pdo object
-	 * @var	PDO
+	 * @var    PDO
 	 */
 	protected $pdo = null;
 
 	/**
 	 * amount of active transactions
-	 * @var	integer
+	 * @var    integer
 	 */
 	protected $activeTransactions = 0;
 
@@ -78,16 +80,18 @@ abstract class Database {
 	 */
 	protected $tryToCreateDatabase = false;
 
+	protected $queries = [];
+
 	/**
 	 * Creates a Database Object.
 	 *
-	 * @param	string		$host			SQL database server host address
-	 * @param	string		$user			SQL database server username
-	 * @param	string		$password		SQL database server password
-	 * @param	string		$database		SQL database server database name
-	 * @param	integer		$port			SQL database server port
-	 * @param	boolean		$failsafeTest
-	 * @param       boolean         $tryToCreateDatabase
+	 * @param string  $host     SQL database server host address
+	 * @param string  $user     SQL database server username
+	 * @param string  $password SQL database server password
+	 * @param string  $database SQL database server database name
+	 * @param integer $port     SQL database server port
+	 * @param boolean $failsafeTest
+	 * @param boolean $tryToCreateDatabase
 	 */
 	public function __construct($host, $user, $password, $database, $port, $failsafeTest = false, $tryToCreateDatabase = false) {
 		$this->host = $host;
@@ -110,27 +114,26 @@ abstract class Database {
 	/**
 	 * Returns ID from last insert.
 	 *
-	 * @return	integer
-	 * @throws	Exception
+	 * @return    integer
+	 * @throws    Exception
 	 */
 	public function getInsertID() {
 		try {
 			return $this->pdo->lastInsertId();
-		}
-		catch ( PDOException $e) {
-			throw new Exception("Cannot fetch last insert id"); // TODO DatabaseException
+		} catch ( PDOException $e ) {
+			throw new DatabaseException('Cannot fetch last insert id', $e);
 		}
 	}
 
 	/**
 	 * Initiates a transaction.
 	 *
-	 * @return	boolean		true on success
-	 * @throws	Exception
+	 * @return    boolean        true on success
+	 * @throws    Exception
 	 */
 	public function beginTransaction() {
 		try {
-			if ($this->activeTransactions === 0) {
+			if ( $this->activeTransactions === 0 ) {
 				$result = $this->pdo->beginTransaction();
 			}
 			else {
@@ -140,25 +143,26 @@ abstract class Database {
 			$this->activeTransactions++;
 
 			return $result;
-		}
-		catch ( PDOException $e) {
-			throw new Exception("Could not begin transaction"); // TODO DatabaseTransactionException
+		} catch ( PDOException $e ) {
+			throw new DatabaseException('Could not begin transaction', $e);
 		}
 	}
 
 	/**
 	 * Commits a transaction and returns true if the transaction was successful.
 	 *
-	 * @return	boolean
-	 * @throws	Exception
+	 * @return    boolean
+	 * @throws    Exception
 	 */
 	public function commitTransaction() {
-		if ($this->activeTransactions === 0) return false;
+		if ( $this->activeTransactions === 0 ) {
+			return false;
+		}
 
 		try {
 			$this->activeTransactions--;
 
-			if ($this->activeTransactions === 0) {
+			if ( $this->activeTransactions === 0 ) {
 				$result = $this->pdo->commit();
 			}
 			else {
@@ -166,24 +170,25 @@ abstract class Database {
 			}
 
 			return $result;
-		}
-		catch ( PDOException $e) {
-			throw new Exception("Could not commit transaction"); // TODO replace with own database exception? (DatabaseTransactionException)
+		} catch ( PDOException $e ) {
+			throw new DatabaseException('Could not commit transaction', $e);
 		}
 	}
 
 	/**
 	 * Rolls back a transaction and returns true if the rollback was successful.
 	 *
-	 * @return	boolean
-	 * @throws	Exception
+	 * @return    boolean
+	 * @throws    Exception
 	 */
 	public function rollBackTransaction() {
-		if ($this->activeTransactions === 0) return false;
+		if ( $this->activeTransactions === 0 ) {
+			return false;
+		}
 
 		try {
 			$this->activeTransactions--;
-			if ($this->activeTransactions === 0) {
+			if ( $this->activeTransactions === 0 ) {
 				$result = $this->pdo->rollBack();
 			}
 			else {
@@ -191,20 +196,20 @@ abstract class Database {
 			}
 
 			return $result;
-		}
-		catch ( PDOException $e) {
-			throw new Exception("Could not roll back transaction"); // TODO replace with own database exception? (DatabaseTransactionException)
+		} catch ( PDOException $e ) {
+			throw new DatabaseException('Could not roll back transaction', $e);
 		}
 	}
 
 	/**
 	 * Prepares a statement for execution and returns a statement object.
 	 *
-	 * @param	string			$statement
-	 * @param	integer			$limit
-	 * @param	integer			$offset
-	 * @return	PreparedStatement
-	 * @throws	Exception
+	 * @param string  $statement
+	 * @param integer $limit
+	 * @param integer $offset
+	 *
+	 * @return    PreparedStatement
+	 * @throws    Exception
 	 */
 	public function prepareStatement($statement, $limit = 0, $offset = 0) {
 		$statement = $this->handleLimitParameter($statement, $limit, $offset);
@@ -213,9 +218,8 @@ abstract class Database {
 			$pdoStatement = $this->pdo->prepare($statement);
 
 			return new $this->preparedStatementClassName($this, $pdoStatement, $statement);
-		}
-		catch ( PDOException $e) {
-			throw new Exception("Could not prepare statement '".$statement."'"); // TODO replace with own database exception? (DatabaseQueryException)
+		} catch ( PDOException $e ) {
+			throw new DatabaseException("Could not prepare statement '".$statement."'", 0, $e);
 		}
 	}
 
@@ -224,14 +228,15 @@ abstract class Database {
 	 * This is a default implementation compatible to MySQL and PostgreSQL.
 	 * Other database implementations should override this function.
 	 *
-	 * @param	string		$query
-	 * @param	integer		$limit
-	 * @param	integer		$offset
-	 * @return	string
+	 * @param string  $query
+	 * @param integer $limit
+	 * @param integer $offset
+	 *
+	 * @return    string
 	 */
 	public function handleLimitParameter($query, $limit = 0, $offset = 0) {
-		if ($limit != 0) {
-			$query = preg_replace('~(\s+FOR\s+UPDATE\s*)?$~', " LIMIT " . $limit . ($offset ? " OFFSET " . $offset : '') . "\\0", $query, 1);
+		if ( $limit != 0 ) {
+			$query = preg_replace('~(\s+FOR\s+UPDATE\s*)?$~', ' LIMIT '.$limit.($offset ? ' OFFSET '.$offset : '')."\\0", $query, 1);
 		}
 
 		return $query;
@@ -240,31 +245,38 @@ abstract class Database {
 	/**
 	 * Returns the number of the last error.
 	 *
-	 * @return	integer
+	 * @return    integer
 	 */
 	public function getErrorNumber() {
-		if ($this->pdo !== null) return $this->pdo->errorCode();
+		if ( $this->pdo !== null ) {
+			return $this->pdo->errorCode();
+		}
+
 		return 0;
 	}
 
 	/**
 	 * Returns the description of the last error.
 	 *
-	 * @return	string
+	 * @return    string
 	 */
 	public function getErrorDesc() {
-		if ($this->pdo !== null) {
+		if ( $this->pdo !== null ) {
 			$errorInfoArray = $this->pdo->errorInfo();
-			if (isset($errorInfoArray[2])) return $errorInfoArray[2];
+			if ( isset($errorInfoArray[2]) ) {
+				return $errorInfoArray[2];
+			}
 		}
+
 		return '';
 	}
 
 	/**
 	 * Escapes a string for use in sql query.
 	 *
-	 * @param	string		$string
-	 * @return	string
+	 * @param string $string
+	 *
+	 * @return    string
 	 */
 	public function escapeString($string) {
 		return addslashes($string);
@@ -273,7 +285,7 @@ abstract class Database {
 	/**
 	 * Returns the database name.
 	 *
-	 * @return	string
+	 * @return    string
 	 */
 	public function getDatabaseName() {
 		return $this->database;
@@ -282,7 +294,7 @@ abstract class Database {
 	/**
 	 * Returns the name of the database user.
 	 *
-	 * @return	string		user name
+	 * @return    string        user name
 	 */
 	public function getUser() {
 		return $this->user;
@@ -291,10 +303,17 @@ abstract class Database {
 	/**
 	 * Returns the amount of executed sql queries.
 	 *
-	 * @return	integer
+	 * @return    integer
 	 */
 	public function getQueryCount() {
 		return $this->queryCount;
+	}
+
+	public function addQuery($query, array $parameters) {
+		$this->queries[] = [
+			'query'      => $query,
+			'parameters' => $parameters,
+		];
 	}
 
 	/**
@@ -302,6 +321,13 @@ abstract class Database {
 	 */
 	public function incrementQueryCount() {
 		$this->queryCount++;
+	}
+
+	/**
+	 * @return array
+	 */
+	public function getQueries() {
+		return $this->queries;
 	}
 
 	/**

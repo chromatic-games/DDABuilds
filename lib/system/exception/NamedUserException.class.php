@@ -15,7 +15,7 @@ class NamedUserException extends UserException {
 		$stacktrace = $this->getTraceAsString();
 		$previous = $this->getPrevious();
 		while ( $previous ) {
-			$stacktrace .= $previous->getTraceAsString();
+			$stacktrace .= '<br /><br />'.$previous->getMessage().'<br />'.$previous->getTraceAsString();
 			$previous = $previous->getPrevious();
 		}
 

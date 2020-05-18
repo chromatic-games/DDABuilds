@@ -17,7 +17,7 @@ class BuildListPage extends SortablePage {
 
 	public $defaultSortOrder = 'DESC';
 
-	public $validSortFields = ['author', 'rating', 'map', 'name', 'views', 'date', 'difficulty'];
+	public $validSortFields = ['author', 'likes', 'map', 'name', 'views', 'date', 'difficulty'];
 
 	//<editor-fold desc="filter">
 	public $name = '';

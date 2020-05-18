@@ -5,6 +5,7 @@ namespace data\build;
 use data\build\stats\BuildStats;
 use data\build\status\BuildStatus;
 use data\comment\Comment;
+use data\comment\CommentList;
 use data\DatabaseObject;
 use data\difficulty\Difficulty;
 use data\IRouteObject;
@@ -25,13 +26,14 @@ use system\Core;
  * @property-read string  $description
  * @property-read integer $views
  * @property-read integer $map
+ * @property-read integer $likeValue
  * @property-read integer $comments
  * @property-read integer $deleted
  * @property-read integer $fk_buildstatus
  * @property-read integer $afkable
  * @property-read integer $hardcore
  * @property-read integer $difficulty
- * @property-read integer $votes
+ * @property-read integer $likes
  * @property-read integer $fk_user
  */
 class Build extends DatabaseObject implements IRouteObject {
@@ -137,12 +139,36 @@ class Build extends DatabaseObject implements IRouteObject {
 		}
 
 		if ( $this->__comments === null ) {
-			$statement = Core::getDB()->prepareStatement('SELECT * FROM comments WHERE fk_build = ? ORDER BY date DESC LIMIT '.(Comment::COMMENTS_PER_PAGE + 1));
-			$statement->execute([$this->getObjectID()]);
-			$this->__comments = $statement->fetchObjects(Comment::class);
+			$commentList = new CommentList();
+			$commentList->getConditionBuilder()->add('fk_build = ?', [$this->getObjectID()]);
+			$commentList->sqlOrderBy = 'date DESC';
+			$commentList->sqlLimit = Comment::COMMENTS_PER_PAGE + 1;
+			$commentList->readObjects();
+
+			$this->__comments = $commentList->getObjects();
 		}
 
 		return $this->__comments;
+	}
+
+	public function getLikeValue() {
+		if ( $this->likeValue === null ) {
+			$this->data['likeValue'] = 0;
+			if ( Core::getUser()->steamID ) {
+				$statement = Core::getDB()->prepareStatement('SELECT likeValue FROM `like` WHERE objectType = ? AND objectID = ? AND steamID = ?');
+				$statement->execute([
+					'build',
+					$this->getObjectID(),
+					Core::getUser()->steamID,
+				]);
+				$like = $statement->fetch();
+				if ( $like !== null ) {
+					$this->data['likeValue'] = $like['likeValue'];
+				}
+			}
+		}
+
+		return $this->likeValue;
 	}
 
 	public function isCreator() {

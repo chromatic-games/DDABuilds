@@ -22,6 +22,10 @@ ALTER TABLE builds
 	MODIFY COLUMN fk_user VARCHAR(20) NOT NULL AFTER date;
 ALTER TABLE comments
 	MODIFY COLUMN steamid VARCHAR(20) NOT NULL AFTER id;
+ALTER TABLE notifications
+	MODIFY COLUMN steamid VARCHAR(20) NOT NULL AFTER id;
+
+
 
 ALTER TABLE builds
 	CHANGE COLUMN timeperrun timePerRun VARCHAR(20) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT '' AFTER votes,
@@ -30,7 +34,39 @@ ALTER TABLE builds
 ALTER TABLE builds
 	ADD COLUMN comments INT(10) UNSIGNED DEFAULT 0 NOT NULL AFTER votes;
 
+ALTER TABLE comments
+	ADD COLUMN likes INT(10) UNSIGNED NOT NULL DEFAULT 0 AFTER date,
+	ADD COLUMN dislikes INT(10) UNSIGNED NOT NULL DEFAULT 0 AFTER likes;
+
+ALTER TABLE builds
+	CHANGE COLUMN votes likes INT(10) UNSIGNED NOT NULL DEFAULT 0 AFTER views;
+
+CREATE TABLE like (
+	objectType VARCHAR(32) NULL,
+	objectID INT(10) UNSIGNED NULL,
+	steamID VARCHAR(20) NULL,
+	likeValue TINYINT(2) NOT NULL,
+	date TIMESTAMP NULL ON UPDATE CURRENT_TIMESTAMP,
+	UNIQUE INDEX (objectType, objectID, steamID) USING BTREE
+);
+
+ALTER TABLE `like`
+	MODIFY COLUMN objectType VARCHAR(16) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT '' FIRST,
+	ADD PRIMARY KEY (objectType, objectID, steamID);
+
 -- update hero state @formatter:off
 UPDATE classes SET isHero = 1 WHERE id IN (1, 2, 3, 4);
-UPDATE builds SET votes = (SELECT IFNULL(SUM(vote), 0) FROM votes WHERE fk_build = builds.id);
+UPDATE builds SET votes = (SELECT COUNT(vote) FROM votes WHERE fk_build = builds.id);
 UPDATE builds SET comments = (SELECT COUNT(id) FROM comments WHERE fk_build = builds.id);
+
+update comments SET likes = (SELECT IFNULL(SUM(vote),0) FROM commentvotes WHERE fk_comment = comments.id and vote = 1);
+update comments SET dislikes = (SELECT IFNULL(SUM(vote) * -1, 0) FROM commentvotes WHERE fk_comment = comments.id and vote = -1);
+
+-- migrate old vote tables to new like/vote table
+INSERT INTO `like` SELECT 'build' as objectType, fk_build as objectID, steamid as steamID, vote as likeValue, date FROM votes;
+INSERT INTO `like` SELECT 'comment' as objectType, fk_comment as objectID, steamid as steamID, vote as likeValue, date FROM commentvotes;
+
+
+-- IMPORTANT run this at the end after migration and testing (to prevent data lose)
+DROP TABLE commentvotes;
+DROP TABLE votes;
