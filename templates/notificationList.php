@@ -12,7 +12,7 @@
 		/** @var \data\notification\Notification $notification */
 		foreach ( $this->objects as $notification ) {
 			$build = new \data\build\Build($notification->fk_build);
-			$linkToBuild = LinkHandler::getInstance()->getLink('Build', ['object' => $build]);
+			$linkToBuild = $build->getLink();
 			$buildName = $this->escapeHtml($build->name);
 
 			if ( $notification->data == 1 ) {

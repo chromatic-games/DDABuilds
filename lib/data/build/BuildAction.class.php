@@ -108,9 +108,13 @@ class BuildAction extends DatabaseObjectAction {
 			$gamemode        => 1,
 		]);
 
+		$returnValues = null;
 		$deleteOldEntries = false;
 		if ( empty($this->getObjectIDs()) ) {
-			$this->objects[] = $this->create();
+			/** @var Build $object */
+			$object = $this->create();
+			$this->objects[] = $object;
+			$returnValues = $object->getLink();
 		}
 		else {
 			$deleteOldEntries = true;
@@ -204,5 +208,7 @@ class BuildAction extends DatabaseObjectAction {
 				$build->saveScreenshot($this->parameters['image']);
 			}
 		}
+
+		return $returnValues;
 	}
 }

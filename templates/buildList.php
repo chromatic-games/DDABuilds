@@ -130,7 +130,7 @@ if ( $this->showFilter ) {
 					echo '<td>'.$this->escapeHtml($build->author).'</td>';
 				}
 
-				echo '<td><a href="'.LinkHandler::getInstance()->getLink('Build', ['object' => $build]).'">'.$this->escapeHtml($build->name).'</a></td>
+				echo '<td><a href="'.$build->getLink().'">'.$this->escapeHtml($build->name).'</a></td>
 <td>'.$this->escapeHtml($build->getMap()->name).'</td>
 <td>'.$this->escapeHtml($build->getDifficulty()->name).'</td>
 <td class="text-right">'.$this->number($build->likes).'</td>
@@ -148,8 +148,7 @@ if ( $this->showFilter ) {
 		foreach ( $this->objects->getObjects() as $build ) {
 			?>
 			<div class="col-md-4">
-				<h3 class="text-center"><a href="<?php echo LinkHandler::getInstance()->getLink('Build', ['object' => $build]); ?>"><?php echo $this->escapeHtml($build->name); ?>
-				</h3>
+				<h3 class="text-center"><a href="<?php echo $build->getLink(); ?>"><?php echo $this->escapeHtml($build->name); ?></h3>
 				<div class="row">
 					<div class="col-md-7">
 						<img class="img-responsive" style="height: 200px" src="<?php echo $build->getThumbnail(); ?>">

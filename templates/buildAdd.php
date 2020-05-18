@@ -418,7 +418,7 @@ $build = $this->build;
 											</button>
 										<?php } ?>
 										<?php if ( $build->isCreator() ) { ?>
-											<a href="<?php echo LinkHandler::getInstance()->getLink('Build', ['object' => $build]) ?>" class="btn btn-info">Editor Mode</a>
+											<a href="<?php echo $build->getLink() ?>" class="btn btn-info">Editor Mode</a>
 										<?php } ?>
 									<?php } ?>
 								</div>
@@ -648,12 +648,16 @@ if ( $this->action !== 'view' ) {
 				var description = CKEDITOR.instances.builddescription.getData();
 				var gamemode = $('input[name=gamemode]:checked').val();
 
+				Core.AjaxStatus.show();
 				$('.btn-save').prop('disabled', true);
-				showWave(0); // create a thumbnail from wave 0
+				// prevent crash on xss for firefox
+				$('#authorName,#buildName').hide();
+				// create a thumbnail from wave 0
+				showWave(0);
 				html2canvas($('.canvas'), {
 					onrendered: function (canvas) {
+						$('#authorName,#buildName').show();
 						showWave(currentWave);
-						Core.AjaxStatus.show();
 						$.post(
 							'?ajax', {
 								className: '\\data\\build\\BuildAction',
@@ -678,8 +682,13 @@ if ( $this->action !== 'view' ) {
 								}
 							},
 							function (data) {
-								$('.btn-save').prop('disabled', false);
-								Core.AjaxStatus.hide();
+								if (data.returnValues !== null) {
+									window.location.href = data.returnValues;
+								}
+								else {
+									$('.btn-save').prop('disabled', false);
+									Core.AjaxStatus.hide();
+								}
 							}
 						).fail(function (jqXHR, textStatus, errorThrown) {
 							try {

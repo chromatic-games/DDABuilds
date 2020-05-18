@@ -8,12 +8,14 @@ use data\comment\Comment;
 use data\comment\CommentList;
 use data\DatabaseObject;
 use data\difficulty\Difficulty;
+use data\ILinkableObject;
 use data\IRouteObject;
 use data\map\Map;
 use system\cache\runtime\BuildStatusRuntimeCache;
 use system\cache\runtime\DifficultyRuntimeCache;
 use system\cache\runtime\MapRuntimeCache;
 use system\Core;
+use system\request\LinkHandler;
 
 /**
  * TODO add here @ property-read for all database columns
@@ -39,7 +41,7 @@ use system\Core;
  * @property-read integer $likes
  * @property-read integer $fk_user
  */
-class Build extends DatabaseObject implements IRouteObject {
+class Build extends DatabaseObject implements IRouteObject, ILinkableObject {
 	protected static $databaseTableName = 'builds';
 
 	protected static $databaseTableIndexName = 'id';
@@ -297,7 +299,13 @@ class Build extends DatabaseObject implements IRouteObject {
 		return BuildStatusRuntimeCache::getInstance()->getObject($this->fk_buildstatus);
 	}
 
+	/** @inheritDoc */
 	public function getTitle() {
 		return $this->name;
+	}
+
+	/** @inheritDoc */
+	public function getLink() {
+		return LinkHandler::getInstance()->getLink('Build', ['object' => $this]);
 	}
 }
