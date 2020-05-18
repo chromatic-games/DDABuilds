@@ -10,6 +10,9 @@ use data\DatabaseObject;
 use data\difficulty\Difficulty;
 use data\IRouteObject;
 use data\map\Map;
+use system\cache\runtime\BuildStatusRuntimeCache;
+use system\cache\runtime\DifficultyRuntimeCache;
+use system\cache\runtime\MapRuntimeCache;
 use system\Core;
 
 /**
@@ -269,32 +272,29 @@ class Build extends DatabaseObject implements IRouteObject {
 
 	/**
 	 * get the map object from this build
-	 * TODO CACHE
 	 *
 	 * @return Map
 	 */
 	public function getMap() {
-		return new Map($this->map);
+		return MapRuntimeCache::getInstance()->getObject($this->map);
 	}
 
 	/**
 	 * get the difficulty object from this build
-	 * TODO CACHE
 	 *
 	 * @return Difficulty
 	 */
 	public function getDifficulty() {
-		return new Difficulty($this->difficulty);
+		return DifficultyRuntimeCache::getInstance()->getObject($this->difficulty);
 	}
 
 	/**
 	 * get the build status object from this build
-	 * TODO CACHE
 	 *
 	 * @return BuildStatus
 	 */
 	public function getBuildStatus() {
-		return new BuildStatus($this->fk_buildstatus);
+		return BuildStatusRuntimeCache::getInstance()->getObject($this->fk_buildstatus);
 	}
 
 	public function getTitle() {

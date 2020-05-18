@@ -2,10 +2,14 @@
 
 namespace page;
 
+use data\build\Build;
 use data\build\BuildList;
 use data\difficulty\DifficultyList;
 use data\map\Map;
 use data\map\MapList;
+use system\cache\runtime\BuildStatusRuntimeCache;
+use system\cache\runtime\DifficultyRuntimeCache;
+use system\cache\runtime\MapRuntimeCache;
 use system\Core;
 use system\request\LinkHandler;
 use system\util\HeaderUtil;
@@ -127,6 +131,30 @@ class BuildListPage extends SortablePage {
 		if ( $this->difficulty ) {
 			$this->objectList->getConditionBuilder()->add('difficulty = ?', [$this->difficulty]);
 		}
+	}
+
+	protected function readObjects() {
+		parent::readObjects();
+
+		$maps = [];
+		$difficulties = [];
+		$buildStatuses = [];
+		/** @var Build $build */
+		foreach ( $this->objectList as $build ) {
+			if ( !in_array($build->map, $maps) ) {
+				$maps[] = $build->map;
+			}
+			if ( !in_array($build->difficulty, $difficulties) ) {
+				$difficulties[] = $build->difficulty;
+			}
+			if ( !in_array($build->fk_buildstatus, $buildStatuses) ) {
+				$buildStatuses[] = $build->fk_buildstatus;
+			}
+		}
+
+		MapRuntimeCache::getInstance()->cacheObjectIDs($maps);
+		DifficultyRuntimeCache::getInstance()->cacheObjectIDs($difficulties);
+		BuildStatusRuntimeCache::getInstance()->cacheObjectIDs($buildStatuses);
 	}
 
 	public function assignVariables() {
