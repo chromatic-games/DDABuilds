@@ -66,7 +66,44 @@ update comments SET dislikes = (SELECT IFNULL(SUM(vote) * -1, 0) FROM commentvot
 INSERT INTO `like` SELECT 'build' as objectType, fk_build as objectID, steamid as steamID, vote as likeValue, date FROM votes;
 INSERT INTO `like` SELECT 'comment' as objectType, fk_comment as objectID, steamid as steamID, vote as likeValue, date FROM commentvotes;
 
+INSERT INTO build_stats SELECT id as buildID, 1 as classID, squirehp as hp, squiredamage as damage, squirerange as `range`, squirerate as rate FROM builds WHERE squirerate > 0 or squiredamage > 0 or squirehp > 0 or squirerange > 0;
+-- apprentice
+INSERT INTO build_stats SELECT id as buildID, 2 as classID, apprenticehp as hp, apprenticedamage as damage, apprenticerange as `range`, apprenticerate as rate FROM builds WHERE apprenticerate > 0 or apprenticedamage > 0 or apprenticehp > 0 or apprenticerange > 0;
+-- huntress
+INSERT INTO build_stats SELECT id as buildID, 3 as classID, huntresshp as hp, huntressdamage as damage, huntressrange as `range`, huntressrate as rate FROM builds WHERE huntressrate > 0 or huntressdamage > 0 or huntresshp > 0 or huntressrange > 0;
+-- monk
+INSERT INTO build_stats SELECT id as buildID, 4 as classID, monkhp as hp, monkdamage as damage, monkrange as `range`, monkrate as rate FROM builds WHERE monkrate > 0 or monkdamage > 0 or monkhp > 0 or monkrange > 0;
 
 -- IMPORTANT run this at the end after migration and testing (to prevent data lose)
 DROP TABLE commentvotes;
 DROP TABLE votes;
+
+ALTER TABLE `builds`
+	DROP COLUMN `squirehp`,
+	DROP COLUMN `squirerate`,
+	DROP COLUMN `squiredamage`,
+	DROP COLUMN `squirerange`,
+	DROP COLUMN `apprenticehp`,
+	DROP COLUMN `apprenticerate`,
+	DROP COLUMN `apprenticedamage`,
+	DROP COLUMN `apprenticerange`,
+	DROP COLUMN `huntresshp`,
+	DROP COLUMN `huntressrate`,
+	DROP COLUMN `huntressdamage`,
+	DROP COLUMN `huntressrange`,
+	DROP COLUMN `monkhp`,
+	DROP COLUMN `monkrate`,
+	DROP COLUMN `monkdamage`,
+	DROP COLUMN `monkrange`,
+	DROP COLUMN `evhp`,
+	DROP COLUMN `evrate`,
+	DROP COLUMN `evdamage`,
+	DROP COLUMN `evrange`,
+	DROP COLUMN `summonerhp`,
+	DROP COLUMN `summonerrate`,
+	DROP COLUMN `summonerdamage`,
+	DROP COLUMN `summonerrange`,
+	DROP COLUMN `jesterhp`,
+	DROP COLUMN `jesterrate`,
+	DROP COLUMN `jesterdamage`,
+	DROP COLUMN `jesterrange`;

@@ -15,18 +15,10 @@ session_start();
 
 // spl auto loader
 spl_autoload_register(function ($className) {
-	if ( file_exists(LIB_DIR.'classes/'.$className.'.php') ) {
-		if ( DEBUG_MODE ) {
-			trigger_error('old class '.$className.' loaded');
-		}
-		require_once(LIB_DIR.'classes/'.$className.'.php');
-	}
-	else {
-		$classPath = LIB_DIR.implode('/', explode('\\', $className)).'.class.php';
+	$classPath = LIB_DIR.implode('/', explode('\\', $className)).'.class.php';
 
-		if ( file_exists($classPath) ) {
-			require_once($classPath);
-		}
+	if ( file_exists($classPath) ) {
+		require_once($classPath);
 	}
 });
 
