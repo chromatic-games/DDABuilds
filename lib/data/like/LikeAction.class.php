@@ -56,6 +56,14 @@ class LikeAction extends DatabaseObjectAction {
 		$oldCounter = $oldLikeValue === AbstractLike::LIKE ? 'likes' : 'dislikes';
 		$newCounter = $newLikeValue === AbstractLike::LIKE ? 'likes' : 'dislikes';
 		$newState = [];
+
+		if ( $this->likeObject->getObjectType() === 'comment' ) {
+			$recipientSteamID = $this->likeObject->getObject()->steamid;
+		}
+		else {
+			$recipientSteamID = $this->likeObject->getObject()->fk_user;
+		}
+
 		if ( $oldLikeValue === null ) {
 			$statement = Core::getDB()->prepareStatement('INSERT INTO `like` (objectType, objectID, steamID, likeValue, date) VALUES (?,?,?,?, CURRENT_DATE());');
 			$statement->execute([
@@ -68,6 +76,7 @@ class LikeAction extends DatabaseObjectAction {
 				$newCounter => 1,
 			]);
 			$newState[$newLikeValue] = 1;
+			$this->likeObject->createNotification($recipientSteamID, Core::getUser()->steamID, $newLikeValue);
 		}
 		// delete like/dislike
 		elseif ( $oldLikeValue === $newLikeValue ) {
@@ -81,6 +90,7 @@ class LikeAction extends DatabaseObjectAction {
 				$newCounter => -1,
 			]);
 			$newState[$newLikeValue] = -1;
+			$this->likeObject->deleteNotification($recipientSteamID, Core::getUser()->steamID);
 		}
 		// delete old like/dislike and add new
 		else {
@@ -97,6 +107,10 @@ class LikeAction extends DatabaseObjectAction {
 			]);
 			$newState[$oldLikeValue] = -1;
 			$newState[$newLikeValue] = 1;
+			$updated = $this->likeObject->updateNotification($recipientSteamID, Core::getUser()->steamID, $newLikeValue);
+			if ( $updated === 0 ) {
+				$this->likeObject->createNotification($recipientSteamID, COre::getUser()->steamID, $newLikeValue);
+			}
 		}
 
 		return $newState;

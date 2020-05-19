@@ -12,8 +12,8 @@
 
 	<!-- Bootstrap Core CSS -->
 	<link href="assets/css/bootstrap.min.css" rel="stylesheet">
-	<link href="assets/css/chakratos.css" rel="stylesheet">
 	<link href="assets/css/font-awesome.min.css" rel="stylesheet">
+	<link href="assets/css/chakratos.css" rel="stylesheet">
 
 	<!-- jQuery Version 1.11.1 -->
 	<script src="assets/js/jquery.js"></script>

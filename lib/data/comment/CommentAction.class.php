@@ -4,6 +4,7 @@ namespace data\comment;
 
 use data\build\Build;
 use data\DatabaseObjectAction;
+use data\notification\NotificationAction;
 use system\Core;
 use system\exception\NamedUserException;
 use system\exception\UserInputException;
@@ -46,11 +47,41 @@ class CommentAction extends DatabaseObjectAction {
 				'comment'  => $this->parameters['text'],
 			],
 		]);
+		/** @var Comment $newComment */
+		$newComment = $commentAction->executeAction()['returnValues'];
 
 		$this->build->updateCounters(['comments' => 1]);
 
+		// get involved users
+		$statement = Core::getDB()->prepareStatement('SELECT steamid FROM comments WHERE fk_build = ? AND steamid <> ? AND steamid <> ? GROUP BY steamid');
+		$statement->execute([$this->build->getObjectID(), $this->build->fk_user, Core::getUser()->steamID]);
+		foreach ( $statement->fetchAll(\PDO::FETCH_COLUMN) as $steamid ) {
+			$notificationAction = new NotificationAction([], 'create', [
+				'data' => [
+					'steamid'    => $steamid,
+					'data'       => Core::getUser()->steamID,
+					'type'       => 4,
+					'fk_build'   => $this->build->getObjectID(),
+					'fk_comment' => $newComment->getObjectID(),
+				],
+			]);
+			$notificationAction->executeAction();
+		}
+
+		// add notification for comment on build
+		$notificationAction = new NotificationAction([], 'create', [
+			'data' => [
+				'steamid'    => $this->build->fk_user,
+				'data'       => Core::getUser()->steamID,
+				'type'       => 1,
+				'fk_build'   => $this->build->getObjectID(),
+				'fk_comment' => $newComment->getObjectID(),
+			],
+		]);
+		$notificationAction->executeAction();
+
 		return Core::getTPL()->render('comment', [
-			'comment' => $commentAction->executeAction()['returnValues'],
+			'comment' => $newComment,
 		]);
 	}
 

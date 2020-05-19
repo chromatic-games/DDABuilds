@@ -77,11 +77,24 @@ abstract class AbstractLike {
 		return $data !== null ? $data['likeValue'] : null;
 	}
 
+	abstract public function createNotification($recipient, $steamID, $likeValue);
+
+	abstract public function deleteNotification($recipient, $steamID);
+
+	abstract public function updateNotification($recipient, $steamID, $likeValue);
+
+	/**
+	 * @return integer
+	 */
+	public function getObjectID() {
+		return $this->objectID;
+	}
+
 	/**
 	 * @return bool
 	 */
 	public function isEnabledDislikes() {
-		return self::$enabledDislikes;
+		return static::$enabledDislikes;
 	}
 
 	/**

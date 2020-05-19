@@ -124,7 +124,11 @@ $build = $this->build;
 					<div id="commentList">
 						<?php
 						/** @var \data\comment\Comment $comment */
-						foreach ( array_slice($build->getComments(), 0, -1) as $comment ) {
+						$comments = $build->getComments();
+						if ( count($comments) > Comment::COMMENTS_PER_PAGE ) {
+							$comments = array_slice($comments, 0, -1);
+						}
+						foreach ( $comments as $comment ) {
 							echo Core::getTPL()->render('comment', ['comment' => $comment]);
 						}
 						?>
@@ -484,6 +488,8 @@ if ( $this->action !== 'view' ) {
 	'use strict';
 
 	let currentWave = 0;
+
+	window.__DEFENSE_OBJECT_IDS = [<?php echo $this->action !== 'add' ? $build->getObjectID() : ''; ?>];
 
 	function calculateDefenseUnits() {
 		var defenseUnits = 0;
