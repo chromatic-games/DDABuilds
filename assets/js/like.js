@@ -33,17 +33,19 @@ $(document).ready(function () {
 					let currentCount = parseInt(button.attr('data-count')) + data.returnValues[key];
 					button.attr('data-count', currentCount);
 					button.find('.likeValue').html(currentCount);
-					button.removeClass('btn-danger btn-success btn-default');
-					if (button.hasClass('btn') && data.returnValues[key] === 1) {
-						if (key === -1) {
-							button.addClass('btn-danger');
+					if (button.hasClass('btn')) {
+						button.removeClass('btn-danger btn-success btn-default');
+						if (data.returnValues[key] === 1) {
+							if (key === -1) {
+								button.addClass('btn-danger');
+							}
+							else {
+								button.addClass('btn-success');
+							}
 						}
 						else {
-							button.addClass('btn-success');
+							button.addClass('btn-default');
 						}
-					}
-					else {
-						button.addClass('btn-default');
 					}
 				}
 			}

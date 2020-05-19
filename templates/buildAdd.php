@@ -15,7 +15,7 @@ $tabTemplate = '<li class="customwave waveTab pointer" data-target="#buildTab"><
 $build = $this->build;
 
 ?>
-<div class="container-fluid jsObject" data-id="<?php echo $build ? $build->getObjectID() : 0; ?>" data-type="build">
+<div class="container-fluid">
 	<div class="row">
 		<div class="col-md-2 text-center">
 			<h3>Map: <b><?php echo $this->map->name; ?></b></h3>
@@ -178,7 +178,7 @@ $build = $this->build;
 				</div>
 			</div>
 		<?php } ?>
-		<div id="buildTab" class="tab-pane active">
+		<div id="buildTab" class="tab-pane active jsObject" data-id="<?php echo $build ? $build->getObjectID() : 0; ?>" data-type="build">
 			<div class="row ">
 				<div class="col-lg-9">
 					<div class="canvas">
