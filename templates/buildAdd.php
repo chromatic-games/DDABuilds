@@ -8,7 +8,7 @@ use system\request\LinkHandler;
 
 $isView = $this->action === 'view';
 $tabTemplate = '<li class="customwave waveTab pointer" data-target="#buildTab"><a data-wave="%id%"><span>%name%</span>'
-               .(!$isView ? ' <i class="fa fa-pencil edit-wave"></i> <i class="fa fa-trash delete-wave"></i>' : '')
+               .(!$isView ? ' <i class="fa fa-pencil edit-wave pointer"></i> <i class="fa fa-trash delete-wave pointer"></i>' : '')
                .'</a></li>';
 
 /** @var \data\build\Build $build */
@@ -205,7 +205,7 @@ $build = $this->build;
 					<div class="row marginTop">
 						<div class="col-sm-12">
 							<div class="panel panel-default">
-								<div class="panel-heading">Disable Tower</div>
+								<div class="panel-heading"><i class="fa fa-question-circle" data-toggle="tooltip" title="click the image to enable or disable the type of towers"></i> Disable Tower</div>
 								<div class="panel-body">
 									<?php
 
@@ -585,6 +585,7 @@ if ( $this->action !== 'view' ) {
 		// initialize
 		calculateDefenseUnits();
 		showWave(0);
+		$('[data-toggle="tooltip"]').tooltip();
 	});
 </script>
 <?php
