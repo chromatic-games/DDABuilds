@@ -29,35 +29,27 @@
 	}
 
 	// TODO move to controller (form/page)
-	if ( $this->templateName == 'map' || $this->templateName === 'buildAdd' ) {
+	if ( $this->templateName === 'map' || $this->templateName === 'buildAdd' ) {
 		echo '<script src="assets/js/html2canvas.js"></script>
         <script src="assets/js/jquery-ui.js"></script>
         <script src="assets/js/jQueryRotate.js"></script>
         <script src="assets/js/ckeditor/ckeditor.js"></script>';
 	}
-	elseif ( $this->templateName == 'home' ) {
+	elseif ( $this->templateName === 'index' ) {
 		echo '<link href="/assets/css/full-width-pics.css" rel="stylesheet">';
 	}
-	elseif ( $this->templateName == 'maps' ) {
+	elseif ( $this->templateName === 'maps' ) {
 		echo '<script src="assets/js/scroll-top.js"></script>';
 	}
-	elseif ( $this->templateName == 'list' || $this->templateName == 'buildList' ) {
+	elseif ( $this->templateName === 'list' || $this->templateName == 'buildList' ) {
 		echo '<script type="text/javascript" src="assets/js/jquery.flexdatalist.min.js"></script>';
 		echo '<link href="assets/css/jquery.flexdatalist.min.css" rel="stylesheet">';
 	}
 	?>
 	<!-- Bootstrap Core JavaScript -->
 	<script src="assets/js/bootstrap.min.js"></script>
-
-	<!-- Custom CSS -->
-	<style>
-		body {
-			padding-top: 70px;
-			/* Required padding for .navbar-fixed-top. Remove if using .navbar-static-top. Change if height of navigation changes. */
-		}
-	</style>
 </head>
-<body>
+<body class="<?php echo 'tpl'. ucfirst($this->templateName) ?>">
 	<!-- Navigation -->
 	<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
 		<div class="container">

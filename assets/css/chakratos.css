@@ -114,6 +114,18 @@
 	z-index: 395;
 }
 
+body.tplIndex section {
+	padding: 0;
+}
+
+body {
+	padding-top: 70px;
+}
+
+body.tplIndex {
+	padding-top: 50px;
+}
+
 /*
 html{position:relative;min-height:100%;}
 .defense{width:35px;height:35px;cursor:pointer;}
