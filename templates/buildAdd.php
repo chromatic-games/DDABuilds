@@ -457,7 +457,7 @@ $build = $this->build;
 <?php
 if ( $this->action !== 'view' ) {
 	/** @var BuildStats[] $buildStats */
-	$buildStats = $build ? $build->getStats() : [];
+	$stats = $build ? $build->getStats() : [];
 	$buildStats = [];
 	/** @var HeroClass $heroClass */
 	foreach ( $this->heroClasses as $heroClass ) {
@@ -466,7 +466,7 @@ if ( $this->action !== 'view' ) {
 		}
 
 		$heroID = $heroClass->getObjectID();
-		$buildStats[$heroID] = isset($buildStats[$heroID]) ? $buildStats[$heroID]->getStats() : [
+		$buildStats[$heroID] = isset($stats[$heroID]) ? $stats[$heroID]->getStats() : [
 			'hp'     => 0,
 			'damage' => 0,
 			'range'  => 0,

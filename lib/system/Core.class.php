@@ -92,7 +92,7 @@ class Core {
 		}
 
 		if ( !DEBUG_MODE ) {
-			throw new NamedUserException('test'); // replace with systemexception
+			throw new NamedUserException('Error appeared'); // replace with systemexception
 		}
 		else {
 			echo '<pre>';
