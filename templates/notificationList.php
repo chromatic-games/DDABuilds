@@ -62,7 +62,7 @@
 		]);
 	}
 	else {
-		echo 'No notifications.';
+		echo '<div class="alert alert-info">You have no notifications.</div>';
 	}
 	?>
 </div>

@@ -84,7 +84,7 @@ $build = $this->build;
 							$(document).ready(function () {
 								CKEDITOR.replace('commentMain');
 
-								$('.btn-comment').on('click', () => {
+								$('.btn-comment').on('click', function () {
 									let text = CKEDITOR.instances.commentMain.getData().trim();
 									if (text.length) {
 										$('.btn-comment').prop('disabled', true);
@@ -144,7 +144,7 @@ $build = $this->build;
 					<script>
 						$(document).ready(function () {
 							let lastCommentID = <?php echo $lastCommentID; ?>;
-							$('#moreComments .btn').on('click', () => {
+							$('#moreComments .btn').on('click', function () {
 								Core.AjaxStatus.show();
 								$.post(
 									'?ajax', {
@@ -205,7 +205,9 @@ $build = $this->build;
 					<div class="row marginTop">
 						<div class="col-sm-12">
 							<div class="panel panel-default">
-								<div class="panel-heading"><i class="fa fa-question-circle" data-toggle="tooltip" title="click the image to enable or disable the type of towers"></i> Disable Tower</div>
+								<div class="panel-heading">
+									<i class="fa fa-question-circle" data-toggle="tooltip" title="click the image to enable or disable the type of towers"></i> Disable Tower
+								</div>
 								<div class="panel-body">
 									<?php
 

@@ -126,6 +126,11 @@ body.tplIndex {
 	padding-top: 50px;
 }
 
+.contact-first-box{padding:35px;background:#9C0;}
+.contact-second-box{padding:35px;background:#39F;}
+.contact-third-box{padding:35px;background:#F66;}
+.contact-fourth-box{padding:35px;background:#6CC;}
+
 /*
 html{position:relative;min-height:100%;}
 .defense{width:35px;height:35px;cursor:pointer;}

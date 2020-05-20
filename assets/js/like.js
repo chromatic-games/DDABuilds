@@ -1,9 +1,9 @@
 $(document).ready(function () {
 	$(document).on('click', '.jsVote', function () {
-		let likeType = $(this).attr('data-type');
-		let jsObject = $(this).closest('.jsObject');
-		let objectID = jsObject.attr('data-id');
-		let objectType = jsObject.attr('data-type');
+		var likeType = $(this).attr('data-type');
+		var jsObject = $(this).closest('.jsObject');
+		var objectID = jsObject.attr('data-id');
+		var objectType = jsObject.attr('data-type');
 
 		window.Core.AjaxStatus.show();
 		$.post('?ajax', {
@@ -15,11 +15,11 @@ $(document).ready(function () {
 				objectType
 			}
 		}, function (data) {
-			let objectContainer = $('.jsObject[data-type="' + objectType + '"][data-id="' + objectID + '"]');
-			for (let key in data.returnValues) {
+			var objectContainer = $('.jsObject[data-type="' + objectType + '"][data-id="' + objectID + '"]');
+			for (var key in data.returnValues) {
 				if (data.returnValues.hasOwnProperty(key)) {
 					key = parseInt(key);
-					let button;
+					var button;
 					if (key === -1) {
 						button = objectContainer.find('[data-type="dislike"]');
 					}
@@ -30,7 +30,7 @@ $(document).ready(function () {
 						continue;
 					}
 
-					let currentCount = parseInt(button.attr('data-count')) + data.returnValues[key];
+					var currentCount = parseInt(button.attr('data-count')) + data.returnValues[key];
 					button.attr('data-count', currentCount);
 					button.find('.likeValue').html(currentCount);
 					if (button.hasClass('btn')) {

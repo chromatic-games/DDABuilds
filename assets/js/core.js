@@ -60,7 +60,7 @@
 	window.Core.AjaxStatus = AjaxStatus;
 
 	if (typeof window.localStorage !== 'undefined') {
-		let darkMode = window.localStorage.getItem('darkMode');
+		var darkMode = window.localStorage.getItem('darkMode');
 		if (darkMode === '1') {
 			window.Core.DarkMode.enable();
 		}
