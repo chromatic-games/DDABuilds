@@ -144,29 +144,33 @@ if ( $this->showFilter ) {
 	</table>
 	<?php
 	if ( $this->viewMode === 'grid' ) {
-		echo '<div class="row">';
-		foreach ( $this->objects->getObjects() as $build ) {
-			?>
-			<div class="col-md-4">
-				<h3 class="text-center"><a href="<?php echo $build->getLink(); ?>"><?php echo $this->escapeHtml($build->name); ?></h3>
-				<div class="row">
-					<div class="col-md-7">
-						<img class="img-responsive" style="height: 200px" src="<?php echo $build->getThumbnail(); ?>">
-					</div>
-					<div class="col-md-5">
-						<?php
-						echo '<h4><p>'.$this->escapeHtml($build->getMap()->name).'</p>';
-						echo '<p>'.$this->escapeHtml($build->getDifficulty()->name).'<p>';
-						echo '<p><small>Likes:</small> '.$this->number($build->likes).'</p>';
-						echo '<p><small>Views:</small> '.$this->number($build->views).'</p>';
-						echo '<p>'.$build->getDate().'</p>';
-						echo '<p>'.$this->escapeHtml($build->author).'</p></h4></a>';
-						?>
+		$objects = $this->objects->getObjects();
+		while ( $builds = array_splice($objects, 0, 3) ) { // 3 items per row
+			echo '<div class="row">';
+			foreach ( $builds as $build ) {
+				?>
+				<div class="col-md-4">
+					<h3 class="text-center"><a href="<?php echo $build->getLink(); ?>"><?php echo $this->escapeHtml($build->name); ?></h3>
+					<div class="row">
+						<div class="col-md-7">
+							<img class="img-responsive" style="height: 200px" src="<?php echo $build->getThumbnail(); ?>">
+						</div>
+						<div class="col-md-5">
+							<?php
+							echo '<h4><p>'.$this->escapeHtml($build->getMap()->name).'</p>';
+							echo '<p>'.$this->escapeHtml($build->getDifficulty()->name).'<p>';
+							echo '<p><small>Likes:</small> '.$this->number($build->likes).'</p>';
+							echo '<p><small>Views:</small> '.$this->number($build->views).'</p>';
+							echo '<p>'.$build->getDate().'</p>';
+							echo '<p>'.$this->escapeHtml($build->author).'</p></h4></a>';
+							?>
+						</div>
 					</div>
 				</div>
-			</div>
-		<?php }
-		echo '</div>';
+				<?php
+			}
+			echo '</div>';
+		}
 	}
 
 	$this->renderPages([
