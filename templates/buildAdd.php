@@ -239,11 +239,6 @@ $build = $this->build;
 										<div class="panel-body">
 											<?php
 											foreach ( $towers as $tower ) {
-												$menu = '';
-												if ( $tower->fk_class !== 4 && $tower->fk_class !== 3 /*&& $tower->fk_class !== ????*/ ) { // TODO replace with database column
-													$menu = '<div class="menu"> <i class="fa fa-repeat"></i> </div>';
-												}
-
 												echo $tower->getHtml();
 											}
 											?>

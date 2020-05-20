@@ -28,7 +28,7 @@
 		echo '<script src="assets/js/like.js"></script>';
 	}
 
-	// TODO move to controller (form/page)
+	// TODO move to controller (form/page) and build min js/css files
 	if ( $this->templateName === 'map' || $this->templateName === 'buildAdd' ) {
 		echo '<script src="assets/js/html2canvas.js"></script>
         <script src="assets/js/jquery-ui.js"></script>

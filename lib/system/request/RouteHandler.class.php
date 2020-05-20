@@ -214,7 +214,7 @@ class RouteHandler extends SingletonFactory {
 	 */
 	public function handle() {
 		if ( !$this->matches(self::getPathInfo()) ) {
-			throw new \Exception('illegal link?'); // todo illegallinkexception
+			throw new IllegalLinkException();
 		}
 
 		$routeData = $this->routeData;

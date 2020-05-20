@@ -6,6 +6,7 @@ use data\DatabaseObject;
 use system\database\Database;
 use system\exception\DatabaseException;
 use system\exception\DatabaseQueryExecutionException;
+use system\exception\NamedUserException;
 
 // use system\database\exception\DatabaseQueryException;
 // use system\database\exception\DatabaseQueryExecutionException;
@@ -65,7 +66,7 @@ class PreparedStatement {
 	 */
 	public function __call($name, $arguments) {
 		if ( !method_exists($this->pdoStatement, $name) ) {
-			throw new \Exception("unknown method '".$name."'"); // TODO SystemException
+			throw new NamedUserException("unknown method '".$name."'");
 		}
 
 		try {

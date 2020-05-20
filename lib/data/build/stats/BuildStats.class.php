@@ -4,6 +4,8 @@ namespace data\build\stats;
 
 use data\DatabaseObject;
 use data\heroClass\HeroClass;
+use Exception;
+use system\cache\runtime\HeroClassRuntimeCache;
 
 /**
  * @package data\build\stats
@@ -26,12 +28,10 @@ class BuildStats extends DatabaseObject {
 	}
 
 	/**
-	 * TODO CACHE!
-	 *
 	 * @return HeroClass
-	 * @throws \Exception
+	 * @throws Exception
 	 */
 	public function getClass() {
-		return new HeroClass($this->classID);
+		return HeroClassRuntimeCache::getInstance()->getObject($this->classID);
 	}
 }
