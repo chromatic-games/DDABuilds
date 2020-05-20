@@ -4,6 +4,7 @@ namespace system\request;
 
 use action\AbstractAction;
 use page\AbstractPage;
+use system\Core;
 use system\exception\IllegalLinkException;
 use system\SingletonFactory;
 
@@ -233,6 +234,11 @@ class RouteHandler extends SingletonFactory {
 		}
 		if ( $classData === null ) {
 			$classData = $this->getClassData($controller, 'action');
+		}
+
+		if ( MAINTENANCE && !in_array(Core::getUser()->steamID, MAINTENANCE_ALLOWED_USERS) && $classData['controller'] !== 'Index' && $classData['controller'] !== 'Login' ) {
+			Core::getTPL()->display('offline');
+			exit;
 		}
 
 		// no controller found

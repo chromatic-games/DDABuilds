@@ -35,7 +35,7 @@ class Core {
 	 */
 	public static function getUser() {
 		if ( self::$userObj === null ) {
-			self::$userObj = new SteamUser(null, isset($_SESSION['steam_profile']) ? $_SESSION['steam_profile'] : []);
+			self::$userObj = new SteamUser(null, isset($_SESSION['_steam_profile']) ? $_SESSION['_steam_profile'] : []);
 		}
 
 		return self::$userObj;

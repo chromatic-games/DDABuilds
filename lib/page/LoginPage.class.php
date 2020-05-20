@@ -35,8 +35,8 @@ class LoginPage extends AbstractPage {
 				$ptn = "/^https?:\/\/steamcommunity\.com\/openid\/id\/(7[0-9]{15,25}+)$/";
 				preg_match($ptn, $id, $matches);
 
-				$_SESSION['steamid'] = $matches[1];
-				$_SESSION['steam_profile'] = (new SteamUser($matches[1]))->getData();
+				$_SESSION['_steamid'] = $matches[1];
+				$_SESSION['_steam_profile'] = (new SteamUser($matches[1]))->getData();
 
 				header('Location: /');
 				exit;
