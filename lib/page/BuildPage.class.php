@@ -8,8 +8,10 @@ use system\exception\IllegalLinkException;
 use system\exception\NamedUserException;
 
 class BuildPage extends BuildAddPage {
+	/** @inheritDoc */
 	public $loginRequired = false;
 
+	/** @inheritDoc */
 	public $templateName = 'buildAdd';
 
 	/** @var Build */
@@ -18,6 +20,7 @@ class BuildPage extends BuildAddPage {
 	/** @var string view mode (edit/view) */
 	public $action = 'view';
 
+	/** @inheritDoc */
 	public function readParameters() {
 		AbstractPage::readParameters();
 
@@ -47,8 +50,11 @@ class BuildPage extends BuildAddPage {
 				'views' => $this->build->views + 1,
 			]);
 		}
+
+		$this->pageTitle = $this->build->name;
 	}
 
+	/** @inheritDoc */
 	public function readData() {
 		parent::readData();
 
@@ -59,6 +65,7 @@ class BuildPage extends BuildAddPage {
 		$this->description = $this->build->description;
 	}
 
+	/** @inheritDoc */
 	public function assignVariables() {
 		parent::assignVariables();
 

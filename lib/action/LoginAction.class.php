@@ -1,14 +1,16 @@
 <?php
 
-namespace page;
+namespace action;
 
 use system\Core;
 use system\exception\NamedUserException;
 use system\exception\PermissionDeniedException;
 use system\steam\LightOpenID;
 use system\steam\SteamUser;
+use system\util\HeaderUtil;
 
-class LoginPage extends AbstractPage {
+class LoginAction extends AbstractAction {
+	/** @inheritDoc */
 	public function readParameters() {
 		parent::readParameters();
 
@@ -17,8 +19,9 @@ class LoginPage extends AbstractPage {
 		}
 	}
 
-	public function readData() {
-		parent::readData();
+	/** @inheritDoc */
+	public function execute() {
+		parent::execute();
 
 		try {
 			$openid = new LightOpenID(BASE_URL);
@@ -38,14 +41,14 @@ class LoginPage extends AbstractPage {
 				$_SESSION['_steamid'] = $matches[1];
 				$_SESSION['_steam_profile'] = (new SteamUser($matches[1]))->getData();
 
-				header('Location: /');
+				HeaderUtil::redirect('/');
 				exit;
 			}
 			else {
 				throw new NamedUserException('User is not logged in.');
 			}
 		} catch ( \Exception $e ) {
-			echo $e->getMessage();
+			throw new NamedUserException($e->getMessage());
 		}
 	}
 }

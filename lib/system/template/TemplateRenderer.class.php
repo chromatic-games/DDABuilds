@@ -48,6 +48,17 @@ class TemplateRenderer {
 		return null;
 	}
 
+	/**
+	 * check if the variable $name exists on this template
+	 *
+	 * @param string $name
+	 *
+	 * @return bool
+	 */
+	public function __isset($name) {
+		return $this->{$name} !== null;
+	}
+
 	public function render($templateName, array $variables = []) {
 		return Core::getTPL()->render($templateName, $variables);
 	}

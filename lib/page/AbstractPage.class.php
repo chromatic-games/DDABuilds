@@ -36,11 +36,16 @@ abstract class AbstractPage {
 	public function readData() {
 	}
 
+	/**
+	 * assign variables to template engine, before display the template
+	 *
+	 * @throws \Exception
+	 */
 	public function assignVariables() {
-		Core::$tplVariables = [
+		Core::getTPL()->assign([
 			'pageTitle'    => $this->pageTitle,
 			'templateName' => $this->templateName,
-		];
+		]);
 	}
 
 	public function show() {

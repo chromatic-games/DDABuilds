@@ -13,7 +13,10 @@ use system\exception\IllegalLinkException;
 use system\util\StringUtil;
 
 class BuildAddPage extends AbstractPage {
+	/** @inheritDoc */
 	public $loginRequired = true;
+
+	public $pageTitle = 'Create Build';
 
 	/** @var Map */
 	public $map;
@@ -59,9 +62,7 @@ class BuildAddPage extends AbstractPage {
 		}
 	}
 
-	/**
-	 * @inheritDoc
-	 */
+	/** @inheritDoc */
 	public function readData() {
 		parent::readData();
 
@@ -104,9 +105,7 @@ class BuildAddPage extends AbstractPage {
 		Core::getTPL()->assign('showMU', $useMU);
 	}
 
-	/**
-	 * @inheritDoc
-	 */
+	/** @inheritDoc */
 	public function assignVariables() {
 		parent::assignVariables();
 

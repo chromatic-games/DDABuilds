@@ -15,13 +15,19 @@ use system\request\LinkHandler;
 use system\util\HeaderUtil;
 
 class BuildListPage extends SortablePage {
+	/** @inheritDoc */
 	public $objectListClassName = BuildList::class;
 
+	/** @inheritDoc */
 	public $defaultSortField = 'id';
 
+	/** @inheritDoc */
 	public $defaultSortOrder = 'DESC';
 
+	/** @inheritDoc */
 	public $validSortFields = ['author', 'likes', 'map', 'name', 'views', 'date', 'difficulty'];
+
+	public $pageTitle = 'Build List';
 
 	//<editor-fold desc="filter">
 	public $name = '';
@@ -43,6 +49,7 @@ class BuildListPage extends SortablePage {
 
 	public $showFilter = true;
 
+	/** @inheritDoc */
 	public function readParameters() {
 		parent::readParameters();
 
@@ -108,6 +115,7 @@ class BuildListPage extends SortablePage {
 		}
 	}
 
+	/** @inheritDoc */
 	protected function initObjectList() {
 		parent::initObjectList();
 
@@ -133,6 +141,7 @@ class BuildListPage extends SortablePage {
 		}
 	}
 
+	/** @inheritDoc */
 	protected function readObjects() {
 		parent::readObjects();
 
@@ -152,11 +161,13 @@ class BuildListPage extends SortablePage {
 			}
 		}
 
+		// cache all required object ids
 		MapRuntimeCache::getInstance()->cacheObjectIDs($maps);
 		DifficultyRuntimeCache::getInstance()->cacheObjectIDs($difficulties);
 		BuildStatusRuntimeCache::getInstance()->cacheObjectIDs($buildStatuses);
 	}
 
+	/** @inheritDoc */
 	public function assignVariables() {
 		parent::assignVariables();
 

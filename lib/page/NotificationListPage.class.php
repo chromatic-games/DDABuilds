@@ -6,14 +6,22 @@ use data\notification\NotificationList;
 use system\Core;
 
 class NotificationListPage extends SortablePage {
+	/** @inheritDoc */
 	public $loginRequired = true;
 
+	/** @inheritDoc */
 	public $objectListClassName = NotificationList::class;
 
+	/** @inheritDoc */
 	public $defaultSortField = 'date';
 
+	/** @inheritDoc */
 	public $defaultSortOrder = 'DESC';
 
+	/** @inheritDoc */
+	public $pageTitle = 'Notifications';
+
+	/** @inheritDoc */
 	public function readParameters() {
 		parent::readParameters();
 
@@ -23,6 +31,7 @@ class NotificationListPage extends SortablePage {
 		}
 	}
 
+	/** @inheritDoc */
 	protected function initObjectList() {
 		parent::initObjectList();
 

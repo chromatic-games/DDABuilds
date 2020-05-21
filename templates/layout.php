@@ -1,8 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-	<title>DDA Builds</title>
-
+	<title><?php if ( !empty($this->pageTitle) ) { echo $this->escapeHtml($this->pageTitle) . ' - '; } ?> DDA Builds</title>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">

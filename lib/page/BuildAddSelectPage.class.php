@@ -8,8 +8,12 @@ use data\map\MapList;
 use system\Core;
 
 class BuildAddSelectPage extends AbstractPage {
+	/** @inheritDoc */
 	public $loginRequired = true;
 
+	public $pageTitle = 'Create Build';
+
+	/** @inheritDoc */
 	public function assignVariables() {
 		parent::assignVariables();
 
