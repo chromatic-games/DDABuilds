@@ -1,0 +1,18 @@
+- added: added a text if user has no notifications
+- added: seo urls
+- added: rotate towers with mouse wheel on mouseover (+ shift = slower, ctrl = faster)
+- changed: hide the description if the build has no description
+- changed: author's steam profile would be opened in a new tab
+- changed: moved delete wave button to wave tab menu
+- changed: edit wave name now with a button (prevent wrong interaction with the input field) (#6)
+- changed: removed the checkbox in tower disable selection
+- changed: the newest comment is now on top
+- changed: the new comment box is now above comments
+- optimized: improved error handling
+- optimized: minimized steam requests
+- optimized: images in description box have max width from the box
+- fixed many xss (my builds list was empty after the xss build, build could not be edited)
+- fixed: grid view in my builds view (#5)
+- fixed: comments tab only visible in view/edit mode (#4)
+- fixed: page was not be reloaded after the second comment (#3)
+- fixed: author with special characters in search breaks after initial search (#2)

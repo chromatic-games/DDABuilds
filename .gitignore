@@ -1,3 +1,7 @@
+# project files
+config.inc.php
+mysql.inc.php
+assets/images/thumbnails
 
-config.php
-steamauth/SteamConfig.php
+# ide files
+.idea
