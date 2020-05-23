@@ -38,9 +38,6 @@ ALTER TABLE comments
 	ADD COLUMN likes INT(10) UNSIGNED NOT NULL DEFAULT 0 AFTER date,
 	ADD COLUMN dislikes INT(10) UNSIGNED NOT NULL DEFAULT 0 AFTER likes;
 
-ALTER TABLE builds
-	CHANGE COLUMN votes likes INT(10) UNSIGNED NOT NULL DEFAULT 0 AFTER views;
-
 CREATE TABLE `like` (
 	objectType VARCHAR(32) NULL,
 	objectID INT(10) UNSIGNED NULL,
@@ -73,6 +70,9 @@ INSERT INTO build_stats SELECT id as buildID, 2 as classID, apprenticehp as hp, 
 INSERT INTO build_stats SELECT id as buildID, 3 as classID, huntresshp as hp, huntressdamage as damage, huntressrange as `range`, huntressrate as rate FROM builds WHERE huntressrate > 0 or huntressdamage > 0 or huntresshp > 0 or huntressrange > 0;
 -- monk
 INSERT INTO build_stats SELECT id as buildID, 4 as classID, monkhp as hp, monkdamage as damage, monkrange as `range`, monkrate as rate FROM builds WHERE monkrate > 0 or monkdamage > 0 or monkhp > 0 or monkrange > 0;
+
+ALTER TABLE builds
+	CHANGE COLUMN votes likes INT(10) UNSIGNED NOT NULL DEFAULT 0 AFTER views;
 
 -- IMPORTANT run this at the end after migration and testing (to prevent data lose)
 DROP TABLE commentvotes;
