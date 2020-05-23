@@ -131,6 +131,8 @@ body.tplIndex {
 .contact-third-box{padding:35px;background:#F66;}
 .contact-fourth-box{padding:35px;background:#6CC;}
 
+#toTop-right{display:none;text-decoration:none;position:fixed;bottom:20px;right:20px;outline:none;}
+
 /*
 html{position:relative;min-height:100%;}
 .defense{width:35px;height:35px;cursor:pointer;}
