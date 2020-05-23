@@ -11,6 +11,9 @@ use system\exception\UserInputException;
 use system\util\StringUtil;
 
 class CommentAction extends DatabaseObjectAction {
+	/** @inheritDoc */
+	public $allowGuestAccess = ['loadMore'];
+
 	/**
 	 * @var Build
 	 */
