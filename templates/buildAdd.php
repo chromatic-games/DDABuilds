@@ -780,7 +780,7 @@ if ( $this->action !== 'view' ) {
 				})
 				.on('mouseover', '.canvas .tower-container', function (e) {
 					var rotating_defense = $(this);
-					$(document).on('wheel', function (e) {
+					rotating_defense.on('wheel', function (e) {
 						e.preventDefault();
 
 						let delta = 3;
