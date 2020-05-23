@@ -20,10 +20,10 @@ $comment = $this->comment;
 	<div class="post-description marginTop">
 		<?php echo StringUtil::removeInsecureHtml($comment->comment); ?>
 		<div class="stats marginTop">
-			<button class="btn btn-<?php echo $comment->likeValue === 1 ? 'success' : 'default'; ?> jsVote" data-type="like" data-count="<?php echo $comment->likes ?>"<?php echo $comment->steamid === Core::getUser()->steamID ? ' disabled' : ''; ?>>
+			<button class="btn btn-<?php echo $comment->likeValue === 1 ? 'success' : 'default'; ?> jsVote" data-type="like" data-count="<?php echo $comment->likes ?>"<?php echo !Core::getUser()->steamID || $comment->steamid === Core::getUser()->steamID ? ' disabled' : ''; ?>>
 				<i class="fa fa-thumbs-up icon"></i> <span class="likeValue"><?php echo $this->number($comment->likes) ?></span>
 			</button>
-			<button class="btn btn-<?php echo $comment->likeValue === -1 ? 'danger' : 'default'; ?> jsVote" data-type="dislike" data-count="<?php echo $comment->dislikes ?>"<?php echo $comment->steamid === Core::getUser()->steamID ? ' disabled' : ''; ?>>
+			<button class="btn btn-<?php echo $comment->likeValue === -1 ? 'danger' : 'default'; ?> jsVote" data-type="dislike" data-count="<?php echo $comment->dislikes ?>"<?php echo !Core::getUser()->steamID || $comment->steamid === Core::getUser()->steamID ? ' disabled' : ''; ?>>
 				<i class="fa fa-thumbs-down icon"></i> <span class="likeValue"><?php echo $this->number($comment->dislikes) ?></span>
 			</button>
 		</div>

@@ -414,7 +414,7 @@ $build = $this->build;
 										<a href="<?php echo LinkHandler::getInstance()->getLink('BuildList', ['author' => $this->author]) ?>"><?php echo $this->escapeHtml($this->author); ?></a>
 										<br /><br />
 										<?php if ( $isView ) { ?>
-											<button class="btn btn-<?php echo $build->getLikeValue() === 1 ? 'success' : 'default'; ?> jsVote" data-type="like" data-count="<?php echo $build->likes ?>"<?php echo $build->fk_user === Core::getUser()->steamID ? ' disabled' : ''; ?>>
+											<button class="btn btn-<?php echo $build->getLikeValue() === 1 ? 'success' : 'default'; ?> jsVote" data-type="like" data-count="<?php echo $build->likes ?>"<?php echo !Core::getUser()->steamID || $build->fk_user === Core::getUser()->steamID ? ' disabled' : ''; ?>>
 												<i class="fa fa-thumbs-up icon"></i> <span class="likeValue"><?php echo $this->number($build->likes) ?></span>
 											</button>
 										<?php } ?>
