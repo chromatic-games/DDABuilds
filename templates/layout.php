@@ -1,7 +1,9 @@
 <!doctype html>
 <html lang="en">
 <head>
-	<title><?php if ( !empty($this->pageTitle) ) { echo $this->escapeHtml($this->pageTitle) . ' - '; } ?> DDA Builds</title>
+	<title><?php if ( !empty($this->pageTitle) ) {
+			echo $this->escapeHtml($this->pageTitle).' - ';
+		} ?> DDA Builds</title>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
@@ -48,7 +50,7 @@
 	<!-- Bootstrap Core JavaScript -->
 	<script src="assets/js/bootstrap.min.js"></script>
 </head>
-<body class="<?php echo 'tpl'. ucfirst($this->templateName) ?>">
+<body class="<?php echo 'tpl'.ucfirst($this->templateName) ?>">
 	<!-- Navigation -->
 	<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
 		<div class="container">
@@ -82,7 +84,15 @@
 	                    echo '</div>';
                     }
                     else {
-	                    echo '<li class="dropdown">
+	                    $notifications = Core::getUser()->getUnreadNotifications();
+
+	                    echo '<li class="notificationBell">
+							<a href="'.LinkHandler::getInstance()->getLink('NotificationList').'">
+							<i class="fa fa-bell'.($notifications === 0 ? '-o' : '').'"></i>
+							'.($notifications ? '<span class="badge badge-danger">'.$notifications.'</span>' : '').'
+							</a>
+						</li>
+						<li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">'.Core::getUser()->displayName.'<span class="caret"></span></a>
                             <ul class="dropdown-menu">
                                 <li>
@@ -106,19 +116,7 @@
 		<!-- /.container -->
 	</nav>
 	<!-- /Navigation -->
-	<?php
-	if ( Core::getUser()->steamID && $this->templateName !== 'notificationList' && Core::getUser()->getUnreadNotifications() ) {
-		echo '<div class="container">
-            <div class="row">
-                <div class="col-xs-12 col-sm-5 col-sm-offset-7">
-                    <div class="alert alert-success">
-                        Hello '.Core::getUser()->displayName.' you have: <a href="'.LinkHandler::getInstance()->getLink('NotificationList').'" class="alert-link">'.Core::getUser()->getUnreadNotifications().' unread notifications</a>.
-                    </div>
-                </div>
-            </div>
-        </div>';
-	}
-	?>
+
 	<!-- Content Section -->
 	<section>
 		<?php echo $this->content; ?>
