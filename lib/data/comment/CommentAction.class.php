@@ -71,17 +71,19 @@ class CommentAction extends DatabaseObjectAction {
 			$notificationAction->executeAction();
 		}
 
-		// add notification for comment on build
-		$notificationAction = new NotificationAction([], 'create', [
-			'data' => [
-				'steamid'    => $this->build->fk_user,
-				'data'       => Core::getUser()->steamID,
-				'type'       => 1,
-				'fk_build'   => $this->build->getObjectID(),
-				'fk_comment' => $newComment->getObjectID(),
-			],
-		]);
-		$notificationAction->executeAction();
+		if ( $this->build->fk_user !== Core::getUser()->steamID ) {
+			// add notification for comment on build
+			$notificationAction = new NotificationAction([], 'create', [
+				'data' => [
+					'steamid'    => $this->build->fk_user,
+					'data'       => Core::getUser()->steamID,
+					'type'       => 1,
+					'fk_build'   => $this->build->getObjectID(),
+					'fk_comment' => $newComment->getObjectID(),
+				],
+			]);
+			$notificationAction->executeAction();
+		}
 
 		return Core::getTPL()->render('comment', [
 			'comment' => $newComment,
