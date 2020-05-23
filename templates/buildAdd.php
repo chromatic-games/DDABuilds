@@ -784,7 +784,7 @@ if ( $this->action !== 'view' ) {
 						e.preventDefault();
 
 						let delta = 3;
-						let scrollSpeed = 4;
+						let scrollSpeed = 4 * (e.originalEvent.deltaY <= 0 ? -1 : 1);
 						if (e.shiftKey) {
 							delta /= 2;
 						}
