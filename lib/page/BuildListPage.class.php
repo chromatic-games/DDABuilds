@@ -32,7 +32,7 @@ class BuildListPage extends SortablePage {
 	public $pageTitle = 'Build List';
 
 	/** @inheritDoc */
-	public $itemsPerPage = 1;
+	public $itemsPerPage = 21;
 
 	//<editor-fold desc="filter">
 
