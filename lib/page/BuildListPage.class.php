@@ -125,7 +125,7 @@ class BuildListPage extends SortablePage {
 			return;
 		}
 
-		$this->objectList->getConditionBuilder()->add('fk_buildstatus = 1 OR fk_user = ?', [Core::getUser()->steamID]);
+		$this->objectList->getConditionBuilder()->add('(fk_buildstatus = 1 OR fk_user = ?)', [Core::getUser()->steamID]);
 
 		if ( $this->name ) {
 			$this->objectList->getConditionBuilder()->add('name LIKE ?', ['%'.$this->name.'%']);
