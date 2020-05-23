@@ -4,6 +4,7 @@ namespace page;
 
 use data\build\Build;
 use data\build\BuildList;
+use data\difficulty\Difficulty;
 use data\difficulty\DifficultyList;
 use data\map\Map;
 use data\map\MapList;
@@ -27,16 +28,55 @@ class BuildListPage extends SortablePage {
 	/** @inheritDoc */
 	public $validSortFields = ['author', 'likes', 'map', 'name', 'views', 'date', 'difficulty'];
 
+	/** @inheritDoc */
 	public $pageTitle = 'Build List';
 
+	/** @inheritDoc */
+	public $itemsPerPage = 1;
+
 	//<editor-fold desc="filter">
+
+	/**
+	 * search by build name
+	 *
+	 * @var string
+	 */
 	public $name = '';
 
+	/**
+	 * search by author
+	 *
+	 * @var string
+	 */
 	public $author = '';
 
-	public $difficulty = 0;
+	/**
+	 * difficulty name for search
+	 *
+	 * @var string
+	 */
+	public $difficulty = '';
 
-	public $map = 0;
+	/**
+	 * difficulty id for object list
+	 *
+	 * @var int
+	 */
+	public $difficultyID = 0;
+
+	/**
+	 * map name for search
+	 *
+	 * @var string
+	 */
+	public $map = '';
+
+	/**
+	 * map id for search
+	 *
+	 * @var int
+	 */
+	public $mapID = 0;
 
 	public $mapName = '';
 
@@ -44,6 +84,9 @@ class BuildListPage extends SortablePage {
 
 	/** @var Map[] */
 	public $maps;
+
+	/** @var Difficulty[] */
+	public $difficulties;
 
 	public $viewMode = 'grid';
 
@@ -70,20 +113,39 @@ class BuildListPage extends SortablePage {
 
 		$difficulties = new DifficultyList();
 		$difficulties->readObjects();
-		Core::getTPL()->assign('difficulties', $difficulties);
+		$this->difficulties = $difficulties->getObjects();
 
 		$maps = new MapList();
 		$maps->readObjects();
 		$this->maps = $maps->getObjects();
-		if ( !isset($this->maps[$this->map]) ) {
-			$this->map = 0;
-		}
 
-		if ( isset($_REQUEST['map']) ) {
-			$this->map = (int) $_REQUEST['map'];
+		if ( !empty($_REQUEST['map']) ) {
+			$map = (int) $_REQUEST['map'];
+			if ( isset($this->maps[$map]) ) {
+				$this->mapID = $this->maps[$map]->getObjectID();
+				$this->map = $this->maps[$map]->name;
+			}
+			else {
+				$map = Map::getByName($_REQUEST['map']);
+				if ( $map->getObjectID() ) {
+					$this->mapID = $map->getObjectID();
+					$this->map = $map->name;
+				}
+			}
 		}
-		if ( isset($_REQUEST['difficulty']) ) {
-			$this->difficulty = (int) $_REQUEST['difficulty'];
+		if ( !empty($_REQUEST['difficulty']) ) {
+			$difficulty = (int) $_REQUEST['difficulty'];
+			if ( isset($this->difficulties[$difficulty]) ) {
+				$this->difficultyID = $this->difficulties[$difficulty]->getObjectID();
+				$this->difficulty = $this->difficulties[$difficulty]->name;
+			}
+			else {
+				$difficulty = Difficulty::getByName($_REQUEST['difficulty']);
+				if ( $difficulty->getObjectID() ) {
+					$this->difficultyID = $difficulty->getObjectID();
+					$this->difficulty = $difficulty->name;
+				}
+			}
 		}
 		if ( isset($_REQUEST['author']) ) {
 			$this->author = trim($_REQUEST['author']);
@@ -133,11 +195,11 @@ class BuildListPage extends SortablePage {
 		if ( $this->author ) {
 			$this->objectList->getConditionBuilder()->add('author LIKE ?', ['%'.$this->author.'%']);
 		}
-		if ( $this->map ) {
-			$this->objectList->getConditionBuilder()->add('map = ?', [$this->map]);
+		if ( $this->mapID ) {
+			$this->objectList->getConditionBuilder()->add('map = ?', [$this->mapID]);
 		}
-		if ( $this->difficulty ) {
-			$this->objectList->getConditionBuilder()->add('difficulty = ?', [$this->difficulty]);
+		if ( $this->difficultyID ) {
+			$this->objectList->getConditionBuilder()->add('difficulty = ?', [$this->difficultyID]);
 		}
 	}
 
@@ -172,13 +234,17 @@ class BuildListPage extends SortablePage {
 		parent::assignVariables();
 
 		Core::getTPL()->assign([
-			'controller' => 'BuildList',
-			'showFilter' => $this->showFilter,
-			'name'       => $this->name,
-			'author'     => $this->author,
-			'map'        => $this->map,
-			'difficulty' => $this->difficulty,
-			'viewMode'   => $this->viewMode,
+			'controller'   => 'BuildList',
+			'maps'         => $this->maps,
+			'difficulties' => $this->difficulties,
+			'showFilter'   => $this->showFilter,
+			'name'         => $this->name,
+			'author'       => $this->author,
+			'map'          => $this->map,
+			'mapID'        => $this->mapID,
+			'difficulty'   => $this->difficulty,
+			'difficultyID' => $this->difficultyID,
+			'viewMode'     => $this->viewMode,
 		]);
 	}
 }

@@ -4,6 +4,8 @@ namespace data\map;
 
 use data\DatabaseObject;
 use data\IRouteObject;
+use Exception;
+use system\Core;
 
 /**
  * @package data\map
@@ -19,6 +21,28 @@ class Map extends DatabaseObject implements IRouteObject {
 
 	protected static $databaseTableIndexName = 'id';
 
+	/**
+	 * get a map by name
+	 *
+	 * @param string $name
+	 *
+	 * @return Map
+	 * @throws Exception
+	 */
+	public static function getByName($name) {
+		$name = str_replace(' ', '', $name);
+		$statement = Core::getDB()->prepareStatement("SELECT * FROM ".static::$databaseTableName." WHERE REPLACE(name, ' ', '') = ?");
+		$statement->execute([$name]);
+		$result = $statement->fetchArray();
+
+		return new Map(null, $result ? $result : []);
+	}
+
+	/**
+	 * get background image of map
+	 *
+	 * @return string
+	 */
 	public function getImage() {
 		$name = str_replace(' ', '_', $this->name);
 

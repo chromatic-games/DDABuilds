@@ -49,7 +49,7 @@ if ( $this->showFilter ) {
 									/** @var Difficulty $difficulty */
 									foreach ( $this->difficulties as $difficulty ) {
 										$selected = '';
-										if ( $this->difficulty === $difficulty->getObjectID() ) {
+										if ( $this->difficultyID === $difficulty->getObjectID() ) {
 											$selected = ' selected="selected"';
 										}
 
@@ -60,7 +60,19 @@ if ( $this->showFilter ) {
 							</div>
 						</div>
 						<div class="col-md-3">
-							<?php echo $this->render('selectMap', ['showAny' => true, 'selectedMap' => $this->map, 'maps' => $this->maps]); ?>
+							<div class="form-group">
+								<label for="mapSelect">Map:</label>
+								<input class="form-control" id="mapSelect" list="maps" name="map" value="<?php echo $this->mapID ? $this->mapID : ''; ?>">
+								<datalist id="maps">
+									<option value="0">Any</option>
+									<?php
+									/** @var \data\map\Map $map */
+									foreach ( $this->maps as $map ) {
+										echo '<option value="'.$map->getObjectID().'">'.$this->escapeHtml($map->name).'</option>';
+									}
+									?>
+								</datalist>
+							</div>
 						</div>
 					</div>
 					<div class="row">
@@ -180,3 +192,14 @@ if ( $this->showFilter ) {
 	]);
 	?>
 </div>
+
+<script>
+	$(document).ready(function () {
+		$('#mapSelect').flexdatalist({
+			minLength: 1,
+			searchContain: true,
+			maxShownResults: 10,
+			valueProperty: 'value'
+		});
+	});
+</script>
