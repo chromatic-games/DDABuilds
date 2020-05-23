@@ -23,6 +23,11 @@ class LoginAction extends AbstractAction {
 	public function execute() {
 		parent::execute();
 
+		/*$_SESSION['_steamid'] = '76561198054589426';
+		$_SESSION['_steam_profile'] = (new SteamUser('76561198054589426'))->getData();
+		HeaderUtil::redirect('/');
+		exit;*/
+
 		try {
 			$openid = new LightOpenID(BASE_URL);
 

@@ -60,4 +60,6 @@ namespace {
 
 		exit;
 	}
+
+	define('TIME_NOW', time());
 }

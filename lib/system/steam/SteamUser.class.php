@@ -2,6 +2,7 @@
 
 namespace system\steam;
 
+use data\bugReport\BugReport;
 use data\notification\NotificationList;
 
 /**
@@ -38,7 +39,7 @@ class SteamUser {
 				// 'full' => $data['response']['players'][0]['avatarfull'],
 			];
 			$data['timeCreated'] = $responseData['response']['players'][0]['timecreated'];
-			$data['lastUpdate'] = time();
+			$data['lastUpdate'] = TIME_NOW;
 
 			// $profile['communityVisibilityState'] = $data['response']['players'][0]['communityvisibilitystate'];
 			// $profile['profileState'] = $data['response']['players'][0]['profilestate'];
@@ -54,6 +55,10 @@ class SteamUser {
 		}
 
 		$this->_data = $data;
+	}
+
+	public function isMaintainer() {
+		return in_array($this->steamID, BugReport::MAINTAINER);
 	}
 
 	public function getUnreadNotifications() {

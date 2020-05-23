@@ -133,6 +133,14 @@ body.tplIndex {
 
 #toTop-right{display:none;text-decoration:none;position:fixed;bottom:20px;right:20px;outline:none;}
 
+dl dt:not(:first-of-type) {
+	margin-top:20px;
+}
+dl dd .alert {
+	padding: 5px;
+	margin-top: 5px;
+}
+
 /*
 html{position:relative;min-height:100%;}
 .defense{width:35px;height:35px;cursor:pointer;}

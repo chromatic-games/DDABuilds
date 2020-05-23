@@ -1,7 +1,9 @@
 <!doctype html>
 <html lang="en">
 <head>
-	<title><?php if ( !empty($this->pageTitle) ) { echo $this->escapeHtml($this->pageTitle) . ' - '; } ?> DDA Builds</title>
+	<title><?php if ( !empty($this->pageTitle) ) {
+			echo $this->escapeHtml($this->pageTitle).' - ';
+		} ?> DDA Builds</title>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
@@ -28,7 +30,7 @@
 	}
 
 	// TODO move to controller (form/page) and build min js/css files
-	if ( $this->templateName === 'map' || $this->templateName === 'buildAdd' ) {
+	if ( $this->templateName === 'buildAdd' ) {
 		echo '<script src="assets/js/html2canvas.js"></script>
         <script src="assets/js/jquery-ui.js"></script>
         <script src="assets/js/jQueryRotate.js"></script>
@@ -37,8 +39,11 @@
 	elseif ( $this->templateName === 'index' ) {
 		echo '<link href="/assets/css/full-width-pics.css" rel="stylesheet">';
 	}
-	elseif ( $this->templateName === 'maps' ) {
+	elseif ( $this->templateName === 'buildAddSelect' ) {
 		echo '<script src="assets/js/scroll-top.js"></script>';
+	}
+	elseif ( $this->templateName === 'bugReportAdd' ) {
+		echo '<script src="assets/js/ckeditor/ckeditor.js"></script>';
 	}
 	elseif ( $this->templateName === 'list' || $this->templateName == 'buildList' ) {
 		echo '<script type="text/javascript" src="assets/js/jquery.flexdatalist.min.js"></script>';
@@ -48,7 +53,7 @@
 	<!-- Bootstrap Core JavaScript -->
 	<script src="assets/js/bootstrap.min.js"></script>
 </head>
-<body class="<?php echo 'tpl'. ucfirst($this->templateName) ?>">
+<body class="<?php echo 'tpl'.ucfirst($this->templateName) ?>">
 	<!-- Navigation -->
 	<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
 		<div class="container">
@@ -63,14 +68,16 @@
 			<!-- Collect the nav links, forms, and other content for toggling -->
 			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 				<ul class="nav navbar-nav">
+					<li><a href="<?php echo LinkHandler::getInstance()->getLink('BuildList') ?>">List</a></li>
 					<?php
 					if ( Core::getUser()->steamID ) {
-						echo ' <li> <a href="'.LinkHandler::getInstance()->getLink('BuildAddSelect').'">Create</a></li>';
+						echo '<li><a href="'.LinkHandler::getInstance()->getLink('BuildAddSelect').'">Create</a></li>';
+						echo '<li><a href="'.LinkHandler::getInstance()->getLink('BugReportAdd').'">Bug Report</a></li>';
+						if ( Core::getUser()->isMaintainer() ) {
+							echo '<li><a href="'.LinkHandler::getInstance()->getLink('BugReportList').'">Bug Reports</a></li>';
+						}
 					}
 					?>
-					<li>
-                    <a href="<?php echo LinkHandler::getInstance()->getLink('BuildList') ?>">List</a>
-                </li>
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
                 <li>
@@ -87,6 +94,9 @@
                             <ul class="dropdown-menu">
                                 <li>
                                     <a href="'.LinkHandler::getInstance()->getLink('MyBuildList').'">My Builds</a>
+                                </li>
+                                <li>
+                                    <a href="'.LinkHandler::getInstance()->getLink('MyBugReportList').'">My Bug Reports</a>
                                 </li>
                                 <li>
                                     <a href="'.LinkHandler::getInstance()->getLink('NotificationList').'">Notifications</a>

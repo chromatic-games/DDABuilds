@@ -31,6 +31,15 @@ class UserInputException extends \Exception {
 	}
 
 	/**
+	 * format error message in html form error
+	 *
+	 * @return string
+	 */
+	public function getHtml() {
+		return '<div class="alert alert-danger">'.$this->getErrorMessage().'</div>';
+	}
+
+	/**
 	 * Returns error message.
 	 *
 	 * @return    string
