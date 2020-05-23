@@ -585,8 +585,8 @@ if ( $this->action !== 'view' ) {
 		});
 
 		// initialize
-		calculateDefenseUnits();
 		showWave(0);
+		calculateDefenseUnits();
 		$('[data-toggle="tooltip"]').tooltip();
 	});
 </script>
