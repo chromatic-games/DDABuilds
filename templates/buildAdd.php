@@ -784,6 +784,7 @@ if ( $this->action !== 'view' ) {
 						e.preventDefault();
 
 						let delta = 3;
+						let scrollSpeed = 4;
 						if (e.shiftKey) {
 							delta /= 2;
 						}
@@ -791,7 +792,7 @@ if ( $this->action !== 'view' ) {
 							delta *= 2;
 						}
 
-						var rotate_angle = getRotationDegrees(rotating_defense) + (e.originalEvent.deltaY * delta);
+						var rotate_angle = getRotationDegrees(rotating_defense) + (scrollSpeed * delta);
 						rotating_defense.css('transform', 'rotate(' + rotate_angle + 'deg)');
 					});
 				})
