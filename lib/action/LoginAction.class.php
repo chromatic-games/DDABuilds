@@ -6,7 +6,7 @@ use system\Core;
 use system\exception\NamedUserException;
 use system\exception\PermissionDeniedException;
 use system\steam\LightOpenID;
-use system\steam\SteamUser;
+use system\steam\Steam;
 use system\util\HeaderUtil;
 
 class LoginAction extends AbstractAction {
@@ -43,8 +43,17 @@ class LoginAction extends AbstractAction {
 				$ptn = "/^https?:\/\/steamcommunity\.com\/openid\/id\/(7[0-9]{15,25}+)$/";
 				preg_match($ptn, $id, $matches);
 
+				$steamData = Steam::getInstance()->getPlayerSummary($matches[1]);
+				$statement = Core::getDB()->prepareStatement('INSERT INTO steam_user (steamID, name, avatarHash) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE name = ?, avatarHash = ?');
+				$statement->execute([
+					$matches[1],
+					$steamData['personaname'],
+					$steamData['avatarhash'],
+					$steamData['personaname'],
+					$steamData['avatarhash'],
+				]);;
+
 				$_SESSION['_steamid'] = $matches[1];
-				$_SESSION['_steam_profile'] = (new SteamUser($matches[1]))->getData();
 
 				HeaderUtil::redirect('/');
 				exit;

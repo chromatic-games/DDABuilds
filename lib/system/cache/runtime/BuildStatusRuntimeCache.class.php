@@ -14,5 +14,6 @@ use data\build\status\BuildStatusList;
  * @method BuildStatus   getObject($objectID)
  */
 class BuildStatusRuntimeCache extends AbstractRuntimeCache {
+	/** @inheritDoc */
 	protected $listClassName = BuildStatusList::class;
 }

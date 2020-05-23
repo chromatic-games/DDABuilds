@@ -68,7 +68,7 @@ class BuildAddPage extends AbstractPage {
 
 		if ( empty($_POST) ) {
 			$this->buildName = '';
-			$this->author = StringUtil::encodeHTML(Core::getUser()->displayName);
+			$this->author = StringUtil::encodeHTML(Core::getUser()->name);
 		}
 
 		// get hero classes

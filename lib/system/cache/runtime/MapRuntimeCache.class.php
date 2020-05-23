@@ -14,5 +14,6 @@ use data\map\MapList;
  * @method Map   getObject($objectID)
  */
 class MapRuntimeCache extends AbstractRuntimeCache {
+	/** @inheritDoc */
 	protected $listClassName = MapList::class;
 }

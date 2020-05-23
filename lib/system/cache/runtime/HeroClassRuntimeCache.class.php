@@ -14,5 +14,6 @@ use data\heroClass\HeroClassList;
  * @method HeroClass   getObject($objectID)
  */
 class HeroClassRuntimeCache extends AbstractRuntimeCache {
+	/** @inheritDoc */
 	protected $listClassName = HeroClassList::class;
 }

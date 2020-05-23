@@ -1,0 +1,6 @@
+CREATE TABLE steam_user (
+	steamID VARCHAR(20) NOT NULL,
+	name VARCHAR(48) NOT NULL,
+	avatarHash VARCHAR(48) NOT NULL,
+	PRIMARY KEY (steamID)
+);

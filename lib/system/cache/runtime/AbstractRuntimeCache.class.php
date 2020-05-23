@@ -10,7 +10,7 @@ use system\SingletonFactory;
  * Class AbstractRuntimeCache
  * @package system\cache\runtime
  */
-class AbstractRuntimeCache extends SingletonFactory {
+abstract class AbstractRuntimeCache extends SingletonFactory {
 	/**
 	 * name of the DatabaseObjectList class
 	 * @var string

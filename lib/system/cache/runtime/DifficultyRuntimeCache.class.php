@@ -14,5 +14,6 @@ use data\difficulty\DifficultyList;
  * @method Difficulty   getObject($objectID)
  */
 class DifficultyRuntimeCache extends AbstractRuntimeCache {
+	/** @inheritDoc */
 	protected $listClassName = DifficultyList::class;
 }

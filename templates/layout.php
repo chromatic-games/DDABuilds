@@ -90,7 +90,7 @@
                     }
                     else {
 	                    echo '<li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">'.Core::getUser()->displayName.'<span class="caret"></span></a>
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">'.Core::getUser()->name.'<span class="caret"></span></a>
                             <ul class="dropdown-menu">
                                 <li>
                                     <a href="'.LinkHandler::getInstance()->getLink('MyBuildList').'">My Builds</a>
@@ -122,7 +122,7 @@
             <div class="row">
                 <div class="col-xs-12 col-sm-5 col-sm-offset-7">
                     <div class="alert alert-success">
-                        Hello '.Core::getUser()->displayName.' you have: <a href="'.LinkHandler::getInstance()->getLink('NotificationList').'" class="alert-link">'.Core::getUser()->getUnreadNotifications().' unread notifications</a>.
+                        Hello '.Core::getUser()->name.' you have: <a href="'.LinkHandler::getInstance()->getLink('NotificationList').'" class="alert-link">'.Core::getUser()->getUnreadNotifications().' unread notifications</a>.
                     </div>
                 </div>
             </div>
