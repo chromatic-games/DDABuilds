@@ -70,9 +70,8 @@
 						echo ' <li> <a href="'.LinkHandler::getInstance()->getLink('BuildAddSelect').'">Create</a></li>';
 					}
 					?>
-					<li>
-                    <a href="<?php echo LinkHandler::getInstance()->getLink('BuildList') ?>">List</a>
-                </li>
+					<li><a href="<?php echo LinkHandler::getInstance()->getLink('BuildList') ?>">List</a></li>
+					<li><a href="<?php echo LinkHandler::getInstance()->getLink('Changelog') ?>">Changelog</a></li>
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
                 <li>
