@@ -126,10 +126,46 @@ body.tplIndex {
 	padding-top: 50px;
 }
 
-.contact-first-box{padding:35px;background:#9C0;}
-.contact-second-box{padding:35px;background:#39F;}
-.contact-third-box{padding:35px;background:#F66;}
-.contact-fourth-box{padding:35px;background:#6CC;}
+.contact-first-box {
+	padding: 35px;
+	background: #9C0;
+}
+
+.contact-second-box {
+	padding: 35px;
+	background: #39F;
+}
+
+.contact-third-box {
+	padding: 35px;
+	background: #F66;
+}
+
+.contact-fourth-box {
+	padding: 35px;
+	background: #6CC;
+}
+
+#toTop-right {
+	display: none;
+	text-decoration: none;
+	position: fixed;
+	bottom: 20px;
+	right: 20px;
+	outline: none;
+}
+
+.notificationBell > a {
+	position: relative;
+}
+
+.notificationBell .badge {
+	padding: 1px 4px;
+	position: absolute;
+	top: 5px;
+	right: 5px;
+	background-color: #d9534f;
+}
 
 /*
 html{position:relative;min-height:100%;}

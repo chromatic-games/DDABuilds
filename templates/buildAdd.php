@@ -585,8 +585,8 @@ if ( $this->action !== 'view' ) {
 		});
 
 		// initialize
-		calculateDefenseUnits();
 		showWave(0);
+		calculateDefenseUnits();
 		$('[data-toggle="tooltip"]').tooltip();
 	});
 </script>
@@ -780,10 +780,11 @@ if ( $this->action !== 'view' ) {
 				})
 				.on('mouseover', '.canvas .tower-container', function (e) {
 					var rotating_defense = $(this);
-					$(document).on('wheel', function (e) {
+					rotating_defense.on('wheel', function (e) {
 						e.preventDefault();
 
 						let delta = 3;
+						let scrollSpeed = 4 * (e.originalEvent.deltaY <= 0 ? -1 : 1);
 						if (e.shiftKey) {
 							delta /= 2;
 						}
@@ -791,7 +792,7 @@ if ( $this->action !== 'view' ) {
 							delta *= 2;
 						}
 
-						var rotate_angle = getRotationDegrees(rotating_defense) + (e.originalEvent.deltaY * delta);
+						var rotate_angle = getRotationDegrees(rotating_defense) + (scrollSpeed * delta);
 						rotating_defense.css('transform', 'rotate(' + rotate_angle + 'deg)');
 					});
 				})
