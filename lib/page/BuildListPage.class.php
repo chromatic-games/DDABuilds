@@ -29,7 +29,7 @@ class BuildListPage extends SortablePage {
 	public $defaultSortOrder = 'DESC';
 
 	/** @inheritDoc */
-	public $validSortFields = ['author', 'likes', 'map', 'name', 'views', 'date', 'difficulty'];
+	public $validSortFields = ['author', 'likes', 'map', 'name', 'views', 'date', 'difficulty', 'gamemodeID'];
 
 	/** @inheritDoc */
 	public $pageTitle = 'Build List';

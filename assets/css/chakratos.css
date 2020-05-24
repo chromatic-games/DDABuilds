@@ -167,6 +167,26 @@ body.tplIndex {
 	background-color: #d9534f;
 }
 
+.tplChangelog ul {
+	list-style: none;
+	padding: 0;
+}
+
+.table th.ASC > a::after,
+.table th.DESC > a::after {
+	display: inline-block;
+	font-family: FontAwesome;
+	margin-left: 5px;
+}
+
+.table th.ASC > a::after {
+	content: "\f0d8";
+}
+
+.table th.DESC > a::after {
+	content: "\f0d7";
+}
+
 /*
 html{position:relative;min-height:100%;}
 .defense{width:35px;height:35px;cursor:pointer;}

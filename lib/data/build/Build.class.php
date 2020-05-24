@@ -258,6 +258,14 @@ class Build extends DatabaseObject implements IRouteObject, ILinkableObject {
 		return GamemodeRuntimeCache::getInstance()->getObject($this->gamemodeID);
 	}
 
+	public function getGamemodeName() {
+		if ( $this->getGamemode() === null ) {
+			return 'Unknown';
+		}
+
+		return $this->getGamemode()->name;
+	}
+
 	/**
 	 * get the map object from this build
 	 *
