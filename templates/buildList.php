@@ -1,6 +1,7 @@
 <?php
 
 use data\difficulty\Difficulty;
+use data\gamemode\Gamemode;
 use system\request\LinkHandler;
 
 $linkParameters = 'pageNo='.$this->pageNo.'&sortField='.$this->sortField.'&sortOrder='.$this->sortOrder;
@@ -18,6 +19,9 @@ if ( $this->showFilter ) {
 	if ( $this->map ) {
 		$additionalParameters .= '&map='.$this->map;
 	}
+	if ( $this->gamemode ) {
+		$additionalParameters .= '&gamemode='.$this->gamemode;
+	}
 }
 
 ?>
@@ -34,13 +38,13 @@ if ( $this->showFilter ) {
 								<input type="text" placeholder="Build Name" class="form-control" name="name" value="<?php echo $this->escapeHtml($this->name); ?>">
 							</div>
 						</div>
-						<div class="col-md-3">
+						<div class="col-md-2">
 							<div class="form-group">
 								<label for="author">Author:</label>
 								<input type="text" placeholder="Author" class="form-control" name="author" value="<?php echo $this->escapeHtml($this->author); ?>">
 							</div>
 						</div>
-						<div class="col-md-3">
+						<div class="col-md-2">
 							<div class="form-group">
 								<label for="difficultySelect">Difficulty:</label>
 								<select class="form-control" id="difficultySelect" name="difficulty">
@@ -54,6 +58,25 @@ if ( $this->showFilter ) {
 										}
 
 										echo '<option value="'.$difficulty->getObjectID().'"'.$selected.'>'.$this->escapeHtml($difficulty->name).'</option>';
+									}
+									?>
+								</select>
+							</div>
+						</div>
+						<div class="col-md-2">
+							<div class="form-group">
+								<label>Game Mode:</label>
+								<select class="form-control" name="gamemode">
+									<option value="0">Any</option>
+									<?php
+									/** @var Gamemode $mode */
+									foreach ( $this->gamemodes as $mode ) {
+										$selected = '';
+										if ( $this->gamemodeID === $mode->getObjectID() ) {
+											$selected = ' selected="selected"';
+										}
+
+										echo '<option value="'.$mode->getObjectID().'"'.$selected.'>'.$this->escapeHtml($mode->name).'</option>';
 									}
 									?>
 								</select>
@@ -170,7 +193,7 @@ if ( $this->showFilter ) {
 						<div class="col-md-5">
 							<?php
 							echo '<h4><p>'.$this->escapeHtml($build->getMap()->name).'</p>';
-							echo '<p>'.$this->escapeHtml($build->getDifficulty()->name).'<p>';
+							echo '<p>'.$this->escapeHtml($build->getDifficulty()->name).' ('.$this->escapeHtml($build->getGamemode() ? $build->getGamemode()->name : 'Unknown').')<p>';
 							echo '<p><small>Likes:</small> '.$this->number($build->likes).'</p>';
 							echo '<p><small>Views:</small> '.$this->number($build->views).'</p>';
 							echo '<p>'.$build->getDate().'</p>';

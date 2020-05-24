@@ -2,6 +2,7 @@
 
 use data\build\stats\BuildStats;
 use data\comment\Comment;
+use data\gamemode\Gamemode;
 use data\heroClass\HeroClass;
 use system\Core;
 use system\request\LinkHandler;
@@ -324,15 +325,16 @@ $build = $this->build;
 										</div>
 										<div class="form-group">
 											<?php
-											echo '<label for="campaign">Game Mode:</label><br>';
+											echo '<label>Game Mode:</label><br>';
 											$first = true;
-											foreach ( \data\build\Build::getGamemodes() as $mode ) {
+											/** @var Gamemode $mode */
+											foreach ( $this->gamemodes as $mode ) {
 												$checked = '';
-												if ( ($this->action === 'add' && $first) || $build && $build->{$mode['key']} ) {
+												if ( ($this->action === 'add' && $first) || $build && $build->gamemodeID === $mode->getObjectID() ) {
 													$checked = ' checked';
 													$first = false;
 												}
-												echo '<label class="radio-inline"><input type="radio" class="gamemode" name="gamemode" value="'.$mode['key'].'"'.$checked.'>'.$this->escapeHtml($mode['name']).'</label>';
+												echo '<label class="radio-inline"><input type="radio" name="gamemodeID" value="'.$mode->getObjectID().'"'.$checked.'>'.$this->escapeHtml($mode->name).'</label>';
 											}
 											?>
 										</div>
@@ -402,7 +404,7 @@ $build = $this->build;
 
 										<h4>Build Status: <strong><?php echo $this->escapeHtml($build->getBuildStatus()->name) ?></strong></h4>
 										<h4>Difficulty: <strong><?php echo $this->escapeHtml($build->getDifficulty()->name) ?></strong></h4>
-										<h4>Game Mode: <strong><?php echo $this->escapeHtml($build->getGamemode()) ?></strong></h4>
+										<h4>Game Mode: <strong><?php echo $this->escapeHtml($build->getGamemode() ? $build->getGamemode()->name : 'Unknown'); ?></strong></h4>
 										<h4>Hardcore: <strong><?php echo $build->hardcore ? 'Yes' : 'No' ?></strong></h4>
 										<h4>AFK Able: <strong><?php echo $build->afkable ? 'Yes' : 'No' ?></strong></h4>
 										<h4>XP Per Run: <strong><?php echo $this->escapeHtml($build->expPerRun) ?></strong></h4>
@@ -650,7 +652,7 @@ if ( $this->action !== 'view' ) {
 				}
 
 				var description = CKEDITOR.instances.builddescription.getData();
-				var gamemode = $('input[name=gamemode]:checked').val();
+				var gamemodeID = $('input[name=gamemodeID]:checked').val();
 
 				Core.AjaxStatus.show();
 				$('.btn-save').prop('disabled', true);
@@ -671,7 +673,7 @@ if ( $this->action !== 'view' ) {
 									mapID: window.__DEFENSE_MAP_ID,
 									author,
 									buildName,
-									gamemode,
+									gamemodeID,
 									customWaves,
 									description: description,
 									difficulty: $('#difficulty').val(),

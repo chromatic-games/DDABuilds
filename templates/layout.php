@@ -39,10 +39,10 @@
 	elseif ( $this->templateName === 'index' ) {
 		echo '<link href="/assets/css/full-width-pics.css" rel="stylesheet">';
 	}
-	elseif ( $this->templateName === 'maps' ) {
+	elseif ( $this->templateName === 'buildAddSelect' ) {
 		echo '<script src="assets/js/scroll-top.js"></script>';
 	}
-	elseif ( $this->templateName === 'list' || $this->templateName == 'buildList' ) {
+	elseif ( $this->templateName == 'buildList' ) {
 		echo '<script type="text/javascript" src="assets/js/jquery.flexdatalist.min.js"></script>';
 		echo '<link href="assets/css/jquery.flexdatalist.min.css" rel="stylesheet">';
 	}
