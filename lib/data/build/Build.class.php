@@ -8,11 +8,14 @@ use data\comment\Comment;
 use data\comment\CommentList;
 use data\DatabaseObject;
 use data\difficulty\Difficulty;
+use data\gamemode\Gamemode;
 use data\ILinkableObject;
 use data\IRouteObject;
 use data\map\Map;
+use Exception;
 use system\cache\runtime\BuildStatusRuntimeCache;
 use system\cache\runtime\DifficultyRuntimeCache;
+use system\cache\runtime\GamemodeRuntimeCache;
 use system\cache\runtime\MapRuntimeCache;
 use system\Core;
 use system\request\LinkHandler;
@@ -30,6 +33,7 @@ use system\request\LinkHandler;
  * @property-read string  $timePerRun
  * @property-read string  $description
  * @property-read integer $views
+ * @property-read integer $gamemodeID
  * @property-read integer $map
  * @property-read integer $likeValue
  * @property-read integer $comments
@@ -78,7 +82,7 @@ class Build extends DatabaseObject implements IRouteObject, ILinkableObject {
 
 	/**
 	 * @return BuildStats[]
-	 * @throws \Exception
+	 * @throws Exception
 	 */
 	public function getStats() {
 		if ( !$this->getObjectID() ) {
@@ -100,7 +104,7 @@ class Build extends DatabaseObject implements IRouteObject, ILinkableObject {
 
 	/**
 	 * @return array
-	 * @throws \Exception
+	 * @throws Exception
 	 */
 	public function getPlacedTowers() {
 		if ( !$this->getObjectID() ) {
@@ -118,7 +122,7 @@ class Build extends DatabaseObject implements IRouteObject, ILinkableObject {
 
 	/**
 	 * @return array
-	 * @throws \Exception
+	 * @throws Exception
 	 */
 	public function getCustomWaves() {
 		if ( !$this->getObjectID() ) {
@@ -136,7 +140,7 @@ class Build extends DatabaseObject implements IRouteObject, ILinkableObject {
 
 	/**
 	 * @return Comment[]
-	 * @throws \Exception
+	 * @throws Exception
 	 */
 	public function getComments() {
 		if ( !$this->getObjectID() ) {
@@ -246,30 +250,20 @@ class Build extends DatabaseObject implements IRouteObject, ILinkableObject {
 		return imagepng($lastimg, MAIN_DIR.'assets/images/thumbnails/'.$this->getObjectID().'.png');
 	}
 
+	/**
+	 * @return Gamemode
+	 * @throws Exception
+	 */
 	public function getGamemode() {
-		foreach ( $this->getGamemodes() as $gamemode ) {
-			if ( $this->{$gamemode['key']} ) {
-				return $gamemode['name'];
-			}
-		}
-
-		return null;
+		return GamemodeRuntimeCache::getInstance()->getObject($this->gamemodeID);
 	}
 
-	/**
-	 * all available gamemodes (with modifier (hardcore/mix mode) combination information)
-	 * TODO move to database
-	 *
-	 * @return \string[][]
-	 */
-	public static function getGamemodes() {
-		return [
-			['name' => 'Campaign', 'key' => 'campaign'],
-			['name' => 'Survival', 'key' => 'survival'],
-			['name' => 'Challenge', 'key' => 'challenge'],
-			['name' => 'Pure Strategy', 'key' => 'purestrategy'],
-			['name' => 'Mix Mode', 'key' => 'mixmode'],
-		];
+	public function getGamemodeName() {
+		if ( $this->getGamemode() === null ) {
+			return 'Unknown';
+		}
+
+		return $this->getGamemode()->name;
 	}
 
 	/**

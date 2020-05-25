@@ -6,10 +6,13 @@ use data\build\Build;
 use data\build\BuildList;
 use data\difficulty\Difficulty;
 use data\difficulty\DifficultyList;
+use data\gamemode\Gamemode;
+use data\gamemode\GamemodeList;
 use data\map\Map;
 use data\map\MapList;
 use system\cache\runtime\BuildStatusRuntimeCache;
 use system\cache\runtime\DifficultyRuntimeCache;
+use system\cache\runtime\GamemodeRuntimeCache;
 use system\cache\runtime\MapRuntimeCache;
 use system\Core;
 use system\request\LinkHandler;
@@ -26,7 +29,7 @@ class BuildListPage extends SortablePage {
 	public $defaultSortOrder = 'DESC';
 
 	/** @inheritDoc */
-	public $validSortFields = ['author', 'likes', 'map', 'name', 'views', 'date', 'difficulty'];
+	public $validSortFields = ['author', 'likes', 'map', 'name', 'views', 'date', 'difficulty', 'gamemodeID'];
 
 	/** @inheritDoc */
 	public $pageTitle = 'Build List';
@@ -65,6 +68,20 @@ class BuildListPage extends SortablePage {
 	public $difficultyID = 0;
 
 	/**
+	 * gamemode name for search
+	 *
+	 * @var string
+	 */
+	public $gamemode = '';
+
+	/**
+	 * gamemode id for object list
+	 *
+	 * @var int
+	 */
+	public $gamemodeID = 0;
+
+	/**
 	 * map name for search
 	 *
 	 * @var string
@@ -84,6 +101,9 @@ class BuildListPage extends SortablePage {
 
 	/** @var Map[] */
 	public $maps;
+
+	/** @var Gamemode[] */
+	public $gamemodes;
 
 	/** @var Difficulty[] */
 	public $difficulties;
@@ -119,6 +139,10 @@ class BuildListPage extends SortablePage {
 		$maps->readObjects();
 		$this->maps = $maps->getObjects();
 
+		$gamemodeList = new GamemodeList();
+		$gamemodeList->readObjects();
+		$this->gamemodes = $gamemodeList->getObjects();
+
 		if ( !empty($_REQUEST['map']) ) {
 			$map = (int) $_REQUEST['map'];
 			if ( isset($this->maps[$map]) ) {
@@ -130,6 +154,20 @@ class BuildListPage extends SortablePage {
 				if ( $map->getObjectID() ) {
 					$this->mapID = $map->getObjectID();
 					$this->map = $map->name;
+				}
+			}
+		}
+		if ( !empty($_REQUEST['gamemode']) ) {
+			$gamemode = (int) $_REQUEST['gamemode'];
+			if ( isset($this->gamemodes[$gamemode]) ) {
+				$this->gamemodeID = $this->gamemodes[$gamemode]->getObjectID();
+				$this->gamemode = $this->gamemodes[$gamemode]->name;
+			}
+			else {
+				$gamemode = Gamemode::getByName($_REQUEST['gamemode']);
+				if ( $gamemode->getObjectID() ) {
+					$this->gamemodeID = $gamemode->getObjectID();
+					$this->gamemode = $gamemode->name;
 				}
 			}
 		}
@@ -167,6 +205,9 @@ class BuildListPage extends SortablePage {
 			if ( $this->difficulty ) {
 				$linkParameters .= '&difficulty='.$this->difficulty;
 			}
+			if ( $this->gamemode ) {
+				$linkParameters .= '&gamemode='.$this->gamemode;
+			}
 			if ( $this->name ) {
 				$linkParameters .= '&name='.$this->name;
 			}
@@ -198,6 +239,9 @@ class BuildListPage extends SortablePage {
 		if ( $this->mapID ) {
 			$this->objectList->getConditionBuilder()->add('map = ?', [$this->mapID]);
 		}
+		if ( $this->gamemodeID ) {
+			$this->objectList->getConditionBuilder()->add('gamemodeID = ?', [$this->gamemodeID]);
+		}
 		if ( $this->difficultyID ) {
 			$this->objectList->getConditionBuilder()->add('difficulty = ?', [$this->difficultyID]);
 		}
@@ -210,6 +254,8 @@ class BuildListPage extends SortablePage {
 		$maps = [];
 		$difficulties = [];
 		$buildStatuses = [];
+		$gamemodes = [];
+
 		/** @var Build $build */
 		foreach ( $this->objectList as $build ) {
 			if ( !in_array($build->map, $maps) ) {
@@ -217,6 +263,9 @@ class BuildListPage extends SortablePage {
 			}
 			if ( !in_array($build->difficulty, $difficulties) ) {
 				$difficulties[] = $build->difficulty;
+			}
+			if ( !in_array($build->gamemodeID, $gamemodes) ) {
+				$gamemodes[] = $build->gamemodeID;
 			}
 			if ( !in_array($build->fk_buildstatus, $buildStatuses) ) {
 				$buildStatuses[] = $build->fk_buildstatus;
@@ -227,6 +276,7 @@ class BuildListPage extends SortablePage {
 		MapRuntimeCache::getInstance()->cacheObjectIDs($maps);
 		DifficultyRuntimeCache::getInstance()->cacheObjectIDs($difficulties);
 		BuildStatusRuntimeCache::getInstance()->cacheObjectIDs($buildStatuses);
+		GamemodeRuntimeCache::getInstance()->cacheObjectIDs($gamemodes);
 	}
 
 	/** @inheritDoc */
@@ -236,6 +286,7 @@ class BuildListPage extends SortablePage {
 		Core::getTPL()->assign([
 			'controller'   => 'BuildList',
 			'maps'         => $this->maps,
+			'gamemodes'    => $this->gamemodes,
 			'difficulties' => $this->difficulties,
 			'showFilter'   => $this->showFilter,
 			'name'         => $this->name,
@@ -244,6 +295,8 @@ class BuildListPage extends SortablePage {
 			'mapID'        => $this->mapID,
 			'difficulty'   => $this->difficulty,
 			'difficultyID' => $this->difficultyID,
+			'gamemode'     => $this->gamemode,
+			'gamemodeID'   => $this->gamemodeID,
 			'viewMode'     => $this->viewMode,
 		]);
 	}

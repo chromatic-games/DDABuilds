@@ -1,28 +1,24 @@
 <?php
 
-namespace data\difficulty;
+namespace data\gamemode;
 
 use data\DatabaseObject;
 use Exception;
 use system\Core;
 
 /**
- * @package data\difficulty
+ * represent a game mode
  *
- * @property-read integer $id
+ * @property-read integer $gamemodeID
  * @property-read string  $name
  */
-class Difficulty extends DatabaseObject {
-	protected static $databaseTableName = 'difficulties';
-
-	protected static $databaseTableIndexName = 'id';
-
+class Gamemode extends DatabaseObject {
 	/**
-	 * get a difficulty by name
+	 * get a game mode by name
 	 *
 	 * @param string $name
 	 *
-	 * @return Difficulty
+	 * @return Gamemode
 	 * @throws Exception
 	 */
 	public static function getByName($name) {
@@ -31,6 +27,6 @@ class Difficulty extends DatabaseObject {
 		$statement->execute([$name]);
 		$result = $statement->fetchArray();
 
-		return new Difficulty(null, $result ? $result : []);
+		return new Gamemode(null, $result ? $result : []);
 	}
 }

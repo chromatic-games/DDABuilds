@@ -14,7 +14,7 @@
 	<!-- Bootstrap Core CSS -->
 	<link href="assets/css/bootstrap.min.css" rel="stylesheet">
 	<link href="assets/css/font-awesome.min.css" rel="stylesheet">
-	<link href="assets/css/chakratos.css" rel="stylesheet">
+	<link href="assets/css/chakratos<?php echo !DEBUG_MODE ? '.min' : ''; ?>.css" rel="stylesheet">
 
 	<!-- jQuery Version 1.11.1 -->
 	<script src="assets/js/jquery.js"></script>
@@ -39,10 +39,10 @@
 	elseif ( $this->templateName === 'index' ) {
 		echo '<link href="/assets/css/full-width-pics.css" rel="stylesheet">';
 	}
-	elseif ( $this->templateName === 'maps' ) {
+	elseif ( $this->templateName === 'buildAddSelect' ) {
 		echo '<script src="assets/js/scroll-top.js"></script>';
 	}
-	elseif ( $this->templateName === 'list' || $this->templateName == 'buildList' ) {
+	elseif ( $this->templateName == 'buildList' ) {
 		echo '<script type="text/javascript" src="assets/js/jquery.flexdatalist.min.js"></script>';
 		echo '<link href="assets/css/jquery.flexdatalist.min.css" rel="stylesheet">';
 	}
@@ -70,9 +70,8 @@
 						echo ' <li> <a href="'.LinkHandler::getInstance()->getLink('BuildAddSelect').'">Create</a></li>';
 					}
 					?>
-					<li>
-                    <a href="<?php echo LinkHandler::getInstance()->getLink('BuildList') ?>">List</a>
-                </li>
+					<li><a href="<?php echo LinkHandler::getInstance()->getLink('BuildList') ?>">List</a></li>
+					<li><a href="<?php echo LinkHandler::getInstance()->getLink('Changelog') ?>">Changelog</a></li>
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
                 <li>

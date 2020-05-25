@@ -36,6 +36,6 @@
 </style>
 <script>
     $(document).ready(function () {
-        $('.top').UItoTop();
+        $('.top').UItoTop({autoLinkText: '<i class="fa fa-chevron-up"></i>'});
     });
 </script>
