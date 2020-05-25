@@ -190,7 +190,7 @@ class RouteHandler extends SingletonFactory {
 		}
 
 		if ( !empty($link) ) {
-			$link = 'index.php?'.$link;
+			$link = '?'.$link;
 		}
 
 		if ( !empty($components) ) {

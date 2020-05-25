@@ -14,7 +14,7 @@
 	<!-- Bootstrap Core CSS -->
 	<link href="assets/css/bootstrap.min.css" rel="stylesheet">
 	<link href="assets/css/font-awesome.min.css" rel="stylesheet">
-	<link href="assets/css/chakratos.css" rel="stylesheet">
+	<link href="assets/css/chakratos<?php echo !DEBUG_MODE ? '.min' : ''; ?>.css" rel="stylesheet">
 
 	<!-- jQuery Version 1.11.1 -->
 	<script src="assets/js/jquery.js"></script>
@@ -45,7 +45,7 @@
 	elseif ( $this->templateName === 'bugReportAdd' ) {
 		echo '<script src="assets/js/ckeditor/ckeditor.js"></script>';
 	}
-	elseif ( $this->templateName === 'list' || $this->templateName == 'buildList' ) {
+	elseif ( $this->templateName == 'buildList' ) {
 		echo '<script type="text/javascript" src="assets/js/jquery.flexdatalist.min.js"></script>';
 		echo '<link href="assets/css/jquery.flexdatalist.min.css" rel="stylesheet">';
 	}
@@ -78,6 +78,7 @@
 						}
 					}
 					?>
+					<li><a href="<?php echo LinkHandler::getInstance()->getLink('Changelog') ?>">Changelog</a></li>
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
                 <li>

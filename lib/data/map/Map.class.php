@@ -30,8 +30,8 @@ class Map extends DatabaseObject implements IRouteObject {
 	 * @throws Exception
 	 */
 	public static function getByName($name) {
-		$name = str_replace(' ', '', $name);
-		$statement = Core::getDB()->prepareStatement("SELECT * FROM ".static::$databaseTableName." WHERE REPLACE(name, ' ', '') = ?");
+		$name = str_replace([' ', '_'], '', $name);
+		$statement = Core::getDB()->prepareStatement("SELECT * FROM ".static::getDatabaseTableName()." WHERE REPLACE(name, ' ', '') = ?");
 		$statement->execute([$name]);
 		$result = $statement->fetchArray();
 

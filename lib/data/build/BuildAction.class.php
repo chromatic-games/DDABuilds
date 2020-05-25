@@ -6,6 +6,7 @@ use data\build\status\BuildStatus;
 use data\build\wave\BuildWaveAction;
 use data\DatabaseObjectAction;
 use data\difficulty\Difficulty;
+use data\gamemode\Gamemode;
 use data\heroClass\HeroClass;
 use data\heroClass\HeroClassList;
 use data\map\Map;
@@ -50,20 +51,11 @@ class BuildAction extends DatabaseObjectAction {
 			throw new UserInputException('buildStatus', 'invalid');
 		}
 
-		$gamemodes = Build::getGamemodes();
-		$gamemode = null;
-		foreach ( $gamemodes as $mode ) {
-			if ( $this->parameters['gamemode'] === $mode['key'] ) {
-				$gamemode = $mode['key'];
-				break;
-			}
+		$gamemode = new Gamemode($this->parameters['gamemodeID']);
+		if ( !$gamemode->getObjectID() ) {
+			throw new UserInputException('gamemodeID', 'invalid');
 		}
 
-		if ( $gamemode === null ) {
-			throw new UserInputException('gamemode', 'invalid');
-		}
-
-		$this->parameters['gamemode'] = $gamemode;
 		$this->parameters['image'] = !empty($this->parameters['image']) ? $this->parameters['image'] : null;
 		$this->parameters['stats'] = !empty($this->parameters['stats']) && is_array($this->parameters['stats']) ? $this->parameters['stats'] : [];
 		$this->parameters['towers'] = !empty($this->parameters['towers']) && is_array($this->parameters['towers']) ? $this->parameters['towers'] : [];
@@ -86,13 +78,7 @@ class BuildAction extends DatabaseObjectAction {
 	}
 
 	public function save() {
-		$gamemode = $this->parameters['gamemode'];
-		$gamemodeData = [];
-		foreach ( Build::getGamemodes() as $mode ) {
-			$gamemodeData[$mode['key']] = null;
-		}
-
-		$this->parameters['data'] = array_merge($gamemodeData, [
+		$this->parameters['data'] = [
 			'author'         => $this->parameters['author'],
 			'name'           => $this->parameters['buildName'],
 			'map'            => $this->parameters['mapID'],
@@ -105,8 +91,8 @@ class BuildAction extends DatabaseObjectAction {
 			'date'           => date('Y-m-d H:i:s'),
 			'fk_user'        => Core::getUser()->steamID,
 			'fk_buildstatus' => $this->parameters['buildStatus'],
-			$gamemode        => 1,
-		]);
+			'gamemodeID'     => $this->parameters['gamemodeID'],
+		];
 
 		$returnValues = null;
 		$deleteOldEntries = false;
