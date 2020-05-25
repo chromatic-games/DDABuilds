@@ -214,11 +214,13 @@ if ( $this->showFilter ) {
 		}
 	}
 
+	echo '<div class="text-center">';
 	$this->renderPages([
 		'controller' => $this->controller,
 		'url'        => 'pageNo=%d&sortField='.$this->sortField.'&sortOrder='.$this->sortOrder.$additionalParameters,
 		'print'      => true,
 	]);
+	echo '</div>';
 	?>
 </div>
 

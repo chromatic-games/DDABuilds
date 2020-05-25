@@ -95,8 +95,6 @@ class BuildListPage extends SortablePage {
 	 */
 	public $mapID = 0;
 
-	public $mapName = '';
-
 	//</editor-fold>
 
 	/** @var Map[] */
