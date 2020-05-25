@@ -114,6 +114,10 @@
 	z-index: 395;
 }
 
+section {
+	margin-bottom: 60px;
+}
+
 body.tplIndex section {
 	padding: 0;
 }
@@ -126,19 +130,96 @@ body.tplIndex {
 	padding-top: 50px;
 }
 
-.contact-first-box{padding:35px;background:#9C0;}
-.contact-second-box{padding:35px;background:#39F;}
-.contact-third-box{padding:35px;background:#F66;}
-.contact-fourth-box{padding:35px;background:#6CC;}
+.contact-first-box {
+	padding: 35px;
+	background: #9C0;
+}
 
-#toTop-right{display:none;text-decoration:none;position:fixed;bottom:20px;right:20px;outline:none;}
+.contact-second-box {
+	padding: 35px;
+	background: #39F;
+}
+
+.contact-third-box {
+	padding: 35px;
+	background: #F66;
+}
+
+.contact-fourth-box {
+	padding: 35px;
+	background: #6CC;
+}
+
+#toTop-right {
+	display: none;
+	text-decoration: none;
+	position: fixed;
+	bottom: 20px;
+	right: 20px;
+	outline: none;
+}
+
+.notificationBell > a {
+	position: relative;
+}
+
+.notificationBell .badge {
+	padding: 1px 4px;
+	position: absolute;
+	top: 5px;
+	right: 5px;
+	background-color: #d9534f;
+}
 
 dl dt:not(:first-of-type) {
-	margin-top:20px;
+	margin-top: 20px;
 }
+
 dl dd .alert {
 	padding: 5px;
 	margin-top: 5px;
+}
+
+.tplChangelog ul {
+	list-style: none;
+	padding: 0;
+}
+
+.table th.ASC > a::after,
+.table th.DESC > a::after {
+	display: inline-block;
+	font-family: FontAwesome;
+	margin-left: 5px;
+}
+
+.table th.ASC > a::after {
+	content: "\f0d8";
+}
+
+.table th.DESC > a::after {
+	content: "\f0d7";
+}
+
+.navbar-footer {
+	margin-bottom: 0;
+}
+
+html, body {
+	height: 100%;
+}
+
+#pageContainer {
+	display: flex;
+	height: 100%;
+	flex-direction: column;
+}
+
+#main {
+	flex: 1 0 auto;
+}
+
+#footer {
+	flex: 0 0 auto;
 }
 
 /*

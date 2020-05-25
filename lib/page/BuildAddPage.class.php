@@ -4,6 +4,7 @@ namespace page;
 
 use data\build\status\BuildStatusList;
 use data\difficulty\DifficultyList;
+use data\gamemode\GamemodeList;
 use data\heroClass\HeroClassList;
 use data\map\Map;
 use data\tower\Tower;
@@ -16,6 +17,7 @@ class BuildAddPage extends AbstractPage {
 	/** @inheritDoc */
 	public $loginRequired = true;
 
+	/** @inheritDoc */
 	public $pageTitle = 'Create Build';
 
 	/** @var Map */
@@ -33,6 +35,9 @@ class BuildAddPage extends AbstractPage {
 	/** @var BuildStatusList */
 	public $buildStatuses;
 
+	/** @var GamemodeList */
+	public $gamemodes;
+
 	/** @var TowerList */
 	public $towerList;
 
@@ -45,6 +50,9 @@ class BuildAddPage extends AbstractPage {
 	public $expPerRun = '';
 
 	public $description = '';
+
+	/** @var string view mode (edit/view) */
+	public $action = 'edit';
 
 	/**
 	 * @throws IllegalLinkException
@@ -84,6 +92,12 @@ class BuildAddPage extends AbstractPage {
 		$this->difficulties = new DifficultyList();
 		$this->difficulties->readObjects();
 
+		// get game modes
+		if ( $this->action === 'edit' ) {
+			$this->gamemodes = new GamemodeList();
+			$this->gamemodes->readObjects();
+		}
+
 		// get towers
 		$this->towerList = new TowerList();
 		$this->towerList->readObjects();
@@ -116,6 +130,7 @@ class BuildAddPage extends AbstractPage {
 			'buildName'       => $this->buildName,
 			'author'          => $this->author,
 			'difficulties'    => $this->difficulties,
+			'gamemodes'       => $this->gamemodes,
 			'buildStatuses'   => $this->buildStatuses,
 			'expPerRun'       => $this->expPerRun,
 			'timePerRun'      => $this->timePerRun,

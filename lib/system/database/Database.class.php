@@ -311,7 +311,7 @@ abstract class Database {
 
 	public function addQuery($query, array $parameters) {
 		$this->queries[] = [
-			'query'      => $query,
+			'query'      => trim($query),
 			'parameters' => $parameters,
 		];
 	}

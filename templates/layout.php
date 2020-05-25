@@ -14,7 +14,7 @@
 	<!-- Bootstrap Core CSS -->
 	<link href="assets/css/bootstrap.min.css" rel="stylesheet">
 	<link href="assets/css/font-awesome.min.css" rel="stylesheet">
-	<link href="assets/css/chakratos.css" rel="stylesheet">
+	<link href="assets/css/chakratos<?php echo !DEBUG_MODE ? '.min' : ''; ?>.css" rel="stylesheet">
 
 	<!-- jQuery Version 1.11.1 -->
 	<script src="assets/js/jquery.js"></script>
@@ -45,7 +45,7 @@
 	elseif ( $this->templateName === 'bugReportAdd' ) {
 		echo '<script src="assets/js/ckeditor/ckeditor.js"></script>';
 	}
-	elseif ( $this->templateName === 'list' || $this->templateName == 'buildList' ) {
+	elseif ( $this->templateName == 'buildList' ) {
 		echo '<script type="text/javascript" src="assets/js/jquery.flexdatalist.min.js"></script>';
 		echo '<link href="assets/css/jquery.flexdatalist.min.css" rel="stylesheet">';
 	}
@@ -72,7 +72,7 @@
 					<?php
 					if ( Core::getUser()->steamID ) {
 						echo '<li><a href="'.LinkHandler::getInstance()->getLink('BuildAddSelect').'">Create</a></li>';
-						echo '<li><a href="'.LinkHandler::getInstance()->getLink('BugReportAdd').'">Bug Report</a></li>';
+						echo '<li><a href="'.LinkHandler::getInstance()->getLink('BugReportAdd').'">Report Bug</a></li>';
 						if ( Core::getUser()->isMaintainer() ) {
 							echo '<li><a href="'.LinkHandler::getInstance()->getLink('BugReportList').'">Bug Reports</a></li>';
 						}
@@ -89,8 +89,16 @@
 	                    echo '</div>';
                     }
                     else {
-	                    echo '<li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">'.Core::getUser()->name.'<span class="caret"></span></a>
+	                    $notifications = Core::getUser()->getUnreadNotifications();
+
+	                    echo '<li class="notificationBell">
+							<a href="'.LinkHandler::getInstance()->getLink('NotificationList').'">
+							<i class="fa fa-bell'.($notifications === 0 ? '-o' : '').'"></i>
+							'.($notifications ? '<span class="badge badge-danger">'.$notifications.'</span>' : '').'
+							</a>
+						</li>
+						<li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">'.Core::getUser()->displayName.'<span class="caret"></span></a>
                             <ul class="dropdown-menu">
                                 <li>
                                     <a href="'.LinkHandler::getInstance()->getLink('MyBuildList').'">My Builds</a>
@@ -116,23 +124,48 @@
 		<!-- /.container -->
 	</nav>
 	<!-- /Navigation -->
-	<?php
-	if ( Core::getUser()->steamID && $this->templateName !== 'notificationList' && Core::getUser()->getUnreadNotifications() ) {
-		echo '<div class="container">
-            <div class="row">
-                <div class="col-xs-12 col-sm-5 col-sm-offset-7">
-                    <div class="alert alert-success">
-                        Hello '.Core::getUser()->name.' you have: <a href="'.LinkHandler::getInstance()->getLink('NotificationList').'" class="alert-link">'.Core::getUser()->getUnreadNotifications().' unread notifications</a>.
-                    </div>
-                </div>
-            </div>
-        </div>';
-	}
-	?>
-	<!-- Content Section -->
-	<section>
-		<?php echo $this->content; ?>
-	</section>
+
+	<div id="pageContainer">
+		<!-- Content Section -->
+		<section id="main">
+			<?php echo $this->content; ?>
+		</section>
+		<footer id="footer" class="navbar navbar-inverse navbar-footer">
+			<div class="container">
+				<ul class="nav navbar-nav">
+					<li><a href="<?php echo LinkHandler::getInstance()->getLink('Changelog') ?>">Changelog</a></li>
+				</ul>
+				<?php if ( DEBUG_MODE ) { ?>
+					<div class="navbar-right navbar-text pointer" data-toggle="modal" data-target="#debugModal">
+						Execution time: <?php echo round(microtime(true) - APPLICATION_START, 2); ?>s | Queries: <?php echo Core::getDB()->getQueryCount(); ?> | Steam Requests: <?php echo Steam::getInstance()->getRequests(); ?>
+					</div>
+
+					<div id="debugModal" class="modal fade" tabindex="-1" role="dialog">
+						<div class="modal-dialog" role="document">
+							<div class="modal-content">
+								<div class="modal-header">
+									<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+									<h4 class="modal-title">Log</h4>
+								</div>
+								<div class="modal-body">
+									<ul style="list-style:none;padding:0;margin:0;">
+										<?php
+										foreach ( Core::getDB()->getQueries() as $query ) {
+											echo '<li>'.$query['query'].'</li>';
+										}
+										?>
+									</ul>
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+								</div>
+							</div><!-- /.modal-content -->
+						</div><!-- /.modal-dialog -->
+					</div><!-- /.modal -->
+				<?php } ?>
+			</div>
+		</footer>
+	</div>
 
 	<div id="loadingSpinner" style="display:none;">
 		<div class="loadingSpinner">
@@ -140,19 +173,6 @@
 		</div>
 		<div class="pageBackdrop"></div>
 	</div>
-
-	<?php
-	if ( DEBUG_MODE ) {
-		echo '<div class="container"><pre>';
-		var_dump([
-			'execution_time' => microtime(true) - APPLICATION_START,
-			'query_count'    => Core::getDB()->getQueryCount(),
-			'queries'        => Core::getDB()->getQueries(),
-			'steam requests' => Steam::getInstance()->getRequests(),
-		]);
-		echo '</pre></div>';
-	}
-	?>
 
 	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-39334248-36"></script>
 	<script>
