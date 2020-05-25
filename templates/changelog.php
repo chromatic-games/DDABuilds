@@ -1,7 +1,7 @@
 <div class="container">
 	<h3>2020-05-25</h3>
 	<ul>
-		<li><span class="label label-success">Added</span> Filter for Gamemode in build list view.</li>
+		<li><span class="label label-success">Added</span> Filter for game mode in build list.</li>
 		<li><span class="label label-success">Added</span> Table header sort indicator (arrow up/down for asc/desc).</li>
 		<li><span class="label label-danger">Fixed</span> Scroll to top button in create map view was missing.</li>
 	</ul>
