@@ -114,6 +114,10 @@
 	z-index: 395;
 }
 
+section {
+	margin-bottom: 60px;
+}
+
 body.tplIndex section {
 	padding: 0;
 }
@@ -168,8 +172,9 @@ body.tplIndex {
 }
 
 dl dt:not(:first-of-type) {
-	margin-top:20px;
+	margin-top: 20px;
 }
+
 dl dd .alert {
 	padding: 5px;
 	margin-top: 5px;
@@ -193,6 +198,28 @@ dl dd .alert {
 
 .table th.DESC > a::after {
 	content: "\f0d7";
+}
+
+.navbar-footer {
+	margin-bottom: 0;
+}
+
+html, body {
+	height: 100%;
+}
+
+#pageContainer {
+	display: flex;
+	height: 100%;
+	flex-direction: column;
+}
+
+#main {
+	flex: 1 0 auto;
+}
+
+#footer {
+	flex: 0 0 auto;
 }
 
 /*

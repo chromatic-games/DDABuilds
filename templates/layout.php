@@ -72,13 +72,12 @@
 					<?php
 					if ( Core::getUser()->steamID ) {
 						echo '<li><a href="'.LinkHandler::getInstance()->getLink('BuildAddSelect').'">Create</a></li>';
-						echo '<li><a href="'.LinkHandler::getInstance()->getLink('BugReportAdd').'">Bug Report</a></li>';
+						echo '<li><a href="'.LinkHandler::getInstance()->getLink('BugReportAdd').'">Report Bug</a></li>';
 						if ( Core::getUser()->isMaintainer() ) {
 							echo '<li><a href="'.LinkHandler::getInstance()->getLink('BugReportList').'">Bug Reports</a></li>';
 						}
 					}
 					?>
-					<li><a href="<?php echo LinkHandler::getInstance()->getLink('Changelog') ?>">Changelog</a></li>
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
                 <li>
@@ -126,10 +125,47 @@
 	</nav>
 	<!-- /Navigation -->
 
-	<!-- Content Section -->
-	<section>
-		<?php echo $this->content; ?>
-	</section>
+	<div id="pageContainer">
+		<!-- Content Section -->
+		<section id="main">
+			<?php echo $this->content; ?>
+		</section>
+		<footer id="footer" class="navbar navbar-inverse navbar-footer">
+			<div class="container">
+				<ul class="nav navbar-nav">
+					<li><a href="<?php echo LinkHandler::getInstance()->getLink('Changelog') ?>">Changelog</a></li>
+				</ul>
+				<?php if ( DEBUG_MODE ) { ?>
+					<div class="navbar-right navbar-text pointer" data-toggle="modal" data-target="#debugModal">
+						Execution time: <?php echo round(microtime(true) - APPLICATION_START, 2); ?>s | Queries: <?php echo Core::getDB()->getQueryCount(); ?> | Steam Requests: <?php echo Steam::getInstance()->getRequests(); ?>
+					</div>
+
+					<div id="debugModal" class="modal fade" tabindex="-1" role="dialog">
+						<div class="modal-dialog" role="document">
+							<div class="modal-content">
+								<div class="modal-header">
+									<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+									<h4 class="modal-title">Log</h4>
+								</div>
+								<div class="modal-body">
+									<ul style="list-style:none;padding:0;margin:0;">
+										<?php
+										foreach ( Core::getDB()->getQueries() as $query ) {
+											echo '<li>'.$query['query'].'</li>';
+										}
+										?>
+									</ul>
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+								</div>
+							</div><!-- /.modal-content -->
+						</div><!-- /.modal-dialog -->
+					</div><!-- /.modal -->
+				<?php } ?>
+			</div>
+		</footer>
+	</div>
 
 	<div id="loadingSpinner" style="display:none;">
 		<div class="loadingSpinner">
@@ -137,19 +173,6 @@
 		</div>
 		<div class="pageBackdrop"></div>
 	</div>
-
-	<?php
-	if ( DEBUG_MODE ) {
-		echo '<div class="container"><pre>';
-		var_dump([
-			'execution_time' => microtime(true) - APPLICATION_START,
-			'query_count'    => Core::getDB()->getQueryCount(),
-			'queries'        => Core::getDB()->getQueries(),
-			'steam requests' => Steam::getInstance()->getRequests(),
-		]);
-		echo '</pre></div>';
-	}
-	?>
 
 	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-39334248-36"></script>
 	<script>
