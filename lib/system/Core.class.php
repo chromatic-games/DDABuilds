@@ -37,8 +37,8 @@ class Core {
 	public static function getUser() {
 		if ( self::$userObj === null ) {
 			$steamID = null;
-			if ( isset($_SESSION['_steamid']) ) {
-				$steamID = $_SESSION['_steamid'];
+			if ( isset($_SESSION['__steamid']) ) {
+				$steamID = $_SESSION['__steamid'];
 			}
 
 			self::$userObj = $steamID !== null ? SteamUserRuntimeCache::getInstance()->getObject($steamID) : new SteamUser(null, []);

@@ -7,3 +7,10 @@ CREATE TABLE bug_report (
 	status TINYINT(1) UNSIGNED DEFAULT 0 NOT NULL,
 	PRIMARY KEY (reportID)
 );
+
+CREATE TABLE steam_user (
+	steamID VARCHAR(20) NOT NULL,
+	name VARCHAR(48) NOT NULL,
+	avatarHash VARCHAR(48) NOT NULL,
+	PRIMARY KEY (steamID)
+);
