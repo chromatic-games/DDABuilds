@@ -13,9 +13,45 @@ use data\map\Map;
 use system\Core;
 use system\exception\PermissionDeniedException;
 use system\exception\UserInputException;
+use system\request\LinkHandler;
 use system\util\StringUtil;
 
 class BuildAction extends DatabaseObjectAction {
+	/**
+	 * @throws PermissionDeniedException
+	 */
+	public function validateTrash() {
+		if ( empty($this->objects) ) {
+			$this->readObjects();
+		}
+
+		/** @var Build $build */
+		foreach ( $this->objects as $build ) {
+			if ( !$build->isCreator() ) {
+				throw new PermissionDeniedException();
+			}
+		}
+	}
+
+	/**
+	 * @return string
+	 * @throws \Exception
+	 */
+	public function trash() {
+		/** @var Build $build */
+		foreach ( $this->objects as $build ) {
+			$build->update([
+				'deleted' => 1,
+			]);
+		}
+
+		return LinkHandler::getInstance()->getLink('BuildList');
+	}
+
+	/**
+	 * @throws PermissionDeniedException
+	 * @throws UserInputException
+	 */
 	public function validateSave() {
 		foreach ( ['author', 'buildName', 'mapID', 'difficulty', 'buildStatus', 'afkAble', 'hardcore', 'towers'] as $field ) {
 			if ( empty($this->parameters[$field]) ) {

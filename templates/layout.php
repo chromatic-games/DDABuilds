@@ -98,7 +98,7 @@
 							</a>
 						</li>
 						<li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">'.Core::getUser()->displayName.'<span class="caret"></span></a>
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">'.Core::getUser()->name.'<span class="caret"></span></a>
                             <ul class="dropdown-menu">
                                 <li>
                                     <a href="'.LinkHandler::getInstance()->getLink('MyBuildList').'">My Builds</a>
