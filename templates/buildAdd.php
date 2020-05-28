@@ -355,18 +355,14 @@ $build = $this->build;
 												</div>
 											</div>
 
-											<?php if ( $this->expPerRun ) { ?>
-												<div class="form-group">
-													<label>XP Per Run:</label>
-													<input type="text" placeholder="XP Per Run" class="form-control" id="expPerRun" maxlength="20" value="<?php echo $this->escapeHtml($this->expPerRun); ?>" />
-												</div>
-											<?php } ?>
-											<?php if ( $this->timePerRun ) { ?>
-												<div class="form-group">
-													<label>Time Per Run:</label>
-													<input type="text" placeholder="XP Per Run" class="form-control" id="timePerRun" maxlength="20" value="<?php echo $this->escapeHtml($this->timePerRun); ?>" />
-												</div>
-											<?php } ?>
+											<div class="form-group">
+												<label>XP Per Run:</label>
+												<input type="text" placeholder="XP Per Run" class="form-control" id="expPerRun" maxlength="20" value="<?php echo $this->escapeHtml($this->expPerRun); ?>" />
+											</div>
+											<div class="form-group">
+												<label>Time Per Run:</label>
+												<input type="text" placeholder="XP Per Run" class="form-control" id="timePerRun" maxlength="20" value="<?php echo $this->escapeHtml($this->timePerRun); ?>" />
+											</div>
 
 											<h4>Mana Used: <strong id="manaUsed">0</strong></h4>
 											<h4>Mana to Upgrade: <strong id="manaUpgrade">0</strong></h4>
@@ -412,8 +408,12 @@ $build = $this->build;
 											<h4>Game Mode: <strong><?php echo $this->escapeHtml($build->getGamemodeName()); ?></strong></h4>
 											<h4>Hardcore: <strong><?php echo $build->hardcore ? 'Yes' : 'No' ?></strong></h4>
 											<h4>AFK Able: <strong><?php echo $build->afkable ? 'Yes' : 'No' ?></strong></h4>
-											<h4>XP Per Run: <strong><?php echo $this->escapeHtml($build->expPerRun) ?></strong></h4>
-											<h4>Time Per Run: <strong><?php echo $this->escapeHtml($build->timePerRun) ?></strong></h4>
+											<?php if ( $build->expPerRun ) { ?>
+												<h4>XP Per Run: <strong><?php echo $this->escapeHtml($build->expPerRun) ?></strong></h4>
+											<?php } ?>
+											<?php if ( $build->timePerRun ) { ?>
+												<h4>Time Per Run: <strong><?php echo $this->escapeHtml($build->timePerRun) ?></strong></h4>
+											<?php } ?>
 											<h4>Mana Used: <strong id="manaUsed"></strong></h4>
 											<h4>Mana to Upgrade: <strong id="manaUpgrade"></strong></h4>
 											<br />
