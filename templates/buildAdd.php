@@ -355,14 +355,18 @@ $build = $this->build;
 												</div>
 											</div>
 
-											<div class="form-group">
-												<label>XP Per Run:</label>
-												<input type="text" placeholder="XP Per Run" class="form-control" id="expPerRun" maxlength="20" value="<?php echo $this->escapeHtml($this->expPerRun); ?>" />
-											</div>
-											<div class="form-group">
-												<label>Time Per Run:</label>
-												<input type="text" placeholder="XP Per Run" class="form-control" id="timePerRun" maxlength="20" value="<?php echo $this->escapeHtml($this->timePerRun); ?>" />
-											</div>
+											<?php if ( $this->expPerRun ) { ?>
+												<div class="form-group">
+													<label>XP Per Run:</label>
+													<input type="text" placeholder="XP Per Run" class="form-control" id="expPerRun" maxlength="20" value="<?php echo $this->escapeHtml($this->expPerRun); ?>" />
+												</div>
+											<?php } ?>
+											<?php if ( $this->timePerRun ) { ?>
+												<div class="form-group">
+													<label>Time Per Run:</label>
+													<input type="text" placeholder="XP Per Run" class="form-control" id="timePerRun" maxlength="20" value="<?php echo $this->escapeHtml($this->timePerRun); ?>" />
+												</div>
+											<?php } ?>
 
 											<h4>Mana Used: <strong id="manaUsed">0</strong></h4>
 											<h4>Mana to Upgrade: <strong id="manaUpgrade">0</strong></h4>

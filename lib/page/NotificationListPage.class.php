@@ -35,6 +35,6 @@ class NotificationListPage extends SortablePage {
 	protected function initObjectList() {
 		parent::initObjectList();
 
-		$this->objectList->getConditionBuilder()->add('steamid = ?', [Core::getUser()->steamID]);
+		$this->objectList->getConditionBuilder()->add('steamID = ?', [Core::getUser()->steamID]);
 	}
 }
