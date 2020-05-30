@@ -1,4 +1,8 @@
 <div class="container">
+	<h3>2020-05-30</h3>
+	<ul>
+		<li><span class="label label-success">Added</span> Favorite builds.</li>
+	</ul>
 	<h3>2020-05-25</h3>
 	<ul>
 		<li><span class="label label-success">Added</span> Filter for game mode in build list.</li>

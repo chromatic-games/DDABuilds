@@ -23,7 +23,9 @@ $build = $this->build;
 			</div>
 			<div class="col-md-<?php echo $isView ? 7 : 5; ?> text-center">
 				<?php if ( $isView ) { ?>
-					<h3><?php echo $this->escapeHtml($this->buildName); ?></h3>
+					<h3><?php if ( Core::getUser()->steamID && !$build->isCreator() ) { ?>
+							<i class="pointer fa fa-star<?php echo $build->isWatched() ? ' text-primary' : '-o'; ?> jsWatch"></i>
+						<?php } ?><?php echo $this->escapeHtml($this->buildName); ?></h3>
 				<?php } else { ?>
 					<label>Build Name:</label>
 					<input type="text" id="buildName" placeholder="Build Name" class="form-control" maxlength="128" value="<?php echo $this->escapeHtml($this->buildName); ?>" />
@@ -870,7 +872,43 @@ if ( $this->action !== 'view' ) {
 
 		});
 	</script>
-<?php }
+<?php } elseif ( Core::getUser()->steamID && !$build->isCreator() ) { ?>
+	<script>
+		$(document).ready(function () {
+			$(document).on('click', '.jsWatch', function () {
+				window.Core.AjaxStatus.show();
+				$.post('?ajax', {
+					className: '\\data\\build\\BuildAction',
+					actionName: 'watch',
+					objectIDs: window.__DEFENSE_OBJECT_IDS
+				}, function (data) {
+					for (var buildID in data.returnValues) {
+						if (window.__DEFENSE_OBJECT_IDS.indexOf(parseInt(buildID)) >= 0) {
+							if (data.returnValues[buildID]) {
+								$('.jsWatch').addClass('text-primary fa-star').removeClass('fa-star-o');
+							}
+							else {
+								$('.jsWatch').removeClass('text-primary fa-star').addClass('fa-star-o');
+							}
+							break;
+						}
+					}
+					window.Core.AjaxStatus.hide();
+				}).fail(function (jqXHR) {
+					try {
+						alert('Error while saving: ' + JSON.parse(jqXHR.responseText).message);
+					}
+					catch (e) {
+						alert('Unknown error while saving...');
+					}
+
+					window.Core.AjaxStatus.hide();
+				});
+			});
+		});
+	</script>
+	<?php
+}
 if ( $build->isCreator() ) { ?>
 	<script>
 		$(document).ready(function () {

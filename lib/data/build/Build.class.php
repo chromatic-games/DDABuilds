@@ -50,6 +50,11 @@ class Build extends DatabaseObject implements IRouteObject, ILinkableObject {
 
 	protected static $databaseTableIndexName = 'id';
 
+	/**
+	 * @var bool
+	 */
+	public $__isWatched;
+
 	/** @var BuildStats[] */
 	protected $__stats;
 
@@ -158,6 +163,23 @@ class Build extends DatabaseObject implements IRouteObject, ILinkableObject {
 		}
 
 		return $this->__comments;
+	}
+
+	/**
+	 * @return bool
+	 * @throws Exception
+	 */
+	public function isWatched() {
+		if ( $this->__isWatched === null ) {
+			$statement = Core::getDB()->prepareStatement('SELECT buildID FROM build_watch WHERE buildID = ? AND steamID = ?');
+			$statement->execute([
+				$this->getObjectID(),
+				Core::getUser()->steamID,
+			]);
+			$this->__isWatched = $statement->rowCount() > 0;
+		}
+
+		return $this->__isWatched;
 	}
 
 	public function getLikeValue() {
