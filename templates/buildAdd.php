@@ -272,21 +272,23 @@ $build = $this->build;
 													}
 													?>
 												</select>
-												<div class="col-md-3">
-													<label for="requiredStatsHp">Fortify:</label>
-													<input class="form-control" id="requiredStatsHp" value="0">
-												</div>
-												<div class="col-md-3">
-													<label for="requiredStatsDamage">Power:</label>
-													<input class="form-control" id="requiredStatsDamage" value="0">
-												</div>
-												<div class="col-md-3">
-													<label for="requiredStatsRange">Range:</label>
-													<input class="form-control" id="requiredStatsRange" value="0">
-												</div>
-												<div class="col-md-3">
-													<label for="requiredStatsRate">Def. Rate:</label>
-													<input class="form-control" id="requiredStatsRate" value="0">
+												<div class="row">
+													<div class="col-md-3">
+														<label for="requiredStatsHp">Fortify:</label>
+														<input class="form-control" id="requiredStatsHp" value="0">
+													</div>
+													<div class="col-md-3">
+														<label for="requiredStatsDamage">Power:</label>
+														<input class="form-control" id="requiredStatsDamage" value="0">
+													</div>
+													<div class="col-md-3">
+														<label for="requiredStatsRange">Range:</label>
+														<input class="form-control" id="requiredStatsRange" value="0">
+													</div>
+													<div class="col-md-3">
+														<label for="requiredStatsRate">Def. Rate:</label>
+														<input class="form-control" id="requiredStatsRate" value="0">
+													</div>
 												</div>
 											</div>
 
