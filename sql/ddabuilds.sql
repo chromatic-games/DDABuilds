@@ -284,8 +284,8 @@ INSERT INTO maps VALUES
 (11, 'The Promenade', 140, 0, 1),
 (12, 'The Summit', 150, 0, 1),
 (13, 'Magus Quarters', 90, 0, 2),
-(14, 'Endless Spires', 110, 0, 2);
-
+(14, 'Endless Spires', 110, 0, 2),
+(15, 'Glitterhelm Caverns', 165, 0, 2);
 -- 
 -- Dumping data for table mapcategories
 --
