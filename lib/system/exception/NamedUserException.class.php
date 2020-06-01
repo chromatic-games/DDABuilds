@@ -13,11 +13,6 @@ class NamedUserException extends UserException {
 	 */
 	public function show() {
 		$stacktrace = $this->getTraceAsString();
-		$previous = $this->getPrevious();
-		while ( $previous ) {
-			$stacktrace .= '<br /><br />'.$previous->getMessage().'<br />'.$previous->getTraceAsString();
-			$previous = $previous->getPrevious();
-		}
 
 		Core::getTPL()->assign([
 			'name'         => get_class($this),

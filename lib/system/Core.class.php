@@ -7,8 +7,9 @@ use Exception;
 use system\cache\runtime\SteamUserRuntimeCache;
 use system\database\MySQLDatabase;
 use system\exception\NamedUserException;
-use system\exception\UserException;
 use system\template\TemplateEngine;
+use function functions\exception\logThrowable;
+use function functions\exception\printThrowable;
 
 require_once(LIB_DIR.'core.functions.php');
 
@@ -77,7 +78,7 @@ class Core {
 	}
 
 	public static final function handleException($e) {
-		if ( $e instanceof UserException ) {
+		if ( $e instanceof NamedUserException ) {
 			$e->show();
 			exit;
 		}
@@ -87,8 +88,8 @@ class Core {
 			ob_end_clean();
 		}
 
-		$exception = new NamedUserException($e->getMessage(), $e->getCode(), $e);
-		$exception->show();
+		// print all other errors
+		printThrowable($e);
 	}
 
 	public static final function handleError($severity, $message, $file, $line) {
@@ -97,14 +98,7 @@ class Core {
 			return;
 		}
 
-		if ( !DEBUG_MODE ) {
-			throw new NamedUserException('Error appeared'); // replace with systemexception
-		}
-		else {
-			echo '<pre>';
-			var_dump(implode(', ', [$severity, $message, $file, $line]));
-			echo '</pre>';
-		}
+		logThrowable(new \Exception($message, 0));
 	}
 
 	public static function destruct() {

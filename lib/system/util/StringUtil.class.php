@@ -111,6 +111,20 @@ class StringUtil {
 	}
 
 	/**
+	 * Unifies windows and unix directory separators.
+	 *
+	 * @param string $path
+	 *
+	 * @return string
+	 */
+	public static function unifyDirSeparator($path) {
+		$path = str_replace('\\\\', '/', $path);
+		$path = str_replace('\\', '/', $path);
+
+		return $path;
+	}
+
+	/**
 	 * Removes Unicode whitespace characters from the beginning
 	 * and ending of the given string.
 	 *
