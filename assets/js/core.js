@@ -39,6 +39,7 @@
 
 				$('html').addClass('dark');
 				$('.darkSymbol').addClass('fa-sun-o').removeClass('fa-moon-o');
+				console.log($('.darkSymbol'));
 			}
 		},
 		disable: function () {
@@ -65,10 +66,12 @@
 	};
 	window.Core.AjaxStatus = AjaxStatus;
 
-	if (typeof window.localStorage !== 'undefined') {
-		var darkMode = window.localStorage.getItem('darkMode');
-		if (darkMode === '1') {
-			window.Core.DarkMode.enable();
+	$(document).ready(function() {
+		if (typeof window.localStorage !== 'undefined') {
+			var darkMode = window.localStorage.getItem('darkMode');
+			if (darkMode === '1') {
+				window.Core.DarkMode.enable();
+			}
 		}
-	}
+	})
 })();
