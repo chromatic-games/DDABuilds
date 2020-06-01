@@ -11,6 +11,7 @@
 		<li><span class="label label-warning">Changed</span> Reduced mouse wheel rotation speed.</li>
 		<li><span class="label label-danger">Fixed</span> Hide empty "Exp Per run" and "Time Per Run".</li>
 		<li><span class="label label-danger">Fixed</span> Disable tower rotation with mouse wheel for auras/traps.</li>
+		<li><span class="label label-danger">Fixed</span> Wrong save for required stats in the build.</li>
 	</ul>
 	<h3>2020-05-25</h3>
 	<ul>

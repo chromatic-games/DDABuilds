@@ -259,9 +259,9 @@ class BuildAction extends DatabaseObjectAction {
 						$build->getObjectID(),
 						$key,
 						$hp,
+						$damage,
 						$rate,
 						$range,
-						$damage,
 					]);
 				}
 			}
