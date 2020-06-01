@@ -218,6 +218,7 @@ INSERT INTO `maps` VALUES ('11', 'The Promenade', '140', '0', '1');
 INSERT INTO `maps` VALUES ('12', 'The Summit', '150', '0', '1');
 INSERT INTO `maps` VALUES ('13', 'Magus Quarters', '90', '0', '2');
 INSERT INTO `maps` VALUES ('14', 'Endless Spires', '110', '0', '2');
+INSERT INTO `maps` VALUES ('15', 'Glitterhelm Caverns', '165', '0', '2');
 
 -- ----------------------------
 -- Table structure for `notifications`

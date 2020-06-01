@@ -115,45 +115,47 @@ if ( $this->showFilter ) {
 			<thead>
 			<tr>
 				<?php if ( !$this->hideAuthor ) { ?>
-					<th<?php echo $this->sortField === 'author' ? ' class="'.$this->sortOrder.'"': '' ?>>
+					<th<?php echo $this->sortField === 'author' ? ' class="'.$this->sortOrder.'"' : '' ?>>
 						<a href="<?php echo LinkHandler::getInstance()->getLink($this->controller, [], 'pageNo='.$this->pageNo.'&sortField=author&sortOrder='.($this->sortField === 'author' && $this->sortOrder === 'ASC' ? 'DESC' : 'ASC').$additionalParameters); ?>">Author</a>
 					</th>
 				<?php } ?>
-				<th<?php echo $this->sortField === 'name' ? ' class="'.$this->sortOrder.'"': '' ?>>
+				<th<?php echo $this->sortField === 'name' ? ' class="'.$this->sortOrder.'"' : '' ?>>
 					<a href="<?php echo LinkHandler::getInstance()->getLink($this->controller, [], 'pageNo='.$this->pageNo.'&sortField=name&sortOrder='.($this->sortField === 'name' && $this->sortOrder === 'ASC' ? 'DESC' : 'ASC').$additionalParameters); ?>">Build Name</a>
 				</th>
-				<th<?php echo $this->sortField === 'gamemodeID' ? ' class="'.$this->sortOrder.'"': '' ?>>
+				<th<?php echo $this->sortField === 'gamemodeID' ? ' class="'.$this->sortOrder.'"' : '' ?>>
 					<a href="<?php echo LinkHandler::getInstance()->getLink($this->controller, [], 'pageNo='.$this->pageNo.'&sortField=gamemodeID&sortOrder='.($this->sortField === 'gamemodeID' && $this->sortOrder === 'ASC' ? 'DESC' : 'ASC').$additionalParameters); ?>">Game Mode</a>
 				</th>
-				<th<?php echo $this->sortField === 'map' ? ' class="'.$this->sortOrder.'"': '' ?>>
+				<th<?php echo $this->sortField === 'map' ? ' class="'.$this->sortOrder.'"' : '' ?>>
 					<a href="<?php echo LinkHandler::getInstance()->getLink($this->controller, [], 'pageNo='.$this->pageNo.'&sortField=map&sortOrder='.($this->sortField === 'map' && $this->sortOrder === 'ASC' ? 'DESC' : 'ASC').$additionalParameters); ?>">Map</a>
 				</th>
-				<th<?php echo $this->sortField === 'difficulty' ? ' class="'.$this->sortOrder.'"': '' ?>>
+				<th<?php echo $this->sortField === 'difficulty' ? ' class="'.$this->sortOrder.'"' : '' ?>>
 					<a href="<?php echo LinkHandler::getInstance()->getLink($this->controller, [], 'pageNo='.$this->pageNo.'&sortField=difficulty&sortOrder='.($this->sortField === 'difficulty' && $this->sortOrder === 'ASC' ? 'DESC' : 'ASC').$additionalParameters); ?>">Difficulty</a>
 				</th>
-				<th<?php echo $this->sortField === 'likes' ? ' class="'.$this->sortOrder.'"': '' ?>>
+				<th<?php echo $this->sortField === 'likes' ? ' class="'.$this->sortOrder.'"' : '' ?>>
 					<a href="<?php echo LinkHandler::getInstance()->getLink($this->controller, [], 'pageNo='.$this->pageNo.'&sortField=likes&sortOrder='.($this->sortField === 'likes' && $this->sortOrder === 'ASC' ? 'DESC' : 'ASC').$additionalParameters); ?>">Likes</a>
 				</th>
-				<th<?php echo $this->sortField === 'views' ? ' class="'.$this->sortOrder.'"': '' ?>>
+				<th<?php echo $this->sortField === 'views' ? ' class="'.$this->sortOrder.'"' : '' ?>>
 					<a href="<?php echo LinkHandler::getInstance()->getLink($this->controller, [], 'pageNo='.$this->pageNo.'&sortField=views&sortOrder='.($this->sortField === 'views' && $this->sortOrder === 'ASC' ? 'DESC' : 'ASC').$additionalParameters); ?>">Views</a>
 				</th>
-				<th<?php echo $this->sortField === 'date' ? ' class="'.$this->sortOrder.'"': '' ?>>
+				<th<?php echo $this->sortField === 'date' ? ' class="'.$this->sortOrder.'"' : '' ?>>
 					<a href="<?php echo LinkHandler::getInstance()->getLink($this->controller, [], 'pageNo='.$this->pageNo.'&sortField=date&sortOrder='.($this->sortField === 'date' && $this->sortOrder === 'ASC' ? 'DESC' : 'ASC').$additionalParameters); ?>">Date</a>
 				</th>
 				<th class="text-right">
 					<?php if ( $this->viewMode !== 'grid' ) {
 						echo '<a href="'.LinkHandler::getInstance()->getLink($this->controller, ['viewMode' => 'grid'], 'pageNo='.$this->pageNo.'&sortField='.$this->sortField.'&sortOrder='.$this->sortOrder.$additionalParameters).'">';
-					} ?>
-					<i class="fa fa-th" aria-hidden="true"></i>
-					<?php if ( $this->viewMode !== 'grid' ) {
+					}
+					echo '<i class="fa fa-th" aria-hidden="true"></i>';
+					if ( $this->viewMode !== 'grid' ) {
 						echo '</a>';
 					} ?>
 
 					<?php if ( $this->viewMode !== 'list' ) {
 						echo '<a href="'.LinkHandler::getInstance()->getLink($this->controller, ['viewMode' => 'list'], 'pageNo='.$this->pageNo.'&sortField='.$this->sortField.'&sortOrder='.$this->sortOrder.$additionalParameters).'">';
-					} ?>
-					<i class="fa fa-bars" aria-hidden="true"></i>
-					<?php if ( $this->viewMode !== 'list' ) {
+					}
+
+					echo '<i class="fa fa-bars" aria-hidden="true"></i>';
+
+					if ( $this->viewMode !== 'list' ) {
 						echo '</a>';
 					} ?>
 				</th>
