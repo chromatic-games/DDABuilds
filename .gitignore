@@ -2,6 +2,7 @@
 config.inc.php
 mysql.inc.php
 assets/images/thumbnails
+logs/*.txt
 
 # ide files
 .idea
