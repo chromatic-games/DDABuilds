@@ -2,6 +2,7 @@
 
 namespace page;
 
+use data\build\Build;
 use data\build\status\BuildStatusList;
 use data\difficulty\DifficultyList;
 use data\gamemode\GamemodeList;
@@ -19,6 +20,9 @@ class BuildAddPage extends AbstractPage {
 
 	/** @inheritDoc */
 	public $pageTitle = 'Create Build';
+
+	/** @var Build */
+	public $build;
 
 	/** @var Map */
 	public $map;
@@ -68,6 +72,8 @@ class BuildAddPage extends AbstractPage {
 		if ( !$this->map->getObjectID() ) {
 			throw new IllegalLinkException();
 		}
+
+		$this->build = new Build(null);
 	}
 
 	/** @inheritDoc */
@@ -125,6 +131,7 @@ class BuildAddPage extends AbstractPage {
 
 		Core::getTPL()->assign([
 			'action'          => 'add',
+			'build'           => $this->build,
 			'map'             => $this->map,
 			'towers'          => $this->towers,
 			'buildName'       => $this->buildName,

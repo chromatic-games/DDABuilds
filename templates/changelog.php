@@ -1,7 +1,10 @@
 <div class="container">
-	<h3>2020-05-30</h3>
+	<h3>2020-06-02</h3>
 	<ul>
 		<li><span class="label label-success">Added</span> Favorite builds.</li>
+		<li><span class="label label-success">Added</span> Delete build button.</li>
+		<li><span class="label label-success">Changed</span> The pagination are centered.</li>
+		<li><span class="label label-danger">Fixed</span> Hide empty "Exp Per run" and "Time Per Run".</li>
 	</ul>
 	<h3>2020-05-25</h3>
 	<ul>

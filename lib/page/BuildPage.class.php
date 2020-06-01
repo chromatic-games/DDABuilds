@@ -14,9 +14,6 @@ class BuildPage extends BuildAddPage {
 	/** @inheritDoc */
 	public $templateName = 'buildAdd';
 
-	/** @var Build */
-	public $build;
-
 	/** @var string view mode (edit/view) */
 	public $action = 'view';
 
@@ -70,7 +67,6 @@ class BuildPage extends BuildAddPage {
 		parent::assignVariables();
 
 		Core::getTPL()->assign([
-			'build'  => $this->build,
 			'action' => $this->action,
 		]);
 	}

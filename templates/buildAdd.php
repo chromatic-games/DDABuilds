@@ -53,7 +53,7 @@ $build = $this->build;
 		<ul class="nav nav-tabs" role="tablist" id="waveTabList">
 			<li class="active pointer waveTab" data-target="#buildTab"><a href="#buildTab" data-wave="0">Build</a></li>
 			<?php
-			if ( $build ) {
+			if ( $build->getObjectID() ) {
 				foreach ( $build->getCustomWaves() as $id => $wave ) {
 					echo str_replace(['%name%', '%id%'], [$this->escapeHtml($wave['name']), $id + 1], $tabTemplate);
 				}
@@ -182,14 +182,14 @@ $build = $this->build;
 					</div>
 				</div>
 			<?php } ?>
-			<div id="buildTab" class="tab-pane active jsObject" data-id="<?php echo $build ? $build->getObjectID() : 0; ?>" data-type="build">
+			<div id="buildTab" class="tab-pane active jsObject" data-id="<?php echo $build->getObjectID(); ?>" data-type="build">
 				<div class="row ">
 					<div class="col-lg-9">
 						<div class="canvas">
 							<img class="ddmap" src="<?php echo $this->map->getImage(); ?>">
 							<?php
 							$usedClasses = [];
-							if ( $build !== null ) {
+							if ( $build->getObjectID() ) {
 								foreach ( $build->getPlacedTowers() as $placed ) {
 									/** @var \data\tower\Tower $tower */
 									$tower = $this->availableTowers[$placed['fk_tower']];
@@ -300,7 +300,7 @@ $build = $this->build;
 													/** @var \data\build\status\BuildStatus $buildStatus */
 													foreach ( $this->buildStatuses as $buildStatus ) {
 														$selected = '';
-														if ( $build && $build->getObjectID() && $buildStatus->getObjectID() == $build->fk_buildstatus ) {
+														if ( $build->getObjectID() && $buildStatus->getObjectID() == $build->fk_buildstatus ) {
 															$selected = 'selected="selected"';
 														}
 
@@ -320,7 +320,7 @@ $build = $this->build;
 														$difficultyId = $difficulty->getObjectID();
 														$difficultyName = $difficulty->name;
 														$selected = '';
-														if ( $build && $build->difficulty === $difficultyId ) {
+														if ( $build->difficulty === $difficultyId ) {
 															$selected = ' selected="selected"';
 														}
 														echo '<option value="'.$difficultyId.'"'.$selected.'>'.$difficultyName.'</option>';
@@ -335,7 +335,7 @@ $build = $this->build;
 												/** @var Gamemode $mode */
 												foreach ( $this->gamemodes as $mode ) {
 													$checked = '';
-													if ( ($this->action === 'add' && $first) || $build && $build->gamemodeID === $mode->getObjectID() ) {
+													if ( ($this->action === 'add' && $first) || $build->gamemodeID === $mode->getObjectID() ) {
 														$checked = ' checked';
 														$first = false;
 													}
@@ -347,14 +347,14 @@ $build = $this->build;
 											<div class="form-group">
 												<div class="checkbox">
 													<label>
-														<input type="checkbox" id="hardcore" value="1"<?php echo $build && $build->hardcore ? ' checked' : ''; ?>> Hardcore
+														<input type="checkbox" id="hardcore" value="1"<?php echo $build->hardcore ? ' checked' : ''; ?>> Hardcore
 													</label>
 												</div>
 											</div>
 											<div class="form-group">
 												<div class="checkbox">
 													<label>
-														<input type="checkbox" id="afkAble" value="1"<?php echo $build && $build->afkable ? ' checked' : ''; ?>> AFK Able
+														<input type="checkbox" id="afkAble" value="1"<?php echo $build->afkable ? ' checked' : ''; ?>> AFK Able
 													</label>
 												</div>
 											</div>
@@ -372,7 +372,7 @@ $build = $this->build;
 											<h4>Mana to Upgrade: <strong id="manaUpgrade">0</strong></h4>
 
 											<button class="btn btn-primary btn-save">Save</button>
-											<?php if ( $build ) { ?>
+											<?php if ( $build->getObjectID() ) { ?>
 												<a href="<?php echo LinkHandler::getInstance()->getLink('Build', ['object' => $build], 'view') ?>" class="btn btn-info btn-viewer-mode">Viewer Mode</a>
 											<?php }
 										}
@@ -433,7 +433,7 @@ $build = $this->build;
 												<a href="<?php echo $build->getLink() ?>" class="btn btn-info">Editor Mode</a>
 											<?php } ?>
 										<?php } ?>
-										<?php if ( $build && $build->isCreator() ) { ?>
+										<?php if ( $build->isCreator() ) { ?>
 											<a class="btn btn-danger btn-delete">Delete Build</a>
 										<?php } ?>
 									</div>
@@ -468,7 +468,7 @@ $build = $this->build;
 <?php
 if ( $this->action !== 'view' ) {
 	/** @var BuildStats[] $buildStats */
-	$stats = $build ? $build->getStats() : [];
+	$stats = $build->getObjectID() ? $build->getStats() : [];
 	$buildStats = [];
 	/** @var HeroClass $heroClass */
 	foreach ( $this->heroClasses as $heroClass ) {
@@ -911,7 +911,7 @@ if ( $this->action !== 'view' ) {
 	</script>
 	<?php
 }
-if ( $build && $build->isCreator() ) { ?>
+if ( $build->isCreator() ) { ?>
 	<script>
 		$(document).ready(function () {
 			$('.btn-delete').on('click', function () {
