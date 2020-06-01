@@ -526,14 +526,29 @@ if ( $this->action !== 'view' ) {
 			var minionDefenseUnits = $('#currentMinionUnits');
 
 			// set colors
-			currentDefenseUnits.css('color', defenseUnits > maxUnits ? 'red' : 'black');
-			minionDefenseUnits.css('color', minionUnits > maxUnits ? 'red' : 'black');
+			currentDefenseUnits.toggleClass('text-danger', defenseUnits > maxUnits);
+			minionDefenseUnits.toggleClass('text-danger', minionUnits > maxUnits);
 
 			// set html values
 			currentDefenseUnits.html(defenseUnits);
 			minionDefenseUnits.html(minionUnits);
 			$('#manaUsed').html(mana);
 			$('#manaUpgrade').html(manaUpgrade);
+
+			$('#towerControlPanel .tower-container').each(function (_, element) {
+				var requiredDU = parseInt(element.getAttribute('data-du'));
+				if (requiredDU === 0) {
+					return;
+				}
+
+				var isMU = element.hasAttribute('data-mu');
+				if (!isMU) {
+					$(element).toggleClass('notEnoughDU', requiredDU > maxUnits - defenseUnits);
+				}
+				else if (isMU) {
+					$(element).toggleClass('notEnoughDU', requiredDU > maxUnits - minionUnits);
+				}
+			});
 		}
 
 		function getWaveTowers(waveID) {
@@ -793,21 +808,23 @@ if ( $this->action !== 'view' ) {
 				})
 				.on('mouseover', '.canvas .tower-container', function (e) {
 					var rotating_defense = $(this);
-					rotating_defense.on('wheel', function (e) {
-						e.preventDefault();
+					if (rotating_defense.find('.menu').length) {
+						rotating_defense.on('wheel', function (e) {
+							e.preventDefault();
 
-						let delta = 3;
-						let scrollSpeed = 4 * (e.originalEvent.deltaY <= 0 ? -1 : 1);
-						if (e.shiftKey) {
-							delta /= 2;
-						}
-						else if (e.ctrlKey) {
-							delta *= 2;
-						}
+							let delta = 3;
+							let scrollSpeed = 3 * (e.originalEvent.deltaY <= 0 ? -1 : 1);
+							if (e.shiftKey) {
+								delta /= 2;
+							}
+							else if (e.ctrlKey) {
+								delta *= 3;
+							}
 
-						var rotate_angle = getRotationDegrees(rotating_defense) + (scrollSpeed * delta);
-						rotating_defense.css('transform', 'rotate(' + rotate_angle + 'deg)');
-					});
+							var rotate_angle = getRotationDegrees(rotating_defense) + (scrollSpeed * delta);
+							rotating_defense.css('transform', 'rotate(' + rotate_angle + 'deg)');
+						});
+					}
 				})
 				.on('mouseout', '.canvas .tower-container', function (e) {
 					$(document).unbind('wheel');
@@ -860,6 +877,9 @@ if ( $this->action !== 'view' ) {
 			$('#towerControlPanel .tower-container').draggable({
 				helper: 'clone',
 				start(event, ui) {
+					if ($(this).draggable('instance').element.hasClass('notEnoughDU')) {
+						return false;
+					}
 					// center the icon on
 					$(this).draggable('instance').offset.click = {
 						left: Math.floor(ui.helper.width() / 2),
