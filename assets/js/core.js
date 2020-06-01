@@ -39,7 +39,6 @@
 
 				$('html').addClass('dark');
 				$('.darkSymbol').addClass('fa-sun-o').removeClass('fa-moon-o');
-				console.log($('.darkSymbol'));
 			}
 		},
 		disable: function () {
