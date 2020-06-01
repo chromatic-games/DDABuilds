@@ -433,7 +433,7 @@ $build = $this->build;
 												<a href="<?php echo $build->getLink() ?>" class="btn btn-info">Editor Mode</a>
 											<?php } ?>
 										<?php } ?>
-										<?php if ( $build->isCreator() ) { ?>
+										<?php if ( $build && $build->isCreator() ) { ?>
 											<a class="btn btn-danger btn-delete">Delete Build</a>
 										<?php } ?>
 									</div>
@@ -911,7 +911,7 @@ if ( $this->action !== 'view' ) {
 	</script>
 	<?php
 }
-if ( $build->isCreator() ) { ?>
+if ( $build && $build->isCreator() ) { ?>
 	<script>
 		$(document).ready(function () {
 			$('.btn-delete').on('click', function () {
