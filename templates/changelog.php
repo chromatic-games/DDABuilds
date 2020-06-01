@@ -3,6 +3,7 @@
 	<ul>
 		<li><span class="label label-success">Added</span> Favorite builds.</li>
 		<li><span class="label label-success">Added</span> Delete build button.</li>
+		<li><span class="label label-success">Added</span> Dark mode (beta).</li>
 		<li><span class="label label-success">Added</span> Disable towers where not enough defense units are available.</li>
 		<li><span class="label label-warning">Changed</span> The pagination are centered.</li>
 		<li><span class="label label-warning">Changed</span> Reduced mouse wheel rotation speed.</li>

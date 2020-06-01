@@ -68,7 +68,7 @@
 				        data-target="#bs-example-navbar-collapse-1">
 					<span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="..">DDA Builder</a>
+				<a class="navbar-brand" href="/">DDA Builder</a>
 			</div>
 			<!-- Collect the nav links, forms, and other content for toggling -->
 			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -85,7 +85,12 @@
 					?>
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
-                <li>
+					<li>
+						<a class="pointer" onClick="Core.DarkMode.toggle()">
+							<i class="fa fa-moon-o darkSymbol"></i>
+							<span class="label label-danger betaLabel">Beta</span>
+						</a>
+					</li>
                     <?php
                     if ( !Core::getUser()->steamID ) {
 	                    $loginLink = LinkHandler::getInstance()->getLink('Login');
@@ -124,7 +129,6 @@
                         </li>';
                     }
                     ?>
-                </li>
 				</ul>
 			</div>
 			<!-- /.navbar-collapse -->

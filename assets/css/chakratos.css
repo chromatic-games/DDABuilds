@@ -167,6 +167,21 @@ body.tplIndex {
 	outline: none;
 }
 
+html.dark .betaLabel {
+	display:none;
+}
+
+.betaLabel {
+	position: absolute;
+	right: 2px;
+}
+
+@media (min-width: 768px) {
+	.betaLabel {
+		top: 3px;
+	}
+}
+
 .notificationBell > a {
 	position: relative;
 }
