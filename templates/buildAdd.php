@@ -23,7 +23,9 @@ $build = $this->build;
 			</div>
 			<div class="col-md-<?php echo $isView ? 7 : 5; ?> text-center">
 				<?php if ( $isView ) { ?>
-					<h3><?php echo $this->escapeHtml($this->buildName); ?></h3>
+					<h3><?php if ( Core::getUser()->steamID && !$build->isCreator() ) { ?>
+							<i class="pointer fa fa-star<?php echo $build->isWatched() ? ' text-primary' : '-o'; ?> jsWatch"></i>
+						<?php } ?><?php echo $this->escapeHtml($this->buildName); ?></h3>
 				<?php } else { ?>
 					<label>Build Name:</label>
 					<input type="text" id="buildName" placeholder="Build Name" class="form-control" maxlength="128" value="<?php echo $this->escapeHtml($this->buildName); ?>" />
@@ -51,7 +53,7 @@ $build = $this->build;
 		<ul class="nav nav-tabs" role="tablist" id="waveTabList">
 			<li class="active pointer waveTab" data-target="#buildTab"><a href="#buildTab" data-wave="0">Build</a></li>
 			<?php
-			if ( $build ) {
+			if ( $build->getObjectID() ) {
 				foreach ( $build->getCustomWaves() as $id => $wave ) {
 					echo str_replace(['%name%', '%id%'], [$this->escapeHtml($wave['name']), $id + 1], $tabTemplate);
 				}
@@ -180,14 +182,14 @@ $build = $this->build;
 					</div>
 				</div>
 			<?php } ?>
-			<div id="buildTab" class="tab-pane active jsObject" data-id="<?php echo $build ? $build->getObjectID() : 0; ?>" data-type="build">
+			<div id="buildTab" class="tab-pane active jsObject" data-id="<?php echo $build->getObjectID(); ?>" data-type="build">
 				<div class="row ">
 					<div class="col-lg-9">
 						<div class="canvas">
 							<img class="ddmap" src="<?php echo $this->map->getImage(); ?>">
 							<?php
 							$usedClasses = [];
-							if ( $build !== null ) {
+							if ( $build->getObjectID() ) {
 								foreach ( $build->getPlacedTowers() as $placed ) {
 									/** @var \data\tower\Tower $tower */
 									$tower = $this->availableTowers[$placed['fk_tower']];
@@ -270,21 +272,23 @@ $build = $this->build;
 													}
 													?>
 												</select>
-												<div class="col-md-3">
-													<label for="requiredStatsHp">Fortify:</label>
-													<input class="form-control" id="requiredStatsHp" value="0">
-												</div>
-												<div class="col-md-3">
-													<label for="requiredStatsDamage">Power:</label>
-													<input class="form-control" id="requiredStatsDamage" value="0">
-												</div>
-												<div class="col-md-3">
-													<label for="requiredStatsRange">Range:</label>
-													<input class="form-control" id="requiredStatsRange" value="0">
-												</div>
-												<div class="col-md-3">
-													<label for="requiredStatsRate">Def. Rate:</label>
-													<input class="form-control" id="requiredStatsRate" value="0">
+												<div class="row">
+													<div class="col-md-3">
+														<label for="requiredStatsHp">Fortify:</label>
+														<input class="form-control" id="requiredStatsHp" value="0">
+													</div>
+													<div class="col-md-3">
+														<label for="requiredStatsDamage">Power:</label>
+														<input class="form-control" id="requiredStatsDamage" value="0">
+													</div>
+													<div class="col-md-3">
+														<label for="requiredStatsRange">Range:</label>
+														<input class="form-control" id="requiredStatsRange" value="0">
+													</div>
+													<div class="col-md-3">
+														<label for="requiredStatsRate">Def. Rate:</label>
+														<input class="form-control" id="requiredStatsRate" value="0">
+													</div>
 												</div>
 											</div>
 
@@ -296,7 +300,7 @@ $build = $this->build;
 													/** @var \data\build\status\BuildStatus $buildStatus */
 													foreach ( $this->buildStatuses as $buildStatus ) {
 														$selected = '';
-														if ( $build && $build->getObjectID() && $buildStatus->getObjectID() == $build->fk_buildstatus ) {
+														if ( $build->getObjectID() && $buildStatus->getObjectID() == $build->fk_buildstatus ) {
 															$selected = 'selected="selected"';
 														}
 
@@ -316,7 +320,7 @@ $build = $this->build;
 														$difficultyId = $difficulty->getObjectID();
 														$difficultyName = $difficulty->name;
 														$selected = '';
-														if ( $build && $build->difficulty === $difficultyId ) {
+														if ( $build->difficulty === $difficultyId ) {
 															$selected = ' selected="selected"';
 														}
 														echo '<option value="'.$difficultyId.'"'.$selected.'>'.$difficultyName.'</option>';
@@ -331,7 +335,7 @@ $build = $this->build;
 												/** @var Gamemode $mode */
 												foreach ( $this->gamemodes as $mode ) {
 													$checked = '';
-													if ( ($this->action === 'add' && $first) || $build && $build->gamemodeID === $mode->getObjectID() ) {
+													if ( ($this->action === 'add' && $first) || $build->gamemodeID === $mode->getObjectID() ) {
 														$checked = ' checked';
 														$first = false;
 													}
@@ -343,14 +347,14 @@ $build = $this->build;
 											<div class="form-group">
 												<div class="checkbox">
 													<label>
-														<input type="checkbox" id="hardcore" value="1"<?php echo $build && $build->hardcore ? ' checked' : ''; ?>> Hardcore
+														<input type="checkbox" id="hardcore" value="1"<?php echo $build->hardcore ? ' checked' : ''; ?>> Hardcore
 													</label>
 												</div>
 											</div>
 											<div class="form-group">
 												<div class="checkbox">
 													<label>
-														<input type="checkbox" id="afkAble" value="1"<?php echo $build && $build->afkable ? ' checked' : ''; ?>> AFK Able
+														<input type="checkbox" id="afkAble" value="1"<?php echo $build->afkable ? ' checked' : ''; ?>> AFK Able
 													</label>
 												</div>
 											</div>
@@ -368,7 +372,7 @@ $build = $this->build;
 											<h4>Mana to Upgrade: <strong id="manaUpgrade">0</strong></h4>
 
 											<button class="btn btn-primary btn-save">Save</button>
-											<?php if ( $build ) { ?>
+											<?php if ( $build->getObjectID() ) { ?>
 												<a href="<?php echo LinkHandler::getInstance()->getLink('Build', ['object' => $build], 'view') ?>" class="btn btn-info btn-viewer-mode">Viewer Mode</a>
 											<?php }
 										}
@@ -429,7 +433,7 @@ $build = $this->build;
 												<a href="<?php echo $build->getLink() ?>" class="btn btn-info">Editor Mode</a>
 											<?php } ?>
 										<?php } ?>
-										<?php if ( $build && $build->isCreator() ) { ?>
+										<?php if ( $build->isCreator() ) { ?>
 											<a class="btn btn-danger btn-delete">Delete Build</a>
 										<?php } ?>
 									</div>
@@ -464,7 +468,7 @@ $build = $this->build;
 <?php
 if ( $this->action !== 'view' ) {
 	/** @var BuildStats[] $buildStats */
-	$stats = $build ? $build->getStats() : [];
+	$stats = $build->getObjectID() ? $build->getStats() : [];
 	$buildStats = [];
 	/** @var HeroClass $heroClass */
 	foreach ( $this->heroClasses as $heroClass ) {
@@ -522,14 +526,29 @@ if ( $this->action !== 'view' ) {
 			var minionDefenseUnits = $('#currentMinionUnits');
 
 			// set colors
-			currentDefenseUnits.css('color', defenseUnits > maxUnits ? 'red' : 'black');
-			minionDefenseUnits.css('color', minionUnits > maxUnits ? 'red' : 'black');
+			currentDefenseUnits.toggleClass('text-danger', defenseUnits > maxUnits);
+			minionDefenseUnits.toggleClass('text-danger', minionUnits > maxUnits);
 
 			// set html values
 			currentDefenseUnits.html(defenseUnits);
 			minionDefenseUnits.html(minionUnits);
 			$('#manaUsed').html(mana);
 			$('#manaUpgrade').html(manaUpgrade);
+
+			$('#towerControlPanel .tower-container').each(function (_, element) {
+				var requiredDU = parseInt(element.getAttribute('data-du'));
+				if (requiredDU === 0) {
+					return;
+				}
+
+				var isMU = element.hasAttribute('data-mu');
+				if (!isMU) {
+					$(element).toggleClass('notEnoughDU', requiredDU > maxUnits - defenseUnits);
+				}
+				else if (isMU) {
+					$(element).toggleClass('notEnoughDU', requiredDU > maxUnits - minionUnits);
+				}
+			});
 		}
 
 		function getWaveTowers(waveID) {
@@ -789,21 +808,23 @@ if ( $this->action !== 'view' ) {
 				})
 				.on('mouseover', '.canvas .tower-container', function (e) {
 					var rotating_defense = $(this);
-					rotating_defense.on('wheel', function (e) {
-						e.preventDefault();
+					if (rotating_defense.find('.menu').length) {
+						rotating_defense.on('wheel', function (e) {
+							e.preventDefault();
 
-						let delta = 3;
-						let scrollSpeed = 4 * (e.originalEvent.deltaY <= 0 ? -1 : 1);
-						if (e.shiftKey) {
-							delta /= 2;
-						}
-						else if (e.ctrlKey) {
-							delta *= 2;
-						}
+							let delta = 3;
+							let scrollSpeed = 3 * (e.originalEvent.deltaY <= 0 ? -1 : 1);
+							if (e.shiftKey) {
+								delta /= 2;
+							}
+							else if (e.ctrlKey) {
+								delta *= 3;
+							}
 
-						var rotate_angle = getRotationDegrees(rotating_defense) + (scrollSpeed * delta);
-						rotating_defense.css('transform', 'rotate(' + rotate_angle + 'deg)');
-					});
+							var rotate_angle = getRotationDegrees(rotating_defense) + (scrollSpeed * delta);
+							rotating_defense.css('transform', 'rotate(' + rotate_angle + 'deg)');
+						});
+					}
 				})
 				.on('mouseout', '.canvas .tower-container', function (e) {
 					$(document).unbind('wheel');
@@ -856,6 +877,9 @@ if ( $this->action !== 'view' ) {
 			$('#towerControlPanel .tower-container').draggable({
 				helper: 'clone',
 				start(event, ui) {
+					if ($(this).draggable('instance').element.hasClass('notEnoughDU')) {
+						return false;
+					}
 					// center the icon on
 					$(this).draggable('instance').offset.click = {
 						left: Math.floor(ui.helper.width() / 2),
@@ -870,8 +894,44 @@ if ( $this->action !== 'view' ) {
 
 		});
 	</script>
-<?php }
-if ( $build && $build->isCreator() ) { ?>
+<?php } elseif ( Core::getUser()->steamID && !$build->isCreator() ) { ?>
+	<script>
+		$(document).ready(function () {
+			$(document).on('click', '.jsWatch', function () {
+				window.Core.AjaxStatus.show();
+				$.post('?ajax', {
+					className: '\\data\\build\\BuildAction',
+					actionName: 'watch',
+					objectIDs: window.__DEFENSE_OBJECT_IDS
+				}, function (data) {
+					for (var buildID in data.returnValues) {
+						if (window.__DEFENSE_OBJECT_IDS.indexOf(parseInt(buildID)) >= 0) {
+							if (data.returnValues[buildID]) {
+								$('.jsWatch').addClass('text-primary fa-star').removeClass('fa-star-o');
+							}
+							else {
+								$('.jsWatch').removeClass('text-primary fa-star').addClass('fa-star-o');
+							}
+							break;
+						}
+					}
+					window.Core.AjaxStatus.hide();
+				}).fail(function (jqXHR) {
+					try {
+						alert('Error while saving: ' + JSON.parse(jqXHR.responseText).message);
+					}
+					catch (e) {
+						alert('Unknown error while saving...');
+					}
+
+					window.Core.AjaxStatus.hide();
+				});
+			});
+		});
+	</script>
+	<?php
+}
+if ( $build->isCreator() ) { ?>
 	<script>
 		$(document).ready(function () {
 			$('.btn-delete').on('click', function () {

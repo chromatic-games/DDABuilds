@@ -20,6 +20,47 @@ class BuildAction extends DatabaseObjectAction {
 	/**
 	 * @throws PermissionDeniedException
 	 */
+	public function validateWatch() {
+		if ( empty($this->objects) ) {
+			$this->readObjects();
+		}
+
+		/** @var Build $build */
+		foreach ( $this->objects as $build ) {
+			if ( $build->isCreator() ) {
+				throw new PermissionDeniedException();
+			}
+		}
+	}
+
+	/**
+	 * @return array
+	 * @throws \Exception
+	 */
+	public function watch() {
+		$newState = [];
+		$selectStatement = Core::getDB()->prepareStatement('SELECT * FROM build_watch WHERE buildID = ? AND steamID = ?');
+		$insertStatement = Core::getDB()->prepareStatement('INSERT INTO build_watch (buildID, steamID) VALUES (?, ?)');
+		$deleteStatement = Core::getDB()->prepareStatement('DELETE FROM build_watch WHERE buildID = ? AND steamID = ?');
+
+		foreach ( $this->objectIDs as $buildID ) {
+			$selectStatement->execute([$buildID, Core::getUser()->steamID]);
+			if ( $selectStatement->rowCount() ) {
+				$deleteStatement->execute([$buildID, Core::getUser()->steamID]);
+				$newState[$buildID] = 0;
+			}
+			else {
+				$insertStatement->execute([$buildID, Core::getUser()->steamID]);
+				$newState[$buildID] = 1;
+			}
+		}
+
+		return $newState;
+	}
+
+	/**
+	 * @throws PermissionDeniedException
+	 */
 	public function validateTrash() {
 		if ( empty($this->objects) ) {
 			$this->readObjects();
