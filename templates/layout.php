@@ -52,6 +52,11 @@
 	?>
 	<!-- Bootstrap Core JavaScript -->
 	<script src="assets/js/bootstrap.min.js"></script>
+	<script>
+		if (CKEDITOR) {
+			CKEDITOR.timestamp = '2020-06-01';
+		}
+	</script>
 </head>
 <body class="<?php echo 'tpl'.ucfirst($this->templateName) ?>">
 	<!-- Navigation -->
