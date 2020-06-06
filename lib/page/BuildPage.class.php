@@ -30,7 +30,7 @@ class BuildPage extends BuildAddPage {
 			throw new IllegalLinkException();
 		}
 
-		if ( $this->build->fk_buildstatus === 3 && !$this->build->isCreator() ) {
+		if ( $this->build->fk_buildstatus === Build::STATUS_PRIVATE && !$this->build->isCreator() ) {
 			throw new NamedUserException('Sorry, this build is private');
 		}
 		elseif ( $this->build->deleted ) {

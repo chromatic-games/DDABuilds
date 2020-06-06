@@ -46,6 +46,10 @@ use system\request\LinkHandler;
  * @property-read integer $fk_user
  */
 class Build extends DatabaseObject implements IRouteObject, ILinkableObject {
+	const STATUS_PUBLIC = 1;
+	const STATUS_UNLISTED = 2;
+	const STATUS_PRIVATE = 3;
+
 	protected static $databaseTableName = 'builds';
 
 	protected static $databaseTableIndexName = 'id';

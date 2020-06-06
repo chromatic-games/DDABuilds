@@ -14,7 +14,7 @@
 	<!-- Bootstrap Core CSS -->
 	<link href="assets/css/bootstrap.min.css" rel="stylesheet">
 	<link href="assets/css/font-awesome.min.css" rel="stylesheet">
-	<link href="assets/css/chakratos<?php echo !DEBUG_MODE ? '.min' : ''; ?>.css" rel="stylesheet">
+	<link href="assets/css/main<?php echo !DEBUG_MODE ? '.min' : ''; ?>.css" rel="stylesheet">
 
 	<!-- jQuery Version 1.11.1 -->
 	<script src="assets/js/jquery.js"></script>
@@ -121,9 +121,6 @@
                                 </li>
                                 <li>
                                     <a href="'.LinkHandler::getInstance()->getLink('MyBugReportList').'">My Bug Reports</a>
-                                </li>
-                                <li>
-                                    <a href="'.LinkHandler::getInstance()->getLink('NotificationList').'">Notifications</a>
                                 </li>
                                 <li>
                                     <a href="'.LinkHandler::getInstance()->getLink('Logout').'">Logout</a>

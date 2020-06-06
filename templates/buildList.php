@@ -2,6 +2,7 @@
 
 use data\difficulty\Difficulty;
 use data\gamemode\Gamemode;
+use data\build\Build;
 use system\request\LinkHandler;
 
 $linkParameters = 'pageNo='.$this->pageNo.'&sortField='.$this->sortField.'&sortOrder='.$this->sortOrder;
@@ -188,32 +189,40 @@ if ( $this->showFilter ) {
 	<?php
 	if ( $this->viewMode === 'grid' ) {
 		$objects = $this->objects->getObjects();
-		while ( $builds = array_splice($objects, 0, 3) ) { // 3 items per row
-			echo '<div class="row">';
-			foreach ( $builds as $build ) {
-				?>
-				<div class="col-md-4">
-					<h3 class="text-center"><a href="<?php echo $build->getLink(); ?>"><?php echo $this->escapeHtml($build->name); ?></h3>
-					<div class="row">
-						<div class="col-md-7">
-							<img class="img-responsive" style="height: 200px" src="<?php echo $build->getThumbnail(); ?>">
-						</div>
-						<div class="col-md-5">
-							<?php
-							echo '<h4><p>'.$this->escapeHtml($build->getMap()->name).'</p>';
-							echo '<p>'.$this->escapeHtml($build->getDifficulty()->name).' ('.$this->escapeHtml($build->getGamemodeName()).')<p>';
-							echo '<p><small>Likes:</small> '.$this->number($build->likes).'</p>';
-							echo '<p><small>Views:</small> '.$this->number($build->views).'</p>';
-							echo '<p>'.$build->getDate().'</p>';
-							echo '<p>'.$this->escapeHtml($build->author).'</p></h4></a>';
-							?>
+		echo '<ol class="buildList">';
+		foreach ( $objects as $build ) { ?>
+			<li>
+				<div class="buildBox<?php echo $build->fk_buildstatus !== Build::STATUS_PUBLIC ? ' buildUnlisted' : ''; ?>">
+					<div class="box128">
+						<div class="buildDataContainer">
+							<h3 class="buildSubject">
+								<a href="<?php echo $build->getLink(); ?>"><?php echo $this->escapeHtml($build->name) ?></a>
+							</h3>
+
+							<ul class="inlineList dotSeparated buildMetaData">
+								<li><i class="fa fa-user"></i> <a href="<?php echo LinkHandler::getInstance()->getLink('BuildList', ['author' => $build->author]) ?>"><?php echo $this->escapeHtml($build->author); ?></a></li>
+								<li><i class="fa fa-clock-o"></i> <?php echo $build->getDate(); ?></li>
+								<li><i class="fa fa-eye"></i> <?php echo $this->number($build->views); ?></li>
+								<li><i class="fa fa-comment-o"></i> <?php echo $this->number($build->comments); ?></li>
+								<li<?php echo $build->likes > 0 ? ' class="text-success"' : ''; ?>><i class="fa fa-thumbs-o-up"></i> <?php echo ($build->likes > 0 ? '+' : '').$this->number($build->likes); ?></li>
+							</ul>
+
+							<img class="img-responsive" style="height: 200px;margin: 15px auto auto;" src="<?php echo $build->getThumbnail(); ?>">
 						</div>
 					</div>
+					<div class="buildFiller"></div>
+					<div class="buildFooter">
+						<ul class="inlineList dotSeparated buildInformation">
+							<li><i class="fa fa-map"></i> <?php echo $this->escapeHtml($build->getMap()->name); ?></li>
+							<li><i class="fa fa-gamepad"></i> <?php echo $this->escapeHtml($build->getGamemodeName()); ?></li>
+							<li><i class="fa fa-tachometer"></i> <?php echo $this->escapeHtml($build->getDifficulty()->name); ?></li>
+						</ul>
+					</div>
 				</div>
-				<?php
-			}
-			echo '</div>';
+			</li>
+			<?php
 		}
+		echo '</ol>';
 	}
 
 	echo '<div class="text-center">';
