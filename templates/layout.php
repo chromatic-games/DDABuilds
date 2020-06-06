@@ -117,6 +117,9 @@
                                     <a href="'.LinkHandler::getInstance()->getLink('MyFavoriteBuildList').'">My Favorite Builds</a>
                                 </li>
                                 <li>
+                                    <a href="'.LinkHandler::getInstance()->getLink('MyLikedBuildList').'">My Liked Builds</a>
+                                </li>
+                                <li>
                                     <a href="'.LinkHandler::getInstance()->getLink('MyBugReportList').'">My Bug Reports</a>
                                 </li>
                                 <li>
