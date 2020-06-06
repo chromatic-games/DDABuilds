@@ -78,14 +78,14 @@ class Core {
 	}
 
 	public static final function handleException($e) {
-		if ( $e instanceof NamedUserException ) {
-			$e->show();
-			exit;
-		}
-
 		// discard any output
 		while ( ob_get_level() ) {
 			ob_end_clean();
+		}
+
+		if ( $e instanceof NamedUserException ) {
+			$e->show();
+			exit;
 		}
 
 		// print all other errors

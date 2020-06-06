@@ -195,5 +195,6 @@
 		gtag('js', new Date());
 		gtag('config', 'UA-39334248-36');
 	</script>
+	<!-- JAVASCRIPT_RELOCATE_POSITION -->
 </body>
 </html>

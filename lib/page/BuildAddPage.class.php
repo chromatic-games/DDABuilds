@@ -90,16 +90,16 @@ class BuildAddPage extends AbstractPage {
 		$this->heroClasses->getConditionBuilder()->add('isDisabled = 0');
 		$this->heroClasses->readObjects();
 
-		// get build statuses (private, unlisted)
-		$this->buildStatuses = new BuildStatusList();
-		$this->buildStatuses->readObjects();
-
-		// get difficulties
-		$this->difficulties = new DifficultyList();
-		$this->difficulties->readObjects();
-
 		// get game modes
 		if ( $this->action === 'edit' ) {
+			// get build statuses (private, unlisted)
+			$this->buildStatuses = new BuildStatusList();
+			$this->buildStatuses->readObjects();
+
+			// get difficulties
+			$this->difficulties = new DifficultyList();
+			$this->difficulties->readObjects();
+
 			$this->gamemodes = new GamemodeList();
 			$this->gamemodes->readObjects();
 		}
