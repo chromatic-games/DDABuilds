@@ -94,8 +94,11 @@ class BuildAction extends DatabaseObjectAction {
 	 * @throws UserInputException
 	 */
 	public function validateSave() {
-		foreach ( ['author', 'buildName', 'mapID', 'difficulty', 'buildStatus', 'afkAble', 'hardcore', 'towers'] as $field ) {
-			if ( empty($this->parameters[$field]) ) {
+		$this->readBoolean('afkAble');
+		$this->readBoolean('hardcore');
+
+		foreach ( ['author', 'buildName', 'mapID', 'difficulty', 'buildStatus', 'towers'] as $field ) {
+			if ( !isset($this->parameters[$field]) ) {
 				throw new UserInputException($field);
 			}
 		}
