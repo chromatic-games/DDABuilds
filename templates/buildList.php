@@ -213,9 +213,9 @@ if ( $this->showFilter ) {
 					<div class="buildFiller"></div>
 					<div class="buildFooter">
 						<ul class="inlineList dotSeparated buildInformation">
-							<li><i class="fa fa-map"></i> <?php echo $this->escapeHtml($build->getMap()->name); ?></li>
-							<li><i class="fa fa-gamepad"></i> <?php echo $this->escapeHtml($build->getGamemodeName()); ?></li>
-							<li><i class="fa fa-tachometer"></i> <?php echo $this->escapeHtml($build->getDifficulty()->name); ?></li>
+							<li><i class="fa fa-map"></i> <a href="<?php echo LinkHandler::getInstance()->getLink('BuildList', ['map' => $build->getMap()->name]) ?>"><?php echo $this->escapeHtml($build->getMap()->name); ?></a></li>
+							<li><i class="fa fa-gamepad"></i> <a href="<?php echo LinkHandler::getInstance()->getLink('BuildList', ['gamemode' => $build->getGamemodeName()]) ?>"><?php echo $this->escapeHtml($build->getGamemodeName()); ?></a></li>
+							<li><i class="fa fa-tachometer"></i> <a href="<?php echo LinkHandler::getInstance()->getLink('BuildList', ['difficulty' => $build->getDifficulty()->name]) ?>"><?php echo $this->escapeHtml($build->getDifficulty()->name); ?></a></li>
 						</ul>
 					</div>
 				</div>
