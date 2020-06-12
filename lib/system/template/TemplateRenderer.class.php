@@ -29,16 +29,40 @@ class TemplateRenderer {
 	}
 
 	/**
+	 * template plugin call
+	 *
+	 * @param string  $name
+	 * @param mixed[] $arguments
+	 *
+	 * @return mixed
+	 */
+	public function __call($name, $arguments) {
+		static $templatePlugins;
+		if ( $templatePlugins === null ) {
+			$templatePlugins = [];
+		}
+		if ( array_key_exists($name, $templatePlugins) ) {
+			return $templatePlugins[$name]->execute(...$arguments);
+		}
+
+		$plugin = 'system\template\plugin\\'.ucfirst($name).'TemplatePlugin';
+		if ( !class_exists($plugin) ) {
+			throw new \BadMethodCallException('method doesnt exists');
+		}
+
+		$templatePlugins[$name] = new $plugin();
+
+		return $templatePlugins[$name]->execute(...$arguments);
+	}
+
+	/**
 	 * @param string $name
 	 *
 	 * @return mixed
 	 * @throws NamedUserException
 	 */
 	public function __get($name) {
-		if ( $name === 'content' ) {
-			return $this->__toString();
-		}
-		elseif ( isset($this->__variables[$name]) ) {
+		if ( isset($this->__variables[$name]) ) {
 			return $this->__variables[$name];
 		}
 		elseif ( isset(Core::getTPL()->variables[$name]) ) {

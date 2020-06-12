@@ -23,6 +23,7 @@
 
 	use system\Core;
 	use system\request\LinkHandler;
+	use system\request\RouteHandler;
 	use system\steam\Steam;
 
 	if ( Core::getUser()->steamID ) {
@@ -73,13 +74,13 @@
 			<!-- Collect the nav links, forms, and other content for toggling -->
 			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 				<ul class="nav navbar-nav">
-					<li><a href="<?php echo LinkHandler::getInstance()->getLink('BuildList') ?>">List</a></li>
 					<?php
+					echo $this->menu(['BuildList'], LinkHandler::getInstance()->getLink('BuildList'), 'List');
 					if ( Core::getUser()->steamID ) {
-						echo '<li><a href="'.LinkHandler::getInstance()->getLink('BuildAddSelect').'">Create</a></li>';
-						echo '<li><a href="'.LinkHandler::getInstance()->getLink('BugReportAdd').'">Report Bug</a></li>';
+						echo $this->menu(['BuildAddSelect', 'BuildAdd'], LinkHandler::getInstance()->getLink('BuildAddSelect'), 'Create');
+						echo $this->menu(['BugReportAdd'], LinkHandler::getInstance()->getLink('BugReportAdd'), 'Report Bug');
 						if ( Core::getUser()->isMaintainer() ) {
-							echo '<li><a href="'.LinkHandler::getInstance()->getLink('BugReportList').'">Bug Reports</a></li>';
+							echo $this->menu(['BugReportList', 'BugReport'], LinkHandler::getInstance()->getLink('BugReportList'), 'Bug Reports');
 						}
 					}
 					?>
@@ -91,44 +92,33 @@
 							<span class="label label-danger betaLabel">Beta</span>
 						</a>
 					</li>
-                    <?php
-                    if ( !Core::getUser()->steamID ) {
-	                    $loginLink = LinkHandler::getInstance()->getLink('Login');
-	                    echo '<div class="navbar-brand" style="margin-top:-8px";><a href="'.$loginLink.'">Login to Create or Vote on Builds: </a>';
-	                    echo '<a href="'.$loginLink.'">'.Steam::getInstance()->getLoginButton(Steam::BUTTON_STYLE_RECTANGLE).'</a>';
-	                    echo '</div>';
-                    }
-                    else {
-	                    $notifications = Core::getUser()->getUnreadNotifications();
+					<?php
+					if ( !Core::getUser()->steamID ) {
+						$loginLink = LinkHandler::getInstance()->getLink('Login');
+						echo '<div class="navbar-brand" style="margin-top:-8px";><a href="'.$loginLink.'">Login to Create or Vote on Builds: </a>';
+						echo '<a href="'.$loginLink.'">'.Steam::getInstance()->getLoginButton(Steam::BUTTON_STYLE_RECTANGLE).'</a>';
+						echo '</div>';
+					}
+					else {
+						$notifications = Core::getUser()->getUnreadNotifications();
 
-	                    echo '<li class="notificationBell">
+						echo '<li class="notificationBell'.(RouteHandler::getInstance()->getActiveController() === 'NotificationList' ? ' active' : '').'">
 							<a href="'.LinkHandler::getInstance()->getLink('NotificationList').'">
-							<i class="fa fa-bell'.($notifications === 0 ? '-o' : '').'"></i>
-							'.($notifications ? '<span class="badge badge-danger">'.$notifications.'</span>' : '').'
+								<i class="fa fa-bell'.($notifications === 0 ? '-o' : '').'"></i>
+								'.($notifications ? '<span class="badge badge-danger">'.$notifications.'</span>' : '').'
 							</a>
 						</li>
 						<li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">'.Core::getUser()->name.'<span class="caret"></span></a>
-                            <ul class="dropdown-menu">
-                                <li>
-                                    <a href="'.LinkHandler::getInstance()->getLink('MyBuildList').'">My Builds</a>
-                                </li>
-                                <li>
-                                    <a href="'.LinkHandler::getInstance()->getLink('MyFavoriteBuildList').'">My Favorite Builds</a>
-                                </li>
-                                <li>
-                                    <a href="'.LinkHandler::getInstance()->getLink('MyLikedBuildList').'">My Liked Builds</a>
-                                </li>
-                                <li>
-                                    <a href="'.LinkHandler::getInstance()->getLink('MyBugReportList').'">My Bug Reports</a>
-                                </li>
-                                <li>
-                                    <a href="'.LinkHandler::getInstance()->getLink('Logout').'">Logout</a>
-                                </li>
-                            </ul>
-                        </li>';
-                    }
-                    ?>
+                            <ul class="dropdown-menu">';
+						echo $this->menu(['MyBuildList'], LinkHandler::getInstance()->getLink('MyBuildList'), 'My Builds');
+						echo $this->menu(['MyBugReportList'], LinkHandler::getInstance()->getLink('MyBugReportList'), 'My Bug Reports');
+						echo $this->menu(['FavoriteBuildList'], LinkHandler::getInstance()->getLink('FavoriteBuildList'), 'Favorite Builds');
+						echo $this->menu(['LikedBuildList'], LinkHandler::getInstance()->getLink('LikedBuildList'), 'Liked Builds');
+						echo '<li><a href="'.LinkHandler::getInstance()->getLink('Logout').'">Logout</a></li>';
+						echo '</ul></li>';
+					}
+					?>
 				</ul>
 			</div>
 			<!-- /.navbar-collapse -->
@@ -140,7 +130,9 @@
 	<div id="pageContainer">
 		<!-- Content Section -->
 		<section id="main">
-			<?php echo $this->content; ?>
+			<?php
+			echo $this->render($this->templateName);
+			?>
 		</section>
 		<footer id="footer" class="navbar navbar-inverse navbar-footer">
 			<div class="container">

@@ -29,6 +29,12 @@ class RouteHandler extends SingletonFactory {
 	 */
 	protected $buildSchema = [];
 
+	/** @var string */
+	protected $activeController;
+
+	/**
+	 * initialize route handler
+	 */
 	protected function init() {
 		$this->buildSchema = [];
 
@@ -252,6 +258,7 @@ class RouteHandler extends SingletonFactory {
 			$_REQUEST[$key] = $value;
 		}
 
+		$this->activeController = $classData['controller'];
 		/** @var AbstractPage|AbstractAction $requestObject */
 		$requestObject = new $classData['className']();
 		$requestObject->__run();
@@ -319,5 +326,14 @@ class RouteHandler extends SingletonFactory {
 			'controller' => $controller,
 			'pageType'   => $pageType,
 		];
+	}
+
+	/**
+	 * get the current controller
+	 *
+	 * @return string
+	 */
+	public function getActiveController() {
+		return $this->activeController;
 	}
 }

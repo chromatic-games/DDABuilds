@@ -2,6 +2,7 @@
 	<h3>next</h3>
 	<ul>
 		<li><span class="label label-success">Added</span> Liked build list.</li>
+		<li><span class="label label-warning">Changed</span> Marked active menu items.</li>
 		<li><span class="label label-warning">Changed</span> Changed the build grid list design.</li>
 		<li><span class="label label-danger">Removed</span> Old Notification Link.</li>
 	</ul>

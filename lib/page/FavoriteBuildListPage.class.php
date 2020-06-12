@@ -3,16 +3,15 @@
 namespace page;
 
 use data\build\FavoriteBuildList;
-use data\build\LikedBuildList;
 use system\Core;
 
-class MyLikedBuildListPage extends MyBuildListPage {
+class FavoriteBuildListPage extends MyBuildListPage {
 	/** @inheritDoc */
-	public $pageTitle = 'My Liked Builds';
+	public $pageTitle = 'Favorite Builds';
 
 	/** @inheritDoc */
 	protected function initObjectList() {
-		$this->objectList = new LikedBuildList(Core::getUser()->steamID);
+		$this->objectList = new FavoriteBuildList(Core::getUser()->steamID);
 	}
 
 	/** @inheritDoc */
@@ -20,7 +19,7 @@ class MyLikedBuildListPage extends MyBuildListPage {
 		parent::assignVariables();
 
 		Core::getTPL()->assign([
-			'controller' => 'MyLikedBuildList',
+			'controller' => 'FavoriteBuildList',
 		]);
 	}
 }

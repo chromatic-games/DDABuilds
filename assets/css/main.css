@@ -168,15 +168,15 @@ html {
 }
 
 .panel-shadow {
-  border: 1px solid #dddddd;
+  border: 1px solid #DDDDDD;
   box-shadow: rgba(0, 0, 0, 0.3) 7px 7px 7px;
   padding: 15px;
 }
 
 .loadingSpinner {
-  background-color: #fff;
-  border: 1px solid #ccc;
-  color: #2c3e50;
+  background-color: #FFFFFF;
+  border: 1px solid #CCCCCC;
+  color: #2C3E50;
   box-shadow: 2px 2px 5px 0 rgba(0, 0, 0, 0.2);
   left: 50%;
   padding: 10px;
@@ -220,22 +220,22 @@ body.tplIndex {
 
 .contact-first-box {
   padding: 35px;
-  background: #9C0;
+  background: #99CC00;
 }
 
 .contact-second-box {
   padding: 35px;
-  background: #39F;
+  background: #3399FF;
 }
 
 .contact-third-box {
   padding: 35px;
-  background: #F66;
+  background: #FF6666;
 }
 
 .contact-fourth-box {
   padding: 35px;
-  background: #6CC;
+  background: #66CCCC;
 }
 
 #toTop-right {
@@ -270,7 +270,7 @@ html.dark .betaLabel {
   position: absolute;
   top: 5px;
   right: 5px;
-  background-color: #d9534f;
+  background-color: #D9534F;
 }
 
 dl dt:not(:first-of-type) {
