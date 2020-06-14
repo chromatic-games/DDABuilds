@@ -1,0 +1,6 @@
+CREATE TABLE session (
+	sessionID VARCHAR(128) NOT NULL,
+	steamID VARCHAR(20) NOT NULL,
+	expires INT(10) UNSIGNED NOT NULL,
+	PRIMARY KEY (sessionID)
+);

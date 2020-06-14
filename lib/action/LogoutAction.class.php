@@ -2,12 +2,18 @@
 
 namespace action;
 
+use system\Core;
+use system\util\HeaderUtil;
+
 class LogoutAction extends AbstractAction {
+	/** @inheritDoc */
 	public function execute() {
 		parent::execute();
 
-		session_unset();
-		session_destroy();
-		header('Location: /');
+		if ( Core::getSession()->getObjectID() ) {
+			Core::getSession()->delete();
+		}
+
+		HeaderUtil::redirect('/');
 	}
 }

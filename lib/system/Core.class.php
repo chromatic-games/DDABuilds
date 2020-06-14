@@ -2,6 +2,7 @@
 
 namespace system;
 
+use data\session\Session;
 use data\steam\user\SteamUser;
 use Exception;
 use system\cache\runtime\SteamUserRuntimeCache;
@@ -26,6 +27,9 @@ class Core {
 
 	protected static $tplObj;
 
+	/** @var Session */
+	protected static $sessionObj;
+
 	public static $tplVariables = [];
 
 	public function __construct() {
@@ -34,14 +38,11 @@ class Core {
 
 	/**
 	 * @return SteamUser
+	 * @throws Exception
 	 */
 	public static function getUser() {
 		if ( self::$userObj === null ) {
-			$steamID = null;
-			if ( isset($_SESSION['__steamid']) ) {
-				$steamID = $_SESSION['__steamid'];
-			}
-
+			$steamID = self::getSession()->steamID;
 			self::$userObj = $steamID !== null ? SteamUserRuntimeCache::getInstance()->getObject($steamID) : new SteamUser(null, []);
 		}
 
@@ -54,6 +55,23 @@ class Core {
 		}
 
 		return self::$tplObj;
+	}
+
+	/**
+	 * @return Session
+	 * @throws Exception
+	 */
+	public static function getSession() {
+		if ( self::$sessionObj === null ) {
+			$sessionID = null;
+			if ( isset($_COOKIE[COOKIE_PREFIX.'sessionID']) ) {
+				$sessionID = $_COOKIE[COOKIE_PREFIX.'sessionID'];
+			}
+
+			self::$sessionObj = new Session($sessionID);
+		}
+
+		return self::$sessionObj;
 	}
 
 	/**

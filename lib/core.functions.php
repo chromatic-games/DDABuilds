@@ -4,9 +4,6 @@ namespace {
 
 	use system\Core;
 
-	// start session
-	session_start();
-
 	// spl auto loader
 	spl_autoload_register(function ($className) {
 		$classPath = LIB_DIR.implode('/', explode('\\', $className)).'.class.php';
