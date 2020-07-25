@@ -316,10 +316,8 @@ html, body {
 		flex-direction: column;
 		position: relative;
 
-		&.buildUnlisted::before {
+		.buildUnlisted {
 			position: absolute;
-			font-family: FontAwesome;
-			content: "\f070";
 			right: 8px;
 			top: 5px;
 		}

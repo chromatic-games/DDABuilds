@@ -192,7 +192,12 @@ if ( $this->showFilter ) {
 		echo '<ol class="buildList">';
 		foreach ( $objects as $build ) { ?>
 			<li>
-				<div class="buildBox<?php echo $build->fk_buildstatus !== Build::STATUS_PUBLIC ? ' buildUnlisted' : ''; ?>">
+				<div class="buildBox">
+					<?php
+					if ( $build->fk_buildstatus !== Build::STATUS_PUBLIC ) {
+						echo '<i class="fa fa-eye-slash buildUnlisted" data-toggle="tooltip" data-original-title="This build is private or unlisted."></i>';
+					}
+					?>
 					<div class="box128">
 						<div class="buildDataContainer">
 							<h3 class="buildSubject">

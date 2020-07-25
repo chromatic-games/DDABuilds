@@ -615,7 +615,6 @@ if ( $this->action !== 'view' ) {
 			// initialize
 			showWave(0);
 			calculateDefenseUnits();
-			$('[data-toggle="tooltip"]').tooltip();
 		});
 	</script>
 <?php

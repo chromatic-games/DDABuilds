@@ -1,18 +1,14 @@
 <div class="container">
-	<h3>next</h3>
+	<h3>2020-07-25</h3>
 	<ul>
 		<li><span class="label label-success">Added</span> Liked build list.</li>
-		<li><span class="label label-warning">Changed</span> Marked active menu items.</li>
-		<li><span class="label label-warning">Changed</span> Changed the build grid list design.</li>
-		<li><span class="label label-danger">Removed</span> Old Notification Link.</li>
-	</ul>
-	<h3>2020-06-01</h3>
-	<ul>
 		<li><span class="label label-success">Added</span> Delete build button.</li>
 		<li><span class="label label-success">Added</span> Disable towers where not enough defense units are available.</li>
 		<li><span class="label label-success">Added</span> Report feature/bug page.</li>
 		<li><span class="label label-success">Added</span> Favorite builds.</li>
 		<li><span class="label label-success">Added</span> Dark mode (beta).</li>
+		<li><span class="label label-warning">Changed</span> Marked active menu items.</li>
+		<li><span class="label label-warning">Changed</span> Changed the build grid list design.</li>
 		<li><span class="label label-warning">Changed</span> The pagination are centered.</li>
 		<li><span class="label label-warning">Changed</span> Moved changelog link to footer.</li>
 		<li><span class="label label-warning">Changed</span> Reduced mouse wheel rotation speed.</li>
@@ -20,6 +16,7 @@
 		<li><span class="label label-danger">Fixed</span> Hide empty "Exp Per run" and "Time Per Run".</li>
 		<li><span class="label label-danger">Fixed</span> Disable tower rotation with mouse wheel for auras/traps.</li>
 		<li><span class="label label-danger">Fixed</span> Wrong save for required stats in the build.</li>
+		<li><span class="label label-danger">Removed</span> Old Notification Link.</li>
 	</ul>
 	<h3>2020-05-25</h3>
 	<ul>

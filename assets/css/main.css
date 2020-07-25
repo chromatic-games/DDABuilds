@@ -405,10 +405,8 @@ html, body {
   flex-direction: column;
   position: relative;
 }
-.buildList .buildBox.buildUnlisted::before {
+.buildList .buildBox .buildUnlisted {
   position: absolute;
-  font-family: FontAwesome;
-  content: "";
   right: 8px;
   top: 5px;
 }

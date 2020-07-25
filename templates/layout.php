@@ -18,6 +18,14 @@
 
 	<!-- jQuery Version 1.11.1 -->
 	<script src="assets/js/jquery.js"></script>
+	<!-- Bootstrap Core JavaScript -->
+	<?php
+	if ( $this->templateName === 'buildAdd' ) {
+		echo '<script src="assets/js/jquery-ui.js"></script>
+        <script>$.widget.bridge(\'uitooltip\', $.ui.tooltip);</script>';
+	}
+	?>
+	<script src="assets/js/bootstrap.min.js"></script>
 	<script src="assets/js/core.js"></script>
 	<?php
 
@@ -33,7 +41,6 @@
 	// TODO move to controller (form/page) and build min js/css files
 	if ( $this->templateName === 'buildAdd' ) {
 		echo '<script src="assets/js/html2canvas.js"></script>
-        <script src="assets/js/jquery-ui.js"></script>
         <script src="assets/js/jQueryRotate.js"></script>
         <script src="assets/js/ckeditor/ckeditor.js"></script>';
 	}
@@ -51,10 +58,8 @@
 		echo '<link href="assets/css/jquery.flexdatalist.min.css" rel="stylesheet">';
 	}
 	?>
-	<!-- Bootstrap Core JavaScript -->
-	<script src="assets/js/bootstrap.min.js"></script>
 	<script>
-		if (CKEDITOR) {
+		if (typeof CKEDITOR !== 'undefined') {
 			CKEDITOR.timestamp = '2020-06-01';
 		}
 	</script>
@@ -186,6 +191,13 @@
 
 		gtag('js', new Date());
 		gtag('config', 'UA-39334248-36');
+	</script>
+	<script>
+		$(function () {
+			$('[data-toggle="tooltip"]').tooltip({
+				container: 'body',
+			});
+		});
 	</script>
 	<!-- JAVASCRIPT_RELOCATE_POSITION -->
 </body>
