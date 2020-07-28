@@ -12,6 +12,7 @@ use system\request\LinkHandler;
  * represents a bug report
  *
  * @property-read integer $reportID
+ * @property-read integer $time
  * @property-read string  $title
  * @property-read string  $steamID
  * @property-read string  $description

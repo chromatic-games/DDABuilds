@@ -50,7 +50,7 @@
 	elseif ( $this->templateName === 'buildAddSelect' ) {
 		echo '<script src="assets/js/scroll-top.js"></script>';
 	}
-	elseif ( $this->templateName === 'bugReportAdd' ) {
+	elseif ( $this->templateName === 'bugReportAdd' || $this->templateName === 'bugReport' ) {
 		echo '<script src="assets/js/ckeditor/ckeditor.js"></script>';
 	}
 	elseif ( $this->templateName == 'buildList' ) {
