@@ -33,14 +33,26 @@
 		cursor: pointer;
 		position: absolute;
 		top: -20px;
+		width: 100%;
 		left: 11px;
 		transition: 0.2s 1s;
+
+		i {
+			text-shadow: 0 0 3px #000;
+		}
 	}
 }
 
 .tower {
 	width: 35px;
 	height: 35px;
+}
+
+// series ev
+.tower-container[data-class="5"].ui-draggable-dragging img.tower,
+.canvas .tower-container[data-class="5"] img.tower {
+	width: auto;
+	height: auto;
 }
 
 /* traps */
@@ -74,7 +86,7 @@
 	cursor: pointer;
 }
 
-#towerControlPanel .tower-container.notEnoughDU {
+/*#towerControlPanel .tower-container*/.notEnoughDU {
 	opacity: 0.5;
 	cursor: not-allowed;
 }

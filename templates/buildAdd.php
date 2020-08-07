@@ -16,42 +16,42 @@ $tabTemplate = '<li class="customwave waveTab pointer" data-target="#buildTab"><
 $build = $this->build;
 
 ?>
-	<div class="container-fluid">
-		<div class="row">
-			<div class="col-md-2 text-center">
-				<h3>Map: <b><?php echo $this->map->name; ?></b></h3>
-			</div>
-			<div class="col-md-<?php echo $isView ? 7 : 5; ?> text-center">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-2 text-center">
+                <h3>Map: <b><?php echo $this->map->name; ?></b></h3>
+            </div>
+            <div class="col-md-<?php echo $isView ? 7 : 5; ?> text-center">
 				<?php if ( $isView ) { ?>
-					<h3><?php if ( Core::getUser()->steamID && !$build->isCreator() ) { ?>
-							<i class="pointer fa fa-star<?php echo $build->isWatched() ? ' text-primary' : '-o'; ?> jsWatch"></i>
+                    <h3><?php if ( Core::getUser()->steamID && !$build->isCreator() ) { ?>
+                            <i class="pointer fa fa-star<?php echo $build->isWatched() ? ' text-primary' : '-o'; ?> jsWatch"></i>
 						<?php } ?><?php echo $this->escapeHtml($this->buildName); ?></h3>
 				<?php } else { ?>
-					<label>Build Name:</label>
-					<input type="text" id="buildName" placeholder="Build Name" class="form-control" maxlength="128" value="<?php echo $this->escapeHtml($this->buildName); ?>" />
+                    <label>Build Name:</label>
+                    <input type="text" id="buildName" placeholder="Build Name" class="form-control" maxlength="128" value="<?php echo $this->escapeHtml($this->buildName); ?>" />
 				<?php } ?>
-			</div>
-			<div class="col-md-<?php echo $isView ? 2 : 4; ?> text-center">
+            </div>
+            <div class="col-md-<?php echo $isView ? 2 : 4; ?> text-center">
 				<?php if ( $isView ) { ?>
-					<h3>Author: <a href="https://steamcommunity.com/profiles/<?php echo $build->fk_user; ?>" target="_blank"><?php echo $this->escapeHtml($this->author); ?></a>
-					</h3>
+                    <h3>Author: <a href="https://steamcommunity.com/profiles/<?php echo $build->fk_user; ?>" target="_blank"><?php echo $this->escapeHtml($this->author); ?></a>
+                    </h3>
 				<?php } else { ?>
-					<label>Author:</label>
-					<input type="text" id="authorName" placeholder="Author" class="form-control" maxlength="20" value="<?php echo $this->escapeHtml($this->author); ?>" />
+                    <label>Author:</label>
+                    <input type="text" id="authorName" placeholder="Author" class="form-control" maxlength="20" value="<?php echo $this->escapeHtml($this->author); ?>" />
 				<?php } ?>
-			</div>
-			<div class="col-md-1 text-center">
-				<h3>
-					DU: <b><span id="currentDefenseUnits">0</span>/<span id="maxDefenseUnits"><?php echo $this->map->units ?></span></b>
+            </div>
+            <div class="col-md-1 text-center">
+                <h3>
+                    DU: <b><span id="currentDefenseUnits">0</span>/<span id="maxDefenseUnits"><?php echo $this->map->units ?></span></b>
 					<?php if ( $this->showMU ) { ?>
-						MU: <b><span id="currentMinionUnits">0</span>/<span><?php echo $this->map->units ?></span></b>
+                        MU: <b><span id="currentMinionUnits">0</span>/<span><?php echo $this->map->units ?></span></b>
 					<?php } ?>
-				</h3>
-			</div>
-		</div>
+                </h3>
+            </div>
+        </div>
 
-		<ul class="nav nav-tabs" role="tablist" id="waveTabList">
-			<li class="active pointer waveTab" data-target="#buildTab"><a href="#buildTab" data-wave="0">Build</a></li>
+        <ul class="nav nav-tabs" role="tablist" id="waveTabList">
+            <li class="active pointer waveTab" data-target="#buildTab"><a href="#buildTab" data-wave="0">Build</a></li>
 			<?php
 			if ( $build->getObjectID() ) {
 				foreach ( $build->getCustomWaves() as $id => $wave ) {
@@ -64,27 +64,27 @@ $build = $this->build;
 			}
 
 			if ( $this->action !== 'add' ) { ?>
-				<li class="pointer" data-target="#comments">
+                <li class="pointer" data-target="#comments">
 		        <a role="tab" data-toggle="tab" href="#comments">Comments (<span><?php echo $build->comments ?></span>)</a>
 		    </li>
 			<?php } ?>
-		</ul>
-		<div class="tab-content">
+        </ul>
+        <div class="tab-content">
 			<?php if ( $this->action !== 'add' ) { ?>
-				<div id="comments" class="tab-pane">
-					<div class="marginTop container">
+                <div id="comments" class="tab-pane">
+                    <div class="marginTop container">
 						<?php if ( Core::getUser()->steamID ) { ?>
-							<div class="panel panel-default">
-								<div class="panel-heading text-center"><b>Write a comment:</b></div>
-								<div class="panel-body">
-									<textarea class="form-control" rows="2" id="commentMain"></textarea>
-									<br>
-									<div class="text-center">
-										<button type="button" class="btn btn-primary btn-comment">Send</button>
-									</div>
-								</div>
-							</div>
-							<script>
+                            <div class="panel panel-default">
+                                <div class="panel-heading text-center"><b>Write a comment:</b></div>
+                                <div class="panel-body">
+                                    <textarea class="form-control" rows="2" id="commentMain"></textarea>
+                                    <br>
+                                    <div class="text-center">
+                                        <button type="button" class="btn btn-primary btn-comment">Send</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <script>
 								$(document).ready(function () {
 									CKEDITOR.replace('commentMain');
 
@@ -123,9 +123,9 @@ $build = $this->build;
 										}
 									});
 								});
-							</script>
+                            </script>
 						<?php } ?>
-						<div id="commentList">
+                        <div id="commentList">
 							<?php
 							/** @var \data\comment\Comment $comment */
 							$comments = $build->getComments();
@@ -136,7 +136,7 @@ $build = $this->build;
 								echo Core::getTPL()->render('comment', ['comment' => $comment]);
 							}
 							?>
-						</div>
+                        </div>
 						<?php
 						$lastCommentID = 0;
 						if ( count($build->getComments()) > Comment::COMMENTS_PER_PAGE ) {
@@ -145,7 +145,7 @@ $build = $this->build;
 							echo '<div class="text-center" id="moreComments"><button class="btn btn-primary">More comments</button></div>';
 						}
 						?>
-						<script>
+                        <script>
 							$(document).ready(function () {
 								let lastCommentID = <?php echo $lastCommentID; ?>;
 								$('#moreComments .btn').on('click', function () {
@@ -178,22 +178,22 @@ $build = $this->build;
 									});
 								});
 							});
-						</script>
-					</div>
-				</div>
+                        </script>
+                    </div>
+                </div>
 			<?php } ?>
-			<div id="buildTab" class="tab-pane active jsObject" data-id="<?php echo $build->getObjectID(); ?>" data-type="build">
-				<div class="row ">
-					<div class="col-lg-9">
-						<div class="canvas">
-							<img class="ddmap" src="<?php echo $this->map->getImage(); ?>">
+            <div id="buildTab" class="tab-pane active jsObject" data-id="<?php echo $build->getObjectID(); ?>" data-type="build">
+                <div class="row ">
+                    <div class="col-lg-9">
+                        <div class="canvas">
+                            <img class="ddmap" src="<?php echo $this->map->getImage(); ?>">
 							<?php
 							$usedClasses = [];
 							if ( $build->getObjectID() ) {
 								foreach ( $build->getPlacedTowers() as $placed ) {
 									/** @var \data\tower\Tower $tower */
 									$tower = $this->availableTowers[$placed['fk_tower']];
-									echo $tower->getHtml($placed, false, $this->action === 'view');
+									echo $tower->getHtml($placed, false, $this->action === 'view', $placed['override_du']);
 									if ( !in_array($tower->fk_class, $usedClasses) ) {
 										$usedClasses[] = $tower->fk_class;
 									}
@@ -203,16 +203,16 @@ $build = $this->build;
 								$usedClasses = $this->heroClasses->getObjectIDs();
 							}
 							?>
-						</div>
-					</div>
-					<div class="col-lg-3" id="towerControlPanel">
-						<div class="row marginTop">
-							<div class="col-sm-12">
-								<div class="panel panel-default">
-									<div class="panel-heading">
-										<i class="fa fa-question-circle" data-toggle="tooltip" title="click the image to enable or disable the type of towers"></i> Disable Tower
-									</div>
-									<div class="panel-body">
+                        </div>
+                    </div>
+                    <div class="col-lg-3" id="towerControlPanel">
+                        <div class="row marginTop">
+                            <div class="col-sm-12">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <i class="fa fa-question-circle" data-toggle="tooltip" title="click the image to enable or disable the type of towers"></i> Disable Tower
+                                    </div>
+                                    <div class="panel-body">
 										<?php
 
 										/** @var HeroClass $heroClass */
@@ -222,9 +222,9 @@ $build = $this->build;
 											}
 										}
 										?>
-									</div>
-								</div>
-							</div>
+                                    </div>
+                                </div>
+                            </div>
 							<?php
 							if ( !$isView ) {
 								/** @var HeroClass[] $heros */
@@ -234,35 +234,35 @@ $build = $this->build;
 									$class = $heros[$classID];
 									$size = count($towers) > 5 ? 12 : 6;
 									?>
-									<div class="col-sm-<?php echo $size; ?>">
-										<div class="panel panel-default">
-											<div class="panel-heading"><?php echo $this->escapeHtml($class->name); ?>
-												<!-- TODO re_add, these has currently no effects :( -->
-												<!--<br>
+                                    <div class="col-sm-<?php echo $size; ?>">
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading"><?php echo $this->escapeHtml($class->name); ?>
+                                                <!-- TODO re_add, these has currently no effects :( -->
+                                                <!--<br>
 												<button class="front-tower" value="squire">Front</button>
 												<button class="back-tower" value="squire">Back</button>-->
-											</div>
-											<div class="panel-body">
+                                            </div>
+                                            <div class="panel-body">
 												<?php
 												foreach ( $towers as $tower ) {
 													echo $tower->getHtml();
 												}
 												?>
-											</div>
-										</div>
-									</div>
+                                            </div>
+                                        </div>
+                                    </div>
 									<?php
 								}
 							} ?>
 
-							<div class="col-sm-12">
-								<div class="panel panel-default">
-									<div class="panel-heading">Details</div>
-									<div class="panel-body">
+                            <div class="col-sm-12">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">Details</div>
+                                    <div class="panel-body">
 										<?php if ( !$isView ) { ?>
-											<div class="form-group">
-												<label for="requiredStatsClass">Required Attributes:</label>
-												<select class="form-control" id="requiredStatsClass">
+                                            <div class="form-group">
+                                                <label for="requiredStatsClass">Required Attributes:</label>
+                                                <select class="form-control" id="requiredStatsClass">
 													<?php
 													/** @var HeroClass $heroClass */
 													foreach ( $this->heroClasses as $heroClass ) {
@@ -271,31 +271,31 @@ $build = $this->build;
 														}
 													}
 													?>
-												</select>
-												<div class="row">
-													<div class="col-md-3">
-														<label for="requiredStatsHp">Fortify:</label>
-														<input class="form-control" id="requiredStatsHp" value="0">
-													</div>
-													<div class="col-md-3">
-														<label for="requiredStatsDamage">Power:</label>
-														<input class="form-control" id="requiredStatsDamage" value="0">
-													</div>
-													<div class="col-md-3">
-														<label for="requiredStatsRange">Range:</label>
-														<input class="form-control" id="requiredStatsRange" value="0">
-													</div>
-													<div class="col-md-3">
-														<label for="requiredStatsRate">Def. Rate:</label>
-														<input class="form-control" id="requiredStatsRate" value="0">
-													</div>
-												</div>
-											</div>
+                                                </select>
+                                                <div class="row">
+                                                    <div class="col-md-3">
+                                                        <label for="requiredStatsHp">Fortify:</label>
+                                                        <input class="form-control" id="requiredStatsHp" value="0">
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <label for="requiredStatsDamage">Power:</label>
+                                                        <input class="form-control" id="requiredStatsDamage" value="0">
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <label for="requiredStatsRange">Range:</label>
+                                                        <input class="form-control" id="requiredStatsRange" value="0">
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <label for="requiredStatsRate">Def. Rate:</label>
+                                                        <input class="form-control" id="requiredStatsRate" value="0">
+                                                    </div>
+                                                </div>
+                                            </div>
 
-											<!-- build status -->
-											<div class="form-group">
-												<label for="buildStatus">Build Status:</label>
-												<select class="form-control" id="buildStatus">
+                                            <!-- build status -->
+                                            <div class="form-group">
+                                                <label for="buildStatus">Build Status:</label>
+                                                <select class="form-control" id="buildStatus">
 													<?php
 													/** @var \data\build\status\BuildStatus $buildStatus */
 													foreach ( $this->buildStatuses as $buildStatus ) {
@@ -307,13 +307,13 @@ $build = $this->build;
 														echo '<option '.$selected.' value="'.$buildStatus->getObjectID().'">'.$this->escapeHtml($buildStatus->name).'</option>';
 													}
 													?>
-												</select>
-											</div>
+                                                </select>
+                                            </div>
 
-											<!-- difficulty -->
-											<div class="form-group">
-												<label for="difficulty">Difficulty:</label>
-												<select class="form-control" id="difficulty">
+                                            <!-- difficulty -->
+                                            <div class="form-group">
+                                                <label for="difficulty">Difficulty:</label>
+                                                <select class="form-control" id="difficulty">
 													<?php
 													/** @var \data\difficulty\Difficulty $difficulty */
 													foreach ( $this->difficulties as $difficulty ) {
@@ -326,9 +326,9 @@ $build = $this->build;
 														echo '<option value="'.$difficultyId.'"'.$selected.'>'.$difficultyName.'</option>';
 													}
 													?>
-												</select>
-											</div>
-											<div class="form-group">
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
 												<?php
 												echo '<label>Game Mode:</label><br>';
 												$first = true;
@@ -342,55 +342,55 @@ $build = $this->build;
 													echo '<label class="radio-inline"><input type="radio" name="gamemodeID" value="'.$mode->getObjectID().'"'.$checked.'>'.$this->escapeHtml($mode->name).'</label>';
 												}
 												?>
-											</div>
+                                            </div>
 
-											<div class="form-group">
-												<div class="checkbox">
-													<label>
-														<input type="checkbox" id="hardcore" value="1"<?php echo $build->hardcore ? ' checked' : ''; ?>> Hardcore
-													</label>
-												</div>
-											</div>
-											<div class="form-group">
-												<div class="checkbox">
-													<label>
-														<input type="checkbox" id="afkAble" value="1"<?php echo $build->afkable ? ' checked' : ''; ?>> AFK Able
-													</label>
-												</div>
-											</div>
+                                            <div class="form-group">
+                                                <div class="checkbox">
+                                                    <label>
+                                                        <input type="checkbox" id="hardcore" value="1"<?php echo $build->hardcore ? ' checked' : ''; ?>> Hardcore
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="checkbox">
+                                                    <label>
+                                                        <input type="checkbox" id="afkAble" value="1"<?php echo $build->afkable ? ' checked' : ''; ?>> AFK Able
+                                                    </label>
+                                                </div>
+                                            </div>
 
-											<div class="form-group">
-												<label>XP Per Run:</label>
-												<input type="text" placeholder="XP Per Run" class="form-control" id="expPerRun" maxlength="20" value="<?php echo $this->escapeHtml($this->expPerRun); ?>" />
-											</div>
-											<div class="form-group">
-												<label>Time Per Run:</label>
-												<input type="text" placeholder="XP Per Run" class="form-control" id="timePerRun" maxlength="20" value="<?php echo $this->escapeHtml($this->timePerRun); ?>" />
-											</div>
+                                            <div class="form-group">
+                                                <label>XP Per Run:</label>
+                                                <input type="text" placeholder="XP Per Run" class="form-control" id="expPerRun" maxlength="20" value="<?php echo $this->escapeHtml($this->expPerRun); ?>" />
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Time Per Run:</label>
+                                                <input type="text" placeholder="XP Per Run" class="form-control" id="timePerRun" maxlength="20" value="<?php echo $this->escapeHtml($this->timePerRun); ?>" />
+                                            </div>
 
-											<h4>Mana Used: <strong id="manaUsed">0</strong></h4>
-											<h4>Mana to Upgrade: <strong id="manaUpgrade">0</strong></h4>
+                                            <h4>Mana Used: <strong id="manaUsed">0</strong></h4>
+                                            <h4>Mana to Upgrade: <strong id="manaUpgrade">0</strong></h4>
 
-											<button class="btn btn-primary btn-save">Save</button>
+                                            <button class="btn btn-primary btn-save">Save</button>
 											<?php if ( $build->getObjectID() ) { ?>
-												<a href="<?php echo LinkHandler::getInstance()->getLink('Build', ['object' => $build], 'view') ?>" class="btn btn-info btn-viewer-mode">Viewer Mode</a>
+                                                <a href="<?php echo LinkHandler::getInstance()->getLink('Build', ['object' => $build], 'view') ?>" class="btn btn-info btn-viewer-mode">Viewer Mode</a>
 											<?php }
 										}
 										else {
 											$heroBuildStats = $build->getStats();
 											if ( !empty($heroBuildStats) ) { ?>
-												<table class="table table-responsive table-hover">
-													<caption class="text-center">Required Hero Stats</caption>
-													<thead>
-													<tr>
-														<th>Hero</th>
-														<th>HP</th>
-														<th>Damage</th>
-														<th>Range</th>
-														<th>Rate</th>
-													</tr>
-													</thead>
-													<tbody>
+                                                <table class="table table-responsive table-hover">
+                                                    <caption class="text-center">Required Hero Stats</caption>
+                                                    <thead>
+                                                    <tr>
+                                                        <th>Hero</th>
+                                                        <th>HP</th>
+                                                        <th>Damage</th>
+                                                        <th>Range</th>
+                                                        <th>Rate</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
 													<?php
 													/** @var BuildStats $buildStats */
 													foreach ( $heroBuildStats as $buildStats ) {
@@ -403,50 +403,50 @@ $build = $this->build;
 													</tr>';
 													}
 													?>
-													</tbody>
-												</table>
+                                                    </tbody>
+                                                </table>
 											<?php } ?>
 
-											<h4>Build Status: <strong><?php echo $this->escapeHtml($build->getBuildStatus()->name) ?></strong></h4>
-											<h4>Difficulty: <strong><?php echo $this->escapeHtml($build->getDifficulty()->name) ?></strong></h4>
-											<h4>Game Mode: <strong><?php echo $this->escapeHtml($build->getGamemodeName()); ?></strong></h4>
-											<h4>Hardcore: <strong><?php echo $build->hardcore ? 'Yes' : 'No' ?></strong></h4>
-											<h4>AFK Able: <strong><?php echo $build->afkable ? 'Yes' : 'No' ?></strong></h4>
+                                            <h4>Build Status: <strong><?php echo $this->escapeHtml($build->getBuildStatus()->name) ?></strong></h4>
+                                            <h4>Difficulty: <strong><?php echo $this->escapeHtml($build->getDifficulty()->name) ?></strong></h4>
+                                            <h4>Game Mode: <strong><?php echo $this->escapeHtml($build->getGamemodeName()); ?></strong></h4>
+                                            <h4>Hardcore: <strong><?php echo $build->hardcore ? 'Yes' : 'No' ?></strong></h4>
+                                            <h4>AFK Able: <strong><?php echo $build->afkable ? 'Yes' : 'No' ?></strong></h4>
 											<?php if ( $build->expPerRun ) { ?>
-												<h4>XP Per Run: <strong><?php echo $this->escapeHtml($build->expPerRun) ?></strong></h4>
+                                                <h4>XP Per Run: <strong><?php echo $this->escapeHtml($build->expPerRun) ?></strong></h4>
 											<?php } ?>
 											<?php if ( $build->timePerRun ) { ?>
-												<h4>Time Per Run: <strong><?php echo $this->escapeHtml($build->timePerRun) ?></strong></h4>
+                                                <h4>Time Per Run: <strong><?php echo $this->escapeHtml($build->timePerRun) ?></strong></h4>
 											<?php } ?>
-											<h4>Mana Used: <strong id="manaUsed"></strong></h4>
-											<h4>Mana to Upgrade: <strong id="manaUpgrade"></strong></h4>
-											<br />
-											More Builds from
-											<a href="<?php echo LinkHandler::getInstance()->getLink('BuildList', ['author' => $this->author]) ?>"><?php echo $this->escapeHtml($this->author); ?></a>
-											<br /><br />
+                                            <h4>Mana Used: <strong id="manaUsed"></strong></h4>
+                                            <h4>Mana to Upgrade: <strong id="manaUpgrade"></strong></h4>
+                                            <br />
+                                            More Builds from
+                                            <a href="<?php echo LinkHandler::getInstance()->getLink('BuildList', ['author' => $this->author]) ?>"><?php echo $this->escapeHtml($this->author); ?></a>
+                                            <br /><br />
 											<?php if ( $isView ) { ?>
-												<button class="btn btn-<?php echo $build->getLikeValue() === 1 ? 'success' : 'default'; ?> jsVote" data-type="like" data-count="<?php echo $build->likes ?>"<?php echo !Core::getUser()->steamID || $build->fk_user === Core::getUser()->steamID ? ' disabled' : ''; ?>>
-													<i class="fa fa-thumbs-up icon"></i> <span class="likeValue"><?php echo $this->number($build->likes) ?></span>
-												</button>
+                                                <button class="btn btn-<?php echo $build->getLikeValue() === 1 ? 'success' : 'default'; ?> jsVote" data-type="like" data-count="<?php echo $build->likes ?>"<?php echo !Core::getUser()->steamID || $build->fk_user === Core::getUser()->steamID ? ' disabled' : ''; ?>>
+                                                    <i class="fa fa-thumbs-up icon"></i> <span class="likeValue"><?php echo $this->number($build->likes) ?></span>
+                                                </button>
 											<?php } ?>
 											<?php if ( $build->isCreator() ) { ?>
-												<a href="<?php echo $build->getLink() ?>" class="btn btn-info">Editor Mode</a>
+                                                <a href="<?php echo $build->getLink() ?>" class="btn btn-info">Editor Mode</a>
 											<?php } ?>
 										<?php } ?>
 										<?php if ( $build->isCreator() ) { ?>
-											<a class="btn btn-danger btn-delete">Delete Build</a>
+                                            <a class="btn btn-danger btn-delete">Delete Build</a>
 										<?php } ?>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 				<?php if ( $this->action !== 'view' || $this->description ) { ?>
-					<div class="container build-description-container">
-						<div class="panel panel-default">
-							<div class="panel-heading text-center"><strong>Description</strong></div>
-							<div class="panel-body">
+                    <div class="container build-description-container">
+                        <div class="panel panel-default">
+                            <div class="panel-heading text-center"><strong>Description</strong></div>
+                            <div class="panel-body">
 								<?php
 								if ( $this->action !== 'view' ) {
 									echo '<textarea class="form-control" rows="20" id="builddescription">';
@@ -457,13 +457,13 @@ $build = $this->build;
 									echo $this->description;
 								}
 								?>
-							</div>
-						</div>
-					</div>
+                            </div>
+                        </div>
+                    </div>
 				<?php } ?>
-			</div>
-		</div>
-	</div>
+            </div>
+        </div>
+    </div>
 
 <?php
 if ( $this->action !== 'view' ) {
@@ -486,16 +486,25 @@ if ( $this->action !== 'view' ) {
 	}
 
 	?>
-	<script>
+    <script>
 		window.__DEFENSE_STATS = <?php echo json_encode($buildStats); ?>;
 		window.__DEFENSE_WAVE_TEMPLATE = '<?php echo $tabTemplate; ?>';
 		window.__DEFENSE_MAP_ID = <?php echo $this->map->getObjectID(); ?>;
 		window.__DEFENSE_OBJECT_IDS = [<?php echo $this->action !== 'add' ? $build->getObjectID() : ''; ?>];
-	</script>
+		<?php
+		$towerNames = [];
+		foreach ( $this->towers as $classID => $towers ) {
+			foreach ( $towers as $tower ) {
+				$towerNames[$tower->getObjectID()] = $tower->name;
+			}
+		}
+		?>
+		window.__DEFENSE_TOWER_NAMES = <?php echo json_encode($towerNames); ?>
+    </script>
 	<?php
 }
 ?>
-	<script>
+    <script>
 		'use strict';
 
 		let currentWave = 0;
@@ -534,6 +543,8 @@ if ( $this->action !== 'view' ) {
 			minionDefenseUnits.html(minionUnits);
 			$('#manaUsed').html(mana);
 			$('#manaUpgrade').html(manaUpgrade);
+
+			$('.du-increase').toggleClass('notEnoughDU', maxUnits === defenseUnits);
 
 			$('#towerControlPanel .tower-container').each(function (_, element) {
 				var requiredDU = parseInt(element.getAttribute('data-du'));
@@ -616,11 +627,11 @@ if ( $this->action !== 'view' ) {
 			showWave(0);
 			calculateDefenseUnits();
 		});
-	</script>
+    </script>
 <?php
 if ( $this->action !== 'view' ) {
 	?>
-	<script>
+    <script>
 		'use strict';
 
 		$(document).ready(function () {
@@ -652,6 +663,7 @@ if ( $this->action !== 'view' ) {
 					towers[i] = {
 						x: $(obj).css('left'),
 						y: $(obj).css('top'),
+						unitCost: obj.getAttribute('data-min-unit') ? parseInt(obj.getAttribute('data-du')) : 0,
 						towerID: obj.getAttribute('data-tower-id'),
 						rotation: getRotationDegrees($(this)),
 						wave: $(obj).attr('data-wave')
@@ -733,7 +745,7 @@ if ( $this->action !== 'view' ) {
 						});
 					}
 				});
-			};
+			}
 
 			let canvas = $('.canvas');
 			canvas.droppable({
@@ -793,6 +805,36 @@ if ( $this->action !== 'view' ) {
 
 			// edit mode
 			$(document)
+				.on('click', '.du-decrease, .du-increase', function () {
+					if ($(this).hasClass('notEnoughDU')) {
+						return;
+					}
+
+					let towerContainer = $(this).closest('.tower-container');
+					let towerImage = towerContainer.find('.tower');
+					let currentLevel = parseInt(towerContainer.attr('data-du'));
+					let newLevel = currentLevel;
+					let minLevel = parseInt(towerContainer.attr('data-min-unit'));
+					let maxLevel = parseInt(towerContainer.attr('data-max-unit'));
+					if ($(this).hasClass('du-increase')) {
+						newLevel++;
+					}
+					else {
+						newLevel--;
+					}
+
+					if (newLevel > maxLevel) {
+						newLevel = maxLevel;
+					}
+					else if (newLevel < minLevel) {
+						newLevel = minLevel;
+					}
+
+					towerImage[0].src = towerImage[0].src.replace(currentLevel + '.png', newLevel + '.png');
+					towerImage.attr('title', __DEFENSE_TOWER_NAMES[towerContainer.attr('data-tower-id')] + ' ('+newLevel+')');
+					towerContainer.attr('data-du', newLevel);
+					calculateDefenseUnits();
+				})
 				.on('click', '.btn-save', save)
 				.on('mousedown', '.menu', function (e) {
 					var rotating_defense = $(this).parent();
@@ -876,11 +918,20 @@ if ( $this->action !== 'view' ) {
 			$('#towerControlPanel .tower-container').draggable({
 				helper: 'clone',
 				start(event, ui) {
-					if ($(this).draggable('instance').element.hasClass('notEnoughDU')) {
+					let instance = $(this).draggable('instance');
+					let element = instance.element;
+					if (element.hasClass('notEnoughDU')) {
 						return false;
 					}
+
+					let minUnit = parseInt(element.attr('data-min-unit'));
+					if (minUnit) {
+						let towerImage = ui.helper.find('.tower')[0];
+						towerImage.src = towerImage.src.replace('.png', '_' + minUnit + '.png');
+					}
+
 					// center the icon on
-					$(this).draggable('instance').offset.click = {
+					instance.offset.click = {
 						left: Math.floor(ui.helper.width() / 2),
 						top: Math.floor(ui.helper.height() / 2)
 					};
@@ -892,9 +943,9 @@ if ( $this->action !== 'view' ) {
 			}
 
 		});
-	</script>
+    </script>
 <?php } elseif ( Core::getUser()->steamID && !$build->isCreator() ) { ?>
-	<script>
+    <script>
 		$(document).ready(function () {
 			$(document).on('click', '.jsWatch', function () {
 				window.Core.AjaxStatus.show();
@@ -927,11 +978,11 @@ if ( $this->action !== 'view' ) {
 				});
 			});
 		});
-	</script>
+    </script>
 	<?php
 }
 if ( $build->isCreator() ) { ?>
-	<script>
+    <script>
 		$(document).ready(function () {
 			$('.btn-delete').on('click', function () {
 				if (window.confirm('Do you really want to Delete your Build?')) {
@@ -945,5 +996,5 @@ if ( $build->isCreator() ) { ?>
 				}
 			});
 		});
-	</script>
+    </script>
 <?php } ?>

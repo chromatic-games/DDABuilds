@@ -19,6 +19,6 @@ class HeroClass extends DatabaseObject {
 	protected static $databaseTableIndexName = 'id';
 
 	public function getImage() {
-		return '/assets/images/heroes/'.strtolower($this->name).'.png';
+		return '/assets/images/heroes/'.str_replace(' ', '_', trim(strtolower($this->name))).'.png';
 	}
 }
