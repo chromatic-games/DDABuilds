@@ -2,6 +2,7 @@
 
 use data\difficulty\Difficulty;
 use data\gamemode\Gamemode;
+use data\build\Build;
 use system\request\LinkHandler;
 
 $linkParameters = 'pageNo='.$this->pageNo.'&sortField='.$this->sortField.'&sortOrder='.$this->sortOrder;
@@ -115,45 +116,47 @@ if ( $this->showFilter ) {
 			<thead>
 			<tr>
 				<?php if ( !$this->hideAuthor ) { ?>
-					<th<?php echo $this->sortField === 'author' ? ' class="'.$this->sortOrder.'"': '' ?>>
+					<th<?php echo $this->sortField === 'author' ? ' class="'.$this->sortOrder.'"' : '' ?>>
 						<a href="<?php echo LinkHandler::getInstance()->getLink($this->controller, [], 'pageNo='.$this->pageNo.'&sortField=author&sortOrder='.($this->sortField === 'author' && $this->sortOrder === 'ASC' ? 'DESC' : 'ASC').$additionalParameters); ?>">Author</a>
 					</th>
 				<?php } ?>
-				<th<?php echo $this->sortField === 'name' ? ' class="'.$this->sortOrder.'"': '' ?>>
+				<th<?php echo $this->sortField === 'name' ? ' class="'.$this->sortOrder.'"' : '' ?>>
 					<a href="<?php echo LinkHandler::getInstance()->getLink($this->controller, [], 'pageNo='.$this->pageNo.'&sortField=name&sortOrder='.($this->sortField === 'name' && $this->sortOrder === 'ASC' ? 'DESC' : 'ASC').$additionalParameters); ?>">Build Name</a>
 				</th>
-				<th<?php echo $this->sortField === 'gamemodeID' ? ' class="'.$this->sortOrder.'"': '' ?>>
+				<th<?php echo $this->sortField === 'gamemodeID' ? ' class="'.$this->sortOrder.'"' : '' ?>>
 					<a href="<?php echo LinkHandler::getInstance()->getLink($this->controller, [], 'pageNo='.$this->pageNo.'&sortField=gamemodeID&sortOrder='.($this->sortField === 'gamemodeID' && $this->sortOrder === 'ASC' ? 'DESC' : 'ASC').$additionalParameters); ?>">Game Mode</a>
 				</th>
-				<th<?php echo $this->sortField === 'map' ? ' class="'.$this->sortOrder.'"': '' ?>>
+				<th<?php echo $this->sortField === 'map' ? ' class="'.$this->sortOrder.'"' : '' ?>>
 					<a href="<?php echo LinkHandler::getInstance()->getLink($this->controller, [], 'pageNo='.$this->pageNo.'&sortField=map&sortOrder='.($this->sortField === 'map' && $this->sortOrder === 'ASC' ? 'DESC' : 'ASC').$additionalParameters); ?>">Map</a>
 				</th>
-				<th<?php echo $this->sortField === 'difficulty' ? ' class="'.$this->sortOrder.'"': '' ?>>
+				<th<?php echo $this->sortField === 'difficulty' ? ' class="'.$this->sortOrder.'"' : '' ?>>
 					<a href="<?php echo LinkHandler::getInstance()->getLink($this->controller, [], 'pageNo='.$this->pageNo.'&sortField=difficulty&sortOrder='.($this->sortField === 'difficulty' && $this->sortOrder === 'ASC' ? 'DESC' : 'ASC').$additionalParameters); ?>">Difficulty</a>
 				</th>
-				<th<?php echo $this->sortField === 'likes' ? ' class="'.$this->sortOrder.'"': '' ?>>
+				<th<?php echo $this->sortField === 'likes' ? ' class="'.$this->sortOrder.'"' : '' ?>>
 					<a href="<?php echo LinkHandler::getInstance()->getLink($this->controller, [], 'pageNo='.$this->pageNo.'&sortField=likes&sortOrder='.($this->sortField === 'likes' && $this->sortOrder === 'ASC' ? 'DESC' : 'ASC').$additionalParameters); ?>">Likes</a>
 				</th>
-				<th<?php echo $this->sortField === 'views' ? ' class="'.$this->sortOrder.'"': '' ?>>
+				<th<?php echo $this->sortField === 'views' ? ' class="'.$this->sortOrder.'"' : '' ?>>
 					<a href="<?php echo LinkHandler::getInstance()->getLink($this->controller, [], 'pageNo='.$this->pageNo.'&sortField=views&sortOrder='.($this->sortField === 'views' && $this->sortOrder === 'ASC' ? 'DESC' : 'ASC').$additionalParameters); ?>">Views</a>
 				</th>
-				<th<?php echo $this->sortField === 'date' ? ' class="'.$this->sortOrder.'"': '' ?>>
+				<th<?php echo $this->sortField === 'date' ? ' class="'.$this->sortOrder.'"' : '' ?>>
 					<a href="<?php echo LinkHandler::getInstance()->getLink($this->controller, [], 'pageNo='.$this->pageNo.'&sortField=date&sortOrder='.($this->sortField === 'date' && $this->sortOrder === 'ASC' ? 'DESC' : 'ASC').$additionalParameters); ?>">Date</a>
 				</th>
 				<th class="text-right">
 					<?php if ( $this->viewMode !== 'grid' ) {
 						echo '<a href="'.LinkHandler::getInstance()->getLink($this->controller, ['viewMode' => 'grid'], 'pageNo='.$this->pageNo.'&sortField='.$this->sortField.'&sortOrder='.$this->sortOrder.$additionalParameters).'">';
-					} ?>
-					<i class="fa fa-th" aria-hidden="true"></i>
-					<?php if ( $this->viewMode !== 'grid' ) {
+					}
+					echo '<i class="fa fa-th" aria-hidden="true"></i>';
+					if ( $this->viewMode !== 'grid' ) {
 						echo '</a>';
 					} ?>
 
 					<?php if ( $this->viewMode !== 'list' ) {
 						echo '<a href="'.LinkHandler::getInstance()->getLink($this->controller, ['viewMode' => 'list'], 'pageNo='.$this->pageNo.'&sortField='.$this->sortField.'&sortOrder='.$this->sortOrder.$additionalParameters).'">';
-					} ?>
-					<i class="fa fa-bars" aria-hidden="true"></i>
-					<?php if ( $this->viewMode !== 'list' ) {
+					}
+
+					echo '<i class="fa fa-bars" aria-hidden="true"></i>';
+
+					if ( $this->viewMode !== 'list' ) {
 						echo '</a>';
 					} ?>
 				</th>
@@ -186,39 +189,54 @@ if ( $this->showFilter ) {
 	<?php
 	if ( $this->viewMode === 'grid' ) {
 		$objects = $this->objects->getObjects();
-		while ( $builds = array_splice($objects, 0, 3) ) { // 3 items per row
-			echo '<div class="row">';
-			foreach ( $builds as $build ) {
-				?>
-				<div class="col-md-4">
-					<h3 class="text-center"><a href="<?php echo $build->getLink(); ?>"><?php echo $this->escapeHtml($build->name); ?></h3>
-					<div class="row">
-						<div class="col-md-7">
-							<img class="img-responsive" style="height: 200px" src="<?php echo $build->getThumbnail(); ?>">
-						</div>
-						<div class="col-md-5">
-							<?php
-							echo '<h4><p>'.$this->escapeHtml($build->getMap()->name).'</p>';
-							echo '<p>'.$this->escapeHtml($build->getDifficulty()->name).' ('.$this->escapeHtml($build->getGamemodeName()).')<p>';
-							echo '<p><small>Likes:</small> '.$this->number($build->likes).'</p>';
-							echo '<p><small>Views:</small> '.$this->number($build->views).'</p>';
-							echo '<p>'.$build->getDate().'</p>';
-							echo '<p>'.$this->escapeHtml($build->author).'</p></h4></a>';
-							?>
+		echo '<ol class="buildList">';
+		foreach ( $objects as $build ) { ?>
+			<li>
+				<div class="buildBox">
+					<?php
+					if ( $build->fk_buildstatus !== Build::STATUS_PUBLIC ) {
+						echo '<i class="fa fa-eye-slash buildUnlisted" data-toggle="tooltip" data-original-title="This build is private or unlisted."></i>';
+					}
+					?>
+					<div class="box128">
+						<div class="buildDataContainer">
+							<h3 class="buildSubject">
+								<a href="<?php echo $build->getLink(); ?>"><?php echo $this->escapeHtml($build->name) ?></a>
+							</h3>
+
+							<ul class="inlineList dotSeparated buildMetaData">
+								<li><i class="fa fa-user"></i> <a href="<?php echo LinkHandler::getInstance()->getLink('BuildList', ['author' => $build->author]) ?>"><?php echo $this->escapeHtml($build->author); ?></a></li>
+								<li><i class="fa fa-clock-o"></i> <?php echo $build->getDate(); ?></li>
+								<li><i class="fa fa-eye"></i> <?php echo $this->number($build->views); ?></li>
+								<li><i class="fa fa-comment-o"></i> <?php echo $this->number($build->comments); ?></li>
+								<li<?php echo $build->likes > 0 ? ' class="text-success"' : ''; ?>><i class="fa fa-thumbs-o-up"></i> <?php echo ($build->likes > 0 ? '+' : '').$this->number($build->likes); ?></li>
+							</ul>
+
+							<img class="img-responsive" style="height: 200px;margin: 15px auto auto;" src="<?php echo $build->getThumbnail(); ?>">
 						</div>
 					</div>
+					<div class="buildFiller"></div>
+					<div class="buildFooter">
+						<ul class="inlineList dotSeparated buildInformation">
+							<li><i class="fa fa-map"></i> <a href="<?php echo LinkHandler::getInstance()->getLink('BuildList', ['map' => $build->getMap()->name]) ?>"><?php echo $this->escapeHtml($build->getMap()->name); ?></a></li>
+							<li><i class="fa fa-gamepad"></i> <a href="<?php echo LinkHandler::getInstance()->getLink('BuildList', ['gamemode' => $build->getGamemodeName()]) ?>"><?php echo $this->escapeHtml($build->getGamemodeName()); ?></a></li>
+							<li><i class="fa fa-tachometer"></i> <a href="<?php echo LinkHandler::getInstance()->getLink('BuildList', ['difficulty' => $build->getDifficulty()->name]) ?>"><?php echo $this->escapeHtml($build->getDifficulty()->name); ?></a></li>
+						</ul>
+					</div>
 				</div>
-				<?php
-			}
-			echo '</div>';
+			</li>
+			<?php
 		}
+		echo '</ol>';
 	}
 
+	echo '<div class="text-center">';
 	$this->renderPages([
 		'controller' => $this->controller,
 		'url'        => 'pageNo=%d&sortField='.$this->sortField.'&sortOrder='.$this->sortOrder.$additionalParameters,
 		'print'      => true,
 	]);
+	echo '</div>';
 	?>
 </div>
 

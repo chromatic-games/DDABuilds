@@ -2,12 +2,15 @@
 
 namespace system;
 
+use data\session\Session;
+use data\steam\user\SteamUser;
 use Exception;
+use system\cache\runtime\SteamUserRuntimeCache;
 use system\database\MySQLDatabase;
 use system\exception\NamedUserException;
-use system\exception\UserException;
-use system\steam\SteamUser;
 use system\template\TemplateEngine;
+use function functions\exception\logThrowable;
+use function functions\exception\printThrowable;
 
 require_once(LIB_DIR.'core.functions.php');
 
@@ -24,6 +27,9 @@ class Core {
 
 	protected static $tplObj;
 
+	/** @var Session */
+	protected static $sessionObj;
+
 	public static $tplVariables = [];
 
 	public function __construct() {
@@ -32,10 +38,12 @@ class Core {
 
 	/**
 	 * @return SteamUser
+	 * @throws Exception
 	 */
 	public static function getUser() {
 		if ( self::$userObj === null ) {
-			self::$userObj = new SteamUser(null, isset($_SESSION['_steam_profile']) ? $_SESSION['_steam_profile'] : []);
+			$steamID = self::getSession()->steamID;
+			self::$userObj = $steamID !== null ? SteamUserRuntimeCache::getInstance()->getObject($steamID) : new SteamUser(null, []);
 		}
 
 		return self::$userObj;
@@ -47,6 +55,23 @@ class Core {
 		}
 
 		return self::$tplObj;
+	}
+
+	/**
+	 * @return Session
+	 * @throws Exception
+	 */
+	public static function getSession() {
+		if ( self::$sessionObj === null ) {
+			$sessionID = null;
+			if ( isset($_COOKIE[COOKIE_PREFIX.'sessionID']) ) {
+				$sessionID = $_COOKIE[COOKIE_PREFIX.'sessionID'];
+			}
+
+			self::$sessionObj = new Session($sessionID);
+		}
+
+		return self::$sessionObj;
 	}
 
 	/**
@@ -71,18 +96,18 @@ class Core {
 	}
 
 	public static final function handleException($e) {
-		if ( $e instanceof UserException ) {
-			$e->show();
-			exit;
-		}
-
 		// discard any output
 		while ( ob_get_level() ) {
 			ob_end_clean();
 		}
 
-		$exception = new NamedUserException($e->getMessage(), $e->getCode(), $e);
-		$exception->show();
+		if ( $e instanceof NamedUserException ) {
+			$e->show();
+			exit;
+		}
+
+		// print all other errors
+		printThrowable($e);
 	}
 
 	public static final function handleError($severity, $message, $file, $line) {
@@ -91,14 +116,7 @@ class Core {
 			return;
 		}
 
-		if ( !DEBUG_MODE ) {
-			throw new NamedUserException('Error appeared'); // replace with systemexception
-		}
-		else {
-			echo '<pre>';
-			var_dump(implode(', ', [$severity, $message, $file, $line]));
-			echo '</pre>';
-		}
+		logThrowable(new \Exception($message, 0));
 	}
 
 	public static function destruct() {

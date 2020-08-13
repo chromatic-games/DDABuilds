@@ -29,6 +29,15 @@ class RouteHandler extends SingletonFactory {
 	 */
 	protected $buildSchema = [];
 
+	/** @var string */
+	protected $activeController;
+
+	/** @var boolean */
+	protected static $secure;
+
+	/**
+	 * initialize route handler
+	 */
 	protected function init() {
 		$this->buildSchema = [];
 
@@ -252,6 +261,7 @@ class RouteHandler extends SingletonFactory {
 			$_REQUEST[$key] = $value;
 		}
 
+		$this->activeController = $classData['controller'];
 		/** @var AbstractPage|AbstractAction $requestObject */
 		$requestObject = new $classData['className']();
 		$requestObject->__run();
@@ -319,5 +329,31 @@ class RouteHandler extends SingletonFactory {
 			'controller' => $controller,
 			'pageType'   => $pageType,
 		];
+	}
+
+	/**
+	 * Returns true if this is a secure connection.
+	 *
+	 * @return boolean
+	 */
+	public static function secureConnection() {
+		if ( self::$secure === null ) {
+			self::$secure = false;
+
+			if ( (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off') || $_SERVER['SERVER_PORT'] == 443 || (!empty($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https') ) {
+				self::$secure = true;
+			}
+		}
+
+		return self::$secure;
+	}
+
+	/**
+	 * get the current controller
+	 *
+	 * @return string
+	 */
+	public function getActiveController() {
+		return $this->activeController;
 	}
 }

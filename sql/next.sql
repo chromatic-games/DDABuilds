@@ -1,0 +1,46 @@
+CREATE TABLE session (
+	sessionID VARCHAR(128) NOT NULL,
+	steamID VARCHAR(20) NOT NULL,
+	expires INT(10) UNSIGNED NOT NULL,
+	PRIMARY KEY (sessionID)
+);
+
+CREATE TABLE bug_report (
+	reportID INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+	steamID VARCHAR(20) NOT NULL,
+	time INT(10) UNSIGNED DEFAULT 0 NOT NULL,
+	title VARCHAR(64) NOT NULL,
+	description TEXT NOT NULL,
+	status TINYINT(1) UNSIGNED DEFAULT 0 NOT NULL,
+	PRIMARY KEY (reportID)
+);
+
+CREATE TABLE bug_report_comment (
+	commentID INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+	bugReportID INT(10) UNSIGNED NOT NULL,
+	steamID VARCHAR(20) NOT NULL,
+	time INT(10) UNSIGNED DEFAULT 0 NOT NULL,
+	description TEXT NOT NULL,
+	PRIMARY KEY (commentID)
+);
+
+CREATE TABLE steam_user (
+	steamID VARCHAR(20) NOT NULL,
+	name VARCHAR(48) NOT NULL,
+	avatarHash VARCHAR(48) NOT NULL,
+	PRIMARY KEY (steamID)
+);
+
+CREATE TABLE build_watch (
+	steamID VARCHAR(20) NOT NULL,
+	buildID INT(10) UNSIGNED NOT NULL,
+	PRIMARY KEY (steamID, buildID),
+	KEY buildID(buildID),
+	CONSTRAINT build_watch_ibfk_1 FOREIGN KEY (buildID) REFERENCES builds(id)
+);
+
+ALTER TABLE build_watch
+	ADD FOREIGN KEY (buildID) REFERENCES builds(id);
+
+ALTER TABLE bug_report_comment
+	ADD FOREIGN KEY (bugReportID) REFERENCES bug_report(reportID) ON DELETE CASCADE ON UPDATE CASCADE;

@@ -46,9 +46,18 @@ use system\request\LinkHandler;
  * @property-read integer $fk_user
  */
 class Build extends DatabaseObject implements IRouteObject, ILinkableObject {
+	const STATUS_PUBLIC = 1;
+	const STATUS_UNLISTED = 2;
+	const STATUS_PRIVATE = 3;
+
 	protected static $databaseTableName = 'builds';
 
 	protected static $databaseTableIndexName = 'id';
+
+	/**
+	 * @var bool
+	 */
+	public $__isWatched;
 
 	/** @var BuildStats[] */
 	protected $__stats;
@@ -158,6 +167,23 @@ class Build extends DatabaseObject implements IRouteObject, ILinkableObject {
 		}
 
 		return $this->__comments;
+	}
+
+	/**
+	 * @return bool
+	 * @throws Exception
+	 */
+	public function isWatched() {
+		if ( $this->__isWatched === null ) {
+			$statement = Core::getDB()->prepareStatement('SELECT buildID FROM build_watch WHERE buildID = ? AND steamID = ?');
+			$statement->execute([
+				$this->getObjectID(),
+				Core::getUser()->steamID,
+			]);
+			$this->__isWatched = $statement->rowCount() > 0;
+		}
+
+		return $this->__isWatched;
 	}
 
 	public function getLikeValue() {

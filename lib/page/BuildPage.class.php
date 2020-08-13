@@ -14,9 +14,6 @@ class BuildPage extends BuildAddPage {
 	/** @inheritDoc */
 	public $templateName = 'buildAdd';
 
-	/** @var Build */
-	public $build;
-
 	/** @var string view mode (edit/view) */
 	public $action = 'view';
 
@@ -33,7 +30,7 @@ class BuildPage extends BuildAddPage {
 			throw new IllegalLinkException();
 		}
 
-		if ( $this->build->fk_buildstatus === 3 && !$this->build->isCreator() ) {
+		if ( $this->build->fk_buildstatus === Build::STATUS_PRIVATE && !$this->build->isCreator() ) {
 			throw new NamedUserException('Sorry, this build is private');
 		}
 		elseif ( $this->build->deleted ) {
@@ -70,7 +67,6 @@ class BuildPage extends BuildAddPage {
 		parent::assignVariables();
 
 		Core::getTPL()->assign([
-			'build'  => $this->build,
 			'action' => $this->action,
 		]);
 	}

@@ -95,8 +95,6 @@ class BuildListPage extends SortablePage {
 	 */
 	public $mapID = 0;
 
-	public $mapName = '';
-
 	//</editor-fold>
 
 	/** @var Map[] */
@@ -120,11 +118,11 @@ class BuildListPage extends SortablePage {
 			$viewMode = trim(strtolower($_REQUEST['viewMode']));
 			if ( in_array($viewMode, ['list', 'grid']) ) {
 				$this->viewMode = $viewMode;
-				$_SESSION['buildListViewMode'] = $viewMode; // todo replace with cookie
+				HeaderUtil::setCookie('listViewMode', $viewMode);
 			}
 		}
-		elseif ( isset($_SESSION['buildListViewMode']) ) {
-			$this->viewMode = $_SESSION['buildListViewMode'];
+		elseif ( isset($_COOKIE[COOKIE_PREFIX.'listViewMode']) ) {
+			$this->viewMode = $_COOKIE[COOKIE_PREFIX.'listViewMode'];
 		}
 
 		if ( !$this->showFilter ) {

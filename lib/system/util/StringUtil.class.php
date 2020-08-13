@@ -111,6 +111,20 @@ class StringUtil {
 	}
 
 	/**
+	 * Unifies windows and unix directory separators.
+	 *
+	 * @param string $path
+	 *
+	 * @return string
+	 */
+	public static function unifyDirSeparator($path) {
+		$path = str_replace('\\\\', '/', $path);
+		$path = str_replace('\\', '/', $path);
+
+		return $path;
+	}
+
+	/**
 	 * Removes Unicode whitespace characters from the beginning
 	 * and ending of the given string.
 	 *
@@ -128,5 +142,14 @@ class StringUtil {
 		$text = preg_replace('/[\p{Zs}\s]+$/u', '', $text);
 
 		return $text;
+	}
+
+	/**
+	 * Creates an UUID.
+	 *
+	 * @return string
+	 */
+	public static function getUUID() {
+		return sprintf('%04x%04x-%04x-%04x-%04x-%04x%04x%04x', mt_rand(0, 65535), mt_rand(0, 65535), mt_rand(0, 65535), mt_rand(16384, 20479), mt_rand(32768, 49151), mt_rand(0, 65535), mt_rand(0, 65535), mt_rand(0, 65535));
 	}
 }

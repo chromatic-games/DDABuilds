@@ -13,12 +13,92 @@ use data\map\Map;
 use system\Core;
 use system\exception\PermissionDeniedException;
 use system\exception\UserInputException;
+use system\request\LinkHandler;
 use system\util\StringUtil;
 
 class BuildAction extends DatabaseObjectAction {
+	/**
+	 * @throws PermissionDeniedException
+	 */
+	public function validateWatch() {
+		if ( empty($this->objects) ) {
+			$this->readObjects();
+		}
+
+		/** @var Build $build */
+		foreach ( $this->objects as $build ) {
+			if ( $build->isCreator() ) {
+				throw new PermissionDeniedException();
+			}
+		}
+	}
+
+	/**
+	 * @return array
+	 * @throws \Exception
+	 */
+	public function watch() {
+		$newState = [];
+		$selectStatement = Core::getDB()->prepareStatement('SELECT * FROM build_watch WHERE buildID = ? AND steamID = ?');
+		$insertStatement = Core::getDB()->prepareStatement('INSERT INTO build_watch (buildID, steamID) VALUES (?, ?)');
+		$deleteStatement = Core::getDB()->prepareStatement('DELETE FROM build_watch WHERE buildID = ? AND steamID = ?');
+
+		foreach ( $this->objectIDs as $buildID ) {
+			$selectStatement->execute([$buildID, Core::getUser()->steamID]);
+			if ( $selectStatement->rowCount() ) {
+				$deleteStatement->execute([$buildID, Core::getUser()->steamID]);
+				$newState[$buildID] = 0;
+			}
+			else {
+				$insertStatement->execute([$buildID, Core::getUser()->steamID]);
+				$newState[$buildID] = 1;
+			}
+		}
+
+		return $newState;
+	}
+
+	/**
+	 * @throws PermissionDeniedException
+	 */
+	public function validateTrash() {
+		if ( empty($this->objects) ) {
+			$this->readObjects();
+		}
+
+		/** @var Build $build */
+		foreach ( $this->objects as $build ) {
+			if ( !$build->isCreator() ) {
+				throw new PermissionDeniedException();
+			}
+		}
+	}
+
+	/**
+	 * @return string
+	 * @throws \Exception
+	 */
+	public function trash() {
+		/** @var Build $build */
+		foreach ( $this->objects as $build ) {
+			$build->update([
+				'deleted' => 1,
+			]);
+		}
+
+		return LinkHandler::getInstance()->getLink('BuildList');
+	}
+
+	/**
+	 * @throws PermissionDeniedException
+	 * @throws UserInputException
+	 */
 	public function validateSave() {
-		foreach ( ['author', 'buildName', 'mapID', 'difficulty', 'buildStatus', 'afkAble', 'hardcore', 'towers'] as $field ) {
-			if ( empty($this->parameters[$field]) ) {
+		$this->readBoolean('afkAble');
+		$this->readBoolean('hardcore');
+
+		foreach ( ['author', 'buildName', 'mapID', 'difficulty', 'buildStatus', 'towers'] as $field ) {
+			if ( !isset($this->parameters[$field]) ) {
 				throw new UserInputException($field);
 			}
 		}
@@ -182,9 +262,9 @@ class BuildAction extends DatabaseObjectAction {
 						$build->getObjectID(),
 						$key,
 						$hp,
+						$damage,
 						$rate,
 						$range,
-						$damage,
 					]);
 				}
 			}

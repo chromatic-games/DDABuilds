@@ -14,15 +14,24 @@
 	<!-- Bootstrap Core CSS -->
 	<link href="assets/css/bootstrap.min.css" rel="stylesheet">
 	<link href="assets/css/font-awesome.min.css" rel="stylesheet">
-	<link href="assets/css/chakratos<?php echo !DEBUG_MODE ? '.min' : ''; ?>.css" rel="stylesheet">
+	<link href="assets/css/main<?php echo !DEBUG_MODE ? '.min' : ''; ?>.css" rel="stylesheet">
 
 	<!-- jQuery Version 1.11.1 -->
 	<script src="assets/js/jquery.js"></script>
+	<!-- Bootstrap Core JavaScript -->
+	<?php
+	if ( $this->templateName === 'buildAdd' ) {
+		echo '<script src="assets/js/jquery-ui.js"></script>
+        <script>$.widget.bridge(\'uitooltip\', $.ui.tooltip);</script>';
+	}
+	?>
+	<script src="assets/js/bootstrap.min.js"></script>
 	<script src="assets/js/core.js"></script>
 	<?php
 
 	use system\Core;
 	use system\request\LinkHandler;
+	use system\request\RouteHandler;
 	use system\steam\Steam;
 
 	if ( Core::getUser()->steamID ) {
@@ -30,9 +39,8 @@
 	}
 
 	// TODO move to controller (form/page) and build min js/css files
-	if ( $this->templateName === 'map' || $this->templateName === 'buildAdd' ) {
+	if ( $this->templateName === 'buildAdd' ) {
 		echo '<script src="assets/js/html2canvas.js"></script>
-        <script src="assets/js/jquery-ui.js"></script>
         <script src="assets/js/jQueryRotate.js"></script>
         <script src="assets/js/ckeditor/ckeditor.js"></script>';
 	}
@@ -42,13 +50,19 @@
 	elseif ( $this->templateName === 'buildAddSelect' ) {
 		echo '<script src="assets/js/scroll-top.js"></script>';
 	}
+	elseif ( $this->templateName === 'bugReportAdd' || $this->templateName === 'bugReport' ) {
+		echo '<script src="assets/js/ckeditor/ckeditor.js"></script>';
+	}
 	elseif ( $this->templateName == 'buildList' ) {
 		echo '<script type="text/javascript" src="assets/js/jquery.flexdatalist.min.js"></script>';
 		echo '<link href="assets/css/jquery.flexdatalist.min.css" rel="stylesheet">';
 	}
 	?>
-	<!-- Bootstrap Core JavaScript -->
-	<script src="assets/js/bootstrap.min.js"></script>
+	<script>
+		if (typeof CKEDITOR !== 'undefined') {
+			CKEDITOR.timestamp = '2020-06-01';
+		}
+	</script>
 </head>
 <body class="<?php echo 'tpl'.ucfirst($this->templateName) ?>">
 	<!-- Navigation -->
@@ -60,54 +74,56 @@
 				        data-target="#bs-example-navbar-collapse-1">
 					<span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="..">DDA Builder</a>
+				<a class="navbar-brand" href="/">DDA Builder</a>
 			</div>
 			<!-- Collect the nav links, forms, and other content for toggling -->
 			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 				<ul class="nav navbar-nav">
 					<?php
+					echo $this->menu(['BuildList'], LinkHandler::getInstance()->getLink('BuildList'), 'List');
 					if ( Core::getUser()->steamID ) {
-						echo ' <li> <a href="'.LinkHandler::getInstance()->getLink('BuildAddSelect').'">Create</a></li>';
+						echo $this->menu(['BuildAddSelect', 'BuildAdd'], LinkHandler::getInstance()->getLink('BuildAddSelect'), 'Create');
+						echo $this->menu(['BugReportAdd'], LinkHandler::getInstance()->getLink('BugReportAdd'), 'Report Issue');
+						if ( Core::getUser()->isMaintainer() ) {
+							echo $this->menu(['BugReportList', 'BugReport'], LinkHandler::getInstance()->getLink('BugReportList'), 'Issues');
+						}
 					}
 					?>
-					<li><a href="<?php echo LinkHandler::getInstance()->getLink('BuildList') ?>">List</a></li>
-					<li><a href="<?php echo LinkHandler::getInstance()->getLink('Changelog') ?>">Changelog</a></li>
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
-                <li>
-                    <?php
-                    if ( !Core::getUser()->steamID ) {
-	                    $loginLink = LinkHandler::getInstance()->getLink('Login');
-	                    echo '<div class="navbar-brand" style="margin-top:-8px";><a href="'.$loginLink.'">Login to Create or Vote on Builds: </a>';
-	                    echo '<a href="'.$loginLink.'">'.Steam::getInstance()->getLoginButton(Steam::BUTTON_STYLE_RECTANGLE).'</a>';
-	                    echo '</div>';
-                    }
-                    else {
-	                    $notifications = Core::getUser()->getUnreadNotifications();
+					<li>
+						<a class="pointer" onClick="Core.DarkMode.toggle()">
+							<i class="fa fa-moon-o darkSymbol"></i>
+							<span class="label label-danger betaLabel">Beta</span>
+						</a>
+					</li>
+					<?php
+					if ( !Core::getUser()->steamID ) {
+						$loginLink = LinkHandler::getInstance()->getLink('Login');
+						echo '<div class="navbar-brand" style="margin-top:-8px";><a href="'.$loginLink.'">Login to Create or Vote on Builds: </a>';
+						echo '<a href="'.$loginLink.'">'.Steam::getInstance()->getLoginButton(Steam::BUTTON_STYLE_RECTANGLE).'</a>';
+						echo '</div>';
+					}
+					else {
+						$notifications = Core::getUser()->getUnreadNotifications();
 
-	                    echo '<li class="notificationBell">
+						echo '<li class="notificationBell'.(RouteHandler::getInstance()->getActiveController() === 'NotificationList' ? ' active' : '').'">
 							<a href="'.LinkHandler::getInstance()->getLink('NotificationList').'">
-							<i class="fa fa-bell'.($notifications === 0 ? '-o' : '').'"></i>
-							'.($notifications ? '<span class="badge badge-danger">'.$notifications.'</span>' : '').'
+								<i class="fa fa-bell'.($notifications === 0 ? '-o' : '').'"></i>
+								'.($notifications ? '<span class="badge badge-danger">'.$notifications.'</span>' : '').'
 							</a>
 						</li>
 						<li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">'.Core::getUser()->displayName.'<span class="caret"></span></a>
-                            <ul class="dropdown-menu">
-                                <li>
-                                    <a href="'.LinkHandler::getInstance()->getLink('MyBuildList').'">My Builds</a>
-                                </li>
-                                <li>
-                                    <a href="'.LinkHandler::getInstance()->getLink('NotificationList').'">Notifications</a>
-                                </li>
-                                <li>
-                                    <a href="'.LinkHandler::getInstance()->getLink('Logout').'">Logout</a>
-                                </li>
-                            </ul>
-                        </li>';
-                    }
-                    ?>
-                </li>
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">'.Core::getUser()->name.'<span class="caret"></span></a>
+                            <ul class="dropdown-menu">';
+						echo $this->menu(['MyBuildList'], LinkHandler::getInstance()->getLink('MyBuildList'), 'My Builds');
+						echo $this->menu(['MyBugReportList'], LinkHandler::getInstance()->getLink('MyBugReportList'), 'My Issues');
+						echo $this->menu(['FavoriteBuildList'], LinkHandler::getInstance()->getLink('FavoriteBuildList'), 'Favorite Builds');
+						echo $this->menu(['LikedBuildList'], LinkHandler::getInstance()->getLink('LikedBuildList'), 'Liked Builds');
+						echo '<li><a href="'.LinkHandler::getInstance()->getLink('Logout').'">Logout</a></li>';
+						echo '</ul></li>';
+					}
+					?>
 				</ul>
 			</div>
 			<!-- /.navbar-collapse -->
@@ -116,10 +132,49 @@
 	</nav>
 	<!-- /Navigation -->
 
-	<!-- Content Section -->
-	<section>
-		<?php echo $this->content; ?>
-	</section>
+	<div id="pageContainer">
+		<!-- Content Section -->
+		<section id="main">
+			<?php
+			echo $this->render($this->templateName);
+			?>
+		</section>
+		<footer id="footer" class="navbar navbar-inverse navbar-footer">
+			<div class="container">
+				<ul class="nav navbar-nav">
+					<li><a href="<?php echo LinkHandler::getInstance()->getLink('Changelog') ?>">Changelog</a></li>
+				</ul>
+				<?php if ( DEBUG_MODE ) { ?>
+					<div class="navbar-right navbar-text pointer" data-toggle="modal" data-target="#debugModal">
+						Execution time: <?php echo round(microtime(true) - APPLICATION_START, 2); ?>s | Queries: <?php echo Core::getDB()->getQueryCount(); ?> | Steam Requests: <?php echo Steam::getInstance()->getRequests(); ?>
+					</div>
+
+					<div id="debugModal" class="modal fade" tabindex="-1" role="dialog">
+						<div class="modal-dialog" role="document">
+							<div class="modal-content">
+								<div class="modal-header">
+									<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+									<h4 class="modal-title">Log</h4>
+								</div>
+								<div class="modal-body">
+									<ul style="list-style:none;padding:0;margin:0;">
+										<?php
+										foreach ( Core::getDB()->getQueries() as $query ) {
+											echo '<li>'.$query['query'].'</li>';
+										}
+										?>
+									</ul>
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+								</div>
+							</div><!-- /.modal-content -->
+						</div><!-- /.modal-dialog -->
+					</div><!-- /.modal -->
+				<?php } ?>
+			</div>
+		</footer>
+	</div>
 
 	<div id="loadingSpinner" style="display:none;">
 		<div class="loadingSpinner">
@@ -127,19 +182,6 @@
 		</div>
 		<div class="pageBackdrop"></div>
 	</div>
-
-	<?php
-	if ( DEBUG_MODE ) {
-		echo '<div class="container"><pre>';
-		var_dump([
-			'execution_time' => microtime(true) - APPLICATION_START,
-			'query_count'    => Core::getDB()->getQueryCount(),
-			'queries'        => Core::getDB()->getQueries(),
-			'steam requests' => Steam::getInstance()->getRequests(),
-		]);
-		echo '</pre></div>';
-	}
-	?>
 
 	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-39334248-36"></script>
 	<script>
@@ -150,5 +192,13 @@
 		gtag('js', new Date());
 		gtag('config', 'UA-39334248-36');
 	</script>
+	<script>
+		$(function () {
+			$('[data-toggle="tooltip"]').tooltip({
+				container: 'body',
+			});
+		});
+	</script>
+	<!-- JAVASCRIPT_RELOCATE_POSITION -->
 </body>
 </html>

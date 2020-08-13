@@ -24,7 +24,7 @@ class AjaxAction extends AbstractAction {
 	 * additional parameters
 	 * @var mixed[]
 	 */
-	public $parameters;
+	public $parameters = [];
 
 	/**
 	 * @var string

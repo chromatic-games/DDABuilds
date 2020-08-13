@@ -5,11 +5,11 @@
 
 CKEDITOR.editorConfig = function (config) {
 	config.toolbar = [
-		['Source'],
+		['Maximize', 'Source'],
 		['NumberedList', 'BulletedList'],
 		['Bold', 'Italic', 'Underline', 'Strike', '-', 'Subscript', 'Superscript', 'RemoveFormat'],
-		['Paste', 'PasteText', 'Image'],
+		['Paste', 'PasteText', 'Image', 'Table', 'HorizontalRule'],
 		['Link', 'Unlink'],
-		['Find', 'Replace', '-', 'Undo', 'Redo']
-	]
+		['Find', 'Replace', '-', 'Undo', 'Redo'],
+	];
 };

@@ -2,12 +2,15 @@
 
 namespace action;
 
+use data\session\Session;
+use data\session\SessionAction;
 use system\Core;
 use system\exception\NamedUserException;
 use system\exception\PermissionDeniedException;
 use system\steam\LightOpenID;
-use system\steam\SteamUser;
+use system\steam\Steam;
 use system\util\HeaderUtil;
+use system\util\StringUtil;
 
 class LoginAction extends AbstractAction {
 	/** @inheritDoc */
@@ -38,9 +41,46 @@ class LoginAction extends AbstractAction {
 				$ptn = "/^https?:\/\/steamcommunity\.com\/openid\/id\/(7[0-9]{15,25}+)$/";
 				preg_match($ptn, $id, $matches);
 
-				$_SESSION['_steamid'] = $matches[1];
-				$_SESSION['_steam_profile'] = (new SteamUser($matches[1]))->getData();
+				$steamID = $matches[1];
+				$steamData = Steam::getInstance()->getPlayerSummary($steamID);
+				$statement = Core::getDB()->prepareStatement('INSERT INTO steam_user (steamID, name, avatarHash) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE name = ?, avatarHash = ?');
+				$statement->execute([
+					$steamID,
+					$steamData['personaname'],
+					$steamData['avatarhash'],
+					$steamData['personaname'],
+					$steamData['avatarhash'],
+				]);;
 
+				$session = Session::getSessionBySteamID($steamID);
+				if ( !$session->getObjectID() ) {
+					$sessionID = StringUtil::getUUID();
+					$action = new SessionAction([], 'create', [
+						'data' => [
+							'sessionID' => $sessionID,
+							'steamID'   => $steamID,
+							'expires'   => TIME_NOW + 86400 * 30,
+						],
+					]);
+					$action->executeAction();
+				}
+				else {
+					$sessionID = $session->getObjectID();
+					if ( $session->isExpired() ) {
+						$sessionID = StringUtil::getUUID();
+					}
+
+					$action = new SessionAction([$session], 'update', [
+						'data' => [
+							'sessionID' => $sessionID,
+							'expires'   => TIME_NOW + 86400 * 30,
+						],
+					]);
+					$action->executeAction();
+				}
+
+				SessionAction::deleteExpiredSessions();
+				HeaderUtil::setCookie('sessionID', $sessionID);
 				HeaderUtil::redirect('/');
 				exit;
 			}

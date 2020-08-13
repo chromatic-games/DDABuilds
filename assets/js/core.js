@@ -36,12 +36,18 @@
 			if (!_darkModeLink) {
 				_darkModeLink = $('<link href="assets/css/bootstrap_slate.min.css" rel="stylesheet">');
 				$('head').append(_darkModeLink);
+
+				$('html').addClass('dark');
+				$('.darkSymbol').addClass('fa-sun-o').removeClass('fa-moon-o');
 			}
 		},
 		disable: function () {
 			if (_darkModeLink) {
 				_darkModeLink.remove();
 				_darkModeLink = null;
+
+				$('html').removeClass('dark');
+				$('.darkSymbol').removeClass('fa-sun-o').addClass('fa-moon-o');
 			}
 		},
 		toggle: function () {
@@ -59,10 +65,12 @@
 	};
 	window.Core.AjaxStatus = AjaxStatus;
 
-	if (typeof window.localStorage !== 'undefined') {
-		var darkMode = window.localStorage.getItem('darkMode');
-		if (darkMode === '1') {
-			window.Core.DarkMode.enable();
+	$(document).ready(function() {
+		if (typeof window.localStorage !== 'undefined') {
+			var darkMode = window.localStorage.getItem('darkMode');
+			if (darkMode === '1') {
+				window.Core.DarkMode.enable();
+			}
 		}
-	}
+	})
 })();

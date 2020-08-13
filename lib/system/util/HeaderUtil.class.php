@@ -2,6 +2,8 @@
 
 namespace system\util;
 
+use system\request\RouteHandler;
+
 class HeaderUtil {
 	/**
 	 * Redirects the user agent to given location.
@@ -21,5 +23,16 @@ class HeaderUtil {
 		}
 
 		header('Location: '.$location);
+	}
+
+	/**
+	 * set cookie with header
+	 *
+	 * @param string  $name
+	 * @param string  $value
+	 * @param integer $expire
+	 */
+	public static function setCookie($name, $value = '', $expire = 0) {
+		@header('Set-Cookie: '.rawurlencode(COOKIE_PREFIX.$name).'='.rawurlencode($value).($expire ? '; expires='.gmdate('D, d-M-Y H:i:s', $expire).' GMT; max-age='.($expire - TIME_NOW) : '').'; path=/'.(RouteHandler::secureConnection() ? '; secure' : '').'; HttpOnly', false);
 	}
 }

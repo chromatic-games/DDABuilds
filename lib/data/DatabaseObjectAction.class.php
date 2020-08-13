@@ -5,8 +5,21 @@ namespace data;
 use system\Core;
 use system\exception\NamedUserException;
 use system\exception\PermissionDeniedException;
+use system\exception\UserInputException;
 
 class DatabaseObjectAction {
+	const TYPE_INTEGER = 1;
+
+	const TYPE_STRING  = 2;
+
+	const TYPE_BOOLEAN = 3;
+
+	const TYPE_JSON    = 4;
+
+	const STRUCT_FLAT  = 1;
+
+	const STRUCT_ARRAY = 2;
+
 	/**
 	 * @var string[]
 	 */
@@ -150,13 +163,13 @@ class DatabaseObjectAction {
 	 * Deletes the relevant objects and returns the number of deleted objects.
 	 */
 	public function delete() {
-		if (empty($this->objects)) {
+		if ( empty($this->objects) ) {
 			$this->readObjects();
 		}
 
 		// get ids
 		$objectIDs = [];
-		foreach ($this->getObjects() as $object) {
+		foreach ( $this->getObjects() as $object ) {
 			$objectIDs[] = $object->getObjectID();
 		}
 
@@ -222,6 +235,128 @@ class DatabaseObjectAction {
 			'objectIDs'    => $this->getObjectIDs(),
 			'returnValues' => $this->returnValues,
 		];
+	}
+
+	/**
+	 * Reads a boolean value and validates it.
+	 *
+	 * @param string $variableName
+	 * @param bool   $allowEmpty
+	 * @param string $arrayIndex
+	 *
+	 * @throws UserInputException
+	 */
+	protected function readBoolean($variableName, $allowEmpty = false, $arrayIndex = '') {
+		$this->readValue($variableName, $allowEmpty, $arrayIndex, self::TYPE_BOOLEAN, self::STRUCT_FLAT);
+	}
+
+	/**
+	 * Reads a value and validates it. If you set $allowEmpty to true, no exception will
+	 * be thrown if the variable evaluates to 0 (integer) or '' (string). Furthermore the
+	 * variable will be always created with a sane value if it does not exist.
+	 *
+	 * @param string  $variableName
+	 * @param boolean $allowEmpty
+	 * @param string  $arrayIndex
+	 * @param integer $type
+	 * @param integer $structure
+	 *
+	 * @throws UserInputException
+	 */
+	protected function readValue($variableName, $allowEmpty, $arrayIndex, $type, $structure) {
+		if ( $arrayIndex ) {
+			if ( !isset($this->parameters[$arrayIndex]) ) {
+				throw new NamedUserException("Corrupt parameters, index '".$arrayIndex."' is missing");
+			}
+
+			$target =& $this->parameters[$arrayIndex];
+		}
+		else {
+			$target =& $this->parameters;
+		}
+
+		switch ( $type ) {
+			/*case self::TYPE_INTEGER:
+				if ( !isset($target[$variableName]) ) {
+					if ( $allowEmpty ) {
+						$target[$variableName] = ($structure === self::STRUCT_FLAT) ? 0 : [];
+					}
+					else {
+						throw new UserInputException($variableName);
+					}
+				}
+				else {
+					if ( $structure === self::STRUCT_FLAT ) {
+						$target[$variableName] = intval($target[$variableName]);
+						if ( !$allowEmpty && !$target[$variableName] ) {
+							throw new UserInputException($variableName);
+						}
+					}
+					else {
+						$target[$variableName] = ArrayUtil::toIntegerArray($target[$variableName]);
+						if ( !is_array($target[$variableName]) ) {
+							throw new UserInputException($variableName);
+						}
+
+						for ( $i = 0, $length = count($target[$variableName]);$i < $length;$i++ ) {
+							if ( $target[$variableName][$i] === 0 ) {
+								throw new UserInputException($variableName);
+							}
+						}
+					}
+				}
+				break;*/
+
+			/*case self::TYPE_STRING:
+				if (!isset($target[$variableName])) {
+					if ($allowEmpty) {
+						$target[$variableName] = ($structure === self::STRUCT_FLAT) ? '' : [];
+					}
+					else {
+						throw new UserInputException($variableName);
+					}
+				}
+				else {
+					if ($structure === self::STRUCT_FLAT) {
+						$target[$variableName] = StringUtil::trim($target[$variableName]);
+						if (!$allowEmpty && empty($target[$variableName])) {
+							throw new UserInputException($variableName);
+						}
+					}
+					else {
+						$target[$variableName] = ArrayUtil::trim($target[$variableName]);
+						if (!is_array($target[$variableName])) {
+							throw new UserInputException($variableName);
+						}
+
+						for ($i = 0, $length = count($target[$variableName]); $i < $length; $i++) {
+							if (empty($target[$variableName][$i])) {
+								throw new UserInputException($variableName);
+							}
+						}
+					}
+				}
+				break;*/
+
+			case self::TYPE_BOOLEAN:
+				if ( !isset($target[$variableName]) ) {
+					if ( $allowEmpty ) {
+						$target[$variableName] = false;
+					}
+					else {
+						throw new UserInputException($variableName);
+					}
+				}
+				else {
+					if ( is_numeric($target[$variableName]) ) {
+						$target[$variableName] = (bool) $target[$variableName];
+					}
+					else {
+						$target[$variableName] = $target[$variableName] != 'false';
+					}
+				}
+				break;
+		}
 	}
 
 	/**

@@ -36,7 +36,7 @@ class CommentAction extends DatabaseObjectAction {
 		if ( !$this->build->getObjectID() || $this->build->deleted ) {
 			throw new NamedUserException('This is an invalid or deleted build');
 		}
-		elseif ( $this->build->fk_buildstatus === 3 && !$this->build->isCreator() ) {
+		elseif ( $this->build->fk_buildstatus === Build::STATUS_PRIVATE && !$this->build->isCreator() ) {
 			throw new NamedUserException('This is a private build, you cant comment on it');
 		}
 	}
