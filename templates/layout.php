@@ -83,9 +83,9 @@
 					echo $this->menu(['BuildList'], LinkHandler::getInstance()->getLink('BuildList'), 'List');
 					if ( Core::getUser()->steamID ) {
 						echo $this->menu(['BuildAddSelect', 'BuildAdd'], LinkHandler::getInstance()->getLink('BuildAddSelect'), 'Create');
-						echo $this->menu(['BugReportAdd'], LinkHandler::getInstance()->getLink('BugReportAdd'), 'Report Bug');
+						echo $this->menu(['BugReportAdd'], LinkHandler::getInstance()->getLink('BugReportAdd'), 'Report Issue');
 						if ( Core::getUser()->isMaintainer() ) {
-							echo $this->menu(['BugReportList', 'BugReport'], LinkHandler::getInstance()->getLink('BugReportList'), 'Bug Reports');
+							echo $this->menu(['BugReportList', 'BugReport'], LinkHandler::getInstance()->getLink('BugReportList'), 'Issues');
 						}
 					}
 					?>
@@ -117,7 +117,7 @@
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">'.Core::getUser()->name.'<span class="caret"></span></a>
                             <ul class="dropdown-menu">';
 						echo $this->menu(['MyBuildList'], LinkHandler::getInstance()->getLink('MyBuildList'), 'My Builds');
-						echo $this->menu(['MyBugReportList'], LinkHandler::getInstance()->getLink('MyBugReportList'), 'My Bug Reports');
+						echo $this->menu(['MyBugReportList'], LinkHandler::getInstance()->getLink('MyBugReportList'), 'My Issues');
 						echo $this->menu(['FavoriteBuildList'], LinkHandler::getInstance()->getLink('FavoriteBuildList'), 'Favorite Builds');
 						echo $this->menu(['LikedBuildList'], LinkHandler::getInstance()->getLink('LikedBuildList'), 'Liked Builds');
 						echo '<li><a href="'.LinkHandler::getInstance()->getLink('Logout').'">Logout</a></li>';
