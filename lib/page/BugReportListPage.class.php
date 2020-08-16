@@ -8,7 +8,7 @@ use system\exception\IllegalLinkException;
 
 class BugReportListPage extends SortablePage {
 	/** @inheritDoc */
-	public $pageTitle = 'Bug Reports';
+	public $pageTitle = 'Issues';
 
 	/** @inheritDoc */
 	public $objectListClassName = BugReportList::class;

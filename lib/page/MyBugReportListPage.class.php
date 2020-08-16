@@ -9,7 +9,7 @@ class MyBugReportListPage extends BugReportListPage {
 	public $loginRequired = true;
 
 	/** @inheritDoc */
-	public $pageTitle = 'My Bug Reports';
+	public $pageTitle = 'My Issues';
 
 	/** @inheritDoc */
 	public $templateName = 'bugReportList';

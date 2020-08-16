@@ -47,7 +47,7 @@ $isMaintainer = Core::getUser()->isMaintainer();
 		]);
 	}
 	else {
-		echo '<div class="alert alert-info">no bug reports</div>';
+		echo '<div class="alert alert-info">no issues</div>';
 	} ?>
 </div>
 

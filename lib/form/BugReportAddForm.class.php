@@ -14,7 +14,7 @@ class BugReportAddForm extends AbstractForm {
 	public $loginRequired = true;
 
 	/** @inheritDoc */
-	public $pageTitle = 'Create bug report';
+	public $pageTitle = 'Report Issue';
 
 	/** @var string */
 	public $title = '';
@@ -30,7 +30,7 @@ class BugReportAddForm extends AbstractForm {
 		$statement->execute([Core::getUser()->steamID]);
 		if ( $statement->rowCount() ) {
 			$seconds = 60 - (TIME_NOW - $statement->fetchColumn());
-			throw new NamedUserException('Please wait '.$seconds.' seconds for next bug/feature report.');
+			throw new NamedUserException('Please wait '.$seconds.' seconds for next issue report.');
 		}
 	}
 
@@ -49,6 +49,10 @@ class BugReportAddForm extends AbstractForm {
 	/** @inheritDoc */
 	public function validate() {
 		parent::validate();
+
+		if ( !isset($_POST['checkbox']) ) {
+			$this->errors['checkbox'] = new UserInputException('checkbox');
+		}
 
 		if ( empty($this->title) ) {
 			$this->errors['title'] = new UserInputException('title');
@@ -74,5 +78,14 @@ class BugReportAddForm extends AbstractForm {
 
 		HeaderUtil::redirect($bugReport->getLink());
 		exit;
+	}
+
+	public function assignVariables() {
+		parent::assignVariables();
+
+		Core::getTPL()->assign([
+			'title' => $this->title,
+			'description' => $this->description,
+		]);
 	}
 }
