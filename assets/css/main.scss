@@ -373,6 +373,26 @@ html, body {
 	}
 }
 
+// difficulty colors (TODO replace with scss map)
+.difficulty-1 { // easy
+	color: rgb(124, 255, 79);
+}
+.difficulty-2 { // normal
+	color: rgb(247, 255, 66);
+}
+.difficulty-3 { // hard
+	color: rgb(251, 176, 59);
+}
+.difficulty-4 { // insane
+	color: rgb(255, 62, 251);
+}
+.difficulty-5 { // nightmare
+	color: rgb(237, 57, 144);
+}
+.difficulty-6 { // massacre
+	color: rgb(237, 28, 36);
+}
+
 html.dark {
 	.buildList {
 		.buildBox {
