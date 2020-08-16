@@ -175,7 +175,7 @@ if ( $this->showFilter ) {
 					echo '<td><a href="'.$build->getLink().'">'.$this->escapeHtml($build->name).'</a></td>
 <td>'.$this->escapeHtml($build->getGamemodeName()).'</td>
 <td>'.$this->escapeHtml($build->getMap()->name).'</td>
-<td>'.$this->escapeHtml($build->getDifficulty()->name).'</td>
+<td class="difficulty-'.$build->difficulty.'">'.$this->escapeHtml($build->getDifficulty()->name).'</td>
 <td class="text-right">'.$this->number($build->likes).'</td>
 <td class="text-right">'.$this->number($build->views).'</td>
 <td class="text-right" colspan="2">'.$build->getDate().'</td>
@@ -220,7 +220,7 @@ if ( $this->showFilter ) {
 						<ul class="inlineList dotSeparated buildInformation">
 							<li><i class="fa fa-map"></i> <a href="<?php echo LinkHandler::getInstance()->getLink('BuildList', ['map' => $build->getMap()->name]) ?>"><?php echo $this->escapeHtml($build->getMap()->name); ?></a></li>
 							<li><i class="fa fa-gamepad"></i> <a href="<?php echo LinkHandler::getInstance()->getLink('BuildList', ['gamemode' => $build->getGamemodeName()]) ?>"><?php echo $this->escapeHtml($build->getGamemodeName()); ?></a></li>
-							<li><i class="fa fa-tachometer"></i> <a href="<?php echo LinkHandler::getInstance()->getLink('BuildList', ['difficulty' => $build->getDifficulty()->name]) ?>"><?php echo $this->escapeHtml($build->getDifficulty()->name); ?></a></li>
+							<li><i class="fa fa-tachometer difficulty-<?php echo $build->difficulty; ?>"></i> <a class="difficulty-<?php echo $build->difficulty; ?>" href="<?php echo LinkHandler::getInstance()->getLink('BuildList', ['difficulty' => $build->getDifficulty()->name]) ?>"><?php echo $this->escapeHtml($build->getDifficulty()->name); ?></a></li>
 						</ul>
 					</div>
 				</div>

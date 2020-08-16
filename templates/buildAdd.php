@@ -408,7 +408,7 @@ $build = $this->build;
 											<?php } ?>
 
                                             <h4>Build Status: <strong><?php echo $this->escapeHtml($build->getBuildStatus()->name) ?></strong></h4>
-                                            <h4>Difficulty: <strong><?php echo $this->escapeHtml($build->getDifficulty()->name) ?></strong></h4>
+                                            <h4>Difficulty: <strong class="difficulty-<?php echo $build->difficulty ?>"><?php echo $this->escapeHtml($build->getDifficulty()->name) ?></strong></h4>
                                             <h4>Game Mode: <strong><?php echo $this->escapeHtml($build->getGamemodeName()); ?></strong></h4>
                                             <h4>Hardcore: <strong><?php echo $build->hardcore ? 'Yes' : 'No' ?></strong></h4>
                                             <h4>AFK Able: <strong><?php echo $build->afkable ? 'Yes' : 'No' ?></strong></h4>

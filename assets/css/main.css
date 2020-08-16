@@ -461,6 +461,30 @@ html, body {
   margin-right: 10px;
 }
 
+.difficulty-1 {
+  color: #7cff4f;
+}
+
+.difficulty-2 {
+  color: #f7ff42;
+}
+
+.difficulty-3 {
+  color: #fbb03b;
+}
+
+.difficulty-4 {
+  color: #ff3efb;
+}
+
+.difficulty-5 {
+  color: #ed3990;
+}
+
+.difficulty-6 {
+  color: #ed1c24;
+}
+
 html.dark .buildList .buildBox {
   border-color: #4E5458;
 }
