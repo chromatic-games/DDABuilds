@@ -1,4 +1,9 @@
 <div class="container">
+	<h3>2020-08-20</h3>
+    <ul>
+        <li><span class="label label-success">Added</span> Series EV-A.</li>
+        <li><span class="label label-success">Added</span> Difficulty Colors.</li>
+    </ul>
 	<h3>2020-07-25</h3>
 	<ul>
 		<li><span class="label label-success">Added</span> Liked build list.</li>
