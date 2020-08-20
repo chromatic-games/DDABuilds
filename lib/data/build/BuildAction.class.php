@@ -230,7 +230,8 @@ class BuildAction extends DatabaseObjectAction {
 							(int) $tower['y'],
 							(int) $tower['rotation'],
 							(int) $validWaves[$tower['wave']],
-							0,
+							(int) $tower['unitCost']
+							// 0, // override du
 						]);
 					}
 				}

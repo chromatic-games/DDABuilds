@@ -111,13 +111,23 @@ html {
   cursor: pointer;
   position: absolute;
   top: -20px;
+  width: 100%;
   left: 11px;
   transition: 0.2s 1s;
+}
+.tower-container .menu i {
+  text-shadow: 0 0 3px #000;
 }
 
 .tower {
   width: 35px;
   height: 35px;
+}
+
+.tower-container[data-class="5"].ui-draggable-dragging img.tower,
+.canvas .tower-container[data-class="5"] img.tower {
+  width: auto;
+  height: auto;
 }
 
 /* traps */
@@ -151,7 +161,8 @@ html {
   cursor: pointer;
 }
 
-#towerControlPanel .tower-container.notEnoughDU {
+/*#towerControlPanel .tower-container*/
+.notEnoughDU {
   opacity: 0.5;
   cursor: not-allowed;
 }
@@ -448,6 +459,30 @@ html, body {
 }
 .buildList .buildBox .buildInformation > li:not(:last-child) {
   margin-right: 10px;
+}
+
+.difficulty-1 {
+  color: #7cff4f;
+}
+
+.difficulty-2 {
+  color: #f7ff42;
+}
+
+.difficulty-3 {
+  color: #fbb03b;
+}
+
+.difficulty-4 {
+  color: #ff3efb;
+}
+
+.difficulty-5 {
+  color: #ed3990;
+}
+
+.difficulty-6 {
+  color: #ed1c24;
 }
 
 html.dark .buildList .buildBox {
