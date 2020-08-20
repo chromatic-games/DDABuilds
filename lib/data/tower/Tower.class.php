@@ -73,7 +73,7 @@ class Tower extends DatabaseObject {
 
 		return '<div class="tower-container'.($dummy ? ' dummy' : '').'" data-tower-id="'.$this->getObjectID().'" data-class="'.$this->fk_class.'"
 	        data-du="'.$currentUnitCost.'" data-mana="'.$this->manacost.'" data-wave="'.$wave.'"'.$style.'>
-                <img class="tower" src="'.$this->getImage($customDU).'" title="'.StringUtil::encodeHTML($this->name).($this->isResizeable() ? ' ('.$currentUnitCost.')' : '').'" />
+                <img class="tower" src="'.$this->getImage($customDU).'" title="'.StringUtil::encodeHTML($this->name).($this->isResizeable() && !$dummy ? ' ('.$currentUnitCost.')' : '').'" />
                 '.($menu ? '<div class="menu">'.$menu.'</div>' : '').'
 	        </div>';
 	}

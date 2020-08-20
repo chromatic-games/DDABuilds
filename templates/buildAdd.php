@@ -408,7 +408,9 @@ $build = $this->build;
 											<?php } ?>
 
                                             <h4>Build Status: <strong><?php echo $this->escapeHtml($build->getBuildStatus()->name) ?></strong></h4>
-                                            <h4>Difficulty: <strong class="difficulty-<?php echo $build->difficulty ?>"><?php echo $this->escapeHtml($build->getDifficulty()->name) ?></strong></h4>
+                                            <h4>Difficulty:
+                                                <strong class="difficulty-<?php echo $build->difficulty ?>"><?php echo $this->escapeHtml($build->getDifficulty()->name) ?></strong>
+                                            </h4>
                                             <h4>Game Mode: <strong><?php echo $this->escapeHtml($build->getGamemodeName()); ?></strong></h4>
                                             <h4>Hardcore: <strong><?php echo $build->hardcore ? 'Yes' : 'No' ?></strong></h4>
                                             <h4>AFK Able: <strong><?php echo $build->afkable ? 'Yes' : 'No' ?></strong></h4>
@@ -831,7 +833,7 @@ if ( $this->action !== 'view' ) {
 					}
 
 					towerImage[0].src = towerImage[0].src.replace(currentLevel + '.png', newLevel + '.png');
-					towerImage.attr('title', __DEFENSE_TOWER_NAMES[towerContainer.attr('data-tower-id')] + ' ('+newLevel+')');
+					towerImage.attr('title', __DEFENSE_TOWER_NAMES[towerContainer.attr('data-tower-id')] + ' (' + newLevel + ')');
 					towerContainer.attr('data-du', newLevel);
 					calculateDefenseUnits();
 				})
@@ -924,17 +926,24 @@ if ( $this->action !== 'view' ) {
 						return false;
 					}
 
-					let minUnit = parseInt(element.attr('data-min-unit'));
-					if (minUnit) {
-						let towerImage = ui.helper.find('.tower')[0];
-						towerImage.src = towerImage.src.replace('.png', '_' + minUnit + '.png');
+					function updatePosition() {
+						// center the icon on
+						instance.offset.click = {
+							left: Math.floor(ui.helper.width() / 2),
+							top: Math.floor(ui.helper.height() / 2)
+						};
 					}
 
-					// center the icon on
-					instance.offset.click = {
-						left: Math.floor(ui.helper.width() / 2),
-						top: Math.floor(ui.helper.height() / 2)
-					};
+					let minUnit = parseInt(element.attr('data-min-unit'));
+					if (minUnit) {
+						let towerImage = ui.helper.find('.tower');
+						towerImage.attr('title', __DEFENSE_TOWER_NAMES[ui.helper.find('.tower-container').attr('data-tower-id')] + ' (' + minUnit + ')');
+						towerImage = towerImage[0];
+						towerImage.src = towerImage.src.replace('.png', '_' + minUnit + '.png');
+						towerImage.onload = updatePosition;
+					}
+
+					updatePosition();
 				}
 			});
 
