@@ -838,8 +838,8 @@ if ( $this->action !== 'view' ) {
 					calculateDefenseUnits();
 				})
 				.on('click', '.btn-save', save)
-				.on('mousedown', '.menu', function (e) {
-					var rotating_defense = $(this).parent();
+				.on('mousedown', '.menu .fa-repeat', function (e) {
+					var rotating_defense = $(this).closest('.menu').parent();
 					var offset = rotating_defense.offset();
 					$(document).on('mousemove', function (e) {
 						var mouse_x = e.pageX - offset.left - rotating_defense.width() / 2;
