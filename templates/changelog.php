@@ -1,4 +1,10 @@
 <div class="container">
+	<h3>2020-09-22</h3>
+    <ul>
+        <li><span class="label label-warning">Changed</span> New design for the create build page.</li>
+        <li><span class="label label-danger">Fixed</span> Defense Units for Lava Mines on Difficulty Insane or higher.</li>
+        <li><span class="label label-danger">Fixed</span> Footer Margin was incorrect in Dark Mode.</li>
+    </ul>
 	<h3>2020-08-20</h3>
     <ul>
         <li><span class="label label-success">Added</span> Series EV-A.</li>

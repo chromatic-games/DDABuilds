@@ -17,9 +17,18 @@ use system\Core;
  * @property-read int    $fk_mapcategory
  */
 class Map extends DatabaseObject implements IRouteObject {
+	/** @inheritdoc */
 	protected static $databaseTableName = 'maps';
 
+	/** @inheritdoc */
 	protected static $databaseTableIndexName = 'id';
+
+	/**
+	 * describe available units (if currently difficulty are unset then, use units column from map)
+	 *
+	 * @var array
+	 */
+	protected $_availableUnits;
 
 	/**
 	 * get a map by name
@@ -47,6 +56,24 @@ class Map extends DatabaseObject implements IRouteObject {
 		$name = str_replace(' ', '_', $this->name);
 
 		return '/assets/images/map/'.$name.'.png';
+	}
+
+	/**
+	 * @return int[]
+	 * @throws Exception
+	 */
+	public function getAvailableUnits() {
+		if ( !$this->id ) {
+			return [];
+		}
+
+		if ( $this->_availableUnits === null ) {
+			$statement = Core::getDB()->prepareStatement('SELECT difficultyID, units FROM map_available_unit WHERE mapID = ?');
+			$statement->execute([$this->id]);
+			$this->_availableUnits = $statement->fetchAll(\PDO::FETCH_KEY_PAIR);
+		}
+
+		return $this->_availableUnits;
 	}
 
 	public function getTitle() {

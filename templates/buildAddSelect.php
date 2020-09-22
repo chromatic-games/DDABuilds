@@ -16,16 +16,26 @@
 		echo '
 		<div class="container" id="category-'.$categoryId.'">
 <h1 class="page-header">'.$this->escapeHtml($this->categories[$categoryId]->name).' <small></small></h1>
-<div class="row">';
+<ol class="buildList mapSelection">';
 		/** @var \data\map\Map $map */
 		foreach ($maps as $map) {
-			echo '<div class="col-md-3 portfolio-item">
-    <a href="'.LinkHandler::getInstance()->getLink('BuildAdd', ['object' => $map]).'">'.$this->escapeHtml($map->name).'
-        <img class="img-responsive" src="'.$map->getImage().'">
-    </a>
-</div>';
+			$link = LinkHandler::getInstance()->getLink('BuildAdd', ['object' => $map]);
+
+			echo '<li>
+				<div class="buildBox">
+                    <div class="box128">
+                        <div class="buildDataContainer">
+                            <h4 class="buildSubject">
+                                <a href="'.$link.'">'.$this->escapeHtml($map->name).'</a>
+                            </h4>
+                            <a href="'.$link.'"><img class="img-responsive" style="height: 200px;margin: 15px auto auto;" src="'.$map->getImage().'"></a>
+                        </div>
+                    </div>
+                    <div class="buildFiller"></div>
+                </div>
+            </li>';
 		}
-		echo '</div></div>';
+		echo '</ol></div>';
 	}
 	?>
 </div>
