@@ -46,9 +46,11 @@ use system\request\LinkHandler;
  * @property-read integer $fk_user
  */
 class Build extends DatabaseObject implements IRouteObject, ILinkableObject {
-	const STATUS_PUBLIC = 1;
+	const STATUS_PUBLIC   = 1;
+
 	const STATUS_UNLISTED = 2;
-	const STATUS_PRIVATE = 3;
+
+	const STATUS_PRIVATE  = 3;
 
 	protected static $databaseTableName = 'builds';
 
@@ -274,6 +276,16 @@ class Build extends DatabaseObject implements IRouteObject, ILinkableObject {
 		imagecopyresampled($lastimg, $newimg, 0, 0, 0, 0, 200, 200, $new_width, $new_height);
 
 		return imagepng($lastimg, MAIN_DIR.'assets/images/thumbnails/'.$this->getObjectID().'.png');
+	}
+
+	/**
+	 * @return int
+	 * @throws Exception
+	 */
+	public function getUnits() {
+		$availableUnits = $this->getMap()->getAvailableUnits();
+
+		return isset($availableUnits[$this->difficulty]) ? $availableUnits[$this->difficulty] : $this->getMap()->units;
 	}
 
 	/**

@@ -42,7 +42,7 @@ $build = $this->build;
             </div>
             <div class="col-md-1 text-center">
                 <h3>
-                    DU: <b><span id="currentDefenseUnits">0</span>/<span id="maxDefenseUnits"><?php echo $this->map->units ?></span></b>
+                    DU: <b><span id="currentDefenseUnits">0</span>/<span id="maxDefenseUnits"><?php echo $build->getObjectID() ? $build->getUnits() : $this->map->units; ?></span></b>
 					<?php if ( $this->showMU ) { ?>
                         MU: <b><span id="currentMinionUnits">0</span>/<span><?php echo $this->map->units ?></span></b>
 					<?php } ?>
@@ -99,15 +99,15 @@ $build = $this->build;
 													actionName: 'add',
 													parameters: {
 														buildID: window.__DEFENSE_OBJECT_IDS[0],
-														text
-													}
+														text,
+													},
 												},
 												function (data) {
 													CKEDITOR.instances.commentMain.setData('');
 													$('#commentList').prepend(data.returnValues);
 													$('.btn-comment').prop('disabled', false);
 													Core.AjaxStatus.hide();
-												}
+												},
 											).fail(function (jqXHR, textStatus, errorThrown) {
 												try {
 													alert('Error while saving: ' + JSON.parse(jqXHR.responseText).message);
@@ -156,8 +156,8 @@ $build = $this->build;
 											actionName: 'loadMore',
 											parameters: {
 												buildID: window.__DEFENSE_OBJECT_IDS[0],
-												lastID: lastCommentID
-											}
+												lastID: lastCommentID,
+											},
 										},
 										function (data) {
 											$('#commentList').append(data.returnValues.html);
@@ -166,7 +166,7 @@ $build = $this->build;
 												$('#moreComments').html('');
 											}
 											Core.AjaxStatus.hide();
-										}
+										},
 									).fail(function (jqXHR, textStatus, errorThrown) {
 										try {
 											alert('Error while saving: ' + JSON.parse(jqXHR.responseText).message);
@@ -493,6 +493,7 @@ if ( $this->action !== 'view' ) {
 		window.__DEFENSE_WAVE_TEMPLATE = '<?php echo $tabTemplate; ?>';
 		window.__DEFENSE_MAP_ID = <?php echo $this->map->getObjectID(); ?>;
 		window.__DEFENSE_OBJECT_IDS = [<?php echo $this->action !== 'add' ? $build->getObjectID() : ''; ?>];
+		window.__DEFENSE_UNITS = <?php echo json_encode([0 => $this->map->units] + $this->map->getAvailableUnits()); ?>;
 		<?php
 		$towerNames = [];
 		foreach ( $this->towers as $classID => $towers ) {
@@ -622,7 +623,7 @@ if ( $this->action !== 'view' ) {
 				drag: function (event, ui) {
 					ui.position.left += recoupLeft;
 					ui.position.top += recoupTop;
-				}
+				},
 			});
 
 			// initialize
@@ -638,6 +639,12 @@ if ( $this->action !== 'view' ) {
 
 		$(document).ready(function () {
 			let waves = $('#waveTabList .waveTab').length - 1;
+
+			$('#difficulty').on('change', function () {
+				let newUnits = window.__DEFENSE_UNITS[$(this).val()] || window.__DEFENSE_UNITS[0];
+				$('#maxDefenseUnits').html(newUnits);
+				calculateDefenseUnits();
+			}).trigger('change'); // trigger change on init view
 
 			function getRotationDegrees(obj) {
 				var matrix = obj.css('transform');
@@ -668,7 +675,7 @@ if ( $this->action !== 'view' ) {
 						unitCost: obj.getAttribute('data-min-unit') ? parseInt(obj.getAttribute('data-du')) : 0,
 						towerID: obj.getAttribute('data-tower-id'),
 						rotation: getRotationDegrees($(this)),
-						wave: $(obj).attr('data-wave')
+						wave: $(obj).attr('data-wave'),
 					};
 				});
 
@@ -676,12 +683,12 @@ if ( $this->action !== 'view' ) {
 				var buildName = $('#buildName').val().trim();
 
 				if (author.length === 0) {
-					alert('Please input an Author.');
+					alert('Please input an author.');
 					return;
 				}
 
 				if (buildName.length === 0) {
-					alert('Please input an Build Name!');
+					alert('Please input a build name!');
 					return;
 				}
 
@@ -723,8 +730,8 @@ if ( $this->action !== 'view' ) {
 									expPerRun: $('#expPerRun').val(),
 									towers,
 									stats: window.__DEFENSE_STATS,
-									image: canvas.toDataURL('image/png')
-								}
+									image: canvas.toDataURL('image/png'),
+								},
 							},
 							function (data) {
 								if (data.returnValues !== null) {
@@ -734,7 +741,7 @@ if ( $this->action !== 'view' ) {
 									$('.btn-save').prop('disabled', false);
 									Core.AjaxStatus.hide();
 								}
-							}
+							},
 						).fail(function (jqXHR, textStatus, errorThrown) {
 							try {
 								alert('Error while saving: ' + JSON.parse(jqXHR.responseText).message);
@@ -745,7 +752,7 @@ if ( $this->action !== 'view' ) {
 							$('.btn-save').prop('disabled', false);
 							Core.AjaxStatus.hide();
 						});
-					}
+					},
 				});
 			}
 
@@ -766,7 +773,7 @@ if ( $this->action !== 'view' ) {
 						clone.appendTo(canvas);
 						calculateDefenseUnits();
 					}
-				}
+				},
 			});
 
 			for (let el of [$('#requiredStatsHp'), $('#requiredStatsRate'), $('#requiredStatsDamage'), $('#requiredStatsRange')]) {
@@ -930,7 +937,7 @@ if ( $this->action !== 'view' ) {
 						// center the icon on
 						instance.offset.click = {
 							left: Math.floor(ui.helper.width() / 2),
-							top: Math.floor(ui.helper.height() / 2)
+							top: Math.floor(ui.helper.height() / 2),
 						};
 					}
 
@@ -944,7 +951,7 @@ if ( $this->action !== 'view' ) {
 					}
 
 					updatePosition();
-				}
+				},
 			});
 
 			if ($('#builddescription').length) {
@@ -961,7 +968,7 @@ if ( $this->action !== 'view' ) {
 				$.post('?ajax', {
 					className: '\\data\\build\\BuildAction',
 					actionName: 'watch',
-					objectIDs: window.__DEFENSE_OBJECT_IDS
+					objectIDs: window.__DEFENSE_OBJECT_IDS,
 				}, function (data) {
 					for (var buildID in data.returnValues) {
 						if (window.__DEFENSE_OBJECT_IDS.indexOf(parseInt(buildID)) >= 0) {
@@ -998,7 +1005,7 @@ if ( $build->isCreator() ) { ?>
 					$.post('?ajax', {
 						className: '\\data\\build\\BuildAction',
 						actionName: 'trash',
-						objectIDs: window.__DEFENSE_OBJECT_IDS
+						objectIDs: window.__DEFENSE_OBJECT_IDS,
 					}).then(function (data) {
 						window.location = data.returnValues;
 					});

@@ -308,3 +308,16 @@ INSERT INTO `towers` VALUES ('230', null, '0', '0', '22', 'Blue Arrow String');
 INSERT INTO `towers` VALUES ('231', null, '0', '0', '22', 'Yellow Arrow');
 INSERT INTO `towers` VALUES ('232', null, '0', '0', '22', 'Yellow Arrow Head');
 INSERT INTO `towers` VALUES ('233', null, '0', '0', '22', 'Yellow Arrow String');
+
+CREATE TABLE map_available_unit (
+	mapID INT(10) UNSIGNED NOT NULL,
+	difficultyID INT(10) UNSIGNED NOT NULL,
+	units SMALLINT(5) UNSIGNED NOT NULL,
+	PRIMARY KEY (mapID, difficultyID, units)
+);
+
+-- add lava mines available units in specific difficulties
+INSERT INTO map_available_unit (mapID, difficultyID, units)
+	VALUES (3, 4, 90), -- insane
+	       (3, 5, 90), -- nightmare
+	       (3, 6, 90); -- massacre
