@@ -380,6 +380,20 @@ html, body {
     margin-bottom: -20px;
   }
 }
+@media screen and (min-width: 545px), print {
+  .buildList.mapSelection > li {
+    flex: 0 0 50%;
+    margin-bottom: 20px;
+    max-width: 50%;
+  }
+}
+@media screen and (min-width: 1025px), print {
+  .buildList.mapSelection > li {
+    flex: 0 0 25%;
+    margin-bottom: 20px;
+    max-width: 25%;
+  }
+}
 .buildList > li {
   overflow: hidden;
   padding-left: 10px;
@@ -491,6 +505,9 @@ html.dark .buildList .buildBox {
 html.dark .buildList .buildBox .buildFooter {
   border-color: #4E5458;
   background-color: #2E3338;
+}
+html.dark footer {
+  margin-bottom: 0;
 }
 
 /*# sourceMappingURL=main.css.map */
