@@ -4,8 +4,16 @@
 @import 'mixins/list';
 @import 'mixins/reset';
 
+@import 'layout/layout';
+@import 'layout/views/index';
+
 .marginTop {
 	margin-top: 15px;
+}
+
+.section-heading {
+	margin: 30px 0;
+	font-size: 4em;
 }
 
 .ddmap, .tower-container img {
@@ -128,22 +136,6 @@
 	z-index: 395;
 }
 
-section {
-	margin-bottom: 60px;
-}
-
-body.tplIndex section {
-	padding: 0;
-}
-
-body {
-	padding-top: 70px;
-}
-
-body.tplIndex {
-	padding-top: 50px;
-}
-
 .contact-first-box {
 	padding: 35px;
 	background: #99CC00;
@@ -214,43 +206,22 @@ dl dd .alert {
 	padding: 0;
 }
 
-.table th.ASC > a::after,
-.table th.DESC > a::after {
-	display: inline-block;
-	font-family: FontAwesome;
-	margin-left: 5px;
-}
+.table {
+	th.ASC, th.DESC {
+		> a::after {
+			display: inline-block;
+			font-family: FontAwesome;
+			margin-left: 5px;
+		}
+	}
 
-.table th.ASC > a::after {
-	content: "\f0d8";
-}
+	th.ASC > a::after {
+		content: "\f0d8";
+	}
 
-.table th.DESC > a::after {
-	content: "\f0d7";
-}
-
-.navbar-footer {
-	margin-bottom: 0;
-}
-
-html, body {
-	height: 100%;
-}
-
-#pageContainer {
-	display: flex;
-	height: 100%;
-	flex-direction: column;
-}
-
-#main {
-	flex: 1 0 auto;
-}
-
-#footer {
-	flex: 0 0 auto;
-	margin-bottom: 0;
-	border-radius: 0;
+	th.DESC > a::after {
+		content: "\f0d7";
+	}
 }
 
 .dummy:not(.ui-draggable-dragging) {
@@ -377,15 +348,4 @@ html, body {
 	}
 }
 
-html.dark {
-	.buildList {
-		.buildBox {
-			border-color: #4E5458;
-
-			.buildFooter {
-				border-color: #4E5458;
-				background-color: #2E3338;
-			}
-		}
-	}
-}
+@import 'layout/dark';

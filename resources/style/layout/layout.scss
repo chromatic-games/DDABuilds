@@ -1,0 +1,31 @@
+html, body {
+	height: 100%;
+}
+
+body {
+	padding-top: 50px;
+}
+
+section {
+	margin-bottom: 60px;
+}
+
+.navbar-footer {
+	margin-bottom: 0;
+}
+
+#pageContainer {
+	display: flex;
+	height: 100%;
+	flex-direction: column;
+}
+
+#main {
+	flex: 1 0 auto;
+}
+
+#footer {
+	flex: 0 0 auto;
+	margin-bottom: 0;
+	border-radius: 0;
+}

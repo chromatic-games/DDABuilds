@@ -1,7 +1,9 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import BuildListView from '../views/BuildListView';
-import IndexView from '../views/IndexView';
+
+const IndexView = () => import('../views/IndexView');
+const BuildListView = () => import('../views/BuildListView');
+const ChangelogView = () => import('../views/ChangelogView');
 
 Vue.use(Router);
 
@@ -20,6 +22,11 @@ const router = new Router({
 			name: 'buildList',
 			path: '/build-list',
 			component: BuildListView,
+		},
+		{
+			name: 'changelog',
+			path: '/changelog',
+			component: ChangelogView,
 		}
 	]
 });

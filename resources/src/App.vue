@@ -1,6 +1,6 @@
 <template>
     <div id="pageContainer">
-        <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <nav class="navbar navbar-inverse navbar-fixed-top">
             <div class="container">
                 <div class="navbar-header">
                     <button type="button" class="navbar-toggle">
@@ -9,14 +9,14 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <router-link class="navbar-brand" :to="{name: 'index'}">DDA Builder</router-link>
+                    <router-link class="navbar-brand" :to="{name: 'index'}">DD:A Builder</router-link>
                 </div>
                 <div class="collapse navbar-collapse">
                     <ul class="nav navbar-nav">
                         <router-link tag="li" :to="{name: 'buildList'}"><a>List</a></router-link>
-                        <router-link tag="li" :to="{name: 'buildAddSelect'}"><a>Create</a></router-link>
-                        <router-link tag="li" :to="{name: 'bugReportAdd'}"><a>Report Bug</a></router-link>
-                        <router-link tag="li" :to="{name: 'bugReportList'}"><a>Bug Reports</a></router-link>
+<!--                        <router-link tag="li" :to="{name: 'buildAddSelect'}"><a>Create</a></router-link>-->
+<!--                        <router-link tag="li" :to="{name: 'bugReportAdd'}"><a>Report Bug</a></router-link>-->
+<!--                        <router-link tag="li" :to="{name: 'bugReportList'}"><a>Bug Reports</a></router-link>-->
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
                         <li>
@@ -36,7 +36,7 @@
             </div>
         </nav>
 
-        <section id="main" v-if="!$router.currentRoute.meta.ignoreSection">
+        <section id="main" class="marginTop" v-if="!$router.currentRoute.meta.ignoreSection">
             <router-view class="container"></router-view>
         </section>
         <router-view v-else />
@@ -45,6 +45,7 @@
             <div class="container">
                 <ul class="nav navbar-nav">
                     <router-link tag="li" :to="{name: 'changelog'}"><a>Changelog</a></router-link>
+                    <li><a href="https://github.com/RefreshingWater/DDABuilds" target="_blank">GitHub</a></li>
                 </ul>
             </div>
         </footer>
@@ -54,8 +55,6 @@
 <script>
 export default {
     name: 'App',
-    created() {
-    },
     methods: {
         toggleDarkMode() {
 
