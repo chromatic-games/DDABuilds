@@ -18,7 +18,3 @@ use Illuminate\Support\Facades\Route;
 Route::prefix('bug-report/{id}')->group(function() {
 	Route::get('/close', [BugReportController::class, 'close']);
 });
-
-Route::get('/user/{username}', function (Request $request) {
-    return [1,2,3];
-});
