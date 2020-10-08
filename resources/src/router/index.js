@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 
+const NotFound = () => import('../views/NotFound');
 const IndexView = () => import('../views/IndexView');
 const BuildListView = () => import('../views/BuildListView');
 const ChangelogView = () => import('../views/ChangelogView');
@@ -16,7 +17,7 @@ const router = new Router({
 			component: IndexView,
 			meta: {
 				ignoreSection: true,
-			}
+			},
 		},
 		{
 			name: 'buildList',
@@ -27,8 +28,13 @@ const router = new Router({
 			name: 'changelog',
 			path: '/changelog',
 			component: ChangelogView,
-		}
-	]
+		},
+		{
+			name: 'notFound',
+			path: '*',
+			component: NotFound,
+		},
+	],
 });
 
 export default router;

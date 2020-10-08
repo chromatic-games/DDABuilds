@@ -25,6 +25,7 @@ class RouteServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->configureRateLimiting();
+        $this->configureRoutePatterns();
 
         $this->routes(function () {
             Route::prefix('api')
@@ -38,6 +39,13 @@ class RouteServiceProvider extends ServiceProvider
         });
     }
 
+	/**
+	 * configure the route parameter patterns
+	 */
+    protected function configureRoutePatterns() {
+	    Route::pattern('id', '[0-9]+');
+    }
+
     /**
      * Configure the rate limiters for the application.
      *
@@ -46,7 +54,10 @@ class RouteServiceProvider extends ServiceProvider
     protected function configureRateLimiting()
     {
         RateLimiter::for('api', function (Request $request) {
-            return Limit::perMinute(2);
+            return Limit::perMinute(180); // (3 requests per second)
+        });
+        RateLimiter::for('web', function (Request $request) {
+            return Limit::perMinute(60); // (1 request per minute - this is only the request page)
         });
     }
 }

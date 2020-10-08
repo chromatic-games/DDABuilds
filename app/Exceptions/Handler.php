@@ -24,18 +24,4 @@ class Handler extends ExceptionHandler {
 		'password',
 		'password_confirmation',
 	];
-
-	public function render($request, Throwable $e) {
-		if ( $request->is('api/*') ) {
-			return $this->convertExceptionToArray($e);
-		}
-
-		if ( $this->isHttpException($e) ) {
-			if ( $e->getStatusCode() === 404 ) {
-				return response()->view('index');
-			}
-		}
-
-		return parent::render($request, $e);
-	}
 }
