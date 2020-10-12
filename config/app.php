@@ -1,5 +1,8 @@
 <?php
 
+use App\Providers\ResponseMacroServiceProvider;
+use App\Providers\SteamAuthServiceProvider;
+
 return [
 
     /*
@@ -174,7 +177,8 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
-
+        SteamAuthServiceProvider::class,
+        ResponseMacroServiceProvider::class,
     ],
 
     /*
@@ -187,9 +191,7 @@ return [
     | the aliases are "lazy" loaded so they don't hinder performance.
     |
     */
-
     'aliases' => [
-
         'App' => Illuminate\Support\Facades\App::class,
         'Arr' => Illuminate\Support\Arr::class,
         'Artisan' => Illuminate\Support\Facades\Artisan::class,
@@ -226,7 +228,5 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
-
     ],
-
 ];

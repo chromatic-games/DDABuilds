@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\BuildResource;
 use App\Models\Build;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Http\JsonResponse;
@@ -11,6 +10,8 @@ use Illuminate\Http\Request;
 class BuildController extends AbstractController {
 	/**
 	 * Display a listing of the resource.
+	 *
+	 * @param Request $request
 	 *
 	 * @return JsonResponse
 	 */
@@ -36,7 +37,10 @@ class BuildController extends AbstractController {
 		}
 
 		$paginate = Build::where($where)->whereNested(function (Builder $query) {
-			$query->where('fk_buildstatus', '=', 1); // TODO add OR with current steamID
+			$query->where('fk_buildstatus', '=', 1);
+			if ( auth()->id() ) {
+				$query->orWhere('fk_user', '=', auth()->id());
+			}
 		})->simplePaginate();
 
 		return response()->json($paginate);
@@ -48,7 +52,7 @@ class BuildController extends AbstractController {
 	 * @return JsonResponse
 	 */
 	public function create() {
-		//
+		response()->json([], 500); // TODO
 	}
 
 	/**
@@ -61,10 +65,10 @@ class BuildController extends AbstractController {
 	public function show($id) {
 		$bugReport = Build::find($id);
 		if ( $bugReport === null ) {
-			return $this->sendBadRequest();
+			return response()->apiBadRequest();
 		}
 
-		return $bugReport;
+		return response()->json($bugReport);
 	}
 
 	/**
@@ -78,8 +82,10 @@ class BuildController extends AbstractController {
 	public function update(Request $request, $id) {
 		$bugReport = Build::find($id);
 		if ( $bugReport === null ) {
-			return $this->sendBadRequest();
+			return response()->apiBadRequest();
 		}
+
+		response()->json([], 500); // TODO
 	}
 
 	/**
@@ -92,7 +98,9 @@ class BuildController extends AbstractController {
 	public function destroy($id) {
 		$bugReport = Build::find($id);
 		if ( $bugReport === null ) {
-			return $this->sendBadRequest();
+			return response()->apiBadRequest();
 		}
+
+		response()->json([], 500); // TODO
 	}
 }

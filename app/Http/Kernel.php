@@ -2,56 +2,64 @@
 
 namespace App\Http;
 
+use App\Http\Middleware\DebugMiddleware;
+use App\Http\Middleware\EncryptCookies;
+use App\Http\Middleware\IsAuthenticated;
+use App\Http\Middleware\TrimStrings;
+use App\Http\Middleware\VerifyCsrfToken;
+use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
+use Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull;
+use Illuminate\Foundation\Http\Middleware\PreventRequestsDuringMaintenance;
+use Illuminate\Foundation\Http\Middleware\ValidatePostSize;
+use Illuminate\Routing\Middleware\SubstituteBindings;
+use Illuminate\Routing\Middleware\ThrottleRequests;
+use Illuminate\Session\Middleware\StartSession;
+use Illuminate\Support\Facades\DB;
+use Illuminate\View\Middleware\ShareErrorsFromSession;
 
-class Kernel extends HttpKernel
-{
-    /**
-     * The application's global HTTP middleware stack.
-     *
-     * These middleware are run during every request to your application.
-     *
-     * @var array
-     */
-    protected $middleware = [
-	    \Illuminate\Foundation\Http\Middleware\PreventRequestsDuringMaintenance::class,
-        // \Fruitcake\Cors\HandleCors::class,
-        \Illuminate\Foundation\Http\Middleware\ValidatePostSize::class,
-        \App\Http\Middleware\TrimStrings::class,
-        \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
-    ];
+class Kernel extends HttpKernel {
+	/** @inheritdoc */
+	protected $middleware = [
+		PreventRequestsDuringMaintenance::class,
+		// \Fruitcake\Cors\HandleCors::class,
+		StartSession::class,
+		ValidatePostSize::class,
+		TrimStrings::class,
+		ConvertEmptyStringsToNull::class,
+	];
 
-    /**
-     * The application's route middleware groups.
-     *
-     * @var array
-     */
-    protected $middlewareGroups = [
-        'web' => [
-	        'throttle:web',
-            \App\Http\Middleware\EncryptCookies::class,
-            \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
-            \Illuminate\Session\Middleware\StartSession::class,
-            \Illuminate\View\Middleware\ShareErrorsFromSession::class,
-            \App\Http\Middleware\VerifyCsrfToken::class,
-            \Illuminate\Routing\Middleware\SubstituteBindings::class,
-        ],
+	/** @inheritdoc */
+	protected $middlewareGroups = [
+		'web' => [
+			'throttle:web',
+			EncryptCookies::class,
+			AddQueuedCookiesToResponse::class,
+			ShareErrorsFromSession::class,
+			VerifyCsrfToken::class,
+			'bindings',
+		],
+		'api' => [
+			'throttle:api',
+			'bindings',
+		],
+	];
 
-        'api' => [
-            'throttle:api',
-            'bindings'
-        ],
-    ];
+	/** @inheritdoc */
+	protected $routeMiddleware = [
+		'auth'     => IsAuthenticated::class,
+		'bindings' => SubstituteBindings::class,
+		'throttle' => ThrottleRequests::class,
+	];
 
-    /**
-     * The application's route middleware.
-     *
-     * These middleware may be assigned to groups or used individually.
-     *
-     * @var array
-     */
-    protected $routeMiddleware = [
-        'bindings' => \Illuminate\Routing\Middleware\SubstituteBindings::class,
-        'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
-    ];
+	/** @inheritdoc */
+	public function bootstrap() {
+		parent::bootstrap();
+
+		// add debug middleware on dev
+		if ( app()->environment('local') ) {
+			DB::connection()->enableQueryLog();
+			$this->appendMiddlewareToGroup('api', DebugMiddleware::class);
+		}
+	}
 }

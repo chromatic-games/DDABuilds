@@ -1,0 +1,256 @@
+@import "_variables";
+
+@font-face {
+	font-family: 'FontAwesome';
+	src: url('#{$fa-font-path}/fontawesome-webfont.eot?v=4.7.0');
+	src: url('#{$fa-font-path}/fontawesome-webfont.eot?v=4.7.0') format('embedded-opentype'),
+	url('#{$fa-font-path}/fontawesome-webfont.woff2?v=4.7.0') format('woff2'),
+	url('#{$fa-font-path}/fontawesome-webfont.woff?v=4.7.0') format('woff'),
+	url('#{$fa-font-path}/fontawesome-webfont.ttf?v=4.7.0') format('truetype');
+	font-weight: normal;
+	font-style: normal;
+}
+
+.fa {
+	//color: $contentText;
+	display: inline-block;
+	font-family: FontAwesome;
+	font-weight: normal !important;
+	font-style: normal !important;
+	text-align: center;
+
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+
+	-moz-osx-font-smoothing: grayscale;
+	-webkit-font-smoothing: antialiased;
+
+	&.disabled {
+		opacity: .3;
+	}
+
+	&:hover {
+		text-decoration: none;
+	}
+
+	/* default icon colors */
+	&.green {
+		color: rgba(0, 153, 0, 1) !important;
+	}
+
+	&.red {
+		color: rgba(204, 0, 0, 1) !important;
+	}
+
+	&.black {
+		color: #333333 !important;
+	}
+
+	&.brown {
+		color: #CC6633 !important;
+	}
+
+	&.orange {
+		color: #FF9900 !important;
+	}
+
+	&.yellow {
+		color: #FFFF00 !important;
+	}
+
+	&.blue {
+		color: #336699 !important;
+	}
+
+	&.purple {
+		color: #CC00FF !important;
+	}
+
+	&.pink {
+		color: #FF00CC !important;
+	}
+}
+
+// firefox cursor issue
+span.fa:not(.pointer):not(.disabled) {
+	cursor: default;
+}
+
+a > span.fa:not(.pointer) {
+	cursor: pointer !important;
+}
+
+// icon sizes
+.fa16 {
+	font-size: 14px;
+	height: 16px;
+	line-height: 16px;
+	width: 16px;
+}
+
+.fa24 {
+	font-size: 18px;
+	height: 24px;
+	//line-height: 24px;
+	width: 24px;
+}
+
+.fa32 {
+	font-size: 28px;
+	height: 32px;
+	line-height: 32px;
+	width: 32px;
+	vertical-align: -5px;
+}
+
+.fa48 {
+	font-size: 42px;
+	height: 48px;
+	line-height: 48px;
+	width: 48px;
+}
+
+.fa64 {
+	font-size: 56px;
+	height: 64px;
+	line-height: 64px;
+	width: 64px;
+}
+
+.fa96 {
+	font-size: 84px;
+	height: 96px;
+	line-height: 96px;
+	width: 96px;
+}
+
+.fa128 {
+	font-size: 112px;
+	height: 128px;
+	line-height: 128px;
+	width: 128px;
+}
+
+.fa144 {
+	font-size: 130px;
+	height: 144px;
+	line-height: 144px;
+	width: 144px;
+}
+
+// spinner animation
+.fa-spinner {
+	animation: caSpinner .6s linear infinite;
+	border: 2px solid rgb(204, 204, 204);
+	border-top-color: #4B367C;
+	border-radius: 50%;
+	vertical-align: middle;
+
+	&::before {
+		display: none;
+	}
+
+	&.block {
+		display: block;
+	}
+
+	&.center {
+		margin-left: auto;
+		margin-right: auto;
+	}
+}
+
+@-webkit-keyframes caSpinner {
+	to {
+		-webkit-transform: rotate(360deg);
+	}
+}
+
+@keyframes caSpinner {
+	to {
+		transform: rotate(360deg);
+	}
+}
+
+@-webkit-keyframes spin {
+	0% {
+		-webkit-transform: rotate(0deg);
+	}
+	100% {
+		-webkit-transform: rotate(359deg);
+	}
+}
+
+@keyframes spin {
+	0% {
+		transform: rotate(0deg);
+	}
+	100% {
+		transform: rotate(359deg);
+	}
+}
+
+.fa-rotate-90:before {
+	-webkit-transform: rotate(90deg);
+	transform: rotate(90deg);
+}
+
+.fa-rotate-180:before {
+	-webkit-transform: rotate(180deg);
+	transform: rotate(180deg);
+}
+
+.fa-rotate-270:before {
+	-webkit-transform: rotate(270deg);
+	transform: rotate(270deg);
+}
+
+.fa-flip-horizontal:before {
+	-webkit-transform: scale(-1, 1);
+	transform: scale(-1, 1);
+}
+
+.fa-flip-vertical:before {
+	-webkit-transform: scale(1, -1);
+	transform: scale(1, -1);
+}
+
+/* ringing animation for fa-bell */
+@keyframes fa-bell-ring {
+	0% {
+		transform: rotate(-15deg)
+	}
+	2% {
+		transform: rotate(15deg)
+	}
+	4% {
+		transform: rotate(-18deg)
+	}
+	6% {
+		transform: rotate(18deg)
+	}
+	8% {
+		transform: rotate(-22deg)
+	}
+	10% {
+		transform: rotate(22deg)
+	}
+	12% {
+		transform: rotate(-18deg)
+	}
+	14% {
+		transform: rotate(18deg)
+	}
+	16% {
+		transform: rotate(-12deg)
+	}
+	18% {
+		transform: rotate(12deg)
+	}
+	20%, 100% {
+		transform: rotate(0deg)
+	}
+}
+
+@import "_icons";
