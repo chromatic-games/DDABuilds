@@ -14,7 +14,7 @@ class CreateSteamUserTable extends Migration
     public function up()
     {
         Schema::create('steam_user', function (Blueprint $table) {
-            $table->string('steamID', 20)->unique()->primary();
+            $table->string('steamID', 20)->primary();
             $table->string('name', 48);
             $table->string('avatarHash', 48);
         });
