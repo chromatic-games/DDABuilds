@@ -20,7 +20,7 @@ class BugReportFactory extends Factory {
 	 */
 	public function definition() {
 		return [
-			'steamID'     => $this->faker->steamID,
+			'steam_id'    => $this->faker->steamID,
 			'time'        => $this->faker->unixTime(),
 			'title'       => $this->faker->words($this->faker->numberBetween(3, 7), true),
 			'description' => $this->faker->sentences($this->faker->numberBetween(10, 100), true),
