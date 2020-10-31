@@ -18,12 +18,12 @@ class DatabaseSeeder extends Seeder {
 		if ( SteamUser::all()->count() === 0 ) {
 			$steamUsers = [
 				[
-					'steamID'    => 76561198054589426,
+					'ID'         => 76561198054589426,
 					'name'       => 'derpierre65',
 					'avatarHash' => 'ab788fdd0d6636f946729c3fa1456ec2858db472',
 				],
 				[
-					'steamID'    => 76561198080938830,
+					'ID'         => 76561198080938830,
 					'name'       => 'dragongun100',
 					'avatarHash' => 'ab788fdd0d6636f946729c3fa1456ec2858db472',
 				],
@@ -34,9 +34,9 @@ class DatabaseSeeder extends Seeder {
 		}
 
 		// generate random builds
-		Build::factory()->times(100)->create();
+		Build::factory()->times(300)->create();
 
 		// generate random bug reports
-		BugReport::factory()->times(100)->create();
+		BugReport::factory()->times(20)->create();
 	}
 }

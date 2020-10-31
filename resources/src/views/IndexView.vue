@@ -1,7 +1,7 @@
 <template>
     <section id="main">
         <header class="index-header-image" :style="{backgroundImage: 'url(' + headerImage + ')'}"></header>
-        <div class="container">
+        <div class="container marginTop">
             <div class="row">
                 <div class="col-lg-12">
                     <h1 class="section-heading">Welcome to DD:A Builder!</h1>
@@ -15,9 +15,11 @@
 
             <template v-if="contributors.length">
                 <h3 class="marginTop">Contributors</h3>
-                <div v-for="contributor in contributors">
-                    <img :src="contributor.avatar_url" style="width: 64px; height:64px;" /><br />
-                    <a :href="contributor.html_url" target="_blank">@{{contributor.login}}</a>
+                <div style="display:flex;">
+                    <div v-for="contributor in contributors" class="text-center">
+                        <img :src="contributor.avatar_url" class="text-center rounded-circle" style="width: 64px; height:64px;" /><br />
+                        <a :href="contributor.html_url" target="_blank">@{{contributor.login}}</a>
+                    </div>
                 </div>
             </template>
         </div>
@@ -26,10 +28,13 @@
 
 <script>
 import axios from 'axios';
+import {BDropdown} from 'bootstrap-vue';
 
 export default {
     name: 'IndexView',
-    test: 123,
+    components: {
+        BDropdown
+    },
     data() {
         let imageCount = 1;
 

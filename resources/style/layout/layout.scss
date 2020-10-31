@@ -2,16 +2,43 @@ html, body {
 	height: 100%;
 }
 
-body {
-	padding-top: 50px;
+.marginTop {
+	margin-top: 15px;
+}
+
+.pointer {
+	cursor: pointer;
+}
+
+.badge-beta {
+	position: absolute;
+	left: 20px;
+	top: 10px;
+}
+
+@media (min-width: 768px) {
+	.badge-beta {
+		top: 0;
+		left: 0;
+		font-size: 60%;
+	}
+}
+
+.inlineList {
+	@include inlineList;
+}
+
+.box128 {
+	display: flex;
+
+	> :last-child {
+		flex: 1 1 auto;
+		overflow: hidden;
+	}
 }
 
 section {
 	margin-bottom: 60px;
-}
-
-.navbar-footer {
-	margin-bottom: 0;
 }
 
 #pageContainer {
@@ -24,7 +51,7 @@ section {
 	flex: 1 0 auto;
 }
 
-#footer {
+footer {
 	flex: 0 0 auto;
 	margin-bottom: 0;
 	border-radius: 0;

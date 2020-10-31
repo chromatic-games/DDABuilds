@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Build;
-use Illuminate\Database\Query\Builder;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -16,34 +15,22 @@ class BuildController extends AbstractController {
 	 * @return JsonResponse
 	 */
 	public function index(Request $request) {
-		$where = [
-			['deleted', '=', 0],
-		];
-
-		if ( $request->query('name') ) {
-			$where[] = ['name', 'like', '%'.$request->query('name').'%'];
-		}
-		if ( $request->query('author') ) {
-			$where[] = ['author', 'like', '%'.$request->query('author').'%'];
-		}
-		if ( $request->query('mapID') ) {
-			$where[] = ['map', '=', $request->query('mapID')];
-		}
-		if ( $request->query('gamemodeID') ) {
-			$where[] = ['gamemodeID', '=', $request->query('gamemodeID')];
-		}
-		if ( $request->query('difficulty') ) {
-			$where[] = ['difficulty', '=', $request->query('difficulty')];
-		}
-
-		$paginate = Build::where($where)->whereNested(function (Builder $query) {
-			$query->where('fk_buildstatus', '=', 1);
-			if ( auth()->id() ) {
-				$query->orWhere('fk_user', '=', auth()->id());
-			}
-		})->simplePaginate();
-
-		return response()->json($paginate);
+		return response()->json(
+			Build::listSelect()
+			     ->withMapName()
+			     ->withGameModeName()
+			     ->withDifficultyName()
+			     ->sort($request->query('sortField'), $request->query('sortOrder'))
+			     ->search([
+				     'isDeleted'  => 0,
+				     'title'      => $request->query('title'),
+				     'author'     => $request->query('author'),
+				     'map'        => $request->query('map'),
+				     'difficulty' => $request->query('difficulty'),
+				     'gameMode'   => $request->query('gameMode'),
+			     ])
+			     ->paginate()
+		);
 	}
 
 	/**

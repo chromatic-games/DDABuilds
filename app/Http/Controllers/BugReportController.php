@@ -18,7 +18,7 @@ class BugReportController extends AbstractController {
 			return response()->apiMissingAuthorization();
 		}
 
-		return BugReport::simplePaginate();
+		return BugReport::paginate();
 	}
 
 	/**

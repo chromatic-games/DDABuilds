@@ -5,6 +5,8 @@ namespace App\Http;
 use App\Http\Middleware\DebugMiddleware;
 use App\Http\Middleware\EncryptCookies;
 use App\Http\Middleware\IsAuthenticated;
+use App\Http\Middleware\LocaleMiddleware;
+use App\Http\Middleware\PaginateMiddleware;
 use App\Http\Middleware\TrimStrings;
 use App\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
@@ -42,6 +44,8 @@ class Kernel extends HttpKernel {
 		'api' => [
 			'throttle:api',
 			'bindings',
+			LocaleMiddleware::class,
+			PaginateMiddleware::class,
 		],
 	];
 
@@ -59,7 +63,7 @@ class Kernel extends HttpKernel {
 		// add debug middleware on dev
 		if ( app()->environment('local') ) {
 			DB::connection()->enableQueryLog();
-			$this->appendMiddlewareToGroup('api', DebugMiddleware::class);
+			$this->prependMiddlewareToGroup('api', DebugMiddleware::class);
 		}
 	}
 }

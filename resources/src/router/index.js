@@ -6,6 +6,7 @@ import AuthView from '../views/AuthView';
 const NotFound = () => import('../views/NotFound');
 const IndexView = () => import('../views/IndexView');
 const BuildListView = () => import('../views/BuildListView');
+const BuildView = () => import('../views/BuildView');
 const ChangelogView = () => import('../views/ChangelogView');
 
 Vue.use(Router);
@@ -25,6 +26,11 @@ const router = new Router({
 			name: 'buildList',
 			path: '/build-list',
 			component: BuildListView,
+		},
+		{
+			name: 'build',
+			path: '/build/:id-:title',
+			component: BuildView,
 		},
 		{
 			name: 'changelog',

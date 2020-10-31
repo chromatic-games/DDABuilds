@@ -17,6 +17,7 @@ class UpdateBuild extends Migration
 	    Schema::table('build', function (Blueprint $table) {
 	    	$table->renameColumn('id', 'ID');
 	    	$table->renameColumn('map', 'mapID');
+	    	$table->renameColumn('name', 'title');
 	    	$table->renameColumn('difficulty', 'difficultyID');
 	    	$table->renameColumn('fk_buildstatus', 'buildStatus');
 	    	$table->renameColumn('fk_user', 'steamID');
@@ -39,6 +40,7 @@ class UpdateBuild extends Migration
 	    Schema::table('build', function (Blueprint $table) {
 		    $table->renameColumn('ID', 'id');
 		    $table->renameColumn('mapID', 'map');
+		    $table->renameColumn('title', 'name');
 		    $table->renameColumn('difficultyID', 'difficulty');
 		    $table->renameColumn('buildStatus', 'fk_buildstatus');
 	    	$table->renameColumn('steamID', 'fk_user');

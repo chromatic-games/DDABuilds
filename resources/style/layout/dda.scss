@@ -1,0 +1,19 @@
+// difficulty colors
+
+$difficulties: (
+	1: rgb(105, 221, 66),
+	2: rgb(203, 210, 26),
+	3: rgb(251, 176, 59),
+	4: rgb(255, 62, 251),
+	5: rgb(237, 57, 144),
+	6: rgb(237, 28, 36),
+);
+
+@each $key, $value in $difficulties {
+	.difficulty-#{$key} {
+		color: $value !important;
+		a {
+			color: $value !important;
+		}
+	}
+}
