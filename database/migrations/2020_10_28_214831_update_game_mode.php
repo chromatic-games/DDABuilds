@@ -14,7 +14,7 @@ class UpdateGameMode extends Migration
     public function up()
     {
 	    Schema::table('game_mode', function (Blueprint $table) {
-		    $table->renameColumn('gamemodeID', 'id');
+		    $table->renameColumn('gamemodeID', 'ID');
 	    });
     }
 
@@ -26,7 +26,7 @@ class UpdateGameMode extends Migration
     public function down()
     {
 	    Schema::table('game_mode', function (Blueprint $table) {
-		    $table->renameColumn('id', 'gamemodeID');
+		    $table->renameColumn('ID', 'gamemodeID');
 	    });
     }
 }

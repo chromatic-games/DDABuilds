@@ -14,8 +14,9 @@ class UpdateBuildComment extends Migration
     public function up()
     {
 	    Schema::table('build_comment', function (Blueprint $table) {
-		    $table->renameColumn('steamid', 'steam_id');
-		    $table->renameColumn('fk_build', 'build_id');
+		    $table->renameColumn('id', 'ID');
+		    $table->renameColumn('steamid', 'steamID');
+		    $table->renameColumn('fk_build', 'buildID');
 		    $table->renameColumn('comment', 'description');
 	    });
     }
@@ -28,8 +29,9 @@ class UpdateBuildComment extends Migration
     public function down()
     {
 	    Schema::table('build_comment', function (Blueprint $table) {
-		    $table->renameColumn('steam_id', 'steamid');
-		    $table->renameColumn('build_id', 'fk_build');
+		    $table->renameColumn('ID', 'id');
+		    $table->renameColumn('steamID', 'steamid');
+		    $table->renameColumn('buildID', 'fk_build');
 		    $table->renameColumn('description', 'comment');
 	    });
     }

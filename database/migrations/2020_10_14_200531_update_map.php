@@ -12,8 +12,11 @@ class UpdateMap extends Migration {
 	 */
 	public function up() {
 		Schema::table('map', function (Blueprint $table) {
-			$table->increments('id')->change();
-			$table->renameColumn('fk_mapcategory', 'map_category_id');
+			$table->renameColumn('id', 'ID');
+		});
+		Schema::table('map', function (Blueprint $table) {
+			$table->increments('ID')->change();
+			$table->renameColumn('fk_mapcategory', 'mapCategoryID');
 			$table->dropColumn('sort');
 		});
 	}
@@ -24,6 +27,9 @@ class UpdateMap extends Migration {
 	 * @return void
 	 */
 	public function down() {
+		Schema::table('map', function (Blueprint $table) {
+			$table->renameColumn('ID', 'id');
+		});
 		Schema::table('map', function (Blueprint $table) {
 			$table->renameColumn('mapCategoryID', 'fk_mapcategory');
 			$table->unsignedInteger('id')->change();

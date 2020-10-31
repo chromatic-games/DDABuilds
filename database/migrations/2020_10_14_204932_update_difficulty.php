@@ -14,6 +14,9 @@ class UpdateDifficulty extends Migration
     public function up()
     {
 	    Schema::table('difficulty', function (Blueprint $table) {
+		    $table->renameColumn('id', 'ID');
+	    });
+	    Schema::table('difficulty', function (Blueprint $table) {
 		    $table->increments('id')->change();
 	    });
     }
@@ -25,6 +28,9 @@ class UpdateDifficulty extends Migration
      */
     public function down()
     {
+	    Schema::table('difficulty', function (Blueprint $table) {
+		    $table->renameColumn('ID', 'id');
+	    });
 	    Schema::table('difficulty', function (Blueprint $table) {
 		    $table->unsignedInteger('id')->change();
 	    });

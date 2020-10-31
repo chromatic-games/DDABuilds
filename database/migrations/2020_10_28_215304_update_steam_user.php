@@ -14,8 +14,7 @@ class UpdateSteamUser extends Migration
     public function up()
     {
 	    Schema::table('steam_user', function (Blueprint $table) {
-		    $table->renameColumn('steamID', 'id');
-		    $table->renameColumn('avatarHash', 'avatar_hash');
+		    $table->renameColumn('steamID', 'ID');
 	    });
     }
 
@@ -27,8 +26,7 @@ class UpdateSteamUser extends Migration
     public function down()
     {
 	    Schema::table('steam_user', function (Blueprint $table) {
-		    $table->renameColumn('id', 'steamID');
-		    $table->renameColumn('avatar_hash', 'avatarHash');
+		    $table->renameColumn('ID', 'steamID');
 	    });
     }
 }

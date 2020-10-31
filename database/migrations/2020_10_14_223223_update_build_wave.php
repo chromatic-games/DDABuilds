@@ -15,8 +15,8 @@ class UpdateBuildWave extends Migration {
 			$table->unsignedInteger('fk_build')->after('id')->change();
 		});
 		Schema::table('build_wave', function (Blueprint $table) {
-			$table->renameColumn('id', 'wave_id');
-			$table->renameColumn('fk_build', 'build_id');
+			$table->renameColumn('id', 'waveID');
+			$table->renameColumn('fk_build', 'buildID');
 		});
 	}
 
@@ -27,11 +27,11 @@ class UpdateBuildWave extends Migration {
 	 */
 	public function down() {
 		Schema::table('build_wave', function (Blueprint $table) {
-			$table->unsignedInteger('build_id')->after('name')->change();
+			$table->unsignedInteger('ID')->after('name')->change();
 		});
 		Schema::table('build_wave', function (Blueprint $table) {
-			$table->renameColumn('wave_id', 'id');
-			$table->renameColumn('build_id', 'fk_build');
+			$table->renameColumn('waveID', 'id');
+			$table->renameColumn('buildID', 'fk_build');
 		});
 	}
 }

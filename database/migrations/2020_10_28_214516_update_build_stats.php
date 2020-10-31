@@ -14,8 +14,7 @@ class UpdateBuildStats extends Migration
     public function up()
     {
 	    Schema::table('build_stats', function (Blueprint $table) {
-		    $table->renameColumn('buildID', 'build_id');
-		    $table->renameColumn('classID', 'hero_id');
+		    $table->renameColumn('classID', 'heroID');
 	    });
     }
 
@@ -27,8 +26,7 @@ class UpdateBuildStats extends Migration
     public function down()
     {
 	    Schema::table('build_stats', function (Blueprint $table) {
-		    $table->renameColumn('build_id', 'buildID');
-		    $table->renameColumn('hero_id', 'classID');
+		    $table->renameColumn('heroID', 'classID');
 	    });
     }
 }
