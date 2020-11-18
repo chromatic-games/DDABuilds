@@ -4,10 +4,17 @@ namespace App\Http\Middleware;
 
 use App\Util\FileUtil;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class DebugMiddleware {
-	public function handle($request, \Closure $next) {
+	/**
+	 * @param          $request
+	 * @param \Closure $next
+	 *
+	 * @return JsonResponse
+	 */
+	public function handle(Request $request, \Closure $next) {
 		/** @var JsonResponse $response */
 		$response = $next($request);
 
@@ -15,8 +22,8 @@ class DebugMiddleware {
 			$data = $response->getData(true);
 			$queries = DB::connection()->getQueryLog();
 			$data['_debug'] = [
-				'queries'       => count($queries),
-				'queryList'     => $queries,
+				'queryCount'    => count($queries),
+				'queries'       => $queries,
 				'memory'        => FileUtil::formatFilesize(memory_get_peak_usage(true)),
 				'executionTime' => round(microtime(true) - LARAVEL_START, 2),
 			];

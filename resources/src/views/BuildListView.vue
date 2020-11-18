@@ -40,13 +40,23 @@
                     </th>
                 </tr>
                 </thead>
-                <tbody v-if="viewMode === 'table'">
+                <tbody v-if="!loading && viewMode === 'table'">
                 <tr v-for="build in builds">
-                    <td><router-link :to="{name: 'buildList', query: {author: build.author}}">{{build.author}}</router-link></td>
-                    <td><router-link :to="{name: 'build', params: buildLinkParams(build)}">{{build.title}}</router-link></td>
-                    <td><router-link :to="{name: 'buildList', query: buildListSearch({gameMode: build.gameModeName})}">{{$t('gameMode.' + build.gameModeName)}}</router-link></td>
-                    <td><router-link :to="{name: 'buildList', query: buildListSearch({map: build.mapName})}">{{$t('map.' + build.mapName)}}</router-link></td>
-                    <td :class="'difficulty-' + build.difficultyID"><router-link :to="{name: 'buildList', query: buildListSearch({difficulty: build.difficultyName})}">{{$t('difficulty.' + build.difficultyName)}}</router-link></td>
+                    <td>
+                        <router-link :to="{name: 'buildList', query: {author: build.author}}">{{build.author}}</router-link>
+                    </td>
+                    <td>
+                        <router-link :to="{name: 'build', params: buildLinkParams(build)}">{{build.title}}</router-link>
+                    </td>
+                    <td>
+                        <router-link :to="{name: 'buildList', query: buildListSearch({gameMode: build.gameModeName})}">{{$t('gameMode.' + build.gameModeName)}}</router-link>
+                    </td>
+                    <td>
+                        <router-link :to="{name: 'buildList', query: buildListSearch({map: build.mapName})}">{{$t('map.' + build.mapName)}}</router-link>
+                    </td>
+                    <td :class="'difficulty-' + build.difficultyID">
+                        <router-link :to="{name: 'buildList', query: buildListSearch({difficulty: build.difficultyName})}">{{$t('difficulty.' + build.difficultyName)}}</router-link>
+                    </td>
                     <td class="columnDigits">{{number(build.likes)}}</td>
                     <td class="columnDigits">{{number(build.views)}}</td>
                     <td class="columnDate" colspan="2">{{build.date}}</td><!-- todo date -->
@@ -55,7 +65,8 @@
             </table>
         </div>
 
-        <ol v-if="viewMode === 'grid'" class="buildList">
+        <loading-indicator v-if="loading" />
+        <ol v-else-if="viewMode === 'grid'" class="buildList">
             <li v-for="build in builds">
 				<div class="buildBox">
                     <i v-if="build.buildStatus !== STATUS_PUBLIC" v-b-tooltip.hover="'This build is private or unlisted and is only visible for you.'" class="fa fa-eye-slash buildUnlisted"></i>
@@ -100,16 +111,14 @@
 
 <script>
 import axios from 'axios';
+import LoadingIndicator from '../components/LoadingIndicator';
 import {buildLinkParams, buildListSearch} from '../utils/build';
 import number from '../utils/math/number';
 
 export default {
     name: 'BuildListView',
+    components: { LoadingIndicator },
     props: {
-        /*viewMode: {
-            type: String,
-            default: 'grid',
-        },*/
         hideFilter: {
             type: Boolean,
             default: false,
@@ -117,6 +126,7 @@ export default {
     },
     data() {
         return {
+            loading: true,
             builds: [],
             STATUS_PUBLIC: 1,
             viewMode: localStorage?.getItem('viewMode.' + this.$route.name) || 'grid',
@@ -159,9 +169,12 @@ export default {
             return queryOptions;
         },
         fetchList() {
+            this.loading = true;
             let queryParams = (new URLSearchParams(this.$route.query)).toString();
             axios.get('/builds/' + (queryParams ? '?' + queryParams : '')).then(({ data }) => {
                 this.builds = data.data;
+            }).finally(() => {
+                this.loading = false;
             });
         },
         changeViewMode() {

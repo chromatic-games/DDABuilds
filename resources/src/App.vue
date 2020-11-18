@@ -1,15 +1,17 @@
 <template>
     <div id="pageContainer">
-        <b-navbar :variant="darkMode ? 'secondary' : 'dark'" sticky toggleable="lg" type="dark">
+        <b-navbar :variant="darkMode ? 'secondary' : 'dark'" toggleable="lg" type="dark" fixed="top">
             <div class="container">
                 <router-link :to="{name: 'home'}" class="navbar-brand">DD:A Builder</router-link>
                 <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
                 <b-collapse id="nav-collapse" is-nav>
                     <ul class="nav navbar-nav">
                         <router-link :to="{name: 'buildList'}" class="nav-item" tag="li"><a class="nav-link">{{$t('menu.buildList')}}</a></router-link>
-                        <router-link :to="{name: 'buildAddSelect'}" class="nav-item" tag="li"><a class="nav-link">{{$t('menu.buildAddSelect')}}</a></router-link>
-                        <router-link :to="{name: 'bugReportAdd'}" class="nav-item" tag="li"><a class="nav-link">{{$t('menu.bugReportAdd')}}</a></router-link>
-                        <router-link :to="{name: 'bugReportList'}" class="nav-item" tag="li"><a class="nav-link">{{$t('menu.bugReportList')}}</a></router-link>
+                        <template v-if="$store.state.authentication.user.ID">
+                            <router-link :to="{name: 'buildAddSelect'}" class="nav-item" tag="li"><a class="nav-link">{{$t('menu.buildAddSelect')}}</a></router-link>
+                            <router-link :to="{name: 'bugReportAdd'}" class="nav-item" tag="li"><a class="nav-link">{{$t('menu.bugReportAdd')}}</a></router-link>
+                            <router-link :to="{name: 'bugReportList'}" class="nav-item" tag="li"><a class="nav-link">{{$t('menu.bugReportList')}}</a></router-link>
+                        </template>
                     </ul>
 
                     <!-- Right aligned nav items -->
@@ -24,7 +26,7 @@
                             <template #button-content>{{$t('locales.' + $i18n.i18next.language)}}</template>
                             <a v-for="language in languages" class="dropdown-item pointer" role="menuitem" @click="$changeLanguage(language)">{{$t('locales.' + language)}}</a>
                         </b-nav-item-dropdown>
-                        <b-nav-item-dropdown v-if="$store.state.authentication.user.steamID" right>
+                        <b-nav-item-dropdown v-if="$store.state.authentication.user.ID" right>
                             <template #button-content>
                                 {{$store.state.authentication.user.name}}
                             </template>
@@ -32,7 +34,7 @@
                             <a class="dropdown-item">Liked Builds</a>
                             <router-link :to="{name: 'logout'}" class="dropdown-item">Logout</router-link>
                         </b-nav-item-dropdown>
-                        <div v-else class="navbar-right navbar-brand pointer">
+                        <div v-else class="navbar-right pointer">
                                 <a :href="loginUrl" @click="startLogin" @click.prevent>
                                     <img alt="Login" src="https://steamcommunity-a.akamaihd.net/public/images/signinthroughsteam/sits_01.png">
                                 </a>
@@ -109,7 +111,7 @@ export default {
             let newWindow = window.open(this.loginUrl, 'ddaBuildsSteamLogin', 'height=500,width=600');
             // for popup blocker user, redirect directly to steam
             if (!newWindow || typeof newWindow.closed === 'undefined' || newWindow.closed) {
-                window.location = newWindow;
+                window.location = this.loginUrl;
             }
         },
         toggleDarkMode() {

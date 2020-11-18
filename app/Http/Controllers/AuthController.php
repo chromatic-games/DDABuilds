@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Auth\SteamAuth;
 use App\Models\SteamUser;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class AuthController extends AbstractController {
@@ -14,7 +15,17 @@ class AuthController extends AbstractController {
 		$this->steamAuth = $steamAuth;
 	}
 
-	public function auth() {
+	public function auth(Request $request) {
+		if ( $request->query('debug') && app()->environment('local') ) {
+			// localhost:8000/api/auth/steam?debug=steamID
+			$user = SteamUser::find($request->query('debug'));
+			if ( $user ) {
+				Auth::login($user, true);
+			}
+
+			return redirect('/auth/');
+		}
+
 		if ( $this->steamAuth->isValidRequest() ) {
 			$steamID = $this->steamAuth->auth();
 			if ( $steamID ) {
@@ -24,15 +35,15 @@ class AuthController extends AbstractController {
 				// create new steam user
 				if ( $user === null ) {
 					$user = SteamUser::create([
-						'steam_id'    => $steamID,
-						'name'       => $userInfo['personaname'],
+						'ID'          => $steamID,
+						'name'        => $userInfo['personaname'],
 						'avatar_hash' => $userInfo['avatarhash'],
 					]);
 				}
 				// update steam user
 				else {
 					$user->update([
-						'name'       => $userInfo['personaname'],
+						'name'        => $userInfo['personaname'],
 						'avatar_hash' => $userInfo['avatarhash'],
 					]);
 				}

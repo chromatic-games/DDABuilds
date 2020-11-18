@@ -2,11 +2,36 @@
 
 namespace App\Models;
 
+use App\Models\Build\BuildWave;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
+/**
+ * Represent a build model
+ *
+ * @property-read string  $date
+ * @property-read string  $author
+ * @property-read string  $title
+ * @property-read string  $expPerRun
+ * @property-read string  $timePerRun
+ * @property-read string  $description
+ * @property-read integer $views
+ * @property-read integer $gameModeID
+ * @property-read integer $difficultyID
+ * @property-read integer $mapID
+ * @property-read integer $likeValue
+ * @property-read integer $comments
+ * @property-read integer $isDeleted
+ * @property-read integer $buildStatus
+ * @property-read integer $afkAble
+ * @property-read integer $hardcore
+ * @property-read integer $likes
+ * @property-read integer $steamID
+ *
+ * @package App\Models
+ */
 class Build extends Model {
 	use HasFactory;
 
@@ -52,22 +77,44 @@ class Build extends Model {
 		// 'isDeleted'
 	];
 
-	public $validSortFields = ['author', 'likes', 'mapID', 'name', 'views', 'date', 'difficultyID', 'gamemodeID'];
+	public $validSortFields = ['author', 'likes', 'mapID', 'title', 'views', 'date', 'difficultyID', 'gameModeID'];
+
+	//<editor-fold desc="relations">
+
+	public function waves() {
+		return $this->hasMany(BuildWave::class, 'buildID', 'ID');
+	}
 
 	/**
 	 * @return HasOne
 	 */
 	public function map() {
-		return $this->hasOne(Map::class, 'id', 'mapID');
+		return $this->hasOne(Map::class, 'ID', 'mapID');
 	}
 
 	/**
 	 * @return HasOne
 	 */
 	public function difficulty() {
-		return $this->hasOne(Difficulty::class, 'id', 'difficultyID');
+		return $this->hasOne(Difficulty::class, 'ID', 'difficultyID');
 	}
 
+	/**
+	 * @return HasOne
+	 */
+	public function gameMode() {
+		return $this->hasOne(GameMode::class, 'ID', 'gameModeID');
+	}
+
+	/**
+	 * @return HasOne
+	 */
+	public function heroStats() {
+		// TODO
+	}
+	//</editor-fold>
+
+	//<editor-fold desc="scopes">
 	/**
 	 * sort the query by specific sort fields
 	 *
@@ -206,4 +253,5 @@ class Build extends Model {
 		$query->leftJoin('game_mode', 'game_mode.ID', '=', 'build.gameModeID')
 		      ->addSelect('game_mode.name as gameModeName');
 	}
+	//</editor-fold>
 }

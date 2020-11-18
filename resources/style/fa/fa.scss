@@ -141,9 +141,9 @@ a > span.fa:not(.pointer) {
 
 // spinner animation
 .fa-spinner {
-	animation: caSpinner .6s linear infinite;
+	animation: spinner .6s linear infinite;
 	border: 2px solid rgb(204, 204, 204);
-	border-top-color: #4B367C;
+	border-top-color: #6c757d;
 	border-radius: 50%;
 	vertical-align: middle;
 
@@ -161,13 +161,13 @@ a > span.fa:not(.pointer) {
 	}
 }
 
-@-webkit-keyframes caSpinner {
+@-webkit-keyframes spinner {
 	to {
 		-webkit-transform: rotate(360deg);
 	}
 }
 
-@keyframes caSpinner {
+@keyframes spinner {
 	to {
 		transform: rotate(360deg);
 	}

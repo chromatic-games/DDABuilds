@@ -16,13 +16,13 @@ class SteamUser extends Authenticatable {
 
 	/** @inheritdoc */
 	protected $fillable = [
-		'steamID',
+		'ID',
 		'name',
 		'avatarHash',
 	];
 
 	/** @inheritdoc */
-	protected $primaryKey = 'steamID';
+	protected $primaryKey = 'ID';
 
 	/** @inheritdoc */
 	public function setRememberToken($value) {

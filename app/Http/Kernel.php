@@ -4,6 +4,7 @@ namespace App\Http;
 
 use App\Http\Middleware\DebugMiddleware;
 use App\Http\Middleware\EncryptCookies;
+use App\Http\Middleware\ForceJsonResponse;
 use App\Http\Middleware\IsAuthenticated;
 use App\Http\Middleware\LocaleMiddleware;
 use App\Http\Middleware\PaginateMiddleware;
@@ -25,7 +26,7 @@ class Kernel extends HttpKernel {
 	protected $middleware = [
 		PreventRequestsDuringMaintenance::class,
 		// \Fruitcake\Cors\HandleCors::class,
-		StartSession::class,
+		StartSession::class, // TODO later remove and authenticate user with the remember token
 		ValidatePostSize::class,
 		TrimStrings::class,
 		ConvertEmptyStringsToNull::class,
@@ -44,6 +45,7 @@ class Kernel extends HttpKernel {
 		'api' => [
 			'throttle:api',
 			'bindings',
+			ForceJsonResponse::class,
 			LocaleMiddleware::class,
 			PaginateMiddleware::class,
 		],

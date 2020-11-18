@@ -5,7 +5,7 @@ export default {
 	state: {
 		checked: false,
 		user: {
-			steamID: 0,
+			ID: 0,
 			name: '',
 			avatarHash: '',
 		},
@@ -26,7 +26,7 @@ export default {
 		logout({ commit }) {
 			return axios.delete('/auth').then(() => {
 				commit('SET_USER', {
-					steamID: 0,
+					ID: 0,
 				});
 			});
 		},

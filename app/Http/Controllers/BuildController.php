@@ -3,10 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\Build;
+use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class BuildController extends AbstractController {
+	use AuthorizesRequests;
+
 	/**
 	 * Display a listing of the resource.
 	 *
@@ -43,19 +47,20 @@ class BuildController extends AbstractController {
 	}
 
 	/**
-	 * Display the specified resource.
+	 * Get all build data for the view
 	 *
-	 * @param int $id
+	 *
+	 * @param Build $build
 	 *
 	 * @return JsonResponse
+	 * @throws AuthorizationException
 	 */
-	public function show($id) {
-		$bugReport = Build::find($id);
-		if ( $bugReport === null ) {
-			return response()->apiBadRequest();
-		}
+	public function show(Build $build) {
+		$this->authorize('view', $build);
 
-		return response()->json($bugReport);
+		$build->load(['map:ID,name', 'difficulty:ID,name', 'gameMode:ID,name', 'waves.towers']);
+
+		return response()->json($build);
 	}
 
 	/**
@@ -66,12 +71,7 @@ class BuildController extends AbstractController {
 	 *
 	 * @return JsonResponse
 	 */
-	public function update(Request $request, $id) {
-		$bugReport = Build::find($id);
-		if ( $bugReport === null ) {
-			return response()->apiBadRequest();
-		}
-
+	public function update(Request $request, Build $build) {
 		response()->json([], 500); // TODO
 	}
 
@@ -82,12 +82,7 @@ class BuildController extends AbstractController {
 	 *
 	 * @return JsonResponse
 	 */
-	public function destroy($id) {
-		$bugReport = Build::find($id);
-		if ( $bugReport === null ) {
-			return response()->apiBadRequest();
-		}
-
+	public function destroy(Request $request, Build $build) {
 		response()->json([], 500); // TODO
 	}
 }
