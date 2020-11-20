@@ -1,7 +1,11 @@
 {
 	"locales": {
-		"de": "German (Beta)",
+		"de": "Deutsch (Beta)",
 		"en": "English"
+	},
+	"form": {
+		"any": "Any",
+		"search": "Search"
 	},
 	"menu": {
 		"buildList": "Builds",
@@ -25,6 +29,10 @@
 		"massacre": "Massacre"
 	},
 	"build": {
+		"viewType": {
+			"grid": "Show as grid",
+			"table": "Show as table"
+		},
 		"author": "Author",
 		"title": "Build Title",
 		"gameMode": "Game Mode",
@@ -36,19 +44,19 @@
 	},
 	"map": {
 		"theDeeperWell": "The Deeper Well",
-		"ancientMines":"Ancient Mines",
+		"ancientMines": "Ancient Mines",
 		"lavaMines": "Lava Mines",
-		"alchemicalLaboratory":"Alchemical Laboratory",
+		"alchemicalLaboratory": "Alchemical Laboratory",
 		"tornadoValley": "Tornado Valley",
-		"tornadoHighlands":"Tornado Highlands",
+		"tornadoHighlands": "Tornado Highlands",
 		"theRamparts": "The Ramparts",
-		"theThroneRoom":"The Throne Room",
+		"theThroneRoom": "The Throne Room",
 		"arcaneLibrary": "Arcane Library",
-		"royalGardens":"Royal Gardens",
+		"royalGardens": "Royal Gardens",
 		"thePromenade": "The Promenade",
-		"theSummit":"The Summit",
+		"theSummit": "The Summit",
 		"magusQuarters": "Magus Quarters",
-		"endlessSpires":"Endless Spires",
+		"endlessSpires": "Endless Spires",
 		"glitterhelmCaverns": "Glitterhelm Caverns"
 	}
 }

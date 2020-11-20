@@ -1,7 +1,7 @@
 <template>
-<div>
-    page not found :(
-</div>
+    <div class="container">
+        page not found :(
+    </div>
 </template>
 
 <script>

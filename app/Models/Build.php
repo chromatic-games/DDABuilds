@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\Build\BuildWave;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -195,10 +196,10 @@ class Build extends Model {
 		}
 
 		if ( $searchParameters['map'] ) {
-			/** @var Map $map */
-			$map = Map::where('name', $searchParameters['map'])->first();
-			if ( $map !== null ) {
-				$where[] = ['mapID', '=', $map->ID];
+			/** @var Collection $maps */
+			$maps = Map::whereIn('name', explode(',', $searchParameters['map']))->get();
+			if ( count($maps) ) {
+				$query->whereIn('mapID', array_column($maps->toArray(), 'ID'));
 			}
 		}
 		if ( $searchParameters['gameMode'] ) {

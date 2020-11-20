@@ -45,7 +45,7 @@
         </b-navbar>
 
         <section v-if="!$router.currentRoute.meta.ignoreSection" id="main" class="marginTop">
-            <router-view class="container"></router-view>
+            <router-view />
         </section>
         <router-view v-else />
 

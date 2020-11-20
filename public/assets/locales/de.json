@@ -1,6 +1,58 @@
 {
 	"locales": {
 		"de": "Deutsch (Beta)",
-		"en": "Englisch"
+		"en": "English"
+	},
+	"form": {
+		"any": "Alle",
+		"search": "Suchen"
+	},
+	"menu": {
+		"buildList": "Builds",
+		"buildAddSelect": "Build erstellen",
+		"bugReportAdd": "Fehler melden",
+		"bugReportList": "Fehlerliste"
+	},
+	"gameMode": {
+		"campaign": "Kampagne",
+		"survival": "Überleben",
+		"challenge": "Herausforderung",
+		"pureStrategy": "Pure Strategie",
+		"mixMode": "Mix Modus"
+	},
+	"difficulty": {
+		"easy": "Einfach",
+		"medium": "Mittel",
+		"hard": "Hart",
+		"insane": "Wahnsinnig",
+		"nightmare": "Nightmare",
+		"massacre": "Massaker"
+	},
+	"build": {
+		"author": "Autor",
+		"title": "Build Titel",
+		"gameMode": "Spielmodus",
+		"map": "Karte",
+		"difficulty": "Schwierigkeitsgrad",
+		"likes": "Likes",
+		"views": "Aufrufe",
+		"date": "Datum"
+	},
+	"map": {
+		"theDeeperWell": "The Deeper Well",
+		"ancientMines":"Ancient Mines",
+		"lavaMines": "Lava Mines",
+		"alchemicalLaboratory":"Alchemical Laboratory",
+		"tornadoValley": "Tornado Valley",
+		"tornadoHighlands":"Tornado Highlands",
+		"theRamparts": "The Ramparts",
+		"theThroneRoom":"The Throne Room",
+		"arcaneLibrary": "Arcane Library",
+		"royalGardens":"Royal Gardens",
+		"thePromenade": "The Promenade",
+		"theSummit":"The Summit",
+		"magusQuarters": "Magus Quarters",
+		"endlessSpires":"Endless Spires",
+		"glitterhelmCaverns": "Glitterhelm Caverns"
 	}
 }

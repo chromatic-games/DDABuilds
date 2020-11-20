@@ -1,3 +1,5 @@
+import {ucfirst} from './string';
+
 export function buildLinkParams(build) {
 	let title = build.title.toLowerCase().replace(/[^\p{L}\p{N}]+/ug, '-').substr(0, 80);
 	if (title[title.length - 1] === '-') {
@@ -10,20 +12,19 @@ export function buildLinkParams(build) {
 	};
 }
 
-// TODO move to string utils directory
-function lcfirst(string) {
-	return string.substr(0, 1).toUpperCase() + string.substr(1);
-}
-
 export function buildListSearch(options = {}) {
-	if (options.map) {
-		options.map = lcfirst(options.map);
+	// clear empty fields
+	for (let key of Object.keys(options)) {
+		if (!options[key] || Array.isArray(options[key]) && options[key].length === 0) {
+			delete options[key];
+		}
 	}
-	if (options.gameMode) {
-		options.gameMode = lcfirst(options.gameMode);
-	}
-	if (options.difficulty) {
-		options.difficulty = lcfirst(options.difficulty);
+
+	for (let key of ['map', 'gameMode', 'difficulty']) {
+		if (options[key]) {
+			options[key] = Array.isArray(options[key]) ? ucfirst(options[key]).join(',') : ucfirst(options[key]);
+
+		}
 	}
 
 	return options;
