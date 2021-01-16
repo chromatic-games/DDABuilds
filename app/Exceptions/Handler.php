@@ -2,35 +2,36 @@
 
 namespace App\Exceptions;
 
-use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
-use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
+use Illuminate\Http\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Throwable;
 
 class Handler extends ExceptionHandler {
 	/** @inheritDoc */
 	public function render($request, Throwable $e) {
-		if ( $request->wantsJson() ) {
-			$response = [
-				'status' => 500,
+		$response = parent::render($request, $e);
+
+		if ( $response instanceof JsonResponse ) {
+			// add status and error code (if a description exists for this status code)
+			$data = [
+				'status' => $response->getStatusCode(),
 			];
-
-			if ( $this->isHttpException($e) ) {
-				$response['status'] = $e->getStatusCode();
-			}
-			elseif ( $e instanceof AuthorizationException ) {
-				$response['status'] = 403;
+			if ( isset(Response::$statusTexts[$response->getStatusCode()]) ) {
+				$data['error'] = Response::$statusTexts[$response->getStatusCode()];
 			}
 
-			$response['error'] = SymfonyResponse::$statusTexts[$response['status']];
+			// merge new data with old data
+			$data = array_merge($response->getData(true), $data);
 
-			if ( config('app.debug') ) {
-				$response['exception'] = $this->convertExceptionToArray($e);
+			if ( $e instanceof ModelNotFoundException ) {
+				$data['message'] = '';
 			}
 
-			return response()->json($response, $response['status']);
+			$response->setData($data);
 		}
 
-		return parent::render($request, $e);
+		return $response;
 	}
 }

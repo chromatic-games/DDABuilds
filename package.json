@@ -16,6 +16,8 @@
         "bootstrap": "^4.5.3",
         "bootstrap-vue": "^2.17.3",
         "cross-env": "^7.0",
+        "eslint": "^7.18.0",
+        "eslint-plugin-vue": "^7.4.1",
         "i18next": "^19.8.3",
         "i18next-http-backend": "^1.0.21",
         "laravel-mix": "^5.0.1",

@@ -84,7 +84,7 @@
                         <router-link :to="{name: 'buildList', query: getSortQuery('date')}">{{$t('build.date')}}</router-link>
                     </th>
                     <th class="text-right">
-                        <a class="pointer" @click="changeViewMode" v-b-tooltip.left.hover="$t('build.viewType.' + (viewMode === 'table' ? 'grid' : 'table'))">
+                        <a class="pointer" @click="changeViewMode" v-b-tooltip.left.hover="$t('buildList.viewType.' + (viewMode === 'table' ? 'grid' : 'table'))">
                             <i :class="{'fa-th': viewMode === 'table', 'fa-list': viewMode === 'grid'}" class="fa"></i>
                         </a>
                     </th>
@@ -163,7 +163,7 @@
 import axios from 'axios';
 import vSelect from 'vue-select';
 import LoadingIndicator from '../components/LoadingIndicator';
-import {buildLinkParams, buildListSearch} from '../utils/build';
+import {buildLinkParams, buildListSearch, STATUS_PUBLIC} from '../utils/build';
 import number from '../utils/math/number';
 import {lcfirst} from '../utils/string';
 
@@ -181,7 +181,7 @@ export default {
     },
     data() {
         return {
-            STATUS_PUBLIC: 1,
+            STATUS_PUBLIC,
             builds: [],
             loading: true,
             isFilterActive: false,

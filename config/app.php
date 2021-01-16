@@ -1,6 +1,5 @@
 <?php
 
-use App\Providers\ResponseMacroServiceProvider;
 use App\Providers\SteamAuthServiceProvider;
 
 return [
@@ -178,7 +177,6 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         SteamAuthServiceProvider::class,
-        ResponseMacroServiceProvider::class,
     ],
 
     /*

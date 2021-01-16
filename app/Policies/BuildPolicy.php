@@ -9,25 +9,10 @@ use Illuminate\Auth\Access\HandlesAuthorization;
 class BuildPolicy {
 	use HandlesAuthorization;
 
-	/**
-	 * Determine whether the user can view any models.
-	 *
-	 * @param \App\Models\SteamUser $steamUser
-	 *
-	 * @return mixed
-	 */
 	public function viewAny(SteamUser $steamUser) {
 		exit;
 	}
 
-	/**
-	 * Determine whether the user can view the model.
-	 *
-	 * @param \App\Models\SteamUser $steamUser
-	 * @param \App\Models\Build     $build
-	 *
-	 * @return mixed
-	 */
 	public function view(?SteamUser $steamUser, Build $build) {
 		if ( $build->isDeleted ) {
 			return false;
@@ -44,62 +29,15 @@ class BuildPolicy {
 		return true;
 	}
 
-	/**
-	 * Determine whether the user can create models.
-	 *
-	 * @param \App\Models\SteamUser $steamUser
-	 *
-	 * @return mixed
-	 */
 	public function create(SteamUser $steamUser) {
 		exit;
 	}
 
-	/**
-	 * Determine whether the user can update the model.
-	 *
-	 * @param \App\Models\SteamUser $steamUser
-	 * @param \App\Models\Build     $build
-	 *
-	 * @return mixed
-	 */
 	public function update(SteamUser $steamUser, Build $build) {
 		exit;
 	}
 
-	/**
-	 * Determine whether the user can delete the model.
-	 *
-	 * @param \App\Models\SteamUser $steamUser
-	 * @param \App\Models\Build     $build
-	 *
-	 * @return mixed
-	 */
 	public function delete(SteamUser $steamUser, Build $build) {
-		exit;
-	}
-
-	/**
-	 * Determine whether the user can restore the model.
-	 *
-	 * @param \App\Models\SteamUser $steamUser
-	 * @param \App\Models\Build     $build
-	 *
-	 * @return mixed
-	 */
-	public function restore(SteamUser $steamUser, Build $build) {
-		exit;
-	}
-
-	/**
-	 * Determine whether the user can permanently delete the model.
-	 *
-	 * @param \App\Models\SteamUser $steamUser
-	 * @param \App\Models\Build     $build
-	 *
-	 * @return mixed
-	 */
-	public function forceDelete(SteamUser $steamUser, Build $build) {
 		exit;
 	}
 }

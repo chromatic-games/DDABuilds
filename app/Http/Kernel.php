@@ -7,9 +7,9 @@ use App\Http\Middleware\EncryptCookies;
 use App\Http\Middleware\ForceJsonResponse;
 use App\Http\Middleware\IsAuthenticated;
 use App\Http\Middleware\LocaleMiddleware;
-use App\Http\Middleware\PaginateMiddleware;
 use App\Http\Middleware\TrimStrings;
 use App\Http\Middleware\VerifyCsrfToken;
+use Illuminate\Auth\Middleware\Authorize;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 use Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull;
@@ -47,13 +47,13 @@ class Kernel extends HttpKernel {
 			'bindings',
 			ForceJsonResponse::class,
 			LocaleMiddleware::class,
-			PaginateMiddleware::class,
 		],
 	];
 
 	/** @inheritdoc */
 	protected $routeMiddleware = [
-		'auth'     => IsAuthenticated::class,
+		'auth' => IsAuthenticated::class,
+		'can' => Authorize::class,
 		'bindings' => SubstituteBindings::class,
 		'throttle' => ThrottleRequests::class,
 	];

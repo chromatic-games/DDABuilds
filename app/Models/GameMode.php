@@ -5,7 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class GameMode extends Model
+// TODO properties
+class GameMode extends AbstractModel
 {
 	/** @inheritdoc */
 	protected $table = 'game_mode';

@@ -10,10 +10,8 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class BuildFactory extends Factory {
-	/** @inheritdoc */
 	protected $model = Build::class;
 
-	/** @inheritdoc */
 	public function definition() {
 		return [
 			'author'       => substr($this->faker->name(), 0, 20),

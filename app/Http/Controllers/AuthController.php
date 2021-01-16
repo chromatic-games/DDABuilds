@@ -6,6 +6,7 @@ use App\Auth\SteamAuth;
 use App\Models\SteamUser;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 class AuthController extends AbstractController {
 	/** @var SteamAuth */
@@ -35,15 +36,15 @@ class AuthController extends AbstractController {
 				// create new steam user
 				if ( $user === null ) {
 					$user = SteamUser::create([
-						'ID'          => $steamID,
-						'name'        => $userInfo['personaname'],
+						'ID' => $steamID,
+						'name' => $userInfo['personaname'],
 						'avatar_hash' => $userInfo['avatarhash'],
 					]);
 				}
 				// update steam user
 				else {
 					$user->update([
-						'name'        => $userInfo['personaname'],
+						'name' => $userInfo['personaname'],
 						'avatar_hash' => $userInfo['avatarhash'],
 					]);
 				}
@@ -54,7 +55,7 @@ class AuthController extends AbstractController {
 			}
 		}
 
-		return response()->apiBadRequest();
+		throw new BadRequestHttpException();
 	}
 
 	public function authInfo() {

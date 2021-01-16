@@ -2,12 +2,12 @@
 
 namespace Database\Factories;
 
-use App\Models\BugReport;
+use App\Models\Issue;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class BugReportFactory extends Factory {
+class IssueFactory extends Factory {
 	/** @inheritDoc */
-	protected $model = BugReport::class;
+	protected $model = Issue::class;
 
 	/** @inheritDoc */
 	public function definition() {

@@ -2,21 +2,23 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Difficulty extends Model
-{
+// TODO properties
+class Difficulty extends AbstractModel {
+	use HasFactory;
+
 	/** @inheritdoc */
 	protected $table = 'difficulty';
 
 	/** @inheritdoc */
 	protected $primaryKey = 'id';
 
-	/** @inheritdoc  */
+	/** @inheritdoc */
 	public $timestamps = false;
 
-	/** @inheritdoc  */
+	/** @inheritdoc */
 	protected $fillable = [
-		'name'
+		'name',
 	];
 }

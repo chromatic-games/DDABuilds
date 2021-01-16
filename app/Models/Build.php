@@ -6,12 +6,9 @@ use App\Models\Build\BuildWave;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
 /**
- * Represent a build model
- *
  * @property-read string  $date
  * @property-read string  $author
  * @property-read string  $title
@@ -30,10 +27,8 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  * @property-read integer $hardcore
  * @property-read integer $likes
  * @property-read integer $steamID
- *
- * @package App\Models
  */
-class Build extends Model {
+class Build extends AbstractModel {
 	use HasFactory;
 
 	/** @var int public build status (everyone can view the build) */
@@ -176,12 +171,12 @@ class Build extends Model {
 	 */
 	public function scopeSearch(Builder $query, array $searchParameters) {
 		$searchParameters = array_merge([
-			'isDeleted'  => 0,
-			'title'      => null,
-			'author'     => null,
-			'map'        => null,
+			'isDeleted' => 0,
+			'title' => null,
+			'author' => null,
+			'map' => null,
 			'difficulty' => null,
-			'gameMode'   => null,
+			'gameMode' => null,
 		], $searchParameters);
 
 		$where = [

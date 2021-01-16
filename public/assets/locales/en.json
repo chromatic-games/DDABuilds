@@ -11,7 +11,7 @@
 		"buildList": "Builds",
 		"buildAddSelect": "Create build",
 		"bugReportAdd": "Report Bug",
-		"bugReportList": "Bug Reports"
+		"issueList": "Bug Reports"
 	},
 	"gameMode": {
 		"campaign": "Campaign",
@@ -28,10 +28,16 @@
 		"nightmare": "Nightmare",
 		"massacre": "Massacre"
 	},
-	"build": {
+	"buildList": {
 		"viewType": {
 			"grid": "Show as grid",
 			"table": "Show as table"
+		}
+	},
+	"build": {
+		"error": {
+			"403": "Sorry, but this build is private.",
+			"404": "Sorry, but the page you are looking for has not been found. Try checking the URL for errors, then hit the refresh button on your browser."
 		},
 		"author": "Author",
 		"title": "Build Title",

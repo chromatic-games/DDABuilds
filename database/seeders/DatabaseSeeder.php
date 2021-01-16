@@ -13,6 +13,6 @@ class DatabaseSeeder extends Seeder {
 	public function run() {
 		$this->call(SteamUserSeeder::class);
 		$this->call(BuildSeeder::class);
-		$this->call(BugReportSeeder::class);
+		$this->call(IssueSeeder::class);
 	}
 }

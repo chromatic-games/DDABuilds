@@ -11,7 +11,7 @@
 		"buildList": "Builds",
 		"buildAddSelect": "Build erstellen",
 		"bugReportAdd": "Fehler melden",
-		"bugReportList": "Fehlerliste"
+		"issueList": "Fehlerliste"
 	},
 	"gameMode": {
 		"campaign": "Kampagne",
@@ -29,6 +29,10 @@
 		"massacre": "Massaker"
 	},
 	"build": {
+		"error": {
+			"403": "Sorry, but this build is private.",
+			"404": "Sorry, but the page you are looking for has not been found. Try checking the URL for errors, then hit the refresh button on your browser."
+		},
 		"author": "Autor",
 		"title": "Build Titel",
 		"gameMode": "Spielmodus",
@@ -37,6 +41,12 @@
 		"likes": "Likes",
 		"views": "Aufrufe",
 		"date": "Datum"
+	},
+	"issue": {
+		"status": {
+			"open": "Offen",
+			"closed": "Geschlossen"
+		}
 	},
 	"map": {
 		"theDeeperWell": "The Deeper Well",

@@ -1,15 +1,15 @@
 <?php
 
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\BugReportController;
 use App\Http\Controllers\BuildController;
+use App\Http\Controllers\IssueCommentController;
+use App\Http\Controllers\IssueController;
 use Illuminate\Support\Facades\Route;
-use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 // resource api routes
-Route::resources([
-	'bug-reports' => BugReportController::class,
-	'builds'      => BuildController::class,
+Route::apiResources([
+	'builds' => BuildController::class,
 ]);
 
 // routes where an authentication is not required
@@ -21,9 +21,14 @@ Route::group(['middleware' => ['auth:guest']], function () {
 Route::group(['middleware' => ['auth:user']], function () {
 	Route::get('/auth', [AuthController::class, 'authInfo']);
 	Route::delete('/auth', [AuthController::class, 'logout']);
+
+	Route::apiResources([
+		'issues' => IssueController::class,
+		'issues.comments' => IssueCommentController::class,
+	]);
 });
 
 // every other route -> not found
 Route::get('{any}', function () {
-	return response()->apiResponse('', SymfonyResponse::HTTP_NOT_FOUND);
+	throw new NotFoundHttpException();
 })->where('any', '.*?');
