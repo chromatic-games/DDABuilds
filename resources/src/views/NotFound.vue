@@ -1,11 +1,11 @@
 <template>
-    <div class="container">
-        page not found :(
-    </div>
+	<div class="container">
+		page not found :(
+	</div>
 </template>
 
 <script>
 export default {
-    name: 'NotFound',
+	name: 'NotFound',
 };
 </script>

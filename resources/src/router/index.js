@@ -27,7 +27,10 @@ router.beforeEach((to, from, next) => {
 		return customNext();
 	}
 
-	store.dispatch('authentication/checkAuth').then(customNext).catch(customNext);
+	store
+		.dispatch('authentication/checkAuth')
+		.then(customNext)
+		.catch(customNext);
 });
 
 export default router;

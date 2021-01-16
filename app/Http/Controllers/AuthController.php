@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Auth\SteamAuth;
 use App\Models\SteamUser;
+use App\Policies\IssuePolicy;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
@@ -58,8 +59,10 @@ class AuthController extends AbstractController {
 		throw new BadRequestHttpException();
 	}
 
-	public function authInfo() {
-		return Auth::user();
+	public function authInfo(IssuePolicy $issuePolicy) {
+		return array_merge(Auth::user()->toArray(), [
+			'isMaintainer' => $issuePolicy->isMaintainer(auth()->user()),
+		]);
 	}
 
 	public function logout() {

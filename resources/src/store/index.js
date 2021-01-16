@@ -6,8 +6,8 @@ Vue.use(Vuex);
 
 const store = new Vuex.Store({
 	modules: {
-		authentication
-	}
+		authentication,
+	},
 });
 
 export default store;

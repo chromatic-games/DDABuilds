@@ -1,5 +1,9 @@
 import {formatSEOTitle, ucfirst} from './string';
 
+const STATUS_PUBLIC = 1;
+const STATUS_UNLISTED = 2;
+const STATUS_PRIVATE = 3;
+
 function buildLinkParams(build) {
 	return {
 		id: build.ID,
@@ -23,10 +27,6 @@ function buildListSearch(options = {}) {
 
 	return options;
 }
-
-const STATUS_PUBLIC = 1;
-const STATUS_UNLISTED = 2;
-const STATUS_PRIVATE = 3;
 
 export {
 	STATUS_PUBLIC,

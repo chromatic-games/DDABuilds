@@ -20,7 +20,7 @@
 		"semi": ["error", "always"],
 		"quotes": ["error", "single"],
 		"indent": ["error", "tab"],
-		"linebreak-style": ["error", "windows"],
+		"linebreak-style": ["error", "unix"],
 		"no-promise-executor-return": 2,
 		"no-var": 2,
 		"eol-last": ["error", "never"],

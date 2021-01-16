@@ -28,6 +28,12 @@
 		"nightmare": "Nightmare",
 		"massacre": "Massaker"
 	},
+	"buildList": {
+		"viewType": {
+			"grid": "Als Raster anzeigen",
+			"table": "Als Tabelle anzeigen"
+		}
+	},
 	"build": {
 		"error": {
 			"403": "Sorry, but this build is private.",

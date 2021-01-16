@@ -54,5 +54,5 @@ const i18n = new VueI18Next(i18next);
 
 export {
 	i18n as default,
-	supportedLanguages
+	supportedLanguages,
 };

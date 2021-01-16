@@ -8,12 +8,18 @@ export default {
 			ID: 0,
 			name: '',
 			avatarHash: '',
+			isMaintainer: false,
+		},
+	},
+	getters: {
+		isLoggedIn(state) {
+			return !!state.user.ID;
 		},
 	},
 	mutations: {
 		SET_USER(state, payload) {
 			for (let key in payload) {
-				if (payload.hasOwnProperty(key)) {
+				if (Object.prototype.hasOwnProperty.call(payload, key)) {
 					state.user[key] = payload[key];
 				}
 			}
@@ -35,11 +41,14 @@ export default {
 				return Promise.resolve();
 			}
 
-			return axios.get('/auth').then(({ data }) => {
-				commit('SET_USER', data);
-			}).finally(() => {
-				commit('SET_CHECKED', true);
-			});
+			return axios
+				.get('/auth')
+				.then(({ data }) => {
+					commit('SET_USER', data);
+				})
+				.finally(() => {
+					commit('SET_CHECKED', true);
+				});
 		},
 	},
 };

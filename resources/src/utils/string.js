@@ -15,7 +15,10 @@ function lcfirst(string) {
 }
 
 function formatSEOTitle(title) {
-	title = title.toLowerCase().replace(/[^\p{L}\p{N}]+/ug, '-').substr(0, 80);
+	title = title
+		.toLowerCase()
+		.replace(/[^\p{L}\p{N}]+/ug, '-')
+		.substr(0, 80);
 	if (title[title.length - 1] === '-') {
 		title = title.substr(0, title.length - 1);
 	}

@@ -14,11 +14,11 @@ class IssuePolicy {
 	 */
 	public const MAINTAINER = [
 		'76561198004171907', // chakratos
-		// '76561198054589426', // derpierre65
+		'76561198054589426', // derpierre65
 		'76561198051185047', // ice
 	];
 
-	protected function isMaintainer(SteamUser $steamUser) {
+	public function isMaintainer(SteamUser $steamUser) {
 		return in_array($steamUser->ID, self::MAINTAINER);
 	}
 

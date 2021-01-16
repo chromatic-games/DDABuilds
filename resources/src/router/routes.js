@@ -1,5 +1,6 @@
 import store from '../store';
 import AuthView from '../views/AuthView';
+import router from './index';
 
 const NotFound = () => import('../views/NotFound');
 const IndexView = () => import('../views/IndexView');
@@ -61,17 +62,21 @@ const routes = [
 		name: 'logout',
 		path: '/logout',
 		beforeEnter: (to, from, next) => {
-			store.dispatch('authentication/logout').then(() => {
-				if (from.meta.requiredAuth) {
-					router.push({ name: 'home' });
-				}
-				else {
-					router.push(from);
-				}
-			}).catch(() => {
-				console.error('failed logout');
-				// TODO error handling
-			});
+			store
+				.dispatch('authentication/logout')
+				.then(() => {
+					if (from.meta.requiredAuth) {
+						router.push({ name: 'home' });
+					}
+					else {
+						router.push(from);
+					}
+				})
+				.catch(() => {
+					console.error('failed logout');
+					// TODO error handling
+				})
+				.finally(() => next());
 		},
 	},
 	{
