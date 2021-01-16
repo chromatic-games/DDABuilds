@@ -2,6 +2,7 @@
 
 namespace {{ namespace }};
 
-class {{ class }} extends AbstractModel
-{
+use App\Models\AbstractModel;
+
+class {{ class }} extends AbstractModel {
 }

@@ -105,7 +105,8 @@
 						<router-link :to="{name: 'buildList', query: buildListSearch({map: build.mapName})}">{{$t('map.' + build.mapName)}}</router-link>
 					</td>
 					<td :class="'difficulty-' + build.difficultyID">
-						<router-link :to="{name: 'buildList', query: buildListSearch({difficulty: build.difficultyName})}">{{$t('difficulty.' + build.difficultyName)}}</router-link>
+						<router-link :to="{name: 'buildList', query: buildListSearch({difficulty: build.difficultyName})}">{{$t('difficulty.' + build.difficultyName)}}
+						</router-link>
 					</td>
 					<td class="columnDigits">{{number(build.likes)}}</td>
 					<td class="columnDigits">{{number(build.views)}}</td>
@@ -116,10 +117,12 @@
 		</div>
 
 		<loading-indicator v-if="loading" />
-		<ol v-else-if="viewMode === 'grid'" class="buildList">
+		<template v-else>
+			<ol v-if="viewMode === 'grid'" class="buildList">
             <li v-for="build in builds" :key="build.ID">
 				<div class="buildBox">
-                    <i v-if="build.buildStatus !== STATUS_PUBLIC" v-b-tooltip.hover="'This build is private or unlisted and is only visible for you.'" class="fa fa-eye-slash buildUnlisted"></i>
+                    <i v-if="build.buildStatus !== STATUS_PUBLIC" v-b-tooltip.hover="'This build is private or unlisted and is only visible for you.'"
+						class="fa fa-eye-slash buildUnlisted"></i>
 					<div class="box128">
 						<div class="buildDataContainer">
 							<h3 class="buildSubject">
@@ -143,33 +146,41 @@
 					<div class="buildFooter">
 						<ul class="inlineList dotSeparated buildInformation">
 							<li>
-                                <i class="fa fa-map"></i> <router-link :to="{name: 'buildList', query: buildListSearch({map: build.mapName})}">{{$t('map.' + build.mapName)}}</router-link>
+                                <i class="fa fa-map"></i> <router-link
+								:to="{name: 'buildList', query: buildListSearch({map: build.mapName})}">{{$t('map.' + build.mapName)}}</router-link>
                             </li>
 							<li>
-                                <i class="fa fa-gamepad"></i> <router-link :to="{name: 'buildList', query: buildListSearch({gameMode: build.gameModeName})}">{{$t('gameMode.' + build.gameModeName)}}</router-link>
+                                <i class="fa fa-gamepad"></i> <router-link
+								:to="{name: 'buildList', query: buildListSearch({gameMode: build.gameModeName})}">{{$t('gameMode.' + build.gameModeName)}}</router-link>
                             </li>
 							<li :class="'difficulty-' + build.difficultyID">
-                                <i class="fa fa-tachometer"></i> <router-link :to="{name: 'buildList', query: buildListSearch({difficulty: build.difficultyName})}">{{$t('difficulty.' + build.difficultyName)}}</router-link>
+                                <i class="fa fa-tachometer"></i> <router-link
+								:to="{name: 'buildList', query: buildListSearch({difficulty: build.difficultyName})}">{{$t('difficulty.' + build.difficultyName)}}</router-link>
                             </li>
 						</ul>
 					</div>
 				</div>
 			</li>
-		</ol>
+			</ol>
+
+			<app-pagination :page="page" :pages="pages" :route-name="$route.name" />
+		</template>
 	</div>
 </template>
 
 <script>
 import axios from 'axios';
 import vSelect from 'vue-select';
-import LoadingIndicator from '../components/LoadingIndicator';
-import {buildLinkParams, buildListSearch, STATUS_PUBLIC} from '../utils/build';
-import number from '../utils/math/number';
-import {lcfirst} from '../utils/string';
+import AppPagination from '../../components/AppPagination';
+import LoadingIndicator from '../../components/LoadingIndicator';
+import {buildLinkParams, buildListSearch, STATUS_PUBLIC} from '../../utils/build';
+import number from '../../utils/math/number';
+import {lcfirst} from '../../utils/string';
 
 export default {
 	name: 'BuildListView',
 	components: {
+		AppPagination,
 		LoadingIndicator,
 		vSelect,
 	},
@@ -178,11 +189,19 @@ export default {
 			type: Boolean,
 			default: false,
 		},
+		fetchParams: {
+			type: Object,
+			default() {
+				return {};
+			},
+		},
 	},
 	data() {
 		return {
 			STATUS_PUBLIC,
 			builds: [],
+			page: 0,
+			pages: 0,
 			loading: true,
 			isFilterActive: false,
 			filter: this.getDefaultFilter(),
@@ -190,7 +209,7 @@ export default {
 		};
 	},
 	watch: {
-		'$route.query'() {
+		$route() {
 			this.fetchList();
 		},
 		viewMode() {
@@ -275,11 +294,16 @@ export default {
 		fetchList() {
 			this.loading = true;
 			this.updateFilter();
-			let queryParams = (new URLSearchParams(this.$route.query)).toString();
+
+			let queryParams = (new URLSearchParams(Object.assign({}, this.$route.query, this.fetchParams))).toString();
+			let page = this.$route.params.page || 0;
+
 			axios
-				.get('/builds/' + (queryParams ? '?' + queryParams : ''))
-				.then(({ data }) => {
-					this.builds = data.data;
+				.get('/builds/?page=' + page + (queryParams ? '&' + queryParams : ''))
+				.then(({ data: { data, currentPage, lastPage } }) => {
+					this.builds = data;
+					this.page = currentPage;
+					this.pages = lastPage;
 				})
 				.finally(() => {
 					this.loading = false;

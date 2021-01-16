@@ -4,7 +4,6 @@ namespace {{ namespace }};
 
 use Illuminate\Http\Request;
 
-class {{ class }} extends AbstractController
-{
+class {{ class }} extends AbstractController {
 
 }

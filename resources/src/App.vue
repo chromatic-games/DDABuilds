@@ -32,9 +32,10 @@
 							<template #button-content>
 								{{$store.state.authentication.user.name}}
 							</template>
-							<a class="dropdown-item">My Builds</a>
+							<router-link :to="{name: 'myBuildList'}" class="dropdown-item">My Builds</router-link>
 							<router-link :to="{name: 'myIssueList'}" class="dropdown-item">My Issues</router-link>
-							<a class="dropdown-item">Favorite Builds</a> <a class="dropdown-item">Liked Builds</a>
+							<router-link :to="{name: 'likedBuildList'}" class="dropdown-item">Liked Builds</router-link>
+							<router-link :to="{name: 'favoriteBuildList'}" class="dropdown-item">Favorite Builds</router-link>
 							<router-link :to="{name: 'logout'}" class="dropdown-item">Logout</router-link>
 						</b-nav-item-dropdown>
 						<div v-else class="navbar-right pointer">

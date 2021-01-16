@@ -4,8 +4,8 @@ import router from './index';
 
 const NotFound = () => import('../views/NotFound');
 const IndexView = () => import('../views/IndexView');
-const BuildListView = () => import('../views/BuildListView');
-const BuildView = () => import('../views/BuildView');
+const BuildListView = () => import('../views/Build/BuildListView');
+const BuildView = () => import('../views/Build/BuildView');
 const ChangelogView = () => import('../views/ChangelogView');
 const IssueListView = () => import('../views/Issue/IssueListView');
 const IssueView = () => import('../views/Issue/IssueView');
@@ -23,7 +23,7 @@ const routes = [
 	},
 	{
 		name: 'buildList',
-		path: '/build-list',
+		path: '/builds/:page?',
 		component: BuildListView,
 	},
 	{
@@ -52,10 +52,38 @@ const routes = [
 		path: '/issue/:id-:title/:page?',
 		component: IssueView,
 	},
+	// user related pages
 	{
 		name: 'myIssueList',
 		path: '/my-issues/:page?',
 		component: MyIssueListView,
+	},
+	{
+		name: 'myBuildList',
+		path: '/my-builds/:page?',
+		component: BuildListView,
+		props: {
+			fetchParams: {mine: 1},
+			hideFilter: true,
+		}
+	},
+	{
+		name: 'likedBuildList',
+		path: '/liked-builds/:page?',
+		component: BuildListView,
+		props: {
+			fetchParams: {liked: 1},
+			hideFilter: true,
+		}
+	},
+	{
+		name: 'favoriteBuildList',
+		path: '/favorite-builds/:page?',
+		component: BuildListView,
+		props: {
+			fetchParams: {watch: 1},
+			hideFilter: true,
+		}
 	},
 	// auth
 	{

@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
 /**
+ * @property-read integer $ID
  * @property-read string  $date
  * @property-read string  $author
  * @property-read string  $title
@@ -132,35 +133,8 @@ class Build extends AbstractModel {
 		}
 
 		if ( in_array($column, $this->validSortFields) ) {
-			$query->orderBy($column, $direction);
+			$query->orderBy($this->table . '.' . $column, $direction);
 		}
-	}
-
-	/**
-	 * add all columns there are relevant for the list page
-	 *
-	 * @param Builder $query
-	 *
-	 * @return Builder
-	 */
-	public function scopeListSelect(Builder $query) {
-		return $query->addSelect([
-			$this->table.'.ID',
-			$this->table.'.author',
-			$this->table.'.title',
-			$this->table.'.date',
-			// $this->table . '.mapID',
-			$this->table.'.difficultyID',
-			$this->table.'.buildStatus',
-			$this->table.'.gameModeID',
-			$this->table.'.hardcore',
-			$this->table.'.afkAble',
-			$this->table.'.timePerRun',
-			$this->table.'.expPerRun',
-			$this->table.'.views',
-			$this->table.'.likes',
-			$this->table.'.comments',
-		]);
 	}
 
 	/**
@@ -215,39 +189,9 @@ class Build extends AbstractModel {
 		$query->where($where)->where(function ($query) {
 			$query->where('buildStatus', '=', self::STATUS_PUBLIC);
 			if ( auth()->id() ) {
-				$query->orWhere('steamID', '=', auth()->id());
+				$query->orWhere($this->table . '.steamID', '=', auth()->id());
 			}
 		});
-	}
-
-	/**
-	 * add the map name to the build
-	 *
-	 * @param Builder $query
-	 */
-	public function scopeWithMapName(Builder $query) {
-		$query->leftJoin('map', 'map.ID', '=', 'build.mapID')
-		      ->addSelect('map.name as mapName');
-	}
-
-	/**
-	 * add the difficulty name to the build
-	 *
-	 * @param Builder $query
-	 */
-	public function scopeWithDifficultyName(Builder $query) {
-		$query->leftJoin('difficulty', 'difficulty.ID', '=', 'build.difficultyID')
-		      ->addSelect('difficulty.name as difficultyName');
-	}
-
-	/**
-	 * add the game mode name to the build
-	 *
-	 * @param Builder $query
-	 */
-	public function scopeWithGameModeName(Builder $query) {
-		$query->leftJoin('game_mode', 'game_mode.ID', '=', 'build.gameModeID')
-		      ->addSelect('game_mode.name as gameModeName');
 	}
 	//</editor-fold>
 }
