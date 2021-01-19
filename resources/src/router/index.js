@@ -8,6 +8,25 @@ Vue.use(Router);
 const router = new Router({
 	mode: 'history',
 	routes,
+	scrollBehavior(to, from, savedPosition) {
+		console.log(to.hash, savedPosition);
+
+		return new Promise((resolve) => {
+			setTimeout(() => {
+
+				if (to.hash) {
+					resolve({ selector: to.hash, offset: {y: 55, x:0} });
+				}
+				else if (savedPosition) {
+					resolve(savedPosition);
+				}
+				else {
+					resolve({ x: 0, y: 0 });
+				}
+
+			}, 200);
+		});
+	},
 });
 
 router.afterEach(() => {

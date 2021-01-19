@@ -3,7 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\BuildResource;
+use App\Http\Resources\HeroResource;
+use App\Http\Resources\MapResource;
 use App\Models\Build;
+use App\Models\Difficulty;
+use App\Models\GameMode;
+use App\Models\Hero;
+use App\Models\Map;
+use App\Models\MapCategory;
+use App\Models\Tower;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -48,8 +56,22 @@ class BuildController extends AbstractController {
 		])->simplePaginate());
 	}
 
-	public function create() {
-		response()->json([], 500); // TODO
+	public function maps() {
+		return MapCategory::with('maps')->get();
+	}
+
+	public function editor(Map $map) {
+		return [
+			'map' => $map,
+			'heros' => Hero::with('towers')->get(),
+			'towers' => Tower::all(),
+			'difficulties' => Difficulty::all(),
+			'gameModes' => GameMode::all(),
+		];
+	}
+
+	public function store(Request $request) {
+		return response()->json(['not implemented yet']);
 	}
 
 	public function show(Build $build) {

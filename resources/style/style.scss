@@ -2,8 +2,8 @@
 @import 'mixins/list';
 @import 'mixins/reset';
 
-$font-family-base: "Helvetica Neue",Helvetica,Arial;
-$font-family-sans-serif: "Helvetica Neue",Helvetica,Arial,sans-serif;
+$font-family-base: "Helvetica Neue", Helvetica, Arial;
+$font-family-sans-serif: "Helvetica Neue", Helvetica, Arial, sans-serif;
 $font-size-base: 0.875rem;
 $h3-font-size: 24px;
 
@@ -18,6 +18,14 @@ $h3-font-size: 24px;
 @import 'layout/views/buildList';
 @import 'layout/table';
 @import 'layout/dda';
+@import 'layout/bootstrap';
 
 // other external libraries
 @import "~vue-select/src/scss/vue-select.scss";
+
+@import 'layout/dark';
+
+// TODO
+.card {
+	margin-bottom: 20px;
+}

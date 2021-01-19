@@ -1,7 +1,7 @@
 <template>
 	<div class="container">
 		<div v-if="isMaintainer && issue.status !== 2" class="text-right">
-			<button class="btn btn-primary btn-close">Close</button>
+			<button class="btn btn-primary">Close</button>
 		</div>
 		<table class="table table-bordered marginTop">
 			<tbody>

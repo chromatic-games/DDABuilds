@@ -56,19 +56,23 @@
 	},
 	"map": {
 		"theDeeperWell": "The Deeper Well",
-		"ancientMines":"Ancient Mines",
+		"ancientMines": "Ancient Mines",
 		"lavaMines": "Lava Mines",
-		"alchemicalLaboratory":"Alchemical Laboratory",
+		"alchemicalLaboratory": "Alchemical Laboratory",
 		"tornadoValley": "Tornado Valley",
-		"tornadoHighlands":"Tornado Highlands",
+		"tornadoHighlands": "Tornado Highlands",
 		"theRamparts": "The Ramparts",
-		"theThroneRoom":"The Throne Room",
+		"theThroneRoom": "The Throne Room",
 		"arcaneLibrary": "Arcane Library",
-		"royalGardens":"Royal Gardens",
+		"royalGardens": "Royal Gardens",
 		"thePromenade": "The Promenade",
-		"theSummit":"The Summit",
+		"theSummit": "The Summit",
 		"magusQuarters": "Magus Quarters",
-		"endlessSpires":"Endless Spires",
+		"endlessSpires": "Endless Spires",
 		"glitterhelmCaverns": "Glitterhelm Caverns"
+	},
+	"mapCategory": {
+		"campaign": "Kampagne",
+		"encore": "Encore"
 	}
 }

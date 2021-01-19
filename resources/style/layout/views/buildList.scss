@@ -9,6 +9,20 @@
 		margin-bottom: -20px;
 	}
 
+	&.mapSelection > li {
+		@include screen-sm-up {
+			flex: 0 0 50%;
+			margin-bottom: 20px;
+			max-width: 50%;
+		}
+
+		@include screen-lg {
+			flex: 0 0 25%;
+			margin-bottom: 20px;
+			max-width: 25%;
+		}
+	}
+
 	> li {
 		overflow: hidden;
 		padding-left: 10px;
@@ -103,7 +117,7 @@
 
 		.buildDataContainer img {
 			margin: 15px auto auto;
-			display:block;
+			display: block;
 		}
 	}
 }

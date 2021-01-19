@@ -8,10 +8,15 @@
 					<ul class="nav navbar-nav">
 						<router-link :to="{name: 'buildList'}" class="nav-item" tag="li"><a class="nav-link">{{$t('menu.buildList')}}</a></router-link>
 						<template v-if="$store.state.authentication.user.ID">
-							<router-link :to="{name: 'buildAddSelect'}" class="nav-item" tag="li"><a class="nav-link">{{$t('menu.buildAddSelect')}}</a></router-link>
-							<router-link :to="{name: 'issueAdd'}" class="nav-item" tag="li"><a class="nav-link">{{$t('menu.bugReportAdd')}}</a></router-link>
+							<router-link :to="{name: 'buildAddSelect'}" class="nav-item" tag="li">
+								<a class="nav-link">{{$t('menu.buildAddSelect')}}</a>
+							</router-link>
+							<router-link :to="{name: 'issueAdd'}" class="nav-item" tag="li">
+								<a class="nav-link">{{$t('menu.bugReportAdd')}}</a>
+							</router-link>
 							<router-link v-if="$store.state.authentication.user.isMaintainer" :to="{name: 'issueList'}" class="nav-item" tag="li">
-								<a class="nav-link">{{$t('menu.issueList')}}</a></router-link>
+								<a class="nav-link">{{$t('menu.issueList')}}</a>
+							</router-link>
 						</template>
 					</ul>
 
@@ -32,11 +37,11 @@
 							<template #button-content>
 								{{$store.state.authentication.user.name}}
 							</template>
-							<router-link :to="{name: 'myBuildList'}" class="dropdown-item">My Builds</router-link>
-							<router-link :to="{name: 'myIssueList'}" class="dropdown-item">My Issues</router-link>
-							<router-link :to="{name: 'likedBuildList'}" class="dropdown-item">Liked Builds</router-link>
-							<router-link :to="{name: 'favoriteBuildList'}" class="dropdown-item">Favorite Builds</router-link>
-							<router-link :to="{name: 'logout'}" class="dropdown-item">Logout</router-link>
+							<router-link :to="{name: 'myBuildList'}" class="dropdown-item" tag="li"><a>My Builds</a></router-link>
+							<router-link :to="{name: 'myIssueList'}" class="dropdown-item" tag="li"><a>My Issues</a></router-link>
+							<router-link :to="{name: 'likedBuildList'}" class="dropdown-item" tag="li"><a>Liked Builds</a></router-link>
+							<router-link :to="{name: 'favoriteBuildList'}" class="dropdown-item" tag="li"><a>Favorite Builds</a></router-link>
+							<router-link :to="{name: 'logout'}" class="dropdown-item" tag="li"><a>Logout</a></router-link>
 						</b-nav-item-dropdown>
 						<div v-else class="navbar-right pointer">
 							<a :href="loginUrl" @click="startLogin" @click.prevent>
@@ -105,6 +110,8 @@ export default {
 			else {
 				classList.remove('bg-dark');
 			}
+
+			this.$store.commit('SET_DARKMODE', newValue);
 		},
 	},
 	created() {

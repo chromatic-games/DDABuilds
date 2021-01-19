@@ -10,6 +10,21 @@ axios.defaults.baseURL = '/api/';
 axios.defaults.headers.common['Accept'] = 'application/json';
 axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
+axios.interceptors.response.use((response) => {
+	if (response.data._debug) {
+		console.log(response.request.responseURL, response.data._debug);
+		delete response.data._debug;
+	}
+
+	return response;
+}, (error) => {
+	if (error.response && error.response.data) {
+		return Promise.reject(error.response.data);
+	}
+
+	return Promise.reject(error.message);
+});
+
 Vue.use(NavbarPlugin);
 Vue.use(TooltipPlugin);
 

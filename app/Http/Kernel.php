@@ -63,7 +63,7 @@ class Kernel extends HttpKernel {
 		parent::bootstrap();
 
 		// add debug middleware on dev
-		if ( app()->environment('local') ) {
+		if ( config('app.debug') ) {
 			DB::connection()->enableQueryLog();
 			$this->prependMiddlewareToGroup('api', DebugMiddleware::class);
 		}

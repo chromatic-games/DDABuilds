@@ -9,8 +9,9 @@ const BuildView = () => import('../views/Build/BuildView');
 const ChangelogView = () => import('../views/ChangelogView');
 const IssueListView = () => import('../views/Issue/IssueListView');
 const IssueView = () => import('../views/Issue/IssueView');
-const MyIssueListView = () => import('../views/MyIssueListView');
 const IssueAddView = () => import('../views/Issue/IssueAddView');
+const BuildAddSelectView = () => import('../views/Build/BuildAddSelectView');
+const BuildAddView = () => import('../views/Build/BuildAddView');
 
 const routes = [
 	{
@@ -36,6 +37,17 @@ const routes = [
 		path: '/changelog',
 		component: ChangelogView,
 	},
+	// builds
+	{
+		name: 'buildAddSelect',
+		path: '/build-add-select',
+		component: BuildAddSelectView,
+	},
+	{
+		name: 'buildAdd',
+		path: '/build-add/:mapID-:name',
+		component: BuildAddView,
+	},
 	// issues
 	{
 		name: 'issueList',
@@ -56,7 +68,10 @@ const routes = [
 	{
 		name: 'myIssueList',
 		path: '/my-issues/:page?',
-		component: MyIssueListView,
+		component: IssueListView,
+		props: {
+			mineList: true
+		}
 	},
 	{
 		name: 'myBuildList',

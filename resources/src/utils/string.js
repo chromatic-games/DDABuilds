@@ -26,8 +26,13 @@ function formatSEOTitle(title) {
 	return title;
 }
 
+function formatString(name, replace = '_') {
+	return name.replace(/[A-Z]/g, letter => replace + letter);
+}
+
 export {
 	lcfirst,
 	ucfirst,
 	formatSEOTitle,
+	formatString,
 };

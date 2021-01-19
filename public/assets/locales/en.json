@@ -64,5 +64,9 @@
 		"magusQuarters": "Magus Quarters",
 		"endlessSpires": "Endless Spires",
 		"glitterhelmCaverns": "Glitterhelm Caverns"
+	},
+	"mapCategory": {
+		"campaign": "Campaign",
+		"encore": "Encore"
 	}
 }

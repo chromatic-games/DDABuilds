@@ -2,18 +2,22 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Model;
-
-// TODO properties
+/**
+ * @property-read int    $ID
+ * @property-read string $name
+ * @property-read int    $units
+ * @property-read int    $mapCategoryID
+ *
+ * @property-read string $image
+ */
 class Map extends AbstractModel {
 	protected $table = 'map';
 
-	protected $primaryKey = 'id';
+	protected $primaryKey = 'ID';
 
 	public $timestamps = false;
 
-	public function scopeFindByName(Builder $builder, string $mapName) {
-		return $builder->where('name', '=', $mapName);
+	public function difficultyUnits() {
+		return $this->hasMany(MapAvailableUnit::class, 'mapID', 'ID');
 	}
 }
