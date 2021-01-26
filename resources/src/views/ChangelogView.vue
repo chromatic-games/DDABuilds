@@ -9,6 +9,8 @@
 			<li><span class="badge badge-success">Added</span> Reset option in build list, to reset all filters.</li>
 			<li><span class="badge badge-warning">Changed</span> Updated design (changed Bootstrap version to 4.x).</li>
 			<li><span class="badge badge-warning">Changed</span> Changed medium color for a better readability in light mode.</li>
+			<li><span class="badge badge-danger">Fixed</span> Towers cant be placed anymore out of the map.</li>
+			<li><span class="badge badge-danger">Fixed</span> New towers from disabled heros are no more visible.</li>
 		</ul>
 		<h3>2020-09-22</h3>
 		<ul>

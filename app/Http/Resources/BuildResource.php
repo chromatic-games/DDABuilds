@@ -4,6 +4,7 @@ namespace App\Http\Resources;
 
 use App\Laravel\JsonResource;
 use App\Models\Build;
+use Illuminate\Http\Resources\MissingValue;
 
 /**
  * @mixin Build
@@ -21,16 +22,19 @@ class BuildResource extends JsonResource {
 			'timePerRun' => $this->timePerRun,
 			'expPerRun' => $this->expPerRun,
 			'gameModeID' => $this->gameModeID,
-			'gameModeName' => $this->gameMode->name,
+			'gameModeName' => $this->relationLoaded('gameMode') ? $this->gameMode->name : new MissingValue(),
 			'difficultyID' => $this->difficultyID,
-			'difficultyName' => $this->difficulty->name,
+			'difficultyName' => $this->relationLoaded('difficulty') ? $this->difficulty->name : new MissingValue(),
 			'mapID' => $this->mapID,
-			'mapName' => $this->map->name,
+			'mapName' => $this->relationLoaded('map') ? $this->map->name : new MissingValue(),
 			'views' => $this->views,
 			'likes' => $this->likes,
 			'comments' => $this->comments,
 			'hardcore' => $this->hardcore,
 			'afkAble' => $this->afkAble,
+			'rifted' => $this->rifted,
+			'waves' => $this->whenLoaded('waves'),
+			'heroStats' => $this->whenLoaded('heroStats'),
 			'isDeleted' => $this->isDeleted,
 		];
 	}

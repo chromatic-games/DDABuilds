@@ -13,6 +13,7 @@ class MapResource extends JsonResource {
 		return [
 			'ID' => $this->ID,
 			'name' => $this->name,
+			'units' => $this->units,
 			'difficultyUnits' => $this->whenLoaded('difficultyUnits'),
 		];
 	}

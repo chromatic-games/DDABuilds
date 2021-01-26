@@ -28,11 +28,6 @@ const routes = [
 		component: BuildListView,
 	},
 	{
-		name: 'build',
-		path: '/build/:id-:title',
-		component: BuildView,
-	},
-	{
 		name: 'changelog',
 		path: '/changelog',
 		component: ChangelogView,
@@ -47,6 +42,14 @@ const routes = [
 		name: 'buildAdd',
 		path: '/build-add/:mapID-:name',
 		component: BuildAddView,
+	},
+	{
+		name: 'buildView',
+		path: '/build/:id-:title',
+		component: BuildAddView,
+		props: {
+			isView: true,
+		}
 	},
 	// issues
 	{

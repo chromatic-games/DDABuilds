@@ -54,6 +54,19 @@
 			"closed": "Geschlossen"
 		}
 	},
+	"hero": {
+		"squire": "Knappe",
+		"apprentice": "Lehrling",
+		"huntress": "Jägerin",
+		"monk": "Mönch",
+		"seriesEVA": "Series E-VA",
+		"world": "Welt",
+		"hints": "Hinweise",
+		"arrows": "Pfeile"
+	},
+	"tower": {
+
+	},
 	"map": {
 		"theDeeperWell": "The Deeper Well",
 		"ancientMines": "Ancient Mines",

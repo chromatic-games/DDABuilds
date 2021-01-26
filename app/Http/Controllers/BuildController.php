@@ -2,9 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\BuildRequest;
 use App\Http\Resources\BuildResource;
-use App\Http\Resources\HeroResource;
-use App\Http\Resources\MapResource;
 use App\Models\Build;
 use App\Models\Difficulty;
 use App\Models\GameMode;
@@ -70,16 +69,64 @@ class BuildController extends AbstractController {
 		];
 	}
 
-	public function store(Request $request) {
-		return response()->json(['not implemented yet']);
+	public function store(BuildRequest $request) {
+		$data = $request->all();
+		/** @var Build $build */
+		$build = Build::create(array_merge([
+			'steamID' => auth()->id(),
+			'description' => '',
+		], $data));
+
+		foreach ( $data['heroStats'] as $key => $heroStats ) {
+			$heroStats['heroID'] = $key;
+			$heroStats['buildID'] = $build->ID;
+			$build->heroStats()->create($heroStats);
+		}
+
+		$data['waves'] = [
+			0 => 'Main Build',
+			1 => 'Second Wave',
+		];
+		$waves = [];
+
+		$waveTowers = [];
+		foreach ( $data['towers'] as $tower ) {
+			$waveTowers[$tower['waveID']] = $waveTowers[$tower['waveID']] ?? [];
+			$waveTowers[$tower['waveID']][] = $tower;
+		}
+
+		foreach ( $data['waves'] as $key => $name ) {
+			if ( empty($waveTowers[$key]) ) {
+				continue;
+			}
+
+			/** @var Build\BuildWave $buildWave */
+			$buildWave = $build->waves()->create([
+				'name' => $name,
+			]);
+			$waves[$key] = $buildWave;
+		}
+
+		foreach ( $data['towers'] as $key => $tower ) {
+			if ( !isset($waves[$tower['waveID']]) ) {
+				continue;
+			}
+
+			$waves[$tower['waveID']]->towers()->create(array_merge($tower, [
+				'towerID' => $tower['ID'],
+				'overrideUnits' => $tower['size'],
+			]));
+		}
+
+		return response()->json($build);
 	}
 
 	public function show(Build $build) {
 		$this->authorize('view', $build);
 
-		$build->load(['map:ID,name', 'difficulty:ID,name', 'gameMode:ID,name', 'waves.towers']);
+		$build->load(['map:ID,name', 'difficulty:ID,name', 'gameMode:ID,name', 'waves.towers', 'heroStats']);
 
-		return response()->json($build);
+		return new BuildResource($build);
 	}
 
 	public function update(Request $request, Build $build) {

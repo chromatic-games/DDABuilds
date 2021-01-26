@@ -1,3 +1,4 @@
+import CKEditor from '@ckeditor/ckeditor5-vue2';
 import axios from 'axios';
 import {NavbarPlugin, TooltipPlugin} from 'bootstrap-vue';
 import Vue from 'vue';
@@ -5,6 +6,11 @@ import App from './App.vue';
 import i18n from './i18n';
 import router from './router';
 import store from './store';
+
+Vue.config.productionTip = false;
+
+require('webpack-jquery-ui/draggable');
+require('webpack-jquery-ui/droppable');
 
 axios.defaults.baseURL = '/api/';
 axios.defaults.headers.common['Accept'] = 'application/json';
@@ -25,6 +31,7 @@ axios.interceptors.response.use((response) => {
 	return Promise.reject(error.message);
 });
 
+Vue.use(CKEditor);
 Vue.use(NavbarPlugin);
 Vue.use(TooltipPlugin);
 

@@ -2,11 +2,11 @@
 
 namespace App\Models;
 
+use App\Models\Build\BuildHeroStats;
 use App\Models\Build\BuildWave;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 
 /**
  * @property-read integer $ID
@@ -76,49 +76,26 @@ class Build extends AbstractModel {
 
 	public $validSortFields = ['author', 'likes', 'mapID', 'title', 'views', 'date', 'difficultyID', 'gameModeID'];
 
-	//<editor-fold desc="relations">
+	public function map() {
+		return $this->hasOne(Map::class, 'ID', 'mapID');
+	}
+
+	public function difficulty() {
+		return $this->hasOne(Difficulty::class, 'ID', 'difficultyID');
+	}
+
+	public function gameMode() {
+		return $this->hasOne(GameMode::class, 'ID', 'gameModeID');
+	}
 
 	public function waves() {
 		return $this->hasMany(BuildWave::class, 'buildID', 'ID');
 	}
 
-	/**
-	 * @return HasOne
-	 */
-	public function map() {
-		return $this->hasOne(Map::class, 'ID', 'mapID');
-	}
-
-	/**
-	 * @return HasOne
-	 */
-	public function difficulty() {
-		return $this->hasOne(Difficulty::class, 'ID', 'difficultyID');
-	}
-
-	/**
-	 * @return HasOne
-	 */
-	public function gameMode() {
-		return $this->hasOne(GameMode::class, 'ID', 'gameModeID');
-	}
-
-	/**
-	 * @return HasOne
-	 */
 	public function heroStats() {
-		// TODO
+		return $this->hasMany(BuildHeroStats::class, 'buildID', 'ID');
 	}
-	//</editor-fold>
 
-	//<editor-fold desc="scopes">
-	/**
-	 * sort the query by specific sort fields
-	 *
-	 * @param Builder $query
-	 * @param string  $column
-	 * @param string  $direction
-	 */
 	public function scopeSort(Builder $query, $column = 'date', $direction = 'asc') {
 		if ( $column === null && $direction === null ) {
 			$column = 'date';
@@ -137,12 +114,6 @@ class Build extends AbstractModel {
 		}
 	}
 
-	/**
-	 * search specific builds
-	 *
-	 * @param Builder $query
-	 * @param array   $searchParameters
-	 */
 	public function scopeSearch(Builder $query, array $searchParameters) {
 		$searchParameters = array_merge([
 			'isDeleted' => 0,
@@ -193,5 +164,4 @@ class Build extends AbstractModel {
 			}
 		});
 	}
-	//</editor-fold>
 }

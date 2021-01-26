@@ -602,11 +602,6 @@ if ( $this->action !== 'view' ) {
 					event.preventDefault();
 					$(this).tab('show');
 				})
-				.on('contextmenu', '.canvas .tower-container', function () {
-					$(this).remove();
-					calculateDefenseUnits();
-					return false;
-				});
 
 			var recoupLeft;
 			var recoupTop;
@@ -645,19 +640,6 @@ if ( $this->action !== 'view' ) {
 				$('#maxDefenseUnits').html(newUnits);
 				calculateDefenseUnits();
 			}).trigger('change'); // trigger change on init view
-
-			function getRotationDegrees(obj) {
-				var matrix = obj.css('transform');
-				var angle = 0;
-				if (matrix !== 'none') {
-					var values = matrix.split('(')[1].split(')')[0].split(',');
-					var a = values[0];
-					var b = values[1];
-					angle = Math.round(Math.atan2(b, a) * (180 / Math.PI));
-				}
-
-				return (angle < 0) ? angle + 360 : angle;
-			}
 
 			// save
 			function save(event) {
@@ -923,36 +905,6 @@ if ( $this->action !== 'view' ) {
 						waveName.text(newName);
 					}
 				});
-
-			$('#towerControlPanel .tower-container').draggable({
-				helper: 'clone',
-				start(event, ui) {
-					let instance = $(this).draggable('instance');
-					let element = instance.element;
-					if (element.hasClass('notEnoughDU')) {
-						return false;
-					}
-
-					function updatePosition() {
-						// center the icon on
-						instance.offset.click = {
-							left: Math.floor(ui.helper.width() / 2),
-							top: Math.floor(ui.helper.height() / 2),
-						};
-					}
-
-					let minUnit = parseInt(element.attr('data-min-unit'));
-					if (minUnit) {
-						let towerImage = ui.helper.find('.tower');
-						towerImage.attr('title', __DEFENSE_TOWER_NAMES[ui.helper.find('.tower-container').attr('data-tower-id')] + ' (' + minUnit + ')');
-						towerImage = towerImage[0];
-						towerImage.src = towerImage.src.replace('.png', '_' + minUnit + '.png');
-						towerImage.onload = updatePosition;
-					}
-
-					updatePosition();
-				},
-			});
 
 			if ($('#builddescription').length) {
 				CKEDITOR.replace('builddescription');

@@ -35,7 +35,7 @@
 			<dl>
 				<dt>Comment</dt>
 				<dd>
-					<textarea v-model="form.description" name="description"></textarea>
+					<classic-ckeditor v-model="form.description" />
 				</dd>
 			</dl>
 
@@ -60,11 +60,12 @@
 <script>
 import axios from 'axios';
 import AppPagination from '../../components/AppPagination';
+import ClassicCkeditor from '../../components/ClassicCkeditor';
 import {formatSEOTitle} from '../../utils/string';
 
 export default {
 	name: 'IssueView',
-	components: { AppPagination },
+	components: { ClassicCkeditor, AppPagination },
 	data() {
 		return {
 			isMaintainer: false,
