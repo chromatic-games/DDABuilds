@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BuildController;
 use App\Http\Controllers\IssueCommentController;
 use App\Http\Controllers\IssueController;
+use App\Http\Controllers\LikeController;
 use App\Http\Controllers\MapController;
 use Illuminate\Support\Facades\Route;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -20,6 +21,8 @@ Route::group(['middleware' => ['auth:user']], function () {
 
 	Route::get('/builds/maps', [BuildController::class, 'maps']);
 	Route::get('/maps/editor/{map}', [MapController::class, 'editor']);
+
+	Route::get('/like/', [LikeController::class, 'like']);
 
 	Route::apiResources([
 		'issues' => IssueController::class,

@@ -173,15 +173,8 @@
 			</div>
 
 			<div class="container">
-				{{build.description}}
 				<classic-ckeditor v-model="build.description" />
 			</div>
-			<!-- TODO description ckeditor -->
-			<!--<div class="container build-description-container">
-				<div class="panel panel-default">
-					<div class="panel-heading text-center"><strong>Description</strong></div>
-				</div>
-			</div>-->
 		</div>
 	</div>
 </template>

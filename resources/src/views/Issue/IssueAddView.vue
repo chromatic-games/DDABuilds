@@ -19,7 +19,7 @@
 
 			<div class="form-group">
 				<label>Description</label>
-				<textarea v-model.trim="form.description" class="form-control"></textarea>
+				<classic-ckeditor v-model="form.description" />
 			</div>
 
 			<label>
@@ -35,10 +35,12 @@
 
 <script>
 import axios from 'axios';
+import ClassicCkeditor from '../../components/ClassicCkeditor';
 import {formatSEOTitle} from '../../utils/string';
 
 export default {
 	name: 'IssueAddView',
+	components: { ClassicCkeditor },
 	data() {
 		return {
 			checkbox: false,

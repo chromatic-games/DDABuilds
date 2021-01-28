@@ -40,4 +40,12 @@ class BuildPolicy {
 	public function delete(SteamUser $steamUser, Build $build) {
 		exit;
 	}
+
+	public function like(SteamUser $steamUser, Build $build) {
+		if ( !$this->view($steamUser, $build) ) {
+			return false;
+		}
+
+		return $steamUser->ID !== $build->steamID;
+	}
 }

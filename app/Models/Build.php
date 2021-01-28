@@ -67,7 +67,7 @@ class Build extends AbstractModel {
 		'hardcore',
 		'afkAble',
 		// 'views',
-		// 'likes',
+		'likes',
 		// 'comments',
 		'timePerRun',
 		'expPerRun',

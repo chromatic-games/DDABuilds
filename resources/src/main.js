@@ -1,4 +1,3 @@
-import CKEditor from '@ckeditor/ckeditor5-vue2';
 import axios from 'axios';
 import {NavbarPlugin, TooltipPlugin} from 'bootstrap-vue';
 import Vue from 'vue';
@@ -31,7 +30,6 @@ axios.interceptors.response.use((response) => {
 	return Promise.reject(error.message);
 });
 
-Vue.use(CKEditor);
 Vue.use(NavbarPlugin);
 Vue.use(TooltipPlugin);
 
