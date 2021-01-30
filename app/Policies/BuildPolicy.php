@@ -5,6 +5,7 @@ namespace App\Policies;
 use App\Models\Build;
 use App\Models\SteamUser;
 use Illuminate\Auth\Access\HandlesAuthorization;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class BuildPolicy {
 	use HandlesAuthorization;
@@ -15,7 +16,7 @@ class BuildPolicy {
 
 	public function view(?SteamUser $steamUser, Build $build) {
 		if ( $build->isDeleted ) {
-			return false;
+			throw new NotFoundHttpException();
 		}
 
 		if ( $build->buildStatus !== Build::STATUS_PRIVATE ) {
@@ -35,7 +36,7 @@ class BuildPolicy {
 
 	public function update(SteamUser $steamUser, Build $build) {
 		if ( $build->isDeleted ) {
-			return false;
+			throw new NotFoundHttpException();
 		}
 
 		return $steamUser->ID === $build->steamID;

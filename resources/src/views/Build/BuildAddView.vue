@@ -83,7 +83,7 @@
 
 											<build-stats-table v-model="build.heroStats" :edit-mode="isEditMode" :hero-list="heroList" />
 
-											<button class="btn btn-secondary" @click="demoMode = false">Editor Mode</button>
+											<button class="btn btn-secondary" @click="buildChangeMode(false)">Editor Mode</button>
 											<button v-if="build.ID" class="btn btn-secondary">
 												<i class="fa fa-thumbs-up"></i>
 											</button>
@@ -181,7 +181,7 @@
 										</div>
 
 										<button class="btn btn-primary" @click="save">Save</button>
-										<button class="btn btn-secondary" @click="demoMode = !demoMode">Viewer Mode</button>
+										<button class="btn btn-secondary" @click="buildChangeMode(true)">Viewer Mode</button>
 										<button v-if="build.ID" class="btn btn-danger" @click="buildDelete">Delete</button>
 									</div>
 								</div>
@@ -573,6 +573,10 @@ export default {
 			if (this.selectedWave === waveID) {
 				this.selectedWave--;
 			}
+		},
+		buildChangeMode(newMode) {
+			this.demoMode = newMode;
+			window.scrollTo(0,0);
 		},
 		buildDelete() {
 			axios
