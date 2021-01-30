@@ -1,5 +1,7 @@
+$baseFontColor: #C8C8C8;
+
 body.bg-dark {
-	color: #C8C8C8;
+	color: $baseFontColor;
 	background-color: #272B30;
 
 	.table-dark {

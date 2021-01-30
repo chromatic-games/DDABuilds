@@ -63,13 +63,7 @@ class BuildController extends AbstractController {
 			$build->heroStats()->create($heroStats);
 		}
 
-		$data['waves'] = [
-			0 => 'Main Build',
-			1 => 'Second Wave',
-		];
-		$waves = [];
-
-		$waveTowers = [];
+		$waves = $waveTowers = [];
 		foreach ( $data['towers'] as $tower ) {
 			$waveTowers[$tower['waveID']] = $waveTowers[$tower['waveID']] ?? [];
 			$waveTowers[$tower['waveID']][] = $tower;

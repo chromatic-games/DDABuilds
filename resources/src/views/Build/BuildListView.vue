@@ -56,7 +56,7 @@
 		</div>
 
 		<div :class="{marginTop: !hideFilter}" class="table-responsive">
-			<table class="table table-hover">
+			<table class="table table-hover" :class="{'table-dark': $store.state.darkMode}">
 				<thead>
 				<tr>
 					<th :class="getHeadlineClass('author')">
@@ -121,7 +121,7 @@
 			<ol v-if="viewMode === 'grid'" class="buildList">
             <li v-for="build in builds" :key="build.ID">
 				<div class="buildBox">
-                    <i v-if="build.buildStatus !== STATUS_PUBLIC" v-b-tooltip.hover="'This build is private or unlisted and is only visible for you.'"
+                    <i v-if="build.buildStatus !== buildStatusPublic" v-b-tooltip.hover="$t('buildList.isPrivate')"
 						class="fa fa-eye-slash buildUnlisted"></i>
 					<div class="box128">
 						<div class="buildDataContainer">
@@ -198,7 +198,7 @@ export default {
 	},
 	data() {
 		return {
-			STATUS_PUBLIC,
+			buildStatusPublic: STATUS_PUBLIC,
 			builds: [],
 			page: 0,
 			pages: 0,

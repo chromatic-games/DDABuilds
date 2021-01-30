@@ -15,12 +15,14 @@ class BuildRequest extends FormRequest {
 	public function prepareForValidation() {
 		$this->merge([
 			'heroStatsIDs' => array_keys($this->get('heroStats')),
+			'description' => $this->get('description', '') ?? '',
 		]);
 	}
 
 	public function rules() {
 		return [
 			'title' => 'required|min:3|max:128',
+			'description' => 'nullable',
 			'author' => 'required|min:3|max:20',
 			'timePerRun' => 'nullable|min:1|max:20',
 			'expPerRun' => 'nullable|min:1|max:20',

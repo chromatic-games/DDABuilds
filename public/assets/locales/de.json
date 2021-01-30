@@ -46,7 +46,9 @@
 		"difficulty": "Schwierigkeitsgrad",
 		"likes": "Likes",
 		"views": "Aufrufe",
-		"date": "Datum"
+		"date": "Datum",
+		"description": "Beschreibung",
+		"isPrivate": "Dieses Build ist nicht gelistet oder privat."
 	},
 	"issue": {
 		"status": {

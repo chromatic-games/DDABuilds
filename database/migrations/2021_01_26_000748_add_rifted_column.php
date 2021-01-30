@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Schema;
 class AddRiftedColumn extends Migration {
 	public function up() {
 		Schema::table('build', function (Blueprint $table) {
-			$table->unsignedTinyInteger('rifted')->after('afkAble');
+			$table->unsignedTinyInteger('rifted')->default(0)->after('afkAble');
 		});
 
 		$replaceStrings = [

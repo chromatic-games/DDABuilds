@@ -33,7 +33,7 @@ export default {
 						'code', 'heading', '|',
 						'bold', 'italic', 'underline', 'strikethrough', 'link', 'bulletedList', 'numberedList', '|',
 						'indent', 'outdent', '|',
-						'blockQuote', 'insertTable', 'mediaEmbed', 'undo', 'redo',
+						'blockQuote', 'insertTable', 'undo', 'redo',
 					],
 				},
 				table: { contentToolbar: ['tableColumn', 'tableRow', 'mergeTableCells'] },

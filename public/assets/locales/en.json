@@ -32,7 +32,8 @@
 		"viewType": {
 			"grid": "Show as grid",
 			"table": "Show as table"
-		}
+		},
+		"isPrivate": "This build is private or unlisted and is only visible for you."
 	},
 	"build": {
 		"error": {
@@ -46,7 +47,18 @@
 		"difficulty": "Difficulty",
 		"likes": "Likes",
 		"views": "Views",
-		"date": "Date"
+		"date": "Date",
+		"description": "Description",
+		"isPrivate": "This build is unlisted or private."
+	},
+	"hero": {
+		"apprentice":"Apprentice",
+		"squire": "Squire",
+		"huntress": "Huntress",
+		"monk": "Monk",
+		"hints": "Hints",
+		"seriesEVA": "Series EV-A",
+		"world": "World"
 	},
 	"map": {
 		"theDeeperWell": "The Deeper Well",

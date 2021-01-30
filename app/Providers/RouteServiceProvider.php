@@ -42,7 +42,7 @@ class RouteServiceProvider extends ServiceProvider {
 			return Limit::perMinute(180); // (3 requests per second, should be enough)
 		});
 		RateLimiter::for('web', function (Request $request) {
-			return Limit::perMinute(30); // (90 requests per minute - this is only the request page)
+			return Limit::perMinute(90); // (90 requests per minute - this is only the request page)
 		});
 	}
 }

@@ -17,7 +17,7 @@ class BuildResource extends JsonResource {
 			'title' => $this->title,
 			'description' => $this->description,
 			'date' => $this->date,
-			'streamID' => $this->steamID,
+			'steamID' => $this->steamID,
 			'buildStatus' => $this->buildStatus,
 			'timePerRun' => $this->timePerRun,
 			'expPerRun' => $this->expPerRun,

@@ -5,7 +5,6 @@ import router from './index';
 const NotFound = () => import('../views/NotFound');
 const IndexView = () => import('../views/IndexView');
 const BuildListView = () => import('../views/Build/BuildListView');
-const BuildView = () => import('../views/Build/BuildView');
 const ChangelogView = () => import('../views/ChangelogView');
 const IssueListView = () => import('../views/Issue/IssueListView');
 const IssueView = () => import('../views/Issue/IssueView');
@@ -44,7 +43,7 @@ const routes = [
 		component: BuildAddView,
 	},
 	{
-		name: 'buildView',
+		name: 'build',
 		path: '/build/:id-:title',
 		component: BuildAddView,
 		props: {
