@@ -71,7 +71,7 @@ class Build extends AbstractModel {
 		// 'comments',
 		'timePerRun',
 		'expPerRun',
-		// 'isDeleted'
+		'isDeleted'
 	];
 
 	public $validSortFields = ['author', 'likes', 'mapID', 'title', 'views', 'date', 'difficultyID', 'gameModeID'];

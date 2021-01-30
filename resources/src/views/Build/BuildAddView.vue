@@ -182,7 +182,7 @@
 
 										<button class="btn btn-primary" @click="save">Save</button>
 										<button class="btn btn-secondary" @click="demoMode = !demoMode">Viewer Mode</button>
-										<button v-if="build.ID" class="btn btn-danger">Delete</button>
+										<button v-if="build.ID" class="btn btn-danger" @click="buildDelete">Delete</button>
 									</div>
 								</div>
 							</div>
@@ -574,6 +574,16 @@ export default {
 				this.selectedWave--;
 			}
 		},
+		buildDelete() {
+			axios
+				.delete('/builds/' + this.build.ID)
+				.then(() => {
+					this.$router.push({ name: 'home' });
+				})
+				.catch(() => {
+					// TODO error handling
+				});
+		},
 		save() {
 			let build = {
 				...this.build,
@@ -601,6 +611,9 @@ export default {
 							title: formatSEOTitle(data.title),
 						},
 					});
+				})
+				.catch(() => {
+					// TODO error handling
 				});
 		},
 	},

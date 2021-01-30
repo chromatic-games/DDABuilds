@@ -10,7 +10,7 @@ class BuildPolicy {
 	use HandlesAuthorization;
 
 	public function viewAny(SteamUser $steamUser) {
-		exit;
+		return true;
 	}
 
 	public function view(?SteamUser $steamUser, Build $build) {
@@ -22,7 +22,7 @@ class BuildPolicy {
 			return true;
 		}
 
-		if ( $steamUser === null || $steamUser->ID != $build->steamID ) { // TODO save $build->steamID as bigint?
+		if ( $steamUser === null || $steamUser->ID !== $build->steamID ) {
 			return false;
 		}
 
@@ -34,11 +34,15 @@ class BuildPolicy {
 	}
 
 	public function update(SteamUser $steamUser, Build $build) {
-		exit;
+		if ( $build->isDeleted ) {
+			return false;
+		}
+
+		return $steamUser->ID === $build->steamID;
 	}
 
 	public function delete(SteamUser $steamUser, Build $build) {
-		exit;
+		return $this->update($steamUser, $build);
 	}
 
 	public function like(SteamUser $steamUser, Build $build) {
@@ -47,5 +51,9 @@ class BuildPolicy {
 		}
 
 		return $steamUser->ID !== $build->steamID;
+	}
+
+	public function watch(SteamUser $steamUser, Build $build) {
+		return $this->like($steamUser, $build);
 	}
 }

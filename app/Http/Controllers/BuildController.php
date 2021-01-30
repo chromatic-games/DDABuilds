@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Exception\InternalServerErrorHttpException;
 use App\Http\Requests\BuildRequest;
 use App\Http\Resources\BuildResource;
 use App\Models\Build;
@@ -11,6 +12,10 @@ use Illuminate\Support\Facades\DB;
 
 class BuildController extends AbstractController {
 	use AuthorizesRequests;
+
+	public function __construct() {
+		$this->authorizeResource(Build::class);
+	}
 
 	public function index(Request $request) {
 		$builds = Build::with(['map', 'gameMode', 'difficulty'])->sort($request->query('sortField'), $request->query('sortOrder'));
@@ -96,8 +101,6 @@ class BuildController extends AbstractController {
 	}
 
 	public function show(Build $build) {
-		$this->authorize('view', $build);
-
 		$build->load(['map:ID,name', 'difficulty:ID,name', 'gameMode:ID,name', 'waves.towers', 'heroStats']);
 
 		return new BuildResource($build);
@@ -108,10 +111,16 @@ class BuildController extends AbstractController {
 	}
 
 	public function destroy(Request $request, Build $build) {
-		response()->json([], 500); // TODO
+		if ( $build->update(['isDeleted' => 1]) ) {
+			return response()->noContent();
+		}
+
+		throw new InternalServerErrorHttpException();
 	}
 
 	public function watch(Build $build) {
+		$this->authorize('watch', $build);
+
 		$select = DB::select('SELECT * FROM build_watch WHERE buildID = ? AND steamID = ?', [
 			$build->ID,
 			auth()->id(),
