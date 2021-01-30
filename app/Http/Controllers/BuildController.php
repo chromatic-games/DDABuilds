@@ -101,7 +101,7 @@ class BuildController extends AbstractController {
 	}
 
 	public function show(Build $build) {
-		$build->load(['map:ID,name', 'difficulty:ID,name', 'gameMode:ID,name', 'waves.towers', 'heroStats', 'likeValue']);
+		$build->load(['map:ID,name', 'difficulty:ID,name', 'gameMode:ID,name', 'waves.towers', 'heroStats', 'likeValue', 'watchStatus']);
 
 		return new BuildResource($build);
 	}

@@ -47,6 +47,8 @@
 						<div class="col-sm-12">
 							<div class="card">
 								<div class="card-header">
+									<i v-if="canLike" :class="{'fa-star-o': !build.watchStatus, 'fa-star': build.watchStatus}" class="fa pointer text-warning"
+										@click="buildWatch"></i>
 									<i v-if="build.buildStatus !== buildStatusPublic" v-b-tooltip.hover="$t('build.isPrivate')" class="fa fa-eye-slash"></i>
 									<span v-if="build.rifted" class="badge badge-success">Rifted</span>
 									<span v-if="build.afkAble" class="badge badge-success">AFK Able</span>
@@ -588,6 +590,15 @@ export default {
 		buildChangeMode(newMode) {
 			this.demoMode = newMode;
 			window.scrollTo(0, 0);
+		},
+		buildWatch() {
+			showAjaxLoader();
+			axios
+				.post('/builds/' + this.build.ID + '/watch')
+				.then(({ data }) => {
+					this.build.watchStatus = data.watchStatus;
+				})
+				.finally(hideAjaxLoader);
 		},
 		buildLike() {
 			like('build', this.build, LIKE);

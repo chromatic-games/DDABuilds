@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Build\BuildHeroStats;
+use App\Models\Build\BuildWatch;
 use App\Models\Build\BuildWave;
 use App\Models\Like\ILikeableModel;
 use App\Models\Traits\TLikeable;
@@ -82,6 +83,10 @@ class Build extends AbstractModel implements ILikeableModel {
 	];
 
 	public $validSortFields = ['author', 'likes', 'mapID', 'title', 'views', 'date', 'difficultyID', 'gameModeID'];
+
+	public function watchStatus() {
+		return $this->hasOne(BuildWatch::class, 'buildID', 'ID')->where('steamID', auth()->id() ?? 0);
+	}
 
 	public function map() {
 		return $this->hasOne(Map::class, 'ID', 'mapID');

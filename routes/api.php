@@ -18,7 +18,7 @@ Route::group(['middleware' => ['auth:guest']], function () {
 Route::group(['middleware' => ['auth:user']], function () {
 	Route::delete('/auth', [AuthController::class, 'logout']);
 
-	Route::get('/builds/{build}/watch', [BuildController::class, 'watch']);
+	Route::post('/builds/{build}/watch', [BuildController::class, 'watch']);
 	Route::get('/maps/editor/{map}', [MapController::class, 'editor']);
 
 	Route::post('/like/', [LikeController::class, 'like']);

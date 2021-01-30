@@ -37,6 +37,7 @@ class BuildResource extends JsonResource {
 			'heroStats' => $this->whenLoaded('heroStats'),
 			'isDeleted' => $this->isDeleted,
 			'likeValue' => $this->relationLoaded('likeValue') ? ($this->likeValue ? $this->likeValue->likeValue : 0) : new MissingValue(),
+			'watchStatus' => $this->relationLoaded('watchStatus') ? ($this->watchStatus ? 1 : 0) : new MissingValue(),
 		];
 	}
 }
