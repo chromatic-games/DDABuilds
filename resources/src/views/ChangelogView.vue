@@ -17,6 +17,7 @@
 			<li><span class="badge badge-warning">Changed</span> Updated the require attributes view.</li>
 			<li><span class="badge badge-danger">Fixed</span> Towers cant be placed anymore out of the map.</li>
 			<li><span class="badge badge-danger">Fixed</span> New towers from disabled heros are no more visible.</li>
+			<li><span class="badge badge-danger">Fixed</span> Fixed a memory leak in build edit mode.</li>
 		</ul>
 		<h3>2020-09-22</h3>
 		<ul>

@@ -18,25 +18,23 @@
 					</ul>
 
 					<div id="mapContainer">
-						<img :src="'/assets/images/map/' + map.name + '.png'" class="buildMap" />
+						<img :src="'/assets/images/map/' + map.name + '.png'" alt="map image" class="buildMap" />
 
-						<div v-for="(tower, key) of waveTowersFiltered"
+						<div v-for="(entry, key) of waveTowersFiltered"
 							:key="key"
 							ref="placedTower"
-							:data-class="towers[tower.ID].heroClassID"
-							:style="{position: 'absolute', left: tower.x + 'px', top: tower.y + 'px', transform: 'rotate(' + tower.rotation + 'deg)'}"
-							:title="$t('tower.' + towers[tower.ID].name) + (towers[tower.ID].isResizable ? ' (' + tower.size + ')' : '')"
+							:data-class="entry.tower.heroClassID"
+							:style="{position: 'absolute', left: entry.placed.x + 'px', top: entry.placed.y + 'px', transform: 'rotate(' + entry.placed.rotation + 'deg)'}"
+							:title="$t('tower.' + entry.tower.name) + (entry.tower.isResizable ? ' (' + entry.placed.size + ')' : '')"
 							class="tower-container pointer"
-							@mousemove="towerMouseMove(tower, $event)"
-							@mouseout="towerMouseOut(tower)"
-							@mouseover="towerMouseOver(tower, key)"
-							@mouseup="towerMouseUp(tower, key)"
-							@contextmenu.prevent="towerDelete(tower)">
-							<img :src="'/assets/images/tower/' + towers[tower.ID].name + (tower.size || '') + '.png'" class="tower" />
-							<div v-if="(towers[tower.ID].isResizable || towers[tower.ID].isRotatable) && tower.mouseOver" class="menu">
-								<i v-if="tower.size > towers[tower.ID].unitCost" class="fa fa-minus du-decrease" @click="towerUpdateSize(tower, -1)"></i>
-								<i v-if="towers[tower.ID].isRotatable" class="fa fa-repeat" @mousedown="towerMouseDown(tower, key)"></i>
-								<i v-if="tower.size < towers[tower.ID].maxUnitCost" class="fa fa-plus du-increase" @click="towerUpdateSize(tower, 1)"></i>
+							@mouseout="towerMouseOut(entry.placed, key)"
+							@mouseover.stop="towerMouseOver(entry.placed, key)"
+							@contextmenu.prevent="towerDelete(entry.placed)">
+							<img :alt="entry.tower.name" :src="'/assets/images/tower/' + entry.tower.name + (entry.placed.size || '') + '.png'" class="tower" />
+							<div v-if="(entry.tower.isResizable || entry.tower.isRotatable) && entry.placed.mouseOver" class="menu">
+								<i v-if="entry.placed.size > entry.tower.unitCost" class="fa fa-minus du-decrease" @click="towerUpdateSize(entry.placed, -1)"></i>
+								<i v-if="entry.tower.isRotatable" class="fa fa-repeat" @mousedown="towerMouseDown(entry.placed, key)"></i>
+								<i v-if="entry.placed.size < entry.tower.maxUnitCost" class="fa fa-plus du-increase" @click="towerUpdateSize(entry.placed, 1)"></i>
 							</div>
 						</div>
 					</div>
@@ -123,72 +121,72 @@
 									</div>
 								</div>
 							</div>
-						</template>
 
-						<div v-if="isEditMode" class="col-sm-12">
-							<div class="card">
-								<div class="card-header">Details</div>
-								<div class="card-body">
-									<div class="form-group">
-										Required Attributes:
+							<div class="col-sm-12">
+								<div class="card">
+									<div class="card-header">Details</div>
+									<div class="card-body">
+										<div class="form-group">
+											Required Attributes:
 
-										<build-stats-table v-model="build.heroStats" :hero-list="heroList" edit-mode />
-									</div>
-
-									<!-- build status -->
-									<div class="form-group">
-										<label for="buildStatus">Build Status:</label>
-										<select id="buildStatus" v-model.number="build.buildStatus" class="form-control">
-											<option value="1">Public</option>
-											<option value="2">Unlisted</option>
-											<option value="3">Private</option>
-										</select>
-									</div>
-
-									<!-- difficulty -->
-									<div class="form-group">
-										<label for="difficulty">Difficulty:</label>
-										<select id="difficulty" v-model="build.difficultyID" :class="'difficulty-' + build.difficultyID" class="form-control">
-											<option v-for="difficulty in difficulties" :class="'difficulty-' + difficulty.ID"
-												:value="difficulty.ID">{{$t('difficulty.' + difficulty.name)}}
-											</option>
-										</select>
-									</div>
-									<div class="form-group">
-										<div v-for="gameMode in gameModes" class="form-check form-check-inline">
-											<input :id="'buildGameMode' + gameMode.ID" v-model="build.gameModeID" :value="gameMode.ID" class="form-check-input" type="radio">
-											<label :for="'buildGameMode' + gameMode.ID" class="form-check-label">{{$t('gameMode.' + gameMode.name)}}</label>
+											<build-stats-table v-model="build.heroStats" :hero-list="heroList" edit-mode />
 										</div>
-									</div>
 
-									<div class="form-group form-check">
-										<input id="buildHardcore" v-model="build.hardcore" class="form-check-input" type="checkbox" />
-										<label class="form-check-label" for="buildHardcore"> Hardcore</label>
-									</div>
-									<div class="form-group form-check">
-										<input id="buildAFKAble" v-model="build.afkAble" class="form-check-input" type="checkbox" />
-										<label class="form-check-label" for="buildAFKAble"> AFK able</label>
-									</div>
-									<div class="form-group form-check">
-										<input id="buildRifted" v-model="build.rifted" class="form-check-input" type="checkbox" />
-										<label class="form-check-label" for="buildRifted"> Rifted</label>
-									</div>
+										<!-- build status -->
+										<div class="form-group">
+											<label for="buildStatus">Build Status:</label>
+											<select id="buildStatus" v-model.number="build.buildStatus" class="form-control">
+												<option value="1">Public</option>
+												<option value="2">Unlisted</option>
+												<option value="3">Private</option>
+											</select>
+										</div>
 
-									<div class="form-group">
-										<label for="buildExpPerRun">XP Per Run:</label>
-										<input id="buildExpPerRun" v-model="build.expPerRun" class="form-control" maxlength="20" placeholder="XP Per Run" type="text" />
-									</div>
-									<div class="form-group">
-										<label for="buildTimePerRun">Time Per Run:</label>
-										<input id="buildTimePerRun" v-model="build.timePerRun" class="form-control" maxlength="20" placeholder="Time Per Run" type="text" />
-									</div>
+										<!-- difficulty -->
+										<div class="form-group">
+											<label for="difficulty">Difficulty:</label>
+											<select id="difficulty" v-model="build.difficultyID" :class="'difficulty-' + build.difficultyID" class="form-control">
+												<option v-for="difficulty in difficulties" :key="difficulty.ID" :class="'difficulty-' + difficulty.ID"
+													:value="difficulty.ID">{{$t('difficulty.' + difficulty.name)}}
+												</option>
+											</select>
+										</div>
+										<div class="form-group">
+											<div v-for="gameMode in gameModes" :key="gameMode.ID" class="form-check form-check-inline">
+												<input :id="'buildGameMode' + gameMode.ID" v-model="build.gameModeID" :value="gameMode.ID" class="form-check-input" type="radio">
+												<label :for="'buildGameMode' + gameMode.ID" class="form-check-label">{{$t('gameMode.' + gameMode.name)}}</label>
+											</div>
+										</div>
 
-									<button class="btn btn-primary" @click="save">Save</button>
-									<button class="btn btn-secondary" @click="demoMode = !demoMode">Viewer Mode</button>
-									<button v-if="build.ID" class="btn btn-danger">Delete</button>
+										<div class="form-group form-check">
+											<input id="buildHardcore" v-model="build.hardcore" class="form-check-input" type="checkbox" />
+											<label class="form-check-label" for="buildHardcore"> Hardcore</label>
+										</div>
+										<div class="form-group form-check">
+											<input id="buildAFKAble" v-model="build.afkAble" class="form-check-input" type="checkbox" />
+											<label class="form-check-label" for="buildAFKAble"> AFK able</label>
+										</div>
+										<div class="form-group form-check">
+											<input id="buildRifted" v-model="build.rifted" class="form-check-input" type="checkbox" />
+											<label class="form-check-label" for="buildRifted"> Rifted</label>
+										</div>
+
+										<div class="form-group">
+											<label for="buildExpPerRun">XP Per Run:</label>
+											<input id="buildExpPerRun" v-model="build.expPerRun" class="form-control" maxlength="20" placeholder="XP Per Run" type="text" />
+										</div>
+										<div class="form-group">
+											<label for="buildTimePerRun">Time Per Run:</label>
+											<input id="buildTimePerRun" v-model="build.timePerRun" class="form-control" maxlength="20" placeholder="Time Per Run" type="text" />
+										</div>
+
+										<button class="btn btn-primary" @click="save">Save</button>
+										<button class="btn btn-secondary" @click="demoMode = !demoMode">Viewer Mode</button>
+										<button v-if="build.ID" class="btn btn-danger">Delete</button>
+									</div>
 								</div>
 							</div>
-						</div>
+						</template>
 					</div>
 				</div>
 			</div>
@@ -214,6 +212,8 @@ import ClassicCkeditor from '../../components/ClassicCkeditor';
 import {STATUS_PUBLIC} from '../../utils/build';
 import {formatSEOTitle} from '../../utils/string';
 import BuildStatsTable from './BuildStatsTable';
+
+window.$ = $;
 
 export default {
 	name: 'BuildAddView',
@@ -246,7 +246,7 @@ export default {
 			towers: {},
 			difficulties: [],
 			demoMode: false,
-			mouseoverTimeout: null,
+			rotateTower: false,
 		};
 	},
 	props: {
@@ -269,9 +269,10 @@ export default {
 				for (let key in this.$refs.placedTower) {
 					let el = this.$refs.placedTower[key];
 					$(el).draggable({
+						containment: '#mapContainer',
 						stop: (event, ui) => {
 							let offset = canvas.offset();
-							this.placedTowers[key].x = ui.offset.left;
+							this.placedTowers[key].x = ui.offset.left - offset.left;
 							this.placedTowers[key].y = ui.offset.top - offset.top;
 						},
 					});
@@ -296,7 +297,7 @@ export default {
 					ID: towerID,
 					waveID: this.selectedWave,
 					size: tower.unitCost < tower.maxUnitCost ? tower.unitCost : 0,
-					x: ui.offset.left,
+					x: ui.offset.left - offset.left,
 					y: ui.offset.top - offset.top,
 					rotation: 0,
 					mouseOver: false,
@@ -397,12 +398,12 @@ export default {
 			}
 		},
 		towerMouseOver(tower, key) {
-			if (!this.towers[tower.ID].isRotatable) {
+			if (!this.towers[tower.ID].isRotatable || this.rotateTower) {
 				return;
 			}
 
-			if (this.mouseoverTimeout) {
-				window.clearTimeout(this.mouseoverTimeout);
+			if (tower.mouseoverTimeout) {
+				window.clearTimeout(tower.mouseoverTimeout);
 			}
 
 			tower.mouseOver = true;
@@ -429,18 +430,29 @@ export default {
 				}
 			});
 		},
-		towerMouseMove(tower, event) {
-			if (typeof tower.mousemove === 'function') {
-				tower.mousemove(event);
+		mousemove(event) {
+			if (!this.rotateTower) {
+				return;
+			}
+
+			let placed = this.waveTowersFiltered[this.rotateTower - 1]?.placed;
+			if (placed && typeof placed.mousemove === 'function') {
+				placed.mousemove(event);
 			}
 		},
-		towerMouseUp(tower, key) {
-			console.debug('mouse up', Date.now());
-			delete tower.mousemove;
-			$(this.$refs.placedTower[key]).draggable('enable');
+		mouseup() {
+			window.removeEventListener('mouseup', this.mouseup);
+			window.addEventListener('mousemove', this.mousemove);
+
+			$(this.$refs.placedTower[this.rotateTower - 1]).draggable('enable');
+			this.rotateTower = 0;
 		},
 		towerMouseDown(tower, key) {
-			console.debug('mouse down', Date.now());
+			this.rotateTower = key + 1;
+
+			window.addEventListener('mouseup', this.mouseup);
+			window.addEventListener('mousemove', this.mousemove);
+
 			let el = this.$refs.placedTower[key];
 			let rect = el.getBoundingClientRect();
 			let offset = {
@@ -460,13 +472,12 @@ export default {
 			};
 		},
 		towerMouseOut(tower) {
-			if (this.mouseoverTimeout) {
-				window.clearTimeout(this.mouseoverTimeout);
+			if (tower.mouseoverTimeout) {
+				window.clearTimeout(tower.mouseoverTimeout);
 			}
 
-			this.mouseoverTimeout = window.setTimeout(() => {
+			tower.mouseoverTimeout = window.setTimeout(() => {
 				tower.mouseOver = false;
-				this.towerMouseUp(tower);
 			}, 50);
 		},
 		towerUpdateSize(tower, update) {
@@ -523,7 +534,7 @@ export default {
 			});
 		},
 		waveAdd() {
-			this.waveNames.push('custom wave ' + (this.waveNames.length + 1));
+			this.selectedWave = this.waveNames.push('custom wave ' + (this.waveNames.length + 1)) - 1;
 		},
 		waveSelect(waveID) {
 			if (waveID <= this.waveNames.length + 1) {
@@ -617,9 +628,13 @@ export default {
 		},
 		waveTowersFiltered() {
 			let towers = [];
-			for (let tower of this.waveTowers) {
-				if (!this.disabledHeros.includes(this.towers[tower.ID].heroClassID)) {
-					towers.push(tower);
+			for (let placed of this.waveTowers) {
+				let tower = this.towers[placed.ID];
+				if (!this.disabledHeros.includes(tower.heroClassID)) {
+					towers.push({
+						placed: placed,
+						tower,
+					});
 				}
 			}
 
@@ -704,6 +719,10 @@ export default {
 	height: 35px;
 }
 
+.buildMap {
+	border: 1px solid black;
+}
+
 .buildMap,
 .tower-container img {
 	-webkit-user-select: none; /* Chrome all / Safari all */
@@ -737,10 +756,11 @@ export default {
 }
 
 #mapContainer {
+	position: relative;
 	width: 1024px;
 	height: 1024px;
 
-	img {
+	.buildMap {
 		width: 100%;
 	}
 }
