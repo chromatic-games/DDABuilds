@@ -4,7 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-// TODO properties
+/**
+ * @property-read int    $id
+ * @property-read string $name
+ */
 class Difficulty extends AbstractModel {
 	use HasFactory;
 

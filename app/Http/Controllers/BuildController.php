@@ -18,7 +18,7 @@ class BuildController extends AbstractController {
 	}
 
 	public function index(Request $request) {
-		$builds = Build::with(['map', 'gameMode', 'difficulty'])->sort($request->query('sortField'), $request->query('sortOrder'));
+		$builds = Build::with(['map', 'gameMode', 'difficulty', 'likeValue'])->sort($request->query('sortField'), $request->query('sortOrder'));
 		if ( auth()->id() ) {
 			if ( $request->query->getBoolean('mine') ) {
 				$builds->where('build.steamID', auth()->id());
@@ -101,7 +101,7 @@ class BuildController extends AbstractController {
 	}
 
 	public function show(Build $build) {
-		$build->load(['map:ID,name', 'difficulty:ID,name', 'gameMode:ID,name', 'waves.towers', 'heroStats']);
+		$build->load(['map:ID,name', 'difficulty:ID,name', 'gameMode:ID,name', 'waves.towers', 'heroStats', 'likeValue']);
 
 		return new BuildResource($build);
 	}

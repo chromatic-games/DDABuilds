@@ -33,7 +33,7 @@
 							@mouseover.stop="towerMouseOver(entry.placed, key)"
 							@contextmenu.prevent="towerDelete(entry.placed)">
 							<img :alt="entry.tower.name" :src="'/assets/images/tower/' + entry.tower.name + (entry.placed.size || '') + '.png'" class="tower" />
-							<div v-if="(entry.tower.isResizable || entry.tower.isRotatable) && entry.placed.mouseOver" class="menu">
+							<div v-if="isEditMode && entry.placed.mouseOver && (entry.tower.isResizable || entry.tower.isRotatable)" class="menu">
 								<i v-if="entry.placed.size > entry.tower.unitCost" class="fa fa-minus du-decrease" @click="towerUpdateSize(entry.placed, -1)"></i>
 								<i v-if="entry.tower.isRotatable" class="fa fa-repeat" @mousedown="towerMouseDown(entry.placed, key)"></i>
 								<i v-if="entry.placed.size < entry.tower.maxUnitCost" class="fa fa-plus du-increase" @click="towerUpdateSize(entry.placed, 1)"></i>
@@ -86,9 +86,10 @@
 
 											<build-stats-table v-model="build.heroStats" :edit-mode="isEditMode" :hero-list="heroList" />
 
-											<button class="btn btn-secondary" @click="buildChangeMode(false)">Editor Mode</button>
-											<button v-if="build.ID" class="btn btn-secondary">
-												<i class="fa fa-thumbs-up"></i>
+											<button v-if="canEdit" class="btn btn-secondary" @click="buildChangeMode(false)">Editor Mode</button>
+											<button v-if="build.ID" :class="['btn', {'btn-default': !build.likeValue, 'btn-success': build.likeValue, disabled: !canLike}]"
+												:disabled="!canLike" @click="buildLike">
+												<i class="fa fa-thumbs-up"></i> {{build.likes}}
 											</button>
 										</template>
 									</div>
@@ -212,8 +213,9 @@ import axios from 'axios';
 import $ from 'jquery';
 import Vue from 'vue';
 import ClassicCkeditor from '../../components/ClassicCkeditor';
-import {hidePageLoader, showPageLoader} from '../../store';
+import {hideAjaxLoader, hidePageLoader, showAjaxLoader, showPageLoader} from '../../store';
 import {STATUS_PUBLIC} from '../../utils/build';
+import {LIKE, like} from '../../utils/like';
 import {formatSEOTitle} from '../../utils/string';
 import BuildStatsTable from './BuildStatsTable';
 
@@ -406,7 +408,7 @@ export default {
 			}
 		},
 		towerMouseOver(tower, key) {
-			if (!this.towers[tower.ID].isRotatable || this.rotateTower) {
+			if (!this.towers[tower.ID].isRotatable || this.rotateTower || !this.isEditMode || tower.mouseOver) {
 				return;
 			}
 
@@ -479,13 +481,14 @@ export default {
 				tower.rotation = mouse_cur_angle * (180 / Math.PI) + 90;
 			};
 		},
-		towerMouseOut(tower) {
+		towerMouseOut(tower, key) {
 			if (tower.mouseoverTimeout) {
 				window.clearTimeout(tower.mouseoverTimeout);
 			}
 
 			tower.mouseoverTimeout = window.setTimeout(() => {
 				tower.mouseOver = false;
+				$(this.$refs.placedTower[key]).off('wheel');
 			}, 50);
 		},
 		towerUpdateSize(tower, update) {
@@ -586,7 +589,12 @@ export default {
 			this.demoMode = newMode;
 			window.scrollTo(0, 0);
 		},
+		buildLike() {
+			like('build', this.build, LIKE);
+		},
 		buildDelete() {
+			showAjaxLoader();
+
 			axios
 				.delete('/builds/' + this.build.ID)
 				.then(() => {
@@ -594,9 +602,12 @@ export default {
 				})
 				.catch(() => {
 					// TODO error handling
-				});
+				})
+				.finally(hideAjaxLoader);
 		},
 		save() {
+			showAjaxLoader();
+
 			let build = {
 				...this.build,
 				waves: this.waveNames,
@@ -626,20 +637,27 @@ export default {
 				})
 				.catch(() => {
 					// TODO error handling
-				});
+				})
+				.finally(hideAjaxLoader);
 		},
 	},
 	computed: {
+		canLike() {
+			if (!this.$store.state.authentication.user.ID) {
+				return false;
+			}
+
+			return !this.canEdit;
+		},
+		canEdit() {
+			return this.build.steamID === this.$store.state.authentication.user.ID;
+		},
 		isEditMode() {
 			if (this.demoMode) {
 				return false;
 			}
 
-			if (!this.isView) {
-				return true;
-			}
-
-			return this.build.steamID === this.$store.state.authentication.user.ID;
+			return !this.isView || this.canEdit;
 		},
 		waveTowers() {
 			let towers = [];

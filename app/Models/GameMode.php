@@ -2,23 +2,22 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
-
-// TODO properties
-class GameMode extends AbstractModel
-{
+/**
+ * @property-read int    $ID
+ * @property-read string $name
+ */
+class GameMode extends AbstractModel {
 	/** @inheritdoc */
 	protected $table = 'game_mode';
 
 	/** @inheritdoc */
 	protected $primaryKey = 'id';
 
-	/** @inheritdoc  */
+	/** @inheritdoc */
 	public $timestamps = false;
 
-	/** @inheritdoc  */
+	/** @inheritdoc */
 	protected $fillable = [
-		'name'
+		'name',
 	];
 }

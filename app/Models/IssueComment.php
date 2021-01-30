@@ -6,9 +6,9 @@ use App\Models\Traits\HasSteamUser;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**
- * @property-read integer $commentID
- * @property-read integer $bugReportID
- * @property-read integer $time
+ * @property-read int $commentID
+ * @property-read int $bugReportID
+ * @property-read int $time
  * @property-read string  $steamID
  * @property-read string  $description
  */

@@ -6,12 +6,12 @@ use App\Models\Traits\HasSteamUser;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**
- * @property-read integer   $reportID
- * @property-read integer   $time
+ * @property-read int   $reportID
+ * @property-read int   $time
  * @property-read string    $title
  * @property-read string    $steamID
  * @property-read string    $description
- * @property-read integer   $status
+ * @property-read int   $status
  * @property-read SteamUser $user
  */
 class Issue extends AbstractModel {

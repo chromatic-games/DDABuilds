@@ -21,7 +21,7 @@ Route::group(['middleware' => ['auth:user']], function () {
 	Route::get('/builds/{build}/watch', [BuildController::class, 'watch']);
 	Route::get('/maps/editor/{map}', [MapController::class, 'editor']);
 
-	Route::get('/like/', [LikeController::class, 'like']);
+	Route::post('/like/', [LikeController::class, 'like']);
 
 	Route::apiResources([
 		'maps' => MapController::class,

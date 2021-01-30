@@ -7,3 +7,15 @@
 	margin: 40px 0 20px;
 	border-bottom: 1px solid #EEEEEE;
 }
+
+.btn-default {
+	color: #333;
+	background-color: #fff;
+	border-color: #ccc;
+
+	&:not(:disabled):hover {
+		color: #333;
+		background-color: #e6e6e6;
+		border-color: #adadad;
+	}
+}

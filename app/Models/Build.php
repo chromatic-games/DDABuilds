@@ -4,33 +4,40 @@ namespace App\Models;
 
 use App\Models\Build\BuildHeroStats;
 use App\Models\Build\BuildWave;
+use App\Models\Like\ILikeableModel;
+use App\Models\Traits\TLikeable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**
- * @property-read integer $ID
- * @property-read string  $date
- * @property-read string  $author
- * @property-read string  $title
- * @property-read string  $expPerRun
- * @property-read string  $timePerRun
- * @property-read string  $description
- * @property-read integer $views
- * @property-read integer $gameModeID
- * @property-read integer $difficultyID
- * @property-read integer $mapID
- * @property-read integer $likeValue
- * @property-read integer $comments
- * @property-read integer $isDeleted
- * @property-read integer $buildStatus
- * @property-read integer $afkAble
- * @property-read integer $hardcore
- * @property-read integer $likes
- * @property-read integer $steamID
+ * @property-read int        $ID
+ * @property-read string     $date
+ * @property-read string     $author
+ * @property-read string     $title
+ * @property-read string     $expPerRun
+ * @property-read string     $timePerRun
+ * @property-read string     $description
+ * @property-read int        $views
+ * @property-read int        $gameModeID
+ * @property-read int        $difficultyID
+ * @property-read int        $mapID
+ * @property-read int        $comments
+ * @property-read int        $isDeleted
+ * @property-read int        $buildStatus
+ * @property-read int        $afkAble
+ * @property-read int        $hardcore
+ * @property-read int        $likes
+ * @property-read int        $steamID
+ *
+ * @property-read Like       $likeValue
+ * @property-read GameMode   $gameMode
+ * @property-read Difficulty $difficulty
+ * @property-read Map        $map
  */
-class Build extends AbstractModel {
+class Build extends AbstractModel implements ILikeableModel {
 	use HasFactory;
+	use TLikeable;
 
 	/** @var int public build status (everyone can view the build) */
 	public const STATUS_PUBLIC = 1;
@@ -71,7 +78,7 @@ class Build extends AbstractModel {
 		// 'comments',
 		'timePerRun',
 		'expPerRun',
-		'isDeleted'
+		'isDeleted',
 	];
 
 	public $validSortFields = ['author', 'likes', 'mapID', 'title', 'views', 'date', 'difficultyID', 'gameModeID'];
@@ -110,7 +117,7 @@ class Build extends AbstractModel {
 		}
 
 		if ( in_array($column, $this->validSortFields) ) {
-			$query->orderBy($this->table . '.' . $column, $direction);
+			$query->orderBy($this->table.'.'.$column, $direction);
 		}
 	}
 
@@ -160,7 +167,7 @@ class Build extends AbstractModel {
 		$query->where($where)->where(function ($query) {
 			$query->where('buildStatus', '=', self::STATUS_PUBLIC);
 			if ( auth()->id() ) {
-				$query->orWhere($this->table . '.steamID', '=', auth()->id());
+				$query->orWhere($this->table.'.steamID', '=', auth()->id());
 			}
 		});
 	}

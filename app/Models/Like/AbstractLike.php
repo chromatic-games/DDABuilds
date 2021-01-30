@@ -41,8 +41,8 @@ abstract class AbstractLike {
 		if ( !$this->getObject() ) {
 			throw new BadRequestException('objectID not found');
 		}
-		elseif ( !is_subclass_of(self::$baseClass, ILikeableModel::class)) {
-
+		elseif ( !is_subclass_of(static::$baseClass, ILikeableModel::class) ) {
+			throw new BadRequestException(sprintf('Class \'%s\' does not extend class \'%s\'.', static::$baseClass, ILikeableModel::class));
 		}
 
 		$classParts = explode('\\', get_class($this));
