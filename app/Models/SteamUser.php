@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Policies\IssuePolicy;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
@@ -61,26 +62,13 @@ class SteamUser extends AbstractModel implements AuthenticatableContract, Author
 		return 'https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/'.substr($this->avatarHash, 0, 2).'/'.$this->avatarHash.$hashAdditional.'.jpg';
 	}
 
-	/**
-	 * get the count of unread notifications from this user
-	 *
-	 * @return int
-	 */
-	public function getUnreadNotifications() {
-		if ( $this->__unreadNotifications === null ) {
-			$this->__unreadNotifications = 0;
-			$notificationList = new NotificationList();
-			$notificationList->getConditionBuilder()->add('steamID = ? AND seen = 0', [$this->steamID]);
-			$this->__unreadNotifications = $notificationList->countObjects();
-		}
-
-		return $this->__unreadNotifications;
+	public function isMaintainer() {
+		return in_array($this->ID, IssuePolicy::MAINTAINER);
 	}
 
-	/**
-	 * @return bool
-	 */
-	public function isMaintainer() {
-		return in_array($this->steamID, Issue::MAINTAINER);
+	public function authInfo() {
+		return array_merge($this->toArray(), [
+			'isMaintainer' => $this->isMaintainer(),
+		]);
 	}
 }

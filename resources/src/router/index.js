@@ -34,22 +34,11 @@ router.afterEach(() => {
 });
 
 router.beforeEach((to, from, next) => {
-	let customNext = () => {
-		if (to.meta.requiredAuth && !store.state.authentication.user.steamID) {
-			return next({ name: 'home' });
-		}
-
-		next();
-	};
-
-	if (store.state.authentication.checked) {
-		return customNext();
+	if (to.meta.requiredAuth && !store.state.authentication.user.steamID) {
+		return next({ name: 'home' });
 	}
 
-	store
-		.dispatch('authentication/checkAuth')
-		.then(customNext)
-		.catch(customNext);
+	next();
 });
 
 export default router;

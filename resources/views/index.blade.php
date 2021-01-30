@@ -12,9 +12,17 @@
 	<div id="app"></div>
 	<script>
 		window.APP = {
+			user: {!! auth()->id() ? json_encode(auth()->user()->authInfo()) : 'null' !!},
 			supportedLocales: {!! json_encode(\App\Models\Locale::getSupportedLocales()) !!}
 		};
 	</script>
 	<script src="{{mix('assets/js/main.js')}}"></script>
+	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-39334248-36"></script>
+	<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag() {dataLayer.push(arguments);}
+		gtag('js', new Date());
+		gtag('config', 'UA-39334248-36');
+	</script>
 </body>
 </html>

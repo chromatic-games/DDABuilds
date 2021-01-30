@@ -1,10 +1,10 @@
 import axios from 'axios';
+import {hideAjaxLoader, showAjaxLoader} from './index';
 
 export default {
 	namespaced: true,
 	state: {
-		checked: false,
-		user: {
+		user: window.APP.user || {
 			ID: 0,
 			name: '',
 			avatarHash: '',
@@ -24,30 +24,23 @@ export default {
 				}
 			}
 		},
-		SET_CHECKED(state, payload) {
-			state.checked = payload;
-		},
 	},
 	actions: {
 		logout({ commit }) {
-			return axios.delete('/auth').then(() => {
-				commit('SET_USER', {
-					ID: 0,
-				});
-			});
-		},
-		checkAuth({ state, commit }) {
-			if (state.checked) {
-				return Promise.resolve();
-			}
+			showAjaxLoader();
 
 			return axios
-				.get('/auth')
-				.then(({ data }) => {
-					commit('SET_USER', data);
+				.delete('/auth')
+				.then(() => {
+					commit('SET_USER', {
+						ID: 0,
+					});
+				})
+				.catch(() => {
+					// TODO error handling
 				})
 				.finally(() => {
-					commit('SET_CHECKED', true);
+					hideAjaxLoader();
 				});
 		},
 	},

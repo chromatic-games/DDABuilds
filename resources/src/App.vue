@@ -53,10 +53,11 @@
 			</div>
 		</b-navbar>
 
+		<loading-indicator v-if="$store.state.pageLoader" />
 		<section v-if="!$router.currentRoute.meta.ignoreSection" id="main" class="marginTop">
-			<router-view />
+			<router-view v-show="!$store.state.pageLoader" />
 		</section>
-		<router-view v-else />
+		<router-view v-else v-show="!$store.state.pageLoader" />
 
 		<footer :class="{'bg-dark': !darkMode, 'bg-secondary': darkMode}" class="navbar navbar-dark navbar-footer navbar-expand-lg">
 			<div class="container">
@@ -66,14 +67,23 @@
 				</ul>
 			</div>
 		</footer>
+
+		<div v-if="$store.state.ajaxLoader">
+			<div class="loadingSpinner">
+				<loading-indicator />
+			</div>
+			<div class="pageBackdrop"></div>
+		</div>
 	</div>
 </template>
 
 <script>
+import LoadingIndicator from './components/LoadingIndicator';
 import {supportedLanguages} from './i18n';
 
 export default {
 	name: 'App',
+	components: { LoadingIndicator },
 	data() {
 		return {
 			darkMode: false,
@@ -132,3 +142,35 @@ export default {
 	},
 };
 </script>
+
+<style lang="scss">
+.pageBackdrop {
+	background-color: rgba(0, 0, 0, .4);
+	bottom: 0;
+	left: 0;
+	position: fixed;
+	right: 0;
+	top: 0;
+	z-index: 1395;
+}
+
+.loadingSpinner {
+	background-color: #FFFFFF;
+	border: 1px solid #CCCCCC;
+	color: #2C3E50;
+	box-shadow: 2px 2px 5px 0 rgba(0, 0, 0, .2);
+	left: 50%;
+	padding: 10px;
+	position: fixed;
+	text-align: center;
+	top: 200px;
+	transform: translateX(-50%);
+	transition: visibility 0s linear 0.12s, opacity 0.12s linear;
+	z-index: 1401;
+
+	> span:not(.fa) {
+		display: block;
+		margin-top: 5px;
+	}
+}
+</style>

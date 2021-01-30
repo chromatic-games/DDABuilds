@@ -18,7 +18,6 @@ export default {
 
 		let store = this.vueInstance.$store;
 		store.commit('authentication/SET_USER', this.$store.state.authentication.user);
-		store.commit('authentication/SET_CHECKED', true);
 		window.close();
 	},
 };

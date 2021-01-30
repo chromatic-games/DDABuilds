@@ -16,7 +16,6 @@ Route::group(['middleware' => ['auth:guest']], function () {
 
 // routes where an authentication is required
 Route::group(['middleware' => ['auth:user']], function () {
-	Route::get('/auth', [AuthController::class, 'authInfo']);
 	Route::delete('/auth', [AuthController::class, 'logout']);
 
 	Route::get('/builds/{build}/watch', [BuildController::class, 'watch']);

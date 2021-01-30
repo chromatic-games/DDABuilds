@@ -19,7 +19,7 @@ class IssuePolicy {
 	];
 
 	public function isMaintainer(SteamUser $steamUser) {
-		return in_array($steamUser->ID, self::MAINTAINER);
+		return $steamUser->isMaintainer();
 	}
 
 	public function viewAny(SteamUser $steamUser) {

@@ -3,6 +3,7 @@
 		<div class="tab-content">
 			<div class="row">
 				<div class="col-lg-9">
+					<!-- wave tab menu -->
 					<ul class="nav nav-tabs">
 						<li v-for="(waveName, key) of waveNames" :key="key" class="nav-item" @click="waveSelect(key)">
 							<a :class="{active: selectedWave === key}" class="nav-link pointer">
@@ -17,6 +18,7 @@
 						<li v-if="build.ID" class="nav-item"><a class="nav-link">Comments (<span>{{build.comments}}</span>)</a></li>
 					</ul>
 
+					<!-- map container -->
 					<div id="mapContainer">
 						<img :src="'/assets/images/map/' + map.name + '.png'" alt="map image" class="buildMap" />
 
@@ -39,6 +41,7 @@
 						</div>
 					</div>
 				</div>
+				<!-- tower control panel -->
 				<div id="towerControlPanel" class="col-lg-3">
 					<div class="row">
 						<div class="col-sm-12">
@@ -54,7 +57,6 @@
 								<div class="card-body">
 									<div class="card-text">
 										<template v-if="isEditMode">
-											<i class="fa fa-map"></i> {{$t('map.' + map.name)}}<br />
 											<div class="form-group">
 												<label for="buildName">Build Name:</label>
 												<input id="buildName" v-model.trim="build.title" class="form-control" maxlength="128" placeholder="Build Name" type="text" />
@@ -64,6 +66,7 @@
 												<input id="buildAuthor" v-model.trim="build.author" class="form-control" maxlength="20" placeholder="Author" type="text" />
 											</div>
 
+											<i class="fa fa-map"></i> {{$t('map.' + map.name)}}<br />
 											DU: <strong :style="{color: unitsUsed === unitsMax ? 'red': ''}">{{unitsUsed}}/{{unitsMax}}</strong><br />
 											Mana used: <strong>{{manaUsed}}</strong><br />
 											Mana to upgrade: <strong>{{manaUpgrade}}</strong><br />
@@ -191,7 +194,7 @@
 				</div>
 			</div>
 
-			<div class="container">
+			<div v-if="isEditMode || build.description" class="container">
 				<div class="card">
 					<div class="card-header">{{$t('build.description')}}</div>
 					<div v-if="isEditMode" class="card-body">
@@ -209,6 +212,7 @@ import axios from 'axios';
 import $ from 'jquery';
 import Vue from 'vue';
 import ClassicCkeditor from '../../components/ClassicCkeditor';
+import {hidePageLoader, showPageLoader} from '../../store';
 import {STATUS_PUBLIC} from '../../utils/build';
 import {formatSEOTitle} from '../../utils/string';
 import BuildStatsTable from './BuildStatsTable';
@@ -310,6 +314,8 @@ export default {
 	},
 	methods: {
 		fetch() {
+			showPageLoader();
+
 			let mapID = 0;
 			// TODO tmp, would be optimized
 			const fetchMap = () => {
@@ -349,7 +355,7 @@ export default {
 
 			if (!this.isView) {
 				mapID = this.$route.params.mapID;
-				fetchMap();
+				fetchMap().then(hidePageLoader);
 			}
 			else {
 				axios.get('/builds/' + this.$route.params.id).then(async ({ data: data }) => {
@@ -394,6 +400,8 @@ export default {
 					this.waveNames = waveNames;
 					this.build = data;
 					this.placedTowers = towers;
+
+					hidePageLoader();
 				});
 			}
 		},
@@ -576,7 +584,7 @@ export default {
 		},
 		buildChangeMode(newMode) {
 			this.demoMode = newMode;
-			window.scrollTo(0,0);
+			window.scrollTo(0, 0);
 		},
 		buildDelete() {
 			axios
@@ -734,10 +742,6 @@ export default {
 .tower {
 	width: 35px;
 	height: 35px;
-}
-
-.buildMap {
-	border: 1px solid black;
 }
 
 .buildMap,
