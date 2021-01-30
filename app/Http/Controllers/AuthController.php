@@ -10,7 +10,6 @@ use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 class AuthController extends AbstractController {
-	/** @var SteamAuth */
 	public $steamAuth;
 
 	public function __construct(SteamAuth $steamAuth) {

@@ -8,9 +8,14 @@ use App\Models\Difficulty;
 use App\Models\GameMode;
 use App\Models\Hero;
 use App\Models\Map;
+use App\Models\MapCategory;
 use App\Models\Tower;
 
 class MapController extends AbstractController {
+	public function index() {
+		return MapCategory::with('maps')->get();
+	}
+
 	public function editor(Map $map) {
 		$map->load('difficultyUnits');
 

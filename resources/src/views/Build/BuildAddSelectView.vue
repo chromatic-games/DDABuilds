@@ -47,7 +47,7 @@ export default {
 	},
 	created() {
 		axios
-			.get('/builds/maps')
+			.get('/maps')
 			.then(({ data }) => {
 				for (let idx in data) {
 					let mapCategory = data[idx];

@@ -19,12 +19,13 @@ Route::group(['middleware' => ['auth:user']], function () {
 	Route::get('/auth', [AuthController::class, 'authInfo']);
 	Route::delete('/auth', [AuthController::class, 'logout']);
 
-	Route::get('/builds/maps', [BuildController::class, 'maps']);
+	Route::get('/builds/{build}/watch', [BuildController::class, 'watch']);
 	Route::get('/maps/editor/{map}', [MapController::class, 'editor']);
 
 	Route::get('/like/', [LikeController::class, 'like']);
 
 	Route::apiResources([
+		'maps' => MapController::class,
 		'issues' => IssueController::class,
 		'issues.comments' => IssueCommentController::class,
 	]);
