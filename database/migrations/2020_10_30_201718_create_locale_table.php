@@ -6,11 +6,6 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 class CreateLocaleTable extends Migration {
-	/**
-	 * Run the migrations.
-	 *
-	 * @return void
-	 */
 	public function up() {
 		Schema::create('locale', function (Blueprint $table) {
 			$table->increments('ID');
@@ -30,11 +25,6 @@ class CreateLocaleTable extends Migration {
 		]);
 	}
 
-	/**
-	 * Reverse the migrations.
-	 *
-	 * @return void
-	 */
 	public function down() {
 		Schema::dropIfExists('locale');
 	}

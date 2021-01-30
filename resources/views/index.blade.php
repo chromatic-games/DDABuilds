@@ -10,6 +10,11 @@
 </head>
 <body>
 	<div id="app"></div>
+	<script>
+		window.APP = {
+			supportedLocales: {!! json_encode(\App\Models\Locale::getSupportedLocales()) !!}
+		};
+	</script>
 	<script src="{{mix('assets/js/main.js')}}"></script>
 </body>
 </html>

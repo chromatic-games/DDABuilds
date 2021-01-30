@@ -4,7 +4,7 @@ import i18next from 'i18next';
 import i18nextHttpBackend from 'i18next-http-backend';
 import Vue from 'vue';
 
-const supportedLanguages = ['de', 'en'];
+const supportedLanguages = window.APP.supportedLocales;
 
 export function getBrowserLanguage() {
 	if (localStorage && localStorage.getItem) {

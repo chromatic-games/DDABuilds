@@ -2,11 +2,10 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\Locale;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
-use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\DB;
 
 class LocaleMiddleware {
 	/**
@@ -18,11 +17,7 @@ class LocaleMiddleware {
 	 * @return mixed
 	 */
 	public function handle(Request $request, Closure $next) {
-		$supportedLocales = Cache::rememberForever('locales', function () {
-			return DB::table('locale')->get()->mapWithKeys(function ($value) {
-				return [$value->languageCode => $value];
-			})->all();
-		});
+		$supportedLocales = Locale::getLocales();
 
 		$requestedLocale = $request->header('accept-language');
 		$locale = $supportedLocales[config('app.locale')] ?? reset($supportedLocales); // get default locale or first supportedLocale
