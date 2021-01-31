@@ -6,15 +6,11 @@ use Illuminate\Support\Facades\Schema;
 
 class UpdateBuildTower extends Migration
 {
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
     public function up()
     {
 	    Schema::table('build_tower', function (Blueprint $table) {
-		    $table->renameColumn('fk_build', 'buildID');
+		    $table->renameColumn('id', 'ID');
+		    $table->dropColumn('fk_build');
 		    $table->renameColumn('fk_tower', 'towerID');
 		    $table->renameColumn('fk_buildwave', 'buildWaveID');
 		    $table->renameColumn('override_du', 'overrideUnits');
@@ -28,11 +24,6 @@ class UpdateBuildTower extends Migration
 	    });
     }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
     public function down()
     {
 	    Schema::table('build_tower', function (Blueprint $table) {
@@ -41,8 +32,10 @@ class UpdateBuildTower extends Migration
 		    $table->integer('rotation')->change();
 		    $table->integer('overrideUnits')->change();
 		    $table->integer('buildWaveID')->change();
+			$table->unsignedInteger('fk_build')->index('fk_build')->after('ID');
 	    });
 	    Schema::table('build_tower', function (Blueprint $table) {
+		    $table->renameColumn('ID', 'id');
 		    $table->renameColumn('buildID', 'fk_build');
 		    $table->renameColumn('towerID', 'fk_tower');
 		    $table->renameColumn('buildWaveID', 'fk_buildwave');
