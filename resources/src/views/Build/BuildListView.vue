@@ -160,7 +160,7 @@
 									</li>
 								</ul>
 
-								<img :src="'/assets/images/thumbnails/' + build.ID + '.png'" class="img-responsive" style="height: 200px;margin: 15px auto auto;">
+								<img :src="'/assets/images/thumbnail/' + build.ID + '.png'" class="img-responsive" style="height: 200px;margin: 15px auto auto;">
 							</div>
 						</div>
 						<div class="buildFiller" />

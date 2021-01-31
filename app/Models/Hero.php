@@ -2,7 +2,12 @@
 
 namespace App\Models;
 
-// TODO properties
+/**
+ * @property-read int    $ID
+ * @property-read string $name
+ * @property-read int    $isHero
+ * @property-read int    $isDisabled
+ */
 class Hero extends AbstractModel {
 	protected $table = 'hero';
 

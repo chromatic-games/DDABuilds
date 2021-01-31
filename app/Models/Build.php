@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Build\BuildHeroStats;
+use App\Models\Build\BuildTower;
 use App\Models\Build\BuildWatch;
 use App\Models\Build\BuildWave;
 use App\Models\Like\ILikeableModel;
@@ -35,6 +36,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @property-read GameMode   $gameMode
  * @property-read Difficulty $difficulty
  * @property-read Map        $map
+ * @property-read BuildWatch $watchStatus
  */
 class Build extends AbstractModel implements ILikeableModel {
 	use HasFactory;
@@ -189,5 +191,61 @@ class Build extends AbstractModel implements ILikeableModel {
 				$query->orWhere($this->table.'.steamID', '=', auth()->id());
 			}
 		});
+	}
+
+	public function generateThumbnail() {
+		$mapResource = imagecreatefrompng($this->map->getPublicPath());
+		if ( !$mapResource ) {
+			return false;
+		}
+
+		$mapResource = imagescale($mapResource, 1024, 1024, IMG_BICUBIC_FIXED);
+		if ( !$mapResource ) {
+			return false;
+		}
+
+		/** @var BuildTower $tower */
+		foreach ( $this->waves()->first()->towers()->get() as $tower ) {
+			$towerSizeX = $towerSizeY = 35;
+
+			if ( $tower->towerInfo->hero->name === 'monk' ) {
+				$towerSizeX = $towerSizeY = 100;
+			}
+			elseif ( $tower->towerInfo->hero->name === 'huntress' ) {
+				$towerSizeX = $towerSizeY = 45;
+			}
+			elseif ( $tower->towerInfo->hero->name === 'seriesEVA' ) {
+				$towerSizeX = $towerSizeY = 0;
+			}
+
+			$towerResource = imagecreatefrompng($tower->getPublicPath());
+			if ( $towerSizeX && $towerSizeY ) {
+				$towerResource = imagescale($towerResource, $towerSizeX, $towerSizeY);
+			}
+			else {
+				$imageInfo = getimagesize($tower->getPublicPath());
+				$towerSizeX = $imageInfo[0];
+				$towerSizeY = $imageInfo[1];
+			}
+
+			$png = imagecreatetruecolor($towerSizeX, $towerSizeY);
+			imagesavealpha($png , true);
+			$pngTransparency = imagecolorallocatealpha($png , 0, 0, 0, 127);
+
+			$towerResource = imagerotate($towerResource, $tower->rotation, $pngTransparency);
+			$towerSizeX = imagesx($towerResource);
+			$towerSizeY = imagesy($towerResource);
+
+			imagecopy($mapResource, $towerResource, $tower->x, $tower->y, 0, 0, $towerSizeX, $towerSizeY);
+		}
+
+		return imagepng(
+			imagescale($mapResource, 200, 200, IMG_BICUBIC_FIXED),
+			$this->getPublicThumbnailPath()
+		);
+	}
+
+	public function getPublicThumbnailPath() {
+		return public_path('assets/images/thumbnail/'.$this->ID.'.png');
 	}
 }

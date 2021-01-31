@@ -20,4 +20,8 @@ class Map extends AbstractModel {
 	public function difficultyUnits() {
 		return $this->hasMany(MapAvailableUnit::class, 'mapID', 'ID');
 	}
+
+	public function getPublicPath() {
+		return public_path('assets/images/map/'.$this->name.'.png');
+	}
 }

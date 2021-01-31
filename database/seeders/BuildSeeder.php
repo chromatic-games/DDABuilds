@@ -18,7 +18,7 @@ class BuildSeeder extends Seeder {
 		$builds = Build::factory()->times(50)->create();
 
 		// generate stuff for builds
-		$builds->each(function ($build) use ($faker, $towers) {
+		$builds->each(function (Build $build) use ($faker, $towers) {
 			for ( $i = 0, $max = $faker->numberBetween(1, 4);$i < $max;$i++ ) {
 				// generate a random wave
 				/** @var BuildWave $buildWave */
@@ -44,6 +44,8 @@ class BuildSeeder extends Seeder {
 			}
 
 			// TODO generate random hero stats
+
+			$build->generateThumbnail();
 		});
 	}
 }

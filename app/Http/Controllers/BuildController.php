@@ -169,6 +169,7 @@ class BuildController extends AbstractController {
 		}
 
 		$build->update($data);
+		$build->generateThumbnail();
 
 		return response()->noContent();
 	}
