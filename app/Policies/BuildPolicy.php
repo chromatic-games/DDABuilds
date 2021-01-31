@@ -31,7 +31,7 @@ class BuildPolicy {
 	}
 
 	public function create(SteamUser $steamUser) {
-		exit;
+		return $steamUser->ID;
 	}
 
 	public function update(SteamUser $steamUser, Build $build) {

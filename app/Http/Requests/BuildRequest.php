@@ -14,7 +14,7 @@ class BuildRequest extends FormRequest {
 
 	public function prepareForValidation() {
 		$this->merge([
-			'heroStatsIDs' => array_keys($this->get('heroStats')),
+			'heroStatsIDs' => array_keys($this->get('heroStats', [])),
 			'description' => $this->get('description', '') ?? '',
 		]);
 	}

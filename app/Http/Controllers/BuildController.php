@@ -6,6 +6,7 @@ use App\Http\Exception\InternalServerErrorHttpException;
 use App\Http\Requests\BuildRequest;
 use App\Http\Resources\BuildResource;
 use App\Models\Build;
+use App\Models\Build\BuildWave;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -54,18 +55,22 @@ class BuildController extends AbstractController {
 		])->simplePaginate());
 	}
 
+	public function show(Build $build) {
+		$build->load(['map:ID,name', 'difficulty:ID,name', 'gameMode:ID,name', 'waves.towers', 'heroStats', 'likeValue', 'watchStatus']);
+
+		return new BuildResource($build);
+	}
+
 	public function store(BuildRequest $request) {
 		$data = $request->all();
 		/** @var Build $build */
 		$build = Build::create(array_merge([
 			'steamID' => auth()->id(),
-			'description' => '',
 		], $data));
 
 		foreach ( $data['heroStats'] as $key => $heroStats ) {
 			$heroStats['heroID'] = $key;
-			$heroStats['buildID'] = $build->ID;
-			$build->heroStats()->create($heroStats);
+			$build->addStats($heroStats);
 		}
 
 		$waves = $waveTowers = [];
@@ -79,7 +84,7 @@ class BuildController extends AbstractController {
 				continue;
 			}
 
-			/** @var Build\BuildWave $buildWave */
+			/** @var BuildWave $buildWave */
 			$buildWave = $build->waves()->create([
 				'name' => $name,
 			]);
@@ -100,14 +105,72 @@ class BuildController extends AbstractController {
 		return response()->json($build);
 	}
 
-	public function show(Build $build) {
-		$build->load(['map:ID,name', 'difficulty:ID,name', 'gameMode:ID,name', 'waves.towers', 'heroStats', 'likeValue', 'watchStatus']);
+	public function update(BuildRequest $request, Build $build) {
+		$data = $request->all();
 
-		return new BuildResource($build);
-	}
+		$build->heroStats()->delete();
 
-	public function update(Request $request, Build $build) {
-		response()->json([], 500); // TODO
+		$build->waves()->each(function (BuildWave $wave) {
+			$wave->towers()->delete();
+		});
+
+		foreach ( $data['heroStats'] as $key => $heroStats ) {
+			$heroStats['heroID'] = $key;
+			$build->addStats($heroStats);
+		}
+
+		$waves = $waveTowers = [];
+		foreach ( $data['towers'] as $tower ) {
+			$waveTowers[$tower['waveID']][] = $tower;
+		}
+
+		foreach ( $data['waves'] as $key => $name ) {
+			if ( empty($waveTowers[$key]) ) {
+				continue;
+			}
+
+			$waves[$key] = $name;
+		}
+
+		$existsCount = $build->waves()->count();
+		$create = count($waves) - $existsCount;
+		if ( $create > 0 ) {
+			foreach ( array_slice($waves, $create * -1, null, true) as $key => $name ) {
+				$waves[$key] = $build->waves()->create([
+					'name' => $name,
+				]);
+			}
+		}
+		elseif ( $create < 0 ) {
+			$build->waves()->get()->slice($create)->each(function (BuildWave $wave) {
+				$wave->delete();
+			});
+		}
+
+		$i = 0;
+		foreach ( array_slice($waves, 0, $existsCount, true) as $key => $name ) {
+			/** @var BuildWave $wave */
+			$wave = $build->waves()->get()->get($i);
+			$wave->update(['name' => $name,]);
+
+			$waves[$key] = $wave;
+			$i++;
+		}
+
+		foreach ( $data['towers'] as $key => $tower ) {
+			if ( !isset($waves[$tower['waveID']]) ) {
+				continue;
+			}
+
+			$waves[$tower['waveID']]->towers()->create(array_merge($tower, [
+				'towerID' => $tower['ID'],
+				'overrideUnits' => $tower['size'],
+			]));
+		}
+
+		$build->update($data);
+
+		return response()->noContent();
 	}
 
 	public function destroy(Request $request, Build $build) {

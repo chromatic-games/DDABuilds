@@ -63,20 +63,21 @@ class Build extends AbstractModel implements ILikeableModel {
 
 	/** @inheritdoc */
 	protected $fillable = [
-		'author',
-		'title',
 		'mapID',
 		'difficultyID',
+		'steamID',
+		'author',
+		'title',
 		'description',
 		'date',
-		'steamID',
 		'buildStatus',
 		'gameModeID',
 		'hardcore',
 		'afkAble',
-		// 'views',
+		'rifted',
+		'views',
 		'likes',
-		// 'comments',
+		'comments',
 		'timePerRun',
 		'expPerRun',
 		'isDeleted',
@@ -106,6 +107,19 @@ class Build extends AbstractModel implements ILikeableModel {
 
 	public function heroStats() {
 		return $this->hasMany(BuildHeroStats::class, 'buildID', 'ID');
+	}
+
+	public function addStats($stats) {
+		if ( !$this->ID ) {
+			return false;
+		}
+
+		$stats['buildID'] = $this->ID;
+		if ( $stats['hp'] || $stats['damage'] || $stats['range'] || $stats['rate'] ) {
+			$this->heroStats()->create($stats);
+		}
+
+		return true;
 	}
 
 	public function scopeSort(Builder $query, $column = 'date', $direction = 'asc') {

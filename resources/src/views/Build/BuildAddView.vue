@@ -321,7 +321,7 @@ export default {
 			showPageLoader();
 
 			let mapID = 0;
-			// TODO tmp, would be optimized
+			// TODO temporary, would be optimized
 			const fetchMap = () => {
 				return axios
 					.get('/maps/editor/' + mapID)
@@ -347,22 +347,19 @@ export default {
 						this.difficulties = data.difficulties;
 						this.gameModes = data.gameModes;
 						this.towers = towers;
-
-						this.$nextTick(() => {
-							this.startDraggable();
-						});
 					})
 					.catch(() => {
 						this.$router.push({ name: 'home' });
 					});
 			};
 
+			let loading;
 			if (!this.isView) {
 				mapID = this.$route.params.mapID;
-				fetchMap().then(hidePageLoader);
+				loading = fetchMap().then(hidePageLoader);
 			}
 			else {
-				axios.get('/builds/' + this.$route.params.id).then(async ({ data: data }) => {
+				loading = axios.get('/builds/' + this.$route.params.id).then(async ({ data: data }) => {
 					// redirect to correct title url, if title not equal to the url title
 					let title = formatSEOTitle(data.title);
 					if (this.$route.params.title !== title) {
@@ -408,6 +405,10 @@ export default {
 					hidePageLoader();
 				});
 			}
+
+			loading.then(() => {
+				this.startDraggable();
+			});
 		},
 		towerMouseOver(tower, key) {
 			if (!this.towers[tower.ID].isRotatable || this.rotateTower || !this.isEditMode || tower.mouseOver) {
@@ -536,7 +537,7 @@ export default {
 
 					if (tower.unitCost < tower.maxUnitCost) {
 						let towerImage = ui.helper.find('.tower');
-						towerImage.attr('title', 'XD');
+						towerImage.attr('title', towerImage.attr('title') + ' (' + tower.unitCost + ')');
 						towerImage = towerImage[0];
 						towerImage.src = towerImage.src.replace('.png', tower.unitCost + '.png');
 						towerImage.onload = updatePosition;
@@ -547,7 +548,7 @@ export default {
 			});
 		},
 		waveAdd() {
-			this.selectedWave = this.waveNames.push('custom wave ' + (this.waveNames.length + 1)) - 1;
+			this.selectedWave = this.waveNames.push('custom wave') - 1;
 		},
 		waveSelect(waveID) {
 			if (waveID <= this.waveNames.length + 1) {
@@ -573,7 +574,7 @@ export default {
 				}
 			}
 
-			this.waveNames.splice(this.waveNames, 1);
+			this.waveNames.splice(waveID, 1);
 			for (let tower of this.placedTowers) {
 				if (tower.waveID === waveID) {
 					this.placedTowers.splice(this.placedTowers.indexOf(tower), 1);
@@ -590,9 +591,14 @@ export default {
 		buildChangeMode(newMode) {
 			this.demoMode = newMode;
 			window.scrollTo(0, 0);
+
+			if (!newMode) {
+				this.$nextTick(this.startDraggable);
+			}
 		},
 		buildWatch() {
 			showAjaxLoader();
+
 			axios
 				.post('/builds/' + this.build.ID + '/watch')
 				.then(({ data }) => {
@@ -632,19 +638,26 @@ export default {
 			});
 			build.mapID = this.map.ID;
 
-			// TODO update build
+			let request;
+			if (this.build.ID) {
+				request = axios.patch('/builds/' + this.build.ID, build);
+			}
+			else {
+				request = axios.post('/builds', build);
+			}
 
-			axios
-				.post('/builds', build)
+			request
 				.then(({ data }) => {
-					console.log('push route');
-					this.$router.push({
-						name: 'build',
-						params: {
-							id: data.ID,
-							title: formatSEOTitle(data.title),
-						},
-					});
+					// redirect to build from add page
+					if (!this.build.ID) {
+						this.$router.push({
+							name: 'build',
+							params: {
+								id: data.ID,
+								title: formatSEOTitle(data.title),
+							},
+						});
+					}
 				})
 				.catch(() => {
 					// TODO error handling
@@ -661,7 +674,7 @@ export default {
 			return !this.canEdit;
 		},
 		canEdit() {
-			return this.build.steamID === this.$store.state.authentication.user.ID;
+			return !this.build.ID || this.build.steamID === this.$store.state.authentication.user.ID;
 		},
 		isEditMode() {
 			if (this.demoMode) {

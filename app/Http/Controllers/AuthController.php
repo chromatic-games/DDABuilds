@@ -37,14 +37,14 @@ class AuthController extends AbstractController {
 					$user = SteamUser::create([
 						'ID' => $steamID,
 						'name' => $userInfo['personaname'],
-						'avatar_hash' => $userInfo['avatarhash'],
+						'avatarHash' => $userInfo['avatarhash'],
 					]);
 				}
 				// update steam user
 				else {
 					$user->update([
 						'name' => $userInfo['personaname'],
-						'avatar_hash' => $userInfo['avatarhash'],
+						'avatarHash' => $userInfo['avatarhash'],
 					]);
 				}
 
