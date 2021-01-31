@@ -1,36 +1,36 @@
 <template>
 	<table v-if="editMode || heroStatsList.length" class="table">
 		<thead>
-		<tr>
-			<td class="text-right" colspan="2">Fortify</td>
-			<td class="text-right">Power</td>
-			<td class="text-right">Range</td>
-			<td class="text-right">Def. Rate</td>
-		</tr>
+			<tr>
+				<td class="text-right" colspan="2">Fortify</td>
+				<td class="text-right">Power</td>
+				<td class="text-right">Range</td>
+				<td class="text-right">Def. Rate</td>
+			</tr>
 		</thead>
 		<tbody>
-		<tr v-for="hero in heroStatsList" :key="hero.heroID">
-			<td>
-				<img v-b-tooltip="$t('hero.' + hero.name)" :alt="$t('hero.' + hero.name)" :src="'/assets/images/hero/' + hero.name + '.png'"
-					class="heroAttribute" />
-			</td>
-			<td>
-				<input v-if="editMode" v-model.number="heroStats[hero.heroID].hp" class="form-control" min="0" size="5" type="text" />
-				<div v-else class="text-right">{{heroStats[hero.heroID].hp}}</div>
-			</td>
-			<td>
-				<input v-if="editMode" v-model.number="heroStats[hero.heroID].damage" class="form-control" min="0" size="5" type="text" />
-				<div v-else class="text-right">{{heroStats[hero.heroID].damage}}</div>
-			</td>
-			<td>
-				<input v-if="editMode" v-model.number="heroStats[hero.heroID].range" class="form-control" min="0" size="5" type="text" />
-				<div v-else class="text-right">{{heroStats[hero.heroID].range}}</div>
-			</td>
-			<td>
-				<input v-if="editMode" v-model.number="heroStats[hero.heroID].rate" class="form-control" min="0" size="5" type="text" />
-				<div v-else class="text-right">{{heroStats[hero.heroID].rate}}</div>
-			</td>
-		</tr>
+			<tr v-for="hero in heroStatsList" :key="hero.heroID">
+				<td>
+					<img v-b-tooltip="$t('hero.' + hero.name)" :alt="$t('hero.' + hero.name)" :src="'/assets/images/hero/' + hero.name + '.png'"
+						class="heroAttribute">
+				</td>
+				<td>
+					<input v-if="editMode" v-model.number="heroStats[hero.heroID].hp" class="form-control" min="0" size="5" type="text">
+					<div v-else class="text-right">{{heroStats[hero.heroID].hp}}</div>
+				</td>
+				<td>
+					<input v-if="editMode" v-model.number="heroStats[hero.heroID].damage" class="form-control" min="0" size="5" type="text">
+					<div v-else class="text-right">{{heroStats[hero.heroID].damage}}</div>
+				</td>
+				<td>
+					<input v-if="editMode" v-model.number="heroStats[hero.heroID].range" class="form-control" min="0" size="5" type="text">
+					<div v-else class="text-right">{{heroStats[hero.heroID].range}}</div>
+				</td>
+				<td>
+					<input v-if="editMode" v-model.number="heroStats[hero.heroID].rate" class="form-control" min="0" size="5" type="text">
+					<div v-else class="text-right">{{heroStats[hero.heroID].rate}}</div>
+				</td>
+			</tr>
 		</tbody>
 	</table>
 </template>
@@ -40,22 +40,23 @@ export default {
 	name: 'BuildStatsTable',
 	props: {
 		editMode: Boolean,
-		value: Object,
-		heroList: Object,
+		value: {
+			type: Object,
+			default() {
+				return {};
+			},
+		},
+		heroList: {
+			type: Object,
+			default() {
+				return {};
+			},
+		},
 	},
 	data() {
 		return {
 			heroStats: this.value,
 		};
-	},
-	watch: {
-		value(newValue) {
-			console.log(newValue);
-			this.heroStats = newValue;
-		},
-		heroStats(newValue) {
-			this.$emit('input', newValue);
-		},
 	},
 	computed: {
 		heroStatsList() {
@@ -79,6 +80,14 @@ export default {
 			}
 
 			return heroStats;
+		},
+	},
+	watch: {
+		value(newValue) {
+			this.heroStats = newValue;
+		},
+		heroStats(newValue) {
+			this.$emit('input', newValue);
 		},
 	},
 };

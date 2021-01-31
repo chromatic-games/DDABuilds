@@ -9,18 +9,22 @@
 							<a :class="{active: selectedWave === key}" class="nav-link pointer">
 								{{waveName}}
 								<template v-if="isEditMode">
-									<i class="fa fa-edit" @click.stop="waveEdit(key)"></i>
-									<i v-if="key !== 0" class="fa fa-trash" @click.stop="waveDelete(key)"></i>
+									<i class="fa fa-edit" @click.stop="waveEdit(key)" />
+									<i v-if="key !== 0" class="fa fa-trash" @click.stop="waveDelete(key)" />
 								</template>
 							</a>
 						</li>
-						<li v-if="isEditMode" class="nav-item" @click="waveAdd"><a class="nav-link pointer">+</a></li>
-						<li v-if="build.ID" class="nav-item"><a class="nav-link">Comments (<span>{{build.comments}}</span>)</a></li>
+						<li v-if="isEditMode" class="nav-item" @click="waveAdd">
+							<a class="nav-link pointer">+</a>
+						</li>
+						<li v-if="build.ID" class="nav-item">
+							<a class="nav-link">Comments (<span>{{build.comments}}</span>)</a>
+						</li>
 					</ul>
 
 					<!-- map container -->
 					<div id="mapContainer">
-						<img :src="'/assets/images/map/' + map.name + '.png'" alt="map image" class="buildMap" />
+						<img :src="'/assets/images/map/' + map.name + '.png'" alt="map image" class="buildMap">
 
 						<div v-for="(entry, key) of waveTowersFiltered"
 							:key="key"
@@ -32,11 +36,11 @@
 							@mouseout="towerMouseOut(entry.placed, key)"
 							@mouseover.stop="towerMouseOver(entry.placed, key)"
 							@contextmenu.prevent="towerDelete(entry.placed)">
-							<img :alt="entry.tower.name" :src="'/assets/images/tower/' + entry.tower.name + (entry.placed.size || '') + '.png'" class="tower" />
+							<img :alt="entry.tower.name" :src="'/assets/images/tower/' + entry.tower.name + (entry.placed.size || '') + '.png'" class="tower">
 							<div v-if="isEditMode && entry.placed.mouseOver && (entry.tower.isResizable || entry.tower.isRotatable)" class="menu">
-								<i v-if="entry.placed.size > entry.tower.unitCost" class="fa fa-minus du-decrease" @click="towerUpdateSize(entry.placed, -1)"></i>
-								<i v-if="entry.tower.isRotatable" class="fa fa-repeat" @mousedown="towerMouseDown(entry.placed, key)"></i>
-								<i v-if="entry.placed.size < entry.tower.maxUnitCost" class="fa fa-plus du-increase" @click="towerUpdateSize(entry.placed, 1)"></i>
+								<i v-if="entry.placed.size > entry.tower.unitCost" class="fa fa-minus du-decrease" @click="towerUpdateSize(entry.placed, -1)" />
+								<i v-if="entry.tower.isRotatable" class="fa fa-repeat" @mousedown="towerMouseDown(entry.placed, key)" />
+								<i v-if="entry.placed.size < entry.tower.maxUnitCost" class="fa fa-plus du-increase" @click="towerUpdateSize(entry.placed, 1)" />
 							</div>
 						</div>
 					</div>
@@ -48,12 +52,14 @@
 							<div class="card">
 								<div class="card-header">
 									<i v-if="canLike" :class="{'fa-star-o': !build.watchStatus, 'fa-star': build.watchStatus}" class="fa pointer text-warning"
-										@click="buildWatch"></i>
-									<i v-if="build.buildStatus !== buildStatusPublic" v-b-tooltip.hover="$t('build.isPrivate')" class="fa fa-eye-slash"></i>
+										@click="buildWatch" />
+									<i v-if="build.buildStatus !== buildStatusPublic" v-b-tooltip.hover="$t('build.isPrivate')" class="fa fa-eye-slash" />
 									<span v-if="build.rifted" class="badge badge-success">Rifted</span>
 									<span v-if="build.afkAble" class="badge badge-success">AFK Able</span>
 									<span v-if="build.hardcore" class="badge badge-success">Hardcore</span>
-									<template v-if="build.title">{{build.title}}</template>
+									<template v-if="build.title">
+										{{build.title}}
+									</template>
 									<i v-else>Enter a build name</i>
 								</div>
 								<div class="card-body">
@@ -61,24 +67,26 @@
 										<template v-if="isEditMode">
 											<div class="form-group">
 												<label for="buildName">Build Name:</label>
-												<input id="buildName" v-model.trim="build.title" class="form-control" maxlength="128" placeholder="Build Name" type="text" />
+												<input id="buildName" v-model.trim="build.title" class="form-control" maxlength="128" placeholder="Build Name" type="text">
 											</div>
 											<div class="form-group">
 												<label for="buildAuthor">Author:</label>
-												<input id="buildAuthor" v-model.trim="build.author" class="form-control" maxlength="20" placeholder="Author" type="text" />
+												<input id="buildAuthor" v-model.trim="build.author" class="form-control" maxlength="20" placeholder="Author" type="text">
 											</div>
 
-											<i class="fa fa-map"></i> {{$t('map.' + map.name)}}<br />
-											DU: <strong :style="{color: unitsUsed === unitsMax ? 'red': ''}">{{unitsUsed}}/{{unitsMax}}</strong><br />
-											Mana used: <strong>{{manaUsed}}</strong><br />
-											Mana to upgrade: <strong>{{manaUpgrade}}</strong><br />
+											<i class="fa fa-map" /> {{$t('map.' + map.name)}}<br>
+											DU: <strong :style="{color: unitsUsed === unitsMax ? 'red': ''}">{{unitsUsed}}/{{unitsMax}}</strong><br>
+											Mana used: <strong>{{manaUsed}}</strong><br>
+											Mana to upgrade: <strong>{{manaUpgrade}}</strong><br>
 										</template>
 										<template v-else>
 											<ul>
-												<li><i class="fa fa-map"></i> {{$t('map.' + map.name)}}</li>
-												<li><i class="fa fa-user"></i> <a>{{build.author}}</a></li> <!-- TODO link to build list with filter author -->
-												<li><i class="fa fa-gamepad"></i> {{$t('gameMode.' + build.gameModeName)}}</li>
-												<li v-if="build.date"><i class="fa fa-clock-o"></i> {{build.date}}</li>
+												<li><i class="fa fa-map" /> {{$t('map.' + map.name)}}</li>
+												<li><i class="fa fa-user" /> <a>{{build.author}}</a></li> <!-- TODO link to build list with filter author -->
+												<li><i class="fa fa-gamepad" /> {{$t('gameMode.' + build.gameModeName)}}</li>
+												<li v-if="build.date">
+													<i class="fa fa-clock-o" /> {{build.date}}
+												</li>
 												<li>XP per Run: {{build.expPerRun}}</li>
 												<li>Time per Run: {{build.timePerRun}}</li>
 												<li>Mana used: {{waveTowersFiltered.length}}</li>
@@ -88,10 +96,12 @@
 
 											<build-stats-table v-model="build.heroStats" :edit-mode="isEditMode" :hero-list="heroList" />
 
-											<button v-if="canEdit" class="btn btn-secondary" @click="buildChangeMode(false)">Editor Mode</button>
+											<button v-if="canEdit" class="btn btn-secondary" @click="buildChangeMode(false)">
+												Editor Mode
+											</button>
 											<button v-if="build.ID" :class="['btn', {'btn-default': !build.likeValue, 'btn-success': build.likeValue, disabled: !canLike}]"
 												:disabled="!canLike" @click="buildLike">
-												<i class="fa fa-thumbs-up"></i> {{build.likes}}
+												<i class="fa fa-thumbs-up" /> {{build.likes}}
 											</button>
 										</template>
 									</div>
@@ -101,12 +111,12 @@
 						<div class="col-sm-12">
 							<div class="card">
 								<div class="card-header">
-									<i v-b-tooltip="'click the image to enable or disable the type of towers'" class="fa fa-question-circle"></i> Disable Tower
+									<i v-b-tooltip="'click the image to enable or disable the type of towers'" class="fa fa-question-circle" /> Disable Tower
 								</div>
 								<div class="card-body">
 									<div class="card-text">
 										<img v-for="hero in heros" :key="hero.ID" v-b-tooltip.hover="$t('hero.' + hero.name)" :class="{disabled: disabledHeros.includes(hero.ID)}"
-											:src="'/assets/images/hero/' + hero.name + '.png'" class="disableTowerCheckbox" @click="toggleHeroClass(hero.ID)" />
+											:src="'/assets/images/hero/' + hero.name + '.png'" class="disableTowerCheckbox" @click="toggleHeroClass(hero.ID)">
 									</div>
 								</div>
 							</div>
@@ -114,7 +124,9 @@
 						<template v-if="isEditMode">
 							<div v-for="hero in heros" :key="hero.ID" :class="{'col-sm-6': hero.towers.length < 8, 'col-sm-12': hero.towers.length >= 8}">
 								<div class="card">
-									<div class="card-header">{{$t('hero.' + hero.name)}}</div>
+									<div class="card-header">
+										{{$t('hero.' + hero.name)}}
+									</div>
 									<div class="card-body card-hero-body">
 										<div v-for="tower of hero.towers"
 											:key="tower.ID"
@@ -122,7 +134,7 @@
 											:data-class="hero.ID"
 											:data-tower="tower.ID"
 											class="tower-container pointer dummy">
-											<img :src="'/assets/images/tower/' + tower.name + '.png'" :title="$t('tower.' + tower.name)" class="tower" />
+											<img :src="'/assets/images/tower/' + tower.name + '.png'" :title="$t('tower.' + tower.name)" class="tower">
 										</div>
 									</div>
 								</div>
@@ -130,7 +142,9 @@
 
 							<div class="col-sm-12">
 								<div class="card">
-									<div class="card-header">Details</div>
+									<div class="card-header">
+										Details
+									</div>
 									<div class="card-body">
 										<div class="form-group">
 											Required Attributes:
@@ -142,9 +156,15 @@
 										<div class="form-group">
 											<label for="buildStatus">Build Status:</label>
 											<select id="buildStatus" v-model.number="build.buildStatus" class="form-control">
-												<option value="1">Public</option>
-												<option value="2">Unlisted</option>
-												<option value="3">Private</option>
+												<option value="1">
+													Public
+												</option>
+												<option value="2">
+													Unlisted
+												</option>
+												<option value="3">
+													Private
+												</option>
 											</select>
 										</div>
 
@@ -152,8 +172,8 @@
 										<div class="form-group">
 											<label for="difficulty">Difficulty:</label>
 											<select id="difficulty" v-model="build.difficultyID" :class="'difficulty-' + build.difficultyID" class="form-control">
-												<option v-for="difficulty in difficulties" :key="difficulty.ID" :class="'difficulty-' + difficulty.ID"
-													:value="difficulty.ID">{{$t('difficulty.' + difficulty.name)}}
+												<option v-for="difficulty in difficulties" :key="difficulty.ID" :class="'difficulty-' + difficulty.ID" :value="difficulty.ID">
+													{{$t('difficulty.' + difficulty.name)}}
 												</option>
 											</select>
 										</div>
@@ -165,30 +185,36 @@
 										</div>
 
 										<div class="form-group form-check">
-											<input id="buildHardcore" v-model="build.hardcore" class="form-check-input" type="checkbox" />
+											<input id="buildHardcore" v-model="build.hardcore" class="form-check-input" type="checkbox">
 											<label class="form-check-label" for="buildHardcore"> Hardcore</label>
 										</div>
 										<div class="form-group form-check">
-											<input id="buildAFKAble" v-model="build.afkAble" class="form-check-input" type="checkbox" />
+											<input id="buildAFKAble" v-model="build.afkAble" class="form-check-input" type="checkbox">
 											<label class="form-check-label" for="buildAFKAble"> AFK able</label>
 										</div>
 										<div class="form-group form-check">
-											<input id="buildRifted" v-model="build.rifted" class="form-check-input" type="checkbox" />
+											<input id="buildRifted" v-model="build.rifted" class="form-check-input" type="checkbox">
 											<label class="form-check-label" for="buildRifted"> Rifted</label>
 										</div>
 
 										<div class="form-group">
 											<label for="buildExpPerRun">XP Per Run:</label>
-											<input id="buildExpPerRun" v-model="build.expPerRun" class="form-control" maxlength="20" placeholder="XP Per Run" type="text" />
+											<input id="buildExpPerRun" v-model="build.expPerRun" class="form-control" maxlength="20" placeholder="XP Per Run" type="text">
 										</div>
 										<div class="form-group">
 											<label for="buildTimePerRun">Time Per Run:</label>
-											<input id="buildTimePerRun" v-model="build.timePerRun" class="form-control" maxlength="20" placeholder="Time Per Run" type="text" />
+											<input id="buildTimePerRun" v-model="build.timePerRun" class="form-control" maxlength="20" placeholder="Time Per Run" type="text">
 										</div>
 
-										<button class="btn btn-primary" @click="save">Save</button>
-										<button class="btn btn-secondary" @click="buildChangeMode(true)">Viewer Mode</button>
-										<button v-if="build.ID" class="btn btn-danger" @click="buildDelete">Delete</button>
+										<button class="btn btn-primary" @click="save">
+											Save
+										</button>
+										<button class="btn btn-secondary" @click="buildChangeMode(true)">
+											Viewer Mode
+										</button>
+										<button v-if="build.ID" class="btn btn-danger" @click="buildDelete">
+											Delete
+										</button>
 									</div>
 								</div>
 							</div>
@@ -199,11 +225,13 @@
 
 			<div v-if="isEditMode || build.description" class="container">
 				<div class="card">
-					<div class="card-header">{{$t('build.description')}}</div>
+					<div class="card-header">
+						{{$t('build.description')}}
+					</div>
 					<div v-if="isEditMode" class="card-body">
 						<classic-ckeditor v-model="build.description" />
 					</div>
-					<div v-else class="card-body" v-html="build.description"></div>
+					<div v-else class="card-body" v-html="build.description" />
 				</div>
 			</div>
 		</div>
@@ -226,6 +254,12 @@ window.$ = $;
 export default {
 	name: 'BuildAddView',
 	components: { BuildStatsTable, ClassicCkeditor },
+	props: {
+		isView: {
+			type: Boolean,
+			default: false,
+		},
+	},
 	data() {
 		return {
 			buildStatusPublic: STATUS_PUBLIC,
@@ -257,10 +291,89 @@ export default {
 			rotateTower: false,
 		};
 	},
-	props: {
-		isView: {
-			type: Boolean,
-			default: false,
+	computed: {
+		canLike() {
+			if (!this.$store.state.authentication.user.ID) {
+				return false;
+			}
+
+			return !this.canEdit;
+		},
+		canEdit() {
+			return !this.build.ID || this.build.steamID === this.$store.state.authentication.user.ID;
+		},
+		isEditMode() {
+			if (this.demoMode) {
+				return false;
+			}
+
+			return !this.isView || this.canEdit;
+		},
+		waveTowers() {
+			let towers = [];
+			for (let tower of this.placedTowers) {
+				if (tower.waveID === this.selectedWave) {
+					towers.push(tower);
+				}
+			}
+
+			return towers;
+		},
+		waveTowersFiltered() {
+			let towers = [];
+			for (let placed of this.waveTowers) {
+				let tower = this.towers[placed.ID];
+				if (!this.disabledHeros.includes(tower.heroClassID)) {
+					towers.push({
+						placed: placed,
+						tower,
+					});
+				}
+			}
+
+			return towers;
+		},
+		manaUpgrade() {
+			return this.waveTowers.length * 2620;
+		},
+		manaUsed() {
+			let unitCost = 0;
+			for (let tower of this.waveTowers) {
+				unitCost += this.towers[tower.ID].manaCost;
+			}
+
+			return unitCost;
+		},
+		unitsUsed() {
+			let units = 0;
+			for (let tower of this.waveTowers) {
+				let unitCount = tower.size ? tower.size : this.towers[tower.ID].unitCost;
+				units += unitCount;
+			}
+
+			return units;
+		},
+		unitsMax() {
+			if (this.map.difficultyUnits && this.map.difficultyUnits.length) {
+				for (let difficulty of this.map.difficultyUnits) {
+					if (this.build.difficultyID === difficulty.difficultyID) {
+						return difficulty.units;
+					}
+				}
+			}
+
+			return this.map.units || 0;
+		},
+		heroList() {
+			let heros = {};
+
+			for (let hero of this.heros) {
+				if (hero.isHero) {
+					heros[hero.ID] = hero.name;
+				}
+			}
+
+			return heros;
 		},
 	},
 	watch: {
@@ -663,91 +776,6 @@ export default {
 					// TODO error handling
 				})
 				.finally(hideAjaxLoader);
-		},
-	},
-	computed: {
-		canLike() {
-			if (!this.$store.state.authentication.user.ID) {
-				return false;
-			}
-
-			return !this.canEdit;
-		},
-		canEdit() {
-			return !this.build.ID || this.build.steamID === this.$store.state.authentication.user.ID;
-		},
-		isEditMode() {
-			if (this.demoMode) {
-				return false;
-			}
-
-			return !this.isView || this.canEdit;
-		},
-		waveTowers() {
-			let towers = [];
-			for (let tower of this.placedTowers) {
-				if (tower.waveID === this.selectedWave) {
-					towers.push(tower);
-				}
-			}
-
-			return towers;
-		},
-		waveTowersFiltered() {
-			let towers = [];
-			for (let placed of this.waveTowers) {
-				let tower = this.towers[placed.ID];
-				if (!this.disabledHeros.includes(tower.heroClassID)) {
-					towers.push({
-						placed: placed,
-						tower,
-					});
-				}
-			}
-
-			return towers;
-		},
-		manaUpgrade() {
-			return this.waveTowers.length * 2620;
-		},
-		manaUsed() {
-			let unitCost = 0;
-			for (let tower of this.waveTowers) {
-				unitCost += this.towers[tower.ID].manaCost;
-			}
-
-			return unitCost;
-		},
-		unitsUsed() {
-			let units = 0;
-			for (let tower of this.waveTowers) {
-				let unitCount = tower.size ? tower.size : this.towers[tower.ID].unitCost;
-				units += unitCount;
-			}
-
-			return units;
-		},
-		unitsMax() {
-			if (this.map.difficultyUnits && this.map.difficultyUnits.length) {
-				for (let difficulty of this.map.difficultyUnits) {
-					if (this.build.difficultyID === difficulty.difficultyID) {
-						return difficulty.units;
-					}
-				}
-			}
-
-			return this.map.units || 0;
-		},
-		heroList() {
-			let heros = {};
-
-			for (let hero of this.heros) {
-				if (hero.isHero) {
-					heros[hero.ID] = hero.name;
-				}
-			}
-
-			return heros;
 		},
 	},
 };

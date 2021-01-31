@@ -1,30 +1,32 @@
 <template>
 	<div class="container">
 		<div v-if="isMaintainer && issue.status !== 2" class="text-right">
-			<button class="btn btn-primary">Close</button>
+			<button class="btn btn-primary">
+				Close
+			</button>
 		</div>
 		<table class="table table-bordered marginTop">
 			<tbody>
-			<tr>
-				<td>Status</td>
-				<td>Open</td>
-			</tr>
-			<tr>
-				<td>Created</td>
-				<td>{{issue.time}}</td> <!-- TODO -->
-			</tr>
-			<tr>
-				<td>Created by</td>
-				<td>{{issue.steamName}}</td>
-			</tr>
-			<tr>
-				<td style="width:10%;">Title</td>
-				<td>{{issue.title}}</td>
-			</tr>
-			<tr>
-				<td>Description</td>
-				<td v-html="issue.description"></td>
-			</tr>
+				<tr>
+					<td>Status</td>
+					<td>Open</td>
+				</tr>
+				<tr>
+					<td>Created</td>
+					<td>{{issue.time}}</td> <!-- TODO -->
+				</tr>
+				<tr>
+					<td>Created by</td>
+					<td>{{issue.steamName}}</td>
+				</tr>
+				<tr>
+					<td style="width:10%;">Title</td>
+					<td>{{issue.title}}</td>
+				</tr>
+				<tr>
+					<td>Description</td>
+					<td v-html="issue.description" />
+				</tr>
 			</tbody>
 		</table>
 
@@ -40,15 +42,17 @@
 			</dl>
 
 			<div class="text-center">
-				<input :disabled="needWait > 0 || form.description.length < 3" class="btn btn-primary" type="submit" value="Save" />
+				<input :disabled="needWait > 0 || form.description.length < 3" class="btn btn-primary" type="submit" value="Save">
 			</div>
 		</form>
 
 		<template v-if="comments.length">
 			<div v-for="comment of comments" :key="comment.ID" class="card">
 				<div class="card-body">
-					<h5 class="card-title">{{comment.steamName}} ({{comment.time}})</h5>
-					<div class="card-text" v-html="comment.description"></div>
+					<h5 class="card-title">
+						{{comment.steamName}} ({{comment.time}})
+					</h5>
+					<div class="card-text" v-html="comment.description" />
 				</div>
 			</div>
 
@@ -82,9 +86,6 @@ export default {
 			},
 		};
 	},
-	created() {
-		this.fetch();
-	},
 	watch: {
 		'$route.params.id'() {
 			this.fetch();
@@ -92,6 +93,12 @@ export default {
 		'$route.params.page'() {
 			this.fetchComments();
 		},
+	},
+	created() {
+		this.fetch();
+	},
+	beforeDestroy() {
+		this.destroyInterval();
 	},
 	methods: {
 		destroyInterval() {
@@ -160,9 +167,6 @@ export default {
 					// TODO error handling
 				});
 		},
-	},
-	beforeDestroy() {
-		this.destroyInterval();
 	},
 };
 </script>
