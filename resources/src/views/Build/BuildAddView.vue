@@ -66,11 +66,11 @@
 									<div class="card-text">
 										<template v-if="isEditMode">
 											<div class="form-group">
-												<label for="buildName">Build Name:</label>
+												<label for="buildName">Build Name</label>
 												<input id="buildName" v-model.trim="build.title" class="form-control" maxlength="128" placeholder="Build Name" type="text">
 											</div>
 											<div class="form-group">
-												<label for="buildAuthor">Author:</label>
+												<label for="buildAuthor">Author</label>
 												<input id="buildAuthor" v-model.trim="build.author" class="form-control" maxlength="20" placeholder="Author" type="text">
 											</div>
 
@@ -496,12 +496,13 @@ export default {
 
 					// load waves
 					let waveNames = [];
+					let waveID = 0;
 					for (let wave of data.waves) {
 						waveNames.push(wave.name);
 						for (let tower of wave.towers) {
 							towers.push({
 								ID: tower.towerID,
-								waveID: 0,
+								waveID,
 								size: tower.overrideUnits,
 								x: tower.x,
 								y: tower.y,
@@ -509,6 +510,8 @@ export default {
 								mouseOver: false,
 							});
 						}
+
+						waveID++;
 					}
 
 					this.waveNames = waveNames;
