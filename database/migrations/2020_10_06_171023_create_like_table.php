@@ -19,9 +19,11 @@ class CreateLikeTable extends Migration
             $table->string('steamID', 20);
             $table->tinyInteger('likeValue');
             $table->timestamp('date')->nullable();
-            $table->unique(['objectType', 'objectID', 'steamID'], 'objectType');
             $table->primary(['objectType', 'objectID', 'steamID']);
         });
+        Schema::table('like', function(Blueprint  $table) {
+			$table->unique(['objectType', 'objectID', 'steamID'], 'objectType');
+		});
     }
 
     /**
