@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\BuildViewEvent;
 use App\Http\Exception\InternalServerErrorHttpException;
 use App\Http\Requests\BuildRequest;
 use App\Http\Resources\BuildResource;
@@ -10,6 +11,7 @@ use App\Models\Build\BuildWave;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Symfony\Contracts\EventDispatcher\Event;
 
 class BuildController extends AbstractController {
 	use AuthorizesRequests;
@@ -56,7 +58,9 @@ class BuildController extends AbstractController {
 	}
 
 	public function show(Build $build) {
-		$build->load(['map:ID,name', 'difficulty:ID,name', 'gameMode:ID,name', 'waves.towers', 'heroStats', 'likeValue', 'watchStatus']);
+		BuildViewEvent::dispatch($build, session());
+
+		$build->loadMissing(['map:ID,name', 'difficulty:ID,name', 'gameMode:ID,name', 'waves.towers', 'heroStats', 'likeValue', 'watchStatus']);
 
 		return new BuildResource($build);
 	}
@@ -65,6 +69,7 @@ class BuildController extends AbstractController {
 		$data = $request->all();
 		/** @var Build $build */
 		$build = Build::create(array_merge([
+			'date' => time(),
 			'steamID' => auth()->id(),
 		], $data));
 

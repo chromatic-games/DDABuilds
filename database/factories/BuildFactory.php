@@ -17,7 +17,7 @@ class BuildFactory extends Factory {
 			'author'       => substr($this->faker->name(), 0, 20),
 			'title'        => $this->faker->words($this->faker->numberBetween(1, 3), true),
 			'description'  => $this->faker->sentences($this->faker->numberBetween(10, 100), true),
-			'date'         => $this->faker->date('Y-m-d H:i:s'),
+			'date'         => $this->faker->unixTime(),
 			'steamID'      => $this->faker->steamID,
 			'mapID'        => $this->maps()->random()->ID,
 			'difficultyID' => $this->difficulties()->random()->ID,

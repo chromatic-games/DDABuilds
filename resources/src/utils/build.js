@@ -11,6 +11,10 @@ function buildLinkParams(build) {
 	};
 }
 
+function getSteamAvatar(avatarHash, size = 'medium') {
+	return 'https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/' + avatarHash.substr(0, 2) + '/' + avatarHash + '_' + size + '.jpg';
+}
+
 function buildListSearch(options = {}) {
 	// clear empty fields
 	for (let key of Object.keys(options)) {
@@ -34,4 +38,5 @@ export {
 	STATUS_PRIVATE,
 	buildLinkParams,
 	buildListSearch,
+	getSteamAvatar,
 };

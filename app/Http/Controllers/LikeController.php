@@ -54,7 +54,7 @@ class LikeController extends AbstractController {
 				'objectID' => $likeObject->getObjectID(),
 				'steamID' => auth()->id(),
 				'likeValue' => $newLikeValue,
-				'date' => DB::raw('CURRENT_DATE()'),
+				'date' => time(),
 			]) ) {
 				$likeObject->getObject()->increment($newCounter);
 			}
@@ -83,7 +83,7 @@ class LikeController extends AbstractController {
 				['steamID', auth()->id(),],
 			])->update([
 				'likeValue' => $newLikeValue,
-				'date' => DB::raw('CURRENT_TIME()'),
+				'date' => time(),
 			]);
 			// $likeObject->getObject()->decrement($oldCounter);
 			// $likeObject->getObject()->increment($newCounter);

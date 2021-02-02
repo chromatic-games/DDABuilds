@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Build\BuildComment;
 use App\Models\Build\BuildHeroStats;
 use App\Models\Build\BuildTower;
 use App\Models\Build\BuildWatch;
@@ -51,19 +52,14 @@ class Build extends AbstractModel implements ILikeableModel {
 	/** @var int private build status (only creator can view the build) */
 	public const STATUS_PRIVATE = 3;
 
-	/** @inheritdoc */
 	protected $table = 'build';
 
-	/** @inheritdoc */
 	protected $perPage = 21;
 
-	/** @inheritdoc */
 	protected $primaryKey = 'ID';
 
-	/** @inheritdoc */
 	public $timestamps = false;
 
-	/** @inheritdoc */
 	protected $fillable = [
 		'mapID',
 		'difficultyID',
@@ -85,7 +81,16 @@ class Build extends AbstractModel implements ILikeableModel {
 		'isDeleted',
 	];
 
-	public $validSortFields = ['author', 'likes', 'mapID', 'title', 'views', 'date', 'difficultyID', 'gameModeID'];
+	public $validSortFields = [
+		'author',
+		'likes',
+		'mapID',
+		'title',
+		'views',
+		'date',
+		'difficultyID',
+		'gameModeID',
+	];
 
 	public function watchStatus() {
 		return $this->hasOne(BuildWatch::class, 'buildID', 'ID')->where('steamID', auth()->id() ?? 0);
@@ -109,6 +114,10 @@ class Build extends AbstractModel implements ILikeableModel {
 
 	public function heroStats() {
 		return $this->hasMany(BuildHeroStats::class, 'buildID', 'ID');
+	}
+
+	public function commentList() {
+		return $this->hasMany(BuildComment::class, 'buildID', 'ID');
 	}
 
 	public function addStats($stats) {
@@ -232,7 +241,7 @@ class Build extends AbstractModel implements ILikeableModel {
 			imagesavealpha($png , true);
 			$pngTransparency = imagecolorallocatealpha($png , 0, 0, 0, 127);
 
-			$towerResource = imagerotate($towerResource, $tower->rotation, $pngTransparency);
+			$towerResource = imagerotate($towerResource, -$tower->rotation, $pngTransparency);
 			$towerSizeX = imagesx($towerResource);
 			$towerSizeY = imagesy($towerResource);
 

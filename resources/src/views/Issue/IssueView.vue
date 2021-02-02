@@ -33,25 +33,27 @@
 		<div v-if="needWait > 0" class="alert alert-danger">
 			Please wait {{needWait}} seconds for the next comment.
 		</div>
-		<form @submit.prevent="addComment">
-			<dl>
-				<dt>Comment</dt>
-				<dd>
+		<form v-else @submit.prevent="addComment">
+			<div class="card">
+				<div class="card-header">
+					Write a comment
+				</div>
+				<div class="card-body">
 					<classic-ckeditor v-model="form.description" />
-				</dd>
-			</dl>
 
-			<div class="text-center">
-				<input :disabled="needWait > 0 || form.description.length < 3" class="btn btn-primary" type="submit" value="Save">
+					<div class="text-center marginTop">
+						<input :disabled="needWait > 0 || form.description.length < 3" class="btn btn-primary" type="submit" value="Save">
+					</div>
+				</div>
 			</div>
 		</form>
 
 		<template v-if="comments.length">
 			<div v-for="comment of comments" :key="comment.ID" class="card">
+				<h5 class="card-header">
+					{{comment.steamName}} ({{comment.time}})
+				</h5>
 				<div class="card-body">
-					<h5 class="card-title">
-						{{comment.steamName}} ({{comment.time}})
-					</h5>
 					<div class="card-text" v-html="comment.description" />
 				</div>
 			</div>

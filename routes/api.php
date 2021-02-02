@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BuildCommentController;
 use App\Http\Controllers\BuildController;
 use App\Http\Controllers\IssueCommentController;
 use App\Http\Controllers\IssueController;
@@ -32,6 +33,7 @@ Route::group(['middleware' => ['auth:user']], function () {
 
 Route::apiResources([
 	'builds' => BuildController::class,
+	'builds.comments' => BuildCommentController::class,
 ]);
 
 // every other route -> not found

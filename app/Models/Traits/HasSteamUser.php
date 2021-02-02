@@ -10,6 +10,6 @@ use App\Models\SteamUser;
  */
 trait HasSteamUser {
 	public function user() {
-		return $this->hasOne(SteamUser::class, 'ID', 'steamID')->select(['ID', 'name']);
+		return $this->hasOne(SteamUser::class, 'ID', 'steamID');
 	}
 }
