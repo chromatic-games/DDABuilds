@@ -51,7 +51,11 @@ export default {
 	},
 	computed: {
 		canLike() {
-			return false;
+			if ( !this.$store.state.authentication.user.ID ) {
+				return false;
+			}
+
+			return this.comment.steamID !== this.$store.state.authentication.user.ID;
 		},
 	},
 	methods: {

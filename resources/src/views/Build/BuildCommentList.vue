@@ -16,6 +16,7 @@
 		</div>
 
 		<build-comment v-for="comment in comments" :key="comment.ID" :comment="comment" />
+		<infinite-loading :identifier="identifier" spinner="waveDots" type="comment" @infinite="infiniteHandler" />
 	</div>
 </template>
 
@@ -39,6 +40,9 @@ export default {
 		return {
 			text: '',
 			comments: [],
+			page: 1,
+			lastPage: 0,
+			identifier: 0,
 		};
 	},
 	watch: {
@@ -50,6 +54,25 @@ export default {
 		this.fetch();
 	},
 	methods: {
+		infiniteHandler(state) {
+			if (this.lastPage > 0 && this.page >= this.lastPage) {
+				state.complete();
+
+				return;
+			}
+
+			axios
+				.get('/builds/' + this.buildId + '/comments?page=' + this.page)
+				.then(({ data: { data, currentPage, lastPage } }) => {
+					this.page = currentPage + 1;
+					this.lastPage = lastPage;
+					this.comments.push(...data);
+					state.loaded();
+				})
+				.catch(() => {
+					state.error();
+				});
+		},
 		create() {
 			showAjaxLoader();
 
@@ -72,9 +95,9 @@ export default {
 				return;
 			}
 
-			axios.get('/builds/' + this.buildId + '/comments').then(({ data: { data } }) => {
-				this.comments.push(...data);
-			});
+			this.lastPage = 0;
+			this.page = 1;
+			this.identifier = Date.now();
 		},
 	},
 };

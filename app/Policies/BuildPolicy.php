@@ -10,7 +10,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class BuildPolicy {
 	use HandlesAuthorization;
 
-	public function viewAny(SteamUser $steamUser) {
+	public function viewAny(?SteamUser $steamUser) {
 		return true;
 	}
 

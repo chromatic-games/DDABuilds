@@ -6,7 +6,7 @@ use App\Models\Build\BuildComment;
 use App\Models\SteamUser;
 
 class BuildCommentPolicy {
-	public function viewAny(SteamUser $steamUser) {
+	public function viewAny(?SteamUser $steamUser) {
 		return true;
 	}
 

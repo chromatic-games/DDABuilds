@@ -117,7 +117,7 @@ class Build extends AbstractModel implements ILikeableModel {
 	}
 
 	public function commentList() {
-		return $this->hasMany(BuildComment::class, 'buildID', 'ID');
+		return $this->hasMany(BuildComment::class, 'buildID', 'ID')->orderBy('date', 'desc');
 	}
 
 	public function addStats($stats) {

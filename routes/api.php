@@ -20,7 +20,6 @@ Route::group(['middleware' => ['auth:user']], function () {
 	Route::delete('/auth', [AuthController::class, 'logout']);
 
 	Route::post('/builds/{build}/watch', [BuildController::class, 'watch']);
-	Route::get('/maps/editor/{map}', [MapController::class, 'editor']);
 
 	Route::post('/like/', [LikeController::class, 'like']);
 
@@ -30,6 +29,8 @@ Route::group(['middleware' => ['auth:user']], function () {
 		'issues.comments' => IssueCommentController::class,
 	]);
 });
+
+Route::get('/maps/editor/{map}', [MapController::class, 'editor']);
 
 Route::apiResources([
 	'builds' => BuildController::class,

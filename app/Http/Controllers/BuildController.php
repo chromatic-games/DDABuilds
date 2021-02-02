@@ -11,7 +11,6 @@ use App\Models\Build\BuildWave;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Symfony\Contracts\EventDispatcher\Event;
 
 class BuildController extends AbstractController {
 	use AuthorizesRequests;
@@ -57,8 +56,8 @@ class BuildController extends AbstractController {
 		])->simplePaginate());
 	}
 
-	public function show(Build $build) {
-		BuildViewEvent::dispatch($build, session());
+	public function show(Request $request, Build $build) {
+		BuildViewEvent::dispatch($build, $request->session());
 
 		$build->loadMissing(['map:ID,name', 'difficulty:ID,name', 'gameMode:ID,name', 'waves.towers', 'heroStats', 'likeValue', 'watchStatus']);
 
