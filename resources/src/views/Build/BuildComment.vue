@@ -6,7 +6,8 @@
 			</div>
 			<div style="margin-left: 15px;">
 				<a :href="'https://steamcommunity.com/profiles/' + comment.steamID" target="_blank">{{comment.steamName}}</a><br>
-				<small class="text-muted time">{{comment.date}}</small>
+				{{$t('')}} <!-- TODO workaround for locale switching -->
+				<small class="text-muted time">{{formatDate(comment.date)}}</small>
 			</div>
 		</div>
 		<div class="marginTop">
@@ -33,6 +34,7 @@
 
 <script>
 import {getSteamAvatar} from '../../utils/build';
+import formatDate from '../../utils/date';
 import {DISLIKE, LIKE, like} from '../../utils/like';
 
 export default {
@@ -60,6 +62,7 @@ export default {
 	},
 	methods: {
 		getSteamAvatar,
+		formatDate,
 		vote(likeValue) {
 			if (!this.canLike) {
 				return;

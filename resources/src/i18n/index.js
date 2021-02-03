@@ -43,6 +43,15 @@ i18next.init({
 		loadPath: '/assets/locales/{{lng}}.json',
 		addPath: '/assets/locales/{{lng}}.json',
 	},
+	interpolation: {
+		format(value, format) {
+			if (format === 'bold') {
+				return '<strong>' + value + '</strong>';
+			}
+
+			return value;
+		},
+	},
 }, function (err) {
 	if (err) {
 		console.error(err);

@@ -8,23 +8,23 @@
 		<table class="table table-bordered marginTop">
 			<tbody>
 				<tr>
-					<td>Status</td>
+					<td>{{$t('issueList.status')}}</td>
 					<td>Open</td>
 				</tr>
 				<tr>
-					<td>Created</td>
-					<td>{{issue.time}}</td> <!-- TODO -->
+					<td>{{$t('issueList.created')}}</td>
+					<td>{{formatDate(issue.time)}}</td> <!-- TODO -->
 				</tr>
 				<tr>
-					<td>Created by</td>
+					<td>{{$t('issue.createdBy')}}</td>
 					<td>{{issue.steamName}}</td>
 				</tr>
 				<tr>
-					<td style="width:10%;">Title</td>
+					<td style="width:10%;">{{$t('issueList.title')}}</td>
 					<td>{{issue.title}}</td>
 				</tr>
 				<tr>
-					<td>Description</td>
+					<td>{{$t('issue.description')}}</td>
 					<td v-html="issue.description" />
 				</tr>
 			</tbody>
@@ -35,14 +35,14 @@
 		</div>
 		<form v-else @submit.prevent="addComment">
 			<div class="card">
-				<div class="card-header">
-					Write a comment
+				<div class="card-header text-center">
+					{{$t('comment.write')}}
 				</div>
 				<div class="card-body">
 					<classic-ckeditor v-model="form.description" />
 
 					<div class="text-center marginTop">
-						<input :disabled="needWait > 0 || form.description.length < 3" class="btn btn-primary" type="submit" value="Save">
+						<input :disabled="needWait > 0 || form.description.length < 3" class="btn btn-primary" type="submit" :value="$t('comment.send')">
 					</div>
 				</div>
 			</div>
@@ -51,7 +51,7 @@
 		<template v-if="comments.length">
 			<div v-for="comment of comments" :key="comment.ID" class="card">
 				<h5 class="card-header">
-					{{comment.steamName}} ({{comment.time}})
+					{{comment.steamName}} ({{formatDate(comment.time)}})
 				</h5>
 				<div class="card-body">
 					<div class="card-text" v-html="comment.description" />
@@ -67,6 +67,7 @@
 import axios from 'axios';
 import AppPagination from '../../components/AppPagination';
 import ClassicCkeditor from '../../components/ClassicCkeditor';
+import formatDate from '../../utils/date';
 import {formatSEOTitle} from '../../utils/string';
 
 export default {
@@ -103,6 +104,7 @@ export default {
 		this.destroyInterval();
 	},
 	methods: {
+		formatDate,
 		destroyInterval() {
 			if (this.interval) {
 				window.clearInterval(this.interval);

@@ -1,84 +1,81 @@
 <template>
 	<div class="container">
-		<loading-indicator v-if="loading" />
-		<template v-else>
-			<table class="table table-bordered table-striped" :class="{'table-dark': $store.state.darkMode}">
-				<thead>
+		<table :class="{'table-dark': $store.state.darkMode}" class="table table-bordered table-striped">
+			<thead>
 				<tr>
-					<!-- TODO i18n -->
-					<th v-if="showActionColumn" style="width:1%;">Action</th>
-					<th style="width:15%;">Created</th>
-					<th>Title</th>
-					<th style="width:15%;">Status</th>
+					<th v-if="showActionColumn" class="columnStatus">{{$t('issueList.action')}}</th>
+					<th class="columnDate">{{$t('issueList.created')}}</th>
+					<th class="columnText">{{$t('issueList.title')}}</th>
+					<th style="width:15%;">{{$t('issueList.status')}}</th>
 				</tr>
-				</thead>
-				<tbody>
+			</thead>
+			<tbody>
 				<tr v-for="issue in issues" :key="issue.ID">
-					<td v-if="showActionColumn">
+					<td v-if="showActionColumn" class="columnStatus">
 						<button v-if="issue.status !== 2" class="btn btn-primary" @click="closeIssue(issue)">
-							<i class="fa fa-lock"></i>
+							<i class="fa fa-lock" />
 						</button>
 					</td>
-					<td>{{issue.time}}</td> <!-- TODO date -->
-					<td>
+					<td class="columnDate">{{formatDate(issue.time)}}</td>
+					<td class="columnText">
 						<router-link :to="issue.link">{{issue.title}}</router-link>
 					</td>
 					<td>{{$t('issue.status.' + (issue.status === 2 ? 'closed' : 'open'))}}</td>
 				</tr>
-				</tbody>
-			</table>
+			</tbody>
+		</table>
 
-			<app-pagination :page="page" :pages="pages" />
-		</template>
+		<app-pagination :page="page" :pages="pages" />
 	</div>
 </template>
 
 <script>
 import axios from 'axios';
 import AppPagination from '../../components/AppPagination';
-import LoadingIndicator from '../../components/LoadingIndicator';
+import {hidePageLoader, showPageLoader} from '../../store';
+import formatDate from '../../utils/date';
 import {closeIssue} from '../../utils/issue';
 import {formatSEOTitle} from '../../utils/string';
 
 export default {
 	name: 'IssueListView',
-	components: { LoadingIndicator, AppPagination },
-	data() {
-		return {
-			pages: 0,
-			page: 0,
-			issues: [],
-			loading: true,
-		};
-	},
+	components: { AppPagination },
 	props: {
 		mineList: {
 			type: Boolean,
 			default: false,
 		},
 	},
-	created() {
-		this.fetchList();
-	},
-	watch: {
-		'$route.params.page'() {
-			this.fetchList();
-		},
+	data() {
+		return {
+			pages: 0,
+			page: 0,
+			issues: [],
+		};
 	},
 	computed: {
 		showActionColumn() {
 			return !this.mineList;
 		},
 	},
+	watch: {
+		'$route.params.page'() {
+			this.fetchList();
+		},
+	},
+	created() {
+		this.fetchList();
+	},
 	methods: {
+		formatDate,
 		closeIssue(issue) {
 			closeIssue(issue);
 		},
 		fetchList() {
+			showPageLoader();
+
 			let mineList = this.mineList || false;
 			let page = this.$route.params.page || 0;
-
-			this.loading = true;
 
 			axios
 				.get('/issues/?page=' + page + (mineList ? '&mine=1' : ''))
@@ -96,18 +93,11 @@ export default {
 					this.issues = data;
 					this.pages = lastPage;
 					this.page = currentPage;
-
-					if (this.page > this.pages) {
-						// this.pages = 0;
-						// this.page = 0;
-					}
 				})
 				.catch(() => {
 					// TODO error handling
 				})
-				.finally(() => {
-					this.loading = false;
-				});
+				.finally(hidePageLoader);
 		},
 	},
 };

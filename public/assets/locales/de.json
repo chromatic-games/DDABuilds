@@ -3,9 +3,72 @@
 		"de": "Deutsch (Beta)",
 		"en": "English"
 	},
-	"form": {
+	"date": {
+		"datetimeFormat": "$t(date.dateFormat), $t(date.timeFormat)",
+		"dateFormat": "j. F Y",
+		"timeFormat": "H:i",
+		"relative": {
+			"never": "Nie",
+			"now": "Vor einem Moment",
+			"hours": "Vor einer Stunde",
+			"hours_plural": "Vor {{count}} Stunden",
+			"minutes": "Vor einer Minute",
+			"minutes_plural": "Vor {{count}} Minuten",
+			"pastDays": "Gestern, {{time}}",
+			"pastDays_plural": "{{day}}, {{time}}"
+		},
+		"monthNames": [
+			"Januar",
+			"Februar",
+			"März",
+			"April",
+			"Mai",
+			"Juni",
+			"Juli",
+			"August",
+			"September",
+			"Oktober",
+			"November",
+			"Dezember"
+		],
+		"monthNamesShort": [
+			"Jan",
+			"Feb",
+			"Mär",
+			"Apr",
+			"Mai",
+			"Jun",
+			"Jul",
+			"Aug",
+			"Sep",
+			"Okt",
+			"Nov",
+			"Dez"
+		],
+		"dayNames": [
+			"Sonntag",
+			"Montag",
+			"Dienstag",
+			"Mittwoch",
+			"Donnerstag",
+			"Freitag",
+			"Samstag"
+		],
+		"dayNamesShort": [
+			"So",
+			"Mo",
+			"Di",
+			"Mi",
+			"Do",
+			"Fr",
+			"Sa"
+		]
+	},
+	"words": {
 		"any": "Alle",
-		"search": "Suchen"
+		"here": "hier",
+		"search": "Suchen",
+		"save": "Speichern"
 	},
 	"menu": {
 		"buildList": "Builds",
@@ -28,17 +91,18 @@
 		"nightmare": "Nightmare",
 		"massacre": "Massaker"
 	},
-	"buildList": {
-		"viewType": {
-			"grid": "Als Raster anzeigen",
-			"table": "Als Tabelle anzeigen"
-		}
-	},
 	"build": {
 		"error": {
 			"403": "Sorry, but this build is private.",
 			"404": "Sorry, but the page you are looking for has not been found. Try checking the URL for errors, then hit the refresh button on your browser."
 		},
+		"heroStats": {
+			"fortify": "Fortify",
+			"power": "Power",
+			"range": "Range",
+			"defRate": "Def. Rate"
+		},
+		"comments": "Kommentare",
 		"author": "Autor",
 		"title": "Build Titel",
 		"gameMode": "Spielmodus",
@@ -50,11 +114,37 @@
 		"description": "Beschreibung",
 		"isPrivate": "Dieses Build ist nicht gelistet oder privat."
 	},
+	"buildList": {
+		"viewType": {
+			"grid": "Als Raster anzeigen",
+			"table": "Als Tabelle anzeigen"
+		},
+		"filterReset": "Der Filter ist aktiv, du kannst {{link}} den Filter komplett zurücksetzen.",
+		"filter": "Filter",
+		"isPrivate": "Dieses Build ist nicht gelistet oder privat und nur für dich sichtbar."
+	},
+	"comment": {
+		"write": "Kommentar erstellen",
+		"send": "Absenden",
+		"noMore": "Keine weiteren Kommentare."
+	},
 	"issue": {
 		"status": {
 			"open": "Offen",
 			"closed": "Geschlossen"
-		}
+		},
+		"createdBy": "Erstellt von",
+		"description": "Beschreibung",
+		"agreement": "Es handelt sich hier um einen Fehler für die DD:A Builder Webseite und <strong>hat nichts mit dem Spiel zu tun</strong>.",
+		"info": "Bitte formuliere den Fehler ausschließlich in <strong>Englisch</strong> oder <strong>Deutsch</strong>.",
+		"notRelated": "Die hier gemeldeten Fehler werden von der Community geprüft und die Prüfer stehen in keiner Beziehung zu Chromatic Games oder Dungeon Defenders: Awakened-Mitarbeiter in irgendeiner Weise.",
+		"waiting": "Bitte warte {{count}} Sekunden für die nächste Fehlermeldung."
+	},
+	"issueList": {
+		"action": "Aktion",
+		"created": "Erstellungsdatum",
+		"title": "Titel",
+		"status": "Status"
 	},
 	"hero": {
 		"squire": "Knappe",
@@ -67,7 +157,6 @@
 		"arrows": "Pfeile"
 	},
 	"tower": {
-
 	},
 	"map": {
 		"theDeeperWell": "The Deeper Well",

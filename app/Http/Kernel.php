@@ -26,7 +26,7 @@ class Kernel extends HttpKernel {
 	protected $middleware = [
 		PreventRequestsDuringMaintenance::class,
 		// \Fruitcake\Cors\HandleCors::class,
-		StartSession::class, // TODO later remove and authenticate user with the remember token
+		StartSession::class,
 		ValidatePostSize::class,
 		TrimStrings::class,
 		ConvertEmptyStringsToNull::class,

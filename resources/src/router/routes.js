@@ -36,11 +36,17 @@ const routes = [
 		name: 'buildAddSelect',
 		path: '/build-add-select',
 		component: BuildAddSelectView,
+		meta: {
+			requiredAuth: true,
+		},
 	},
 	{
 		name: 'buildAdd',
 		path: '/build-add/:mapID-:name',
 		component: BuildAddView,
+		meta: {
+			requiredAuth: true,
+		},
 	},
 	{
 		name: 'build',
@@ -48,59 +54,80 @@ const routes = [
 		component: BuildAddView,
 		props: {
 			isView: true,
-		}
+		},
 	},
 	// issues
 	{
 		name: 'issueList',
 		path: '/issues/:page?',
 		component: IssueListView,
+		meta: {
+			requiredAuth: true,
+		},
 	},
 	{
 		name: 'issueAdd',
 		path: '/issue-add',
 		component: IssueAddView,
+		meta: {
+			requiredAuth: true,
+		},
 	},
 	{
 		name: 'issue',
 		path: '/issue/:id-:title/:page?',
 		component: IssueView,
+		meta: {
+			requiredAuth: true,
+		},
 	},
 	// user related pages
 	{
 		name: 'myIssueList',
 		path: '/my-issues/:page?',
 		component: IssueListView,
+		meta: {
+			requiredAuth: true,
+		},
 		props: {
-			mineList: true
-		}
+			mineList: true,
+		},
 	},
 	{
 		name: 'myBuildList',
 		path: '/my-builds/:page?',
 		component: BuildListView,
+		meta: {
+			requiredAuth: true,
+		},
 		props: {
-			fetchParams: {mine: 1},
+			fetchParams: { mine: 1 },
 			hideFilter: true,
-		}
+		},
 	},
 	{
 		name: 'likedBuildList',
 		path: '/liked-builds/:page?',
 		component: BuildListView,
+		meta: {
+			requiredAuth: true,
+		},
 		props: {
-			fetchParams: {liked: 1},
+			fetchParams: { liked: 1 },
 			hideFilter: true,
-		}
+		},
 	},
 	{
 		name: 'favoriteBuildList',
 		path: '/favorite-builds/:page?',
 		component: BuildListView,
+		meta: {
+			requiredAuth: true,
+		},
 		props: {
-			fetchParams: {watch: 1},
+			fetchParams: { watch: 1 },
 			hideFilter: true,
-		}
+		},
 	},
 	// auth
 	{

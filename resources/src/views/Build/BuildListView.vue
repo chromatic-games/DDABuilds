@@ -2,13 +2,12 @@
 	<div class="container">
 		<div v-if="!hideFilter" class="card">
 			<div class="card-header text-center">
-				<strong>Filter</strong>
+				<strong>{{$t('buildList.filter')}}</strong>
 			</div>
 			<div class="card-body">
-				<!-- TODO translate -->
-				<div v-if="isFilterActive" class="alert alert-info">
-					Filter are active, reset the filter <router-link :to="{name: $route.name}">here</router-link> completely.
-				</div>
+				<i18next v-if="isFilterActive" class="alert alert-info" path="buildList.filterReset" tag="div">
+					<router-link :to="{name: $route.name}" place="link">{{$t('words.here')}}</router-link>
+				</i18next>
 				<form @submit.prevent="filterSearch">
 					<div class="row">
 						<div class="col-md-2 col-sm-6">
@@ -34,7 +33,7 @@
 								</label>
 								<select id="difficultyFilter" v-model="filter.difficulty" class="form-control">
 									<option value="">
-										{{$t('form.any')}}
+										{{$t('words.any')}}
 									</option>
 									<option v-for="(value, key) in $t('difficulty')" :key="key" :value="key">
 										{{value}}
@@ -49,7 +48,7 @@
 								</label>
 								<select id="gameModeFilter" v-model="filter.gameMode" class="form-control">
 									<option value="">
-										{{$t('form.any')}}
+										{{$t('words.any')}}
 									</option>
 									<option v-for="(value, key) in $t('gameMode')" :key="key" :value="key">
 										{{value}}
@@ -68,7 +67,7 @@
 					</div>
 					<div class="text-center">
 						<button id="search" class="btn btn-primary" type="submit">
-							{{$t('form.search')}}
+							{{$t('words.search')}}
 						</button>
 					</div>
 				</form>
@@ -131,7 +130,7 @@
 						</td>
 						<td class="columnDigits">{{number(build.likes)}}</td>
 						<td class="columnDigits">{{number(build.views)}}</td>
-						<td class="columnDate" colspan="2">{{build.date}}</td><!-- todo date -->
+						<td class="columnDate" colspan="2">{{formatDate(build.date)}}</td>
 					</tr>
 				</tbody>
 			</table>
@@ -198,6 +197,7 @@ import vSelect from 'vue-select';
 import AppPagination from '../../components/AppPagination';
 import LoadingIndicator from '../../components/LoadingIndicator';
 import {buildLinkParams, buildListSearch, STATUS_PUBLIC} from '../../utils/build';
+import formatDate from '../../utils/date';
 import number from '../../utils/math/number';
 import {lcfirst} from '../../utils/string';
 
@@ -257,6 +257,7 @@ export default {
 		number,
 		buildLinkParams,
 		buildListSearch,
+		formatDate,
 		getDefaultFilter() {
 			return {
 				title: '',

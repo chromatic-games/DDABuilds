@@ -2,10 +2,10 @@
 	<table v-if="editMode || heroStatsList.length" class="table">
 		<thead>
 			<tr>
-				<td class="text-right" colspan="2">Fortify</td>
-				<td class="text-right">Power</td>
-				<td class="text-right">Range</td>
-				<td class="text-right">Def. Rate</td>
+				<td class="text-right" colspan="2">{{$t('build.heroStats.fortify')}}</td>
+				<td class="text-right">{{$t('build.heroStats.power')}}</td>
+				<td class="text-right">{{$t('build.heroStats.range')}}</td>
+				<td class="text-right">{{$t('build.heroStats.defRate')}}</td>
 			</tr>
 		</thead>
 		<tbody>

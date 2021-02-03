@@ -1,16 +1,18 @@
 <template>
 	<div class="container marginTop">
 		<div class="card">
-			<div class="card-header">
-				Write a comment
+			<div class="card-header text-center">
+				{{$t('comment.write')}}
 			</div>
 			<div class="card-body">
 				<div class="card-text">
 					<classic-ckeditor v-model="text" />
 
-					<button @click="create">
-						Send
-					</button>
+					<div class="text-center marginTop">
+						<button class="btn btn-primary" @click="create">
+							{{$t('comment.send')}}
+						</button>
+					</div>
 				</div>
 			</div>
 		</div>

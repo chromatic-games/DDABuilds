@@ -16,7 +16,7 @@
 					<a class="nav-link pointer">+</a>
 				</li>
 				<li v-if="build.ID" class="nav-item" @click="waveSelect(-1)">
-					<a class="nav-link pointer" :class="{active: selectedWave === -1}">Comments (<span>{{build.comments}}</span>)</a>
+					<a :class="{active: selectedWave === -1}" class="nav-link pointer">{{$t('build.comments')}} (<span>{{build.comments}}</span>)</a>
 				</li>
 			</ul>
 			<build-comment-list v-if="selectedWave === -1" :build-id="build.ID" @new-comment="build.comments ++" />
@@ -24,7 +24,7 @@
 				<div class="row">
 					<div class="col-lg-9">
 						<!-- map container -->
-						<div id="mapContainer">
+						<div id="mapContainer" ref="mapContainer">
 							<img :src="'/assets/images/map/' + map.name + '.png'" alt="map image" class="buildMap">
 
 							<div v-for="(entry, key) of waveTowersFiltered"
@@ -47,7 +47,7 @@
 						</div>
 					</div>
 					<!-- tower control panel -->
-					<div id="towerControlPanel" class="col-lg-3">
+					<div id="towerControlPanel" class="col-lg-3 marginTop">
 						<div class="row">
 							<div class="col-sm-12">
 								<div class="card">
@@ -116,7 +116,8 @@
 									</div>
 									<div class="card-body">
 										<div class="card-text">
-											<img v-for="hero in heros" :key="hero.ID" v-b-tooltip.hover="$t('hero.' + hero.name)" :class="{disabled: disabledHeros.includes(hero.ID)}"
+											<img v-for="hero in heros" :key="hero.ID" v-b-tooltip.hover="$t('hero.' + hero.name)"
+												:class="{disabled: disabledHeros.includes(hero.ID)}"
 												:src="'/assets/images/hero/' + hero.name + '.png'" class="disableTowerCheckbox" @click="toggleHeroClass(hero.ID)">
 										</div>
 									</div>
@@ -180,7 +181,8 @@
 											</div>
 											<div class="form-group">
 												<div v-for="gameMode in gameModes" :key="gameMode.ID" class="form-check form-check-inline">
-													<input :id="'buildGameMode' + gameMode.ID" v-model="build.gameModeID" :value="gameMode.ID" class="form-check-input" type="radio">
+													<input :id="'buildGameMode' + gameMode.ID" v-model="build.gameModeID" :value="gameMode.ID" class="form-check-input"
+														type="radio">
 													<label :for="'buildGameMode' + gameMode.ID" class="form-check-label">{{$t('gameMode.' + gameMode.name)}}</label>
 												</div>
 											</div>
@@ -386,16 +388,22 @@ export default {
 		'$route.params.mapID'() {
 			this.fetch();
 		},
+		selectedWave(newValue, oldValue) {
+			if (oldValue === -1) {
+				this.$nextTick(() => {
+					this.startDroppable();
+					this.startDraggable();
+				});
+			}
+		},
 		waveTowersFiltered() {
-			let canvas = $('#mapContainer');
-
 			this.$nextTick(() => {
+				let offset = $(this.$refs.mapContainer).offset();
 				for (let key in this.$refs.placedTower) {
 					let el = this.$refs.placedTower[key];
 					$(el).draggable({
 						containment: '#mapContainer',
 						stop: (event, ui) => {
-							let offset = canvas.offset();
 							this.placedTowers[key].x = ui.offset.left - offset.left;
 							this.placedTowers[key].y = ui.offset.top - offset.top;
 						},
@@ -405,34 +413,37 @@ export default {
 		},
 	},
 	mounted() {
-		let canvas = $('#mapContainer');
-		canvas.droppable({
-			accept: '.tower-container',
-			drop: (event, ui) => {
-				if (!$(ui.helper).hasClass('dummy')) {
-					return;
-				}
-
-				let offset = canvas.offset();
-				let towerID = ui.helper.data('tower');
-				let tower = this.towers[towerID];
-
-				this.placedTowers.push({
-					ID: towerID,
-					waveID: this.selectedWave,
-					size: tower.unitCost < tower.maxUnitCost ? tower.unitCost : 0,
-					x: ui.offset.left - offset.left,
-					y: ui.offset.top - offset.top,
-					rotation: 0,
-					mouseOver: false,
-				});
-			},
-		});
+		this.startDroppable();
 	},
 	created() {
 		this.fetch();
 	},
 	methods: {
+		startDroppable() {
+			let canvas = $('#mapContainer');
+			canvas.droppable({
+				accept: '.tower-container',
+				drop: (event, ui) => {
+					if (!$(ui.helper).hasClass('dummy')) {
+						return;
+					}
+
+					let towerID = ui.helper.data('tower');
+					let tower = this.towers[towerID];
+					let offset = canvas.offset();
+
+					this.placedTowers.push({
+						ID: towerID,
+						waveID: this.selectedWave,
+						size: tower.unitCost < tower.maxUnitCost ? tower.unitCost : 0,
+						x: ui.offset.left - offset.left,
+						y: ui.offset.top - offset.top,
+						rotation: 0,
+						mouseOver: false,
+					});
+				},
+			});
+		},
 		fetch() {
 			showPageLoader();
 

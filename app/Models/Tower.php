@@ -4,7 +4,7 @@ namespace App\Models;
 
 /**
  * @property-read int    $ID
- * @property-read int    $unitType (0/1 TODO doc)
+ * @property-read int    $unitType (0 = du, 1 = mu)
  * @property-read int    $unitCost
  * @property-read int    $maxUnitCost
  * @property-read int    $manaCost
