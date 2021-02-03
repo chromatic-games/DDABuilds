@@ -1,6 +1,6 @@
 <template>
 	<div class="text-center">
-		<i class="fa fa128 fa-spinner"></i>
+		<i class="fa fa128 fa-spinner" />
 	</div>
 </template>
 

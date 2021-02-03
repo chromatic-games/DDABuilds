@@ -186,7 +186,7 @@
 				</li>
 			</ol>
 
-			<app-pagination :page="page" :pages="pages" :route-name="$route.name" />
+			<app-pagination :current-page="page" :pages="pages" :route-name="$route.name" />
 		</template>
 	</div>
 </template>

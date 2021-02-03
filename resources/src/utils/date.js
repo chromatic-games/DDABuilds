@@ -1,51 +1,5 @@
 import i18n from '../i18n';
 
-export function relativeDate(elTimestamp) {
-	let timestamp = Math.trunc(Date.now() / 1000);
-	elTimestamp = Math.trunc(elTimestamp);
-	if (elTimestamp === 0) {
-		return i18n.i18next.t('date.relative.never');
-	}
-
-	// timestamp is less than 60 seconds ago
-	if (elTimestamp >= timestamp || timestamp < (elTimestamp + 60)) {
-		return i18n.i18next.t('date.relative.now');
-	}
-	// timestamp is less than 60 minutes ago (display 1 hour ago rather than 60 minutes ago)
-	else if (timestamp < (elTimestamp + 3540)) {
-		let minutes = Math.max(Math.round((timestamp - elTimestamp) / 60), 1);
-
-		return i18n.i18next.t('date.relative.minutes', { count: minutes });
-	}
-	// timestamp is less than 24 hours ago
-	else if (timestamp < (elTimestamp + 86400)) {
-		let hours = Math.round((timestamp - elTimestamp) / 3600);
-
-		return i18n.i18next.t('date.relative.hours', { count: hours });
-	}
-	// timestamp is less than 6 days ago
-	else if (timestamp < (elTimestamp + 518400)) {
-		let date = new Date(timestamp);
-		let midnight = new Date(date.getFullYear(), date.getMonth(), date.getDate());
-		let days = Math.ceil((midnight / 1000 - elTimestamp) / 86400);
-
-		// get day of week
-		let dateObj = new Date(elTimestamp * 1000);
-		let dow = dateObj.getDay();
-		let day = i18n.i18next.t('date.dayNames', { returnObjects: true })[dow];
-
-		return i18n.i18next.t('date.relative.pastDays', {
-			count: days,
-			day,
-			time: formatDate(i18n.i18next.t('date.timeFormat'), dateObj),
-		});
-	}
-	// timestamp is between ~700 million years BC and last week
-	else {
-		return formatDate(i18n.i18next.t('date.datetimeFormat'), new Date(elTimestamp * 1000));
-	}
-}
-
 export default function formatDate(date, format) {
 	let char;
 	let out = '';
@@ -76,7 +30,7 @@ export default function formatDate(date, format) {
 			char = ('0' + date.getSeconds().toString()).slice(-2);
 			break;
 
-			// minutes
+		// minutes
 		case 'i':
 			// `00` through `59`
 			char = date.getMinutes();
@@ -85,7 +39,7 @@ export default function formatDate(date, format) {
 			}
 			break;
 
-			// hours
+		// hours
 		case 'a':
 			// `am` or `pm`
 			char = (date.getHours() > 11) ? 'pm' : 'am';
@@ -126,7 +80,7 @@ export default function formatDate(date, format) {
 			char = ('0' + char.toString()).slice(-2);
 			break;
 
-			// day
+		// day
 		case 'd':
 			// `01` through `31`
 			char = date.getDate();
@@ -146,7 +100,7 @@ export default function formatDate(date, format) {
 			// `Mon` through `Sun` (localized)
 			char = i18n.t('date.dayNamesShort', { returnObjects: true })[date.getDay()];
 			break;
-		case 'S':
+		case 'S': {
 			// ignore english ordinal suffix
 			char = '';
 
@@ -171,8 +125,9 @@ export default function formatDate(date, format) {
 				}
 			}
 			break;
+		}
 
-			// month
+		// month
 		case 'm':
 			// `01` through `12`
 			char = date.getMonth() + 1;
@@ -191,7 +146,7 @@ export default function formatDate(date, format) {
 			char = i18n.t('date.monthNamesShort', { returnObjects: true })[date.getMonth()];
 			break;
 
-			// year
+		// year
 		case 'y':
 			// `00` through `99`
 			char = date.getFullYear().toString()
@@ -202,8 +157,8 @@ export default function formatDate(date, format) {
 			char = date.getFullYear();
 			break;
 
-			// timezone
-		case 'P':
+		// timezone
+		case 'P': {
 			let offset = date.getTimezoneOffset();
 			char = (offset > 0) ? '-' : '+';
 
@@ -214,8 +169,8 @@ export default function formatDate(date, format) {
 			char += ('0' + (offset % 60).toString()).slice(-2);
 
 			break;
-
-			// specials
+		}
+		// specials
 		case 'r':
 			char = date.toString();
 			break;
@@ -223,7 +178,7 @@ export default function formatDate(date, format) {
 			char = Math.round(date.getTime() / 1000);
 			break;
 
-			// escape sequence
+		// escape sequence
 		case '\\':
 			char = '';
 			if (i + 1 < length) {

@@ -58,7 +58,7 @@
 				</div>
 			</div>
 
-			<app-pagination :page="page" :pages="pages" :route-params="$route.params" route-name="issue" />
+			<app-pagination :current-page="page" :pages="pages" :route-params="$route.params" route-name="issue" />
 		</template>
 	</div>
 </template>

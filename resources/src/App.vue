@@ -3,7 +3,7 @@
 		<b-navbar :variant="darkMode ? 'secondary' : 'dark'" fixed="top" toggleable="lg" type="dark">
 			<div class="container">
 				<router-link :to="{name: 'home'}" class="navbar-brand">DD:A Builder</router-link>
-				<b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
+				<b-navbar-toggle target="nav-collapse" />
 				<b-collapse id="nav-collapse" is-nav>
 					<ul class="nav navbar-nav">
 						<router-link :to="{name: 'buildList'}" class="nav-item" tag="li"><a class="nav-link">{{$t('menu.buildList')}}</a></router-link>
@@ -24,12 +24,14 @@
 					<b-navbar-nav class="ml-auto">
 						<li class="nav-item position-relative">
 							<a class="pointer nav-link" @click="toggleDarkMode">
-								<i :class="{'fa-moon-o': !darkMode, 'fa-sun-o': darkMode}" class="fa pointer"></i>
+								<i :class="{'fa-moon-o': !darkMode, 'fa-sun-o': darkMode}" class="fa pointer" />
 								<span v-if="!darkMode" class="badge badge-danger badge-beta">Beta</span>
 							</a>
 						</li>
 						<b-nav-item-dropdown right>
-							<template #button-content>{{$t('locales.' + $i18n.i18next.language)}}</template>
+							<template #button-content>
+								{{$t('locales.' + $i18n.i18next.language)}}
+							</template>
 							<a v-for="language in languages" :key="language" class="dropdown-item pointer" role="menuitem"
 								@click="$changeLanguage(language)">{{$t('locales.' + language)}}</a>
 						</b-nav-item-dropdown>
@@ -63,7 +65,9 @@
 			<div class="container">
 				<ul class="nav navbar-nav">
 					<router-link :to="{name: 'changelog'}" class="nav-item" tag="li"><a class="nav-link">Changelog</a></router-link>
-					<li class="nav-item"><a class="nav-link" href="https://github.com/RefreshingWater/DDABuilds" target="_blank">GitHub <i class="fa fa-external-link"></i></a></li>
+					<li class="nav-item">
+						<a class="nav-link" href="https://github.com/RefreshingWater/DDABuilds" target="_blank">GitHub <i class="fa fa-external-link" /></a>
+					</li>
 				</ul>
 			</div>
 		</footer>
@@ -72,7 +76,7 @@
 			<div class="loadingSpinner">
 				<loading-indicator />
 			</div>
-			<div class="pageBackdrop"></div>
+			<div class="pageBackdrop" />
 		</div>
 	</div>
 </template>

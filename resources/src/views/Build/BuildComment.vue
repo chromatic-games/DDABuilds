@@ -24,14 +24,6 @@
 	</div>
 </template>
 
-<style>
-.panel-shadow {
-	border: 1px solid #DDDDDD;
-	box-shadow: rgba(0, 0, 0, 0.3) 7px 7px 7px;
-	padding: 15px;
-}
-</style>
-
 <script>
 import {getSteamAvatar} from '../../utils/build';
 import formatDate from '../../utils/date';
@@ -73,3 +65,11 @@ export default {
 	},
 };
 </script>
+
+<style>
+.panel-shadow {
+	border: 1px solid #DDDDDD;
+	box-shadow: rgba(0, 0, 0, 0.3) 7px 7px 7px;
+	padding: 15px;
+}
+</style>

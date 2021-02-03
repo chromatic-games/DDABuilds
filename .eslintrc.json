@@ -45,6 +45,8 @@
 		"vue/order-in-components": "error",
 		"vue/html-self-closing": "error",
 		"vue/require-prop-types": "error",
+		"vue/component-tags-order": "error",
+		"vue/no-template-shadow": "error",
 		"vue/singleline-html-element-content-newline": [
 			"error",
 			{

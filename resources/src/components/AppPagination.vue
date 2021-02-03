@@ -19,7 +19,7 @@ export default {
 				return value >= 0;
 			},
 		},
-		page: {
+		currentPage: {
 			type: Number,
 			default: 1,
 			validator(value) {
@@ -46,7 +46,7 @@ export default {
 				let pageNumber = i + 1;
 				pages.push({
 					number: pageNumber,
-					to: pageNumber !== this.page ? {
+					to: pageNumber !== this.currentPage ? {
 						name: this.routeName,
 						params: Object.assign({}, this.routeParams, {
 							page: pageNumber,

@@ -6,7 +6,9 @@
 		</div>
 
 		<div v-for="mapCategory in mapCategories" :id="'category-' + mapCategory.name" :key="mapCategory.ID" :ref="'category_' + mapCategory.name">
-			<h1 class="page-header">{{$t('mapCategory.' + mapCategory.name)}}</h1>
+			<h1 class="page-header">
+				{{$t('mapCategory.' + mapCategory.name)}}
+			</h1>
 			<ol class="buildList mapSelection">
 				<li v-for="map in mapCategory.maps" :key="map.ID">
 					<div class="buildBox">
@@ -20,7 +22,7 @@
 								</router-link>
 							</div>
 						</div>
-						<div class="buildFiller"></div>
+						<div class="buildFiller" />
 					</div>
 				</li>
 			</ol>

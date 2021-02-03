@@ -25,7 +25,7 @@
 			</tbody>
 		</table>
 
-		<app-pagination :page="page" :pages="pages" />
+		<app-pagination :current-page="page" :pages="pages" />
 	</div>
 </template>
 
