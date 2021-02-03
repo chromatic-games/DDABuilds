@@ -74,7 +74,12 @@
 		"buildList": "Builds",
 		"buildAddSelect": "Build erstellen",
 		"bugReportAdd": "Fehler melden",
-		"issueList": "Fehlerliste"
+		"issueList": "Fehlerliste",
+		"myBuilds": "Meine Builds",
+		"myIssues": "Meine Fehler",
+		"likedBuilds": "Liked Builds",
+		"favoriteBuilds": "Favorite Builds",
+		"logout": "Abmelden"
 	},
 	"gameMode": {
 		"campaign": "Kampagne",
@@ -96,29 +101,54 @@
 			"403": "Sorry, but this build is private.",
 			"404": "Sorry, but the page you are looking for has not been found. Try checking the URL for errors, then hit the refresh button on your browser."
 		},
+		"status": [
+			"Öffentlich",
+			"Ungelistet",
+			"Privat"
+		],
 		"heroStats": {
 			"fortify": "Fortify",
 			"power": "Power",
 			"range": "Range",
 			"defRate": "Def. Rate"
 		},
-		"comments": "Kommentare",
 		"author": "Autor",
 		"title": "Build Titel",
+		"noTitle": "Gib ein Build Namen ein",
 		"gameMode": "Spielmodus",
+		"buildStatus": "Build Status",
+		"requiredAttributes": "Benötigte Helden-Werte",
 		"map": "Karte",
 		"difficulty": "Schwierigkeitsgrad",
 		"likes": "Likes",
 		"views": "Aufrufe",
 		"date": "Datum",
 		"description": "Beschreibung",
-		"isPrivate": "Dieses Build ist nicht gelistet oder privat."
+		"isPrivate": "Dieses Build ist nicht gelistet oder privat.",
+		"comments": "Kommentare",
+		"manaUsed": "Mana benötigt",
+		"manaUpgradeUsed": "Mana für Verbesserungen",
+		"disableTowers": "Towers ausblenden",
+		"disableTowersHint": "Klicke auf das Bild vom Gebäude-Typ um diesen Typ ein- oder auszublenden.",
+		"details": "Informationen",
+		"modifiers": "Modifikatoren",
+		"rifted": "Rifted",
+		"afkAble": "AFK möglich",
+		"hardcore": "Hardcore",
+		"editorMode": "Editor Modus",
+		"viewerMode": "Viewer Modus",
+		"delete": "Löschen",
+		"timePerRun": "Zeit pro Runde",
+		"expPerRun": "EP pro Runde",
+		"wantWaveDelete": "Möchtest du die Welle wirklich löschen?",
+		"promptWaveName": "Wellen-Name (maximal {{count}} Zeichen)"
 	},
 	"buildList": {
 		"viewType": {
 			"grid": "Als Raster anzeigen",
 			"table": "Als Tabelle anzeigen"
 		},
+		"noEntries": "Es wurden keine Builds gefunden.",
 		"filterReset": "Der Filter ist aktiv, du kannst {{link}} den Filter komplett zurücksetzen.",
 		"filter": "Filter",
 		"isPrivate": "Dieses Build ist nicht gelistet oder privat und nur für dich sichtbar."
@@ -144,7 +174,8 @@
 		"action": "Aktion",
 		"created": "Erstellungsdatum",
 		"title": "Titel",
-		"status": "Status"
+		"status": "Status",
+		"noEntries": "Es wurden keine Fehler gefunden."
 	},
 	"hero": {
 		"squire": "Knappe",

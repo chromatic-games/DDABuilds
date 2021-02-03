@@ -74,70 +74,71 @@
 			</div>
 		</div>
 
-		<div :class="{marginTop: !hideFilter}" class="table-responsive">
-			<table :class="{'table-dark': $store.state.darkMode}" class="table table-hover">
-				<thead>
-					<tr>
-						<th :class="getHeadlineClass('author')">
-							<router-link :to="{name: 'buildList', query: getSortQuery('author')}">{{$t('build.author')}}</router-link>
-						</th>
-						<th :class="getHeadlineClass('title')">
-							<router-link :to="{name: 'buildList', query: getSortQuery('title')}">{{$t('build.title')}}</router-link>
-						</th>
-						<th :class="getHeadlineClass('gameModeID')">
-							<router-link :to="{name: 'buildList', query: getSortQuery('gameModeID')}">{{$t('build.gameMode')}}</router-link>
-						</th>
-						<th :class="getHeadlineClass('mapID')">
-							<router-link :to="{name: 'buildList', query: getSortQuery('mapID')}">{{$t('build.map')}}</router-link>
-						</th>
-						<th :class="getHeadlineClass('difficultyID')">
-							<router-link :to="{name: 'buildList', query: getSortQuery('difficultyID')}">{{$t('build.difficulty')}}</router-link>
-						</th>
-						<th :class="getHeadlineClass('likes')" class="columnDigits">
-							<router-link :to="{name: 'buildList', query: getSortQuery('likes')}">{{$t('build.likes')}}</router-link>
-						</th>
-						<th :class="getHeadlineClass('views')" class="columnDigits">
-							<router-link :to="{name: 'buildList', query: getSortQuery('views')}">{{$t('build.views')}}</router-link>
-						</th>
-						<th :class="getHeadlineClass('date')" class="columnDate">
-							<router-link :to="{name: 'buildList', query: getSortQuery('date')}">{{$t('build.date')}}</router-link>
-						</th>
-						<th class="text-right">
-							<a v-b-tooltip.left.hover="$t('buildList.viewType.' + (viewMode === 'table' ? 'grid' : 'table'))" class="pointer" @click="changeViewMode">
-								<i :class="{'fa-th': viewMode === 'table', 'fa-list': viewMode === 'grid'}" class="fa" />
-							</a>
-						</th>
-					</tr>
-				</thead>
-				<tbody v-if="!loading && viewMode === 'table'">
-					<tr v-for="build in builds" :key="build.ID">
-						<td>
-							<router-link :to="{name: 'buildList', query: {author: build.author}}">{{build.author}}</router-link>
-						</td>
-						<td>
-							<router-link :to="{name: 'build', params: buildLinkParams(build)}">{{build.title}}</router-link>
-						</td>
-						<td>
-							<router-link :to="{name: 'buildList', query: buildListSearch({gameMode: build.gameModeName})}">{{$t('gameMode.' + build.gameModeName)}}</router-link>
-						</td>
-						<td>
-							<router-link :to="{name: 'buildList', query: buildListSearch({map: build.mapName})}">{{$t('map.' + build.mapName)}}</router-link>
-						</td>
-						<td :class="'difficulty-' + build.difficultyID">
-							<router-link :to="{name: 'buildList', query: buildListSearch({difficulty: build.difficultyName})}">
-								{{$t('difficulty.' + build.difficultyName)}}
-							</router-link>
-						</td>
-						<td class="columnDigits">{{number(build.likes)}}</td>
-						<td class="columnDigits">{{number(build.views)}}</td>
-						<td class="columnDate" colspan="2">{{formatDate(build.date)}}</td>
-					</tr>
-				</tbody>
-			</table>
-		</div>
+		<template v-if="builds.length">
+			<div :class="{marginTop: !hideFilter}" class="table-responsive">
+				<table :class="{'table-dark': $store.state.darkMode}" class="table table-hover">
+					<thead>
+						<tr>
+							<th :class="getHeadlineClass('author')">
+								<router-link :to="{name: 'buildList', query: getSortQuery('author')}">{{$t('build.author')}}</router-link>
+							</th>
+							<th :class="getHeadlineClass('title')">
+								<router-link :to="{name: 'buildList', query: getSortQuery('title')}">{{$t('build.title')}}</router-link>
+							</th>
+							<th :class="getHeadlineClass('gameModeID')">
+								<router-link :to="{name: 'buildList', query: getSortQuery('gameModeID')}">{{$t('build.gameMode')}}</router-link>
+							</th>
+							<th :class="getHeadlineClass('mapID')">
+								<router-link :to="{name: 'buildList', query: getSortQuery('mapID')}">{{$t('build.map')}}</router-link>
+							</th>
+							<th :class="getHeadlineClass('difficultyID')">
+								<router-link :to="{name: 'buildList', query: getSortQuery('difficultyID')}">{{$t('build.difficulty')}}</router-link>
+							</th>
+							<th :class="getHeadlineClass('likes')" class="columnDigits">
+								<router-link :to="{name: 'buildList', query: getSortQuery('likes')}">{{$t('build.likes')}}</router-link>
+							</th>
+							<th :class="getHeadlineClass('views')" class="columnDigits">
+								<router-link :to="{name: 'buildList', query: getSortQuery('views')}">{{$t('build.views')}}</router-link>
+							</th>
+							<th :class="getHeadlineClass('date')" class="columnDate">
+								<router-link :to="{name: 'buildList', query: getSortQuery('date')}">{{$t('build.date')}}</router-link>
+							</th>
+							<th class="text-right">
+								<a v-b-tooltip.left.hover="$t('buildList.viewType.' + (viewMode === 'table' ? 'grid' : 'table'))" class="pointer" @click="changeViewMode">
+									<i :class="{'fa-th': viewMode === 'table', 'fa-list': viewMode === 'grid'}" class="fa" />
+								</a>
+							</th>
+						</tr>
+					</thead>
+					<tbody v-if="viewMode === 'table'">
+						<tr v-for="build in builds" :key="build.ID">
+							<td>
+								<router-link :to="{name: 'buildList', query: {author: build.author}}">{{build.author}}</router-link>
+							</td>
+							<td>
+								<router-link :to="{name: 'build', params: buildLinkParams(build)}">{{build.title}}</router-link>
+							</td>
+							<td>
+								<router-link :to="{name: 'buildList', query: buildListSearch({gameMode: build.gameModeName})}">
+									{{$t('gameMode.' + build.gameModeName)}}
+								</router-link>
+							</td>
+							<td>
+								<router-link :to="{name: 'buildList', query: buildListSearch({map: build.mapName})}">{{$t('map.' + build.mapName)}}</router-link>
+							</td>
+							<td :class="'difficulty-' + build.difficultyID">
+								<router-link :to="{name: 'buildList', query: buildListSearch({difficulty: build.difficultyName})}">
+									{{$t('difficulty.' + build.difficultyName)}}
+								</router-link>
+							</td>
+							<td class="columnDigits">{{number(build.likes)}}</td>
+							<td class="columnDigits">{{number(build.views)}}</td>
+							<td class="columnDate" colspan="2">{{formatDate(build.date)}}</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
 
-		<loading-indicator v-if="loading" />
-		<template v-else>
 			<ol v-if="viewMode === 'grid'" class="buildList">
 				<li v-for="build in builds" :key="build.ID">
 					<div class="buildBox">
@@ -151,7 +152,7 @@
 
 								<ul class="inlineList dotSeparated buildMetaData">
 									<li><i class="fa fa-user" /> <router-link :to="{name: 'buildList', query: {author: build.author}}">{{build.author}}</router-link></li>
-									<li><i class="fa fa-clock-o" /> {{build.date}}</li><!-- todo date -->
+									<li><i class="fa fa-clock-o" /> {{formatDate(build.date)}}</li>
 									<li><i class="fa fa-eye" /> {{number(build.views)}}</li>
 									<li><i class="fa fa-comment-o" /> {{number(build.likes)}}</li>
 									<li :class="{'text-success': build.likes > 0}">
@@ -185,9 +186,12 @@
 					</div>
 				</li>
 			</ol>
-
-			<app-pagination :current-page="page" :pages="pages" :route-name="$route.name" />
 		</template>
+		<div v-else class="alert alert-info">
+			{{$t('buildList.noEntries')}}
+		</div>
+
+		<app-pagination :current-page="page" :pages="pages" :route-name="$route.name" />
 	</div>
 </template>
 
@@ -195,7 +199,7 @@
 import axios from 'axios';
 import vSelect from 'vue-select';
 import AppPagination from '../../components/AppPagination';
-import LoadingIndicator from '../../components/LoadingIndicator';
+import {hidePageLoader, showPageLoader} from '../../store';
 import {buildLinkParams, buildListSearch, STATUS_PUBLIC} from '../../utils/build';
 import formatDate from '../../utils/date';
 import number from '../../utils/math/number';
@@ -205,7 +209,6 @@ export default {
 	name: 'BuildListView',
 	components: {
 		AppPagination,
-		LoadingIndicator,
 		vSelect,
 	},
 	props: {
@@ -226,7 +229,6 @@ export default {
 			builds: [],
 			page: 0,
 			pages: 0,
-			loading: true,
 			isFilterActive: false,
 			filter: this.getDefaultFilter(),
 			viewMode: localStorage?.getItem('viewMode.' + this.$route.name) || 'grid',
@@ -317,7 +319,7 @@ export default {
 			return queryOptions;
 		},
 		fetchList() {
-			this.loading = true;
+			showPageLoader();
 			this.updateFilter();
 
 			let queryParams = (new URLSearchParams(Object.assign({}, this.$route.query, this.fetchParams))).toString();
@@ -330,9 +332,7 @@ export default {
 					this.page = currentPage;
 					this.pages = lastPage;
 				})
-				.finally(() => {
-					this.loading = false;
-				});
+				.finally(hidePageLoader);
 		},
 		changeViewMode() {
 			this.viewMode = this.viewMode === 'grid' ? 'table' : 'grid';

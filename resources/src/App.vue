@@ -39,11 +39,11 @@
 							<template #button-content>
 								{{$store.state.authentication.user.name}}
 							</template>
-							<router-link :to="{name: 'myBuildList'}" class="dropdown-item" tag="li"><a>My Builds</a></router-link>
-							<router-link :to="{name: 'myIssueList'}" class="dropdown-item" tag="li"><a>My Issues</a></router-link>
-							<router-link :to="{name: 'likedBuildList'}" class="dropdown-item" tag="li"><a>Liked Builds</a></router-link>
-							<router-link :to="{name: 'favoriteBuildList'}" class="dropdown-item" tag="li"><a>Favorite Builds</a></router-link>
-							<router-link :to="{name: 'logout'}" class="dropdown-item" tag="li"><a>Logout</a></router-link>
+							<router-link :to="{name: 'myBuildList'}" class="dropdown-item" tag="li"><a>{{$t('menu.myBuilds')}}</a></router-link>
+							<router-link :to="{name: 'myIssueList'}" class="dropdown-item" tag="li"><a>{{$t('menu.myIssues')}}</a></router-link>
+							<router-link :to="{name: 'likedBuildList'}" class="dropdown-item" tag="li"><a>{{$t('menu.likedBuilds')}}</a></router-link>
+							<router-link :to="{name: 'favoriteBuildList'}" class="dropdown-item" tag="li"><a>{{$t('menu.favoriteBuilds')}}</a></router-link>
+							<router-link :to="{name: 'logout'}" class="dropdown-item" tag="li"><a>{{$t('menu.logout')}}</a></router-link>
 						</b-nav-item-dropdown>
 						<div v-else class="navbar-right pointer">
 							<a :href="loginUrl" @click="startLogin" @click.prevent>

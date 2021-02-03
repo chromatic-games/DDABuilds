@@ -74,7 +74,12 @@
 		"buildList": "Builds",
 		"buildAddSelect": "Create build",
 		"bugReportAdd": "Report Bug",
-		"issueList": "Bug Reports"
+		"issueList": "Bug Reports",
+		"myBuilds": "My Builds",
+		"myIssues": "My Issues",
+		"likedBuilds": "Liked Builds",
+		"favoriteBuilds": "Favorite Builds",
+		"logout": "Logout"
 	},
 	"gameMode": {
 		"campaign": "Campaign",
@@ -96,6 +101,11 @@
 			"403": "Sorry, but this build is private.",
 			"404": "Sorry, but the page you are looking for has not been found. Try checking the URL for errors, then hit the refresh button on your browser."
 		},
+		"status": [
+			"Public",
+			"Unlisted",
+			"Private"
+		],
 		"heroStats": {
 			"fortify": "Fortify",
 			"power": "Power",
@@ -104,7 +114,10 @@
 		},
 		"author": "Author",
 		"title": "Build Title",
+		"noTitle": "Enter a build name",
 		"gameMode": "Game Mode",
+		"buildStatus": "Build status",
+		"requiredAttributes": "Required Attributes",
 		"map": "Map",
 		"difficulty": "Difficulty",
 		"likes": "Likes",
@@ -113,14 +126,29 @@
 		"description": "Description",
 		"isPrivate": "This build is unlisted or private.",
 		"comments": "Comments",
+		"manaUsed": "Mana used",
+		"manaUpgradeUsed": "Mana to upgrade",
+		"disableTowers": "Disable Tower",
+		"disableTowersHint": "Click the image to enable or disable the type of towers",
+		"details": "Details",
+		"modifiers": "Modifiers",
 		"rifted": "Rifted",
-		"afkAble": "AFK able"
+		"afkAble": "AFK able",
+		"hardcore": "Hardcore",
+		"editorMode": "Editor Mode",
+		"viewerMode": "Viewer Mode",
+		"delete": "Delete",
+		"timePerRun": "Time per Run",
+		"expPerRun": "EXP per Run",
+		"wantWaveDelete": "Want delete the wave?",
+		"promptWaveName": "Wave name (max {{count}} characters)"
 	},
 	"buildList": {
 		"viewType": {
 			"grid": "Show as grid",
 			"table": "Show as table"
 		},
+		"noEntries": "No builds found.",
 		"filterReset": "Filter are active, reset the filter {{link}} completely.",
 		"filter": "Filter",
 		"isPrivate": "This build is private or unlisted and is only visible for you."
@@ -146,7 +174,8 @@
 		"action": "Action",
 		"created": "Created",
 		"title": "Title",
-		"status": "Status"
+		"status": "Status",
+		"noEntries": "No issues found."
 	},
 	"hero": {
 		"apprentice":"Apprentice",

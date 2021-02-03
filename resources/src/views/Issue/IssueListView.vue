@@ -1,6 +1,6 @@
 <template>
 	<div class="container">
-		<table :class="{'table-dark': $store.state.darkMode}" class="table table-bordered table-striped">
+		<table v-if="issues.length" :class="{'table-dark': $store.state.darkMode}" class="table table-bordered table-striped">
 			<thead>
 				<tr>
 					<th v-if="showActionColumn" class="columnStatus">{{$t('issueList.action')}}</th>
@@ -24,6 +24,9 @@
 				</tr>
 			</tbody>
 		</table>
+		<div v-else class="alert alert-info">
+			{{$t('issueList.noEntries')}}
+		</div>
 
 		<app-pagination :current-page="page" :pages="pages" />
 	</div>

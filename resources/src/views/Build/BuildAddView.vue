@@ -55,50 +55,60 @@
 										<i v-if="canLike" :class="{'fa-star-o': !build.watchStatus, 'fa-star': build.watchStatus}" class="fa pointer text-warning"
 											@click="buildWatch" />
 										<i v-if="build.buildStatus !== buildStatusPublic" v-b-tooltip.hover="$t('build.isPrivate')" class="fa fa-eye-slash" />
-										<span v-if="build.rifted" class="badge badge-success">Rifted</span>
-										<span v-if="build.afkAble" class="badge badge-success">AFK Able</span>
-										<span v-if="build.hardcore" class="badge badge-success">Hardcore</span>
+										<span v-if="build.rifted" class="badge badge-success">{{$t('build.rifted')}}</span>
+										<span v-if="build.afkAble" class="badge badge-success">{{$t('build.afkAble')}}</span>
+										<span v-if="build.hardcore" class="badge badge-success">{{$t('build.hardcore')}}</span>
 										<template v-if="build.title">
 											{{build.title}}
 										</template>
-										<i v-else>Enter a build name</i>
+										<i v-else>{{$t('build.noTitle')}}</i>
 									</div>
 									<div class="card-body">
 										<div class="card-text">
 											<template v-if="isEditMode">
 												<div class="form-group">
-													<label for="buildName">Build Name</label>
-													<input id="buildName" v-model.trim="build.title" class="form-control" maxlength="128" placeholder="Build Name" type="text">
+													<label for="buildName">{{$t('build.title')}}</label>
+													<input id="buildName" v-model.trim="build.title" :placeholder="$t('build.title')" class="form-control" maxlength="128"
+														type="text">
 												</div>
 												<div class="form-group">
-													<label for="buildAuthor">Author</label>
-													<input id="buildAuthor" v-model.trim="build.author" class="form-control" maxlength="20" placeholder="Author" type="text">
+													<label for="buildAuthor">{{$t('build.author')}}</label>
+													<input id="buildAuthor" v-model.trim="build.author" :placeholder="$t('build.author')" class="form-control" maxlength="20"
+														type="text">
 												</div>
 
 												<i class="fa fa-map" /> {{$t('map.' + map.name)}}<br>
 												DU: <strong :style="{color: unitsUsed === unitsMax ? 'red': ''}">{{unitsUsed}}/{{unitsMax}}</strong><br>
-												Mana used: <strong>{{manaUsed}}</strong><br>
-												Mana to upgrade: <strong>{{manaUpgrade}}</strong><br>
+												{{$t('build.manaUsed')}}: <strong>{{manaUsed}}</strong><br>
+												{{$t('build.manaUpgradeUsed')}}: <strong>{{manaUpgrade}}</strong><br>
 											</template>
 											<template v-else>
 												<ul>
 													<li><i class="fa fa-map" /> {{$t('map.' + map.name)}}</li>
-													<li><i class="fa fa-user" /> <a>{{build.author}}</a></li> <!-- TODO link to build list with filter author -->
-													<li><i class="fa fa-gamepad" /> {{$t('gameMode.' + build.gameModeName)}}</li>
+													<li v-if="build.author">
+														<i class="fa fa-user" /> <a>{{build.author}}</a>
+													</li> <!-- TODO link to build list with filter author -->
+													<li v-if="build.gameModeName">
+														<i class="fa fa-gamepad" /> {{$t('gameMode.' + build.gameModeName)}}
+													</li>
 													<li v-if="build.date">
 														<i class="fa fa-clock-o" /> {{build.date}}
 													</li>
-													<li>XP per Run: {{build.expPerRun}}</li>
-													<li>Time per Run: {{build.timePerRun}}</li>
-													<li>Mana used: {{waveTowersFiltered.length}}</li>
-													<li>Mana to upgrade: {{manaUpgrade}}</li>
+													<li v-if="build.expPerRun">
+														{{$t('build.expPerRun')}}: {{build.expPerRun}}
+													</li>
+													<li v-if="build.timePerRun">
+														{{$t('build.timePerRun')}}: {{build.timePerRun}}
+													</li>
+													<li>{{$t('build.manaUsed')}}: {{waveTowersFiltered.length}}</li>
+													<li>{{$t('build.manaUpgradeUsed')}}: {{manaUpgrade}}</li>
 													<li>DU: <strong><span>{{unitsUsed}}</span>/<span>{{unitsMax}}</span></strong></li>
 												</ul>
 
 												<build-stats-table v-model="build.heroStats" :edit-mode="isEditMode" :hero-list="heroList" />
 
 												<button v-if="canEdit" class="btn btn-secondary" @click="buildChangeMode(false)">
-													Editor Mode
+													{{$t('build.editorMode')}}
 												</button>
 												<button v-if="build.ID" :class="['btn', {'btn-default': !build.likeValue, 'btn-success': build.likeValue, disabled: !canLike}]"
 													:disabled="!canLike" @click="buildLike">
@@ -112,7 +122,7 @@
 							<div class="col-sm-12">
 								<div class="card">
 									<div class="card-header">
-										<i v-b-tooltip="'click the image to enable or disable the type of towers'" class="fa fa-question-circle" /> Disable Tower
+										<i v-b-tooltip="$t('build.disableTowersHint')" class="fa fa-question-circle" /> {{$t('build.disableTowers')}}
 									</div>
 									<div class="card-body">
 										<div class="card-text">
@@ -145,34 +155,30 @@
 								<div class="col-sm-12">
 									<div class="card">
 										<div class="card-header">
-											Details
+											{{$t('build.details')}}
 										</div>
 										<div class="card-body">
 											<div class="form-group">
-												Required Attributes:
+												<h5 class="text-center">
+													{{$t('build.requiredAttributes')}}
+												</h5>
 
 												<build-stats-table v-model="build.heroStats" :hero-list="heroList" edit-mode />
 											</div>
 
 											<!-- build status -->
 											<div class="form-group">
-												<label for="buildStatus">Build Status:</label>
+												<label for="buildStatus">{{$t('build.buildStatus')}}</label>
 												<select id="buildStatus" v-model.number="build.buildStatus" class="form-control">
-													<option value="1">
-														Public
-													</option>
-													<option value="2">
-														Unlisted
-													</option>
-													<option value="3">
-														Private
+													<option v-for="i in 3" :key="i" :value="i">
+														{{$t('build.status.' + (i - 1))}}
 													</option>
 												</select>
 											</div>
 
 											<!-- difficulty -->
 											<div class="form-group">
-												<label for="difficulty">Difficulty:</label>
+												<label for="difficulty">{{$t('build.difficulty')}}</label>
 												<select id="difficulty" v-model="build.difficultyID" :class="'difficulty-' + build.difficultyID" class="form-control">
 													<option v-for="difficulty in difficulties" :key="difficulty.ID" :class="'difficulty-' + difficulty.ID" :value="difficulty.ID">
 														{{$t('difficulty.' + difficulty.name)}}
@@ -180,6 +186,8 @@
 												</select>
 											</div>
 											<div class="form-group">
+												<label>{{$t('build.gameMode')}}</label>
+												<br>
 												<div v-for="gameMode in gameModes" :key="gameMode.ID" class="form-check form-check-inline">
 													<input :id="'buildGameMode' + gameMode.ID" v-model="build.gameModeID" :value="gameMode.ID" class="form-check-input"
 														type="radio">
@@ -187,36 +195,42 @@
 												</div>
 											</div>
 
-											<div class="form-group form-check">
-												<input id="buildHardcore" v-model="build.hardcore" class="form-check-input" type="checkbox">
-												<label class="form-check-label" for="buildHardcore"> Hardcore</label>
-											</div>
-											<div class="form-group form-check">
-												<input id="buildAFKAble" v-model="build.afkAble" class="form-check-input" type="checkbox">
-												<label class="form-check-label" for="buildAFKAble"> AFK able</label>
-											</div>
-											<div class="form-group form-check">
-												<input id="buildRifted" v-model="build.rifted" class="form-check-input" type="checkbox">
-												<label class="form-check-label" for="buildRifted"> Rifted</label>
+											<div class="form-group">
+												<label>{{$t('build.modifiers')}}</label>
+												<br>
+												<div class="form-check">
+													<input id="buildHardcore" v-model="build.hardcore" class="form-check-input" type="checkbox">
+													<label class="form-check-label" for="buildHardcore"> {{$t('build.hardcore')}}</label>
+												</div>
+												<div class="form-check">
+													<input id="buildAFKAble" v-model="build.afkAble" class="form-check-input" type="checkbox">
+													<label class="form-check-label" for="buildAFKAble"> {{$t('build.afkAble')}}</label>
+												</div>
+												<div class="form-check">
+													<input id="buildRifted" v-model="build.rifted" class="form-check-input" type="checkbox">
+													<label class="form-check-label" for="buildRifted"> {{$t('build.rifted')}}</label>
+												</div>
 											</div>
 
 											<div class="form-group">
-												<label for="buildExpPerRun">XP Per Run:</label>
-												<input id="buildExpPerRun" v-model="build.expPerRun" class="form-control" maxlength="20" placeholder="XP Per Run" type="text">
+												<label for="buildExpPerRun">{{$t('build.expPerRun')}}</label>
+												<input id="buildExpPerRun" v-model="build.expPerRun" :placeholder="$t('build.expPerRun')" class="form-control" maxlength="20"
+													type="text">
 											</div>
 											<div class="form-group">
-												<label for="buildTimePerRun">Time Per Run:</label>
-												<input id="buildTimePerRun" v-model="build.timePerRun" class="form-control" maxlength="20" placeholder="Time Per Run" type="text">
+												<label for="buildTimePerRun">{{$t('build.timePerRun')}}</label>
+												<input id="buildTimePerRun" v-model="build.timePerRun" :placeholder="$t('build.timePerRun')" class="form-control" maxlength="20"
+													type="text">
 											</div>
 
 											<button class="btn btn-primary" @click="save">
-												Save
+												{{$t('words.save')}}
 											</button>
 											<button class="btn btn-secondary" @click="buildChangeMode(true)">
-												Viewer Mode
+												{{$t('build.viewerMode')}}
 											</button>
 											<button v-if="build.ID" class="btn btn-danger" @click="buildDelete">
-												Delete
+												{{$t('build.delete')}}
 											</button>
 										</div>
 									</div>
@@ -686,7 +700,7 @@ export default {
 			}
 		},
 		waveEdit(waveID) {
-			let newWaveName = window.prompt('Wave name (max 24 characters)');
+			let newWaveName = window.prompt(this.$t('build.promptWaveName', { count: 24 }));
 			if (typeof newWaveName === 'string') {
 				newWaveName = newWaveName.trim().substr(0, 24);
 				if (newWaveName) {
@@ -697,7 +711,7 @@ export default {
 		waveDelete(waveID) {
 			for (let tower of this.placedTowers) {
 				if (tower.waveID === waveID) {
-					if (!window.confirm('Want delete the wave?')) {
+					if (!window.confirm(this.$t('build.wantWaveDelete'))) {
 						return;
 					}
 					break;
