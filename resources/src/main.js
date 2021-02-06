@@ -4,6 +4,7 @@ import Vue from 'vue';
 import InfiniteLoading from 'vue-infinite-loading';
 import Notifications from 'vue-notification';
 import App from './App.vue';
+import {initI18n} from './i18n';
 import i18n from './i18n';
 import router from './router';
 import store from './store';
@@ -55,10 +56,12 @@ Vue.use(InfiniteLoading, {
 	},
 });
 
-new Vue({
-	el: '#app',
-	i18n,
-	router,
-	store,
-	render: h => h(App),
+initI18n(() => {
+	new Vue({
+		el: '#app',
+		i18n,
+		router,
+		store,
+		render: h => h(App),
+	});
 });

@@ -1,15 +1,15 @@
 <template>
 	<div class="container">
 		<div v-if="isMaintainer && issue.status !== 2" class="text-right">
-			<button class="btn btn-primary">
+			<button class="btn btn-primary" @click="close">
 				Close
 			</button>
 		</div>
-		<table class="table table-bordered marginTop" :class="{'table-dark': $store.state.darkMode}">
+		<table :class="{'table-dark': $store.state.darkMode}" class="table table-bordered marginTop">
 			<tbody>
 				<tr>
 					<td>{{$t('issueList.status')}}</td>
-					<td>Open</td>
+					<td>{{$t('issue.status.' + (issue.status === 2 ? 'closed' : 'open'))}}</td>
 				</tr>
 				<tr>
 					<td>{{$t('issueList.created')}}</td>
@@ -33,7 +33,7 @@
 		<div v-if="needWait > 0" class="alert alert-danger">
 			Please wait {{needWait}} seconds for the next comment.
 		</div>
-		<form v-else @submit.prevent="addComment">
+		<form v-else-if="issue.status !== 2" @submit.prevent="addComment">
 			<div class="card">
 				<div class="card-header text-center">
 					{{$t('comment.write')}}
@@ -42,7 +42,7 @@
 					<classic-ckeditor v-model="form.description" />
 
 					<div class="text-center marginTop">
-						<input :disabled="needWait > 0 || form.description.length < 3" class="btn btn-primary" type="submit" :value="$t('comment.send')">
+						<input :disabled="needWait > 0 || form.description.length < 3" :value="$t('comment.send')" class="btn btn-primary" type="submit">
 					</div>
 				</div>
 			</div>
@@ -65,9 +65,11 @@
 
 <script>
 import axios from 'axios';
+import {mapState} from 'vuex';
 import AppPagination from '../../components/AppPagination';
 import ClassicCkeditor from '../../components/ClassicCkeditor';
 import formatDate from '../../utils/date';
+import {closeIssue} from '../../utils/issue';
 import {formatSEOTitle} from '../../utils/string';
 
 export default {
@@ -75,7 +77,6 @@ export default {
 	components: { ClassicCkeditor, AppPagination },
 	data() {
 		return {
-			isMaintainer: false,
 			baseUrl: '/issues/' + this.$route.params.id,
 			issue: {},
 			comments: [],
@@ -102,6 +103,11 @@ export default {
 	},
 	beforeDestroy() {
 		this.destroyInterval();
+	},
+	computed: {
+		...mapState({
+			isMaintainer: (state) => state.authentication.user.isMaintainer,
+		}),
 	},
 	methods: {
 		formatDate,
@@ -172,8 +178,11 @@ export default {
 						type: 'error',
 						text: this.$t('error.default'),
 					});
-					this.$router.push({name: 'home'});
+					this.$router.push({ name: 'home' });
 				});
+		},
+		close() {
+			closeIssue(this.issue);
 		},
 	},
 };

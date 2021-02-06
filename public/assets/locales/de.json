@@ -75,14 +75,14 @@
 		"invalidInput": "Please correct the erroneous fields marked below."
 	},
 	"menu": {
-		"buildList": "Builds",
-		"buildAddSelect": "Build erstellen",
+		"buildList": "Baupläne",
+		"buildAddSelect": "Bauplan erstellen",
 		"bugReportAdd": "Fehler melden",
 		"issueList": "Fehlerliste",
-		"myBuilds": "Meine Builds",
+		"myBuilds": "Meine Pläne",
 		"myIssues": "Meine Fehler",
-		"likedBuilds": "Liked Builds",
-		"favoriteBuilds": "Favorite Builds",
+		"likedBuilds": "Gelikte Baupläne",
+		"favoriteBuilds": "Favorisierte Pläne",
 		"logout": "Abmelden"
 	},
 	"gameMode": {
@@ -117,7 +117,7 @@
 			"defRate": "Def. Rate"
 		},
 		"author": "Autor",
-		"title": "Build Titel",
+		"title": "Titel",
 		"noTitle": "Gib ein Build Namen ein",
 		"gameMode": "Spielmodus",
 		"buildStatus": "Build Status",
@@ -201,7 +201,7 @@
 		"tornadoValley": "Tornado Valley",
 		"tornadoHighlands": "Tornado Highlands",
 		"theRamparts": "The Ramparts",
-		"theThroneRoom": "The Throne Room",
+		"theThroneRoom": "The Throne 2 Room",
 		"arcaneLibrary": "Arcane Library",
 		"royalGardens": "Royal Gardens",
 		"thePromenade": "The Promenade",

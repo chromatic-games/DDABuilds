@@ -79,29 +79,29 @@
 				<table :class="{'table-dark': $store.state.darkMode}" class="table table-hover">
 					<thead>
 						<tr>
-							<th :class="getHeadlineClass('author')">
-								<router-link :to="{name: 'buildList', query: getSortQuery('author')}">{{$t('build.author')}}</router-link>
-							</th>
 							<th :class="getHeadlineClass('title')">
-								<router-link :to="{name: 'buildList', query: getSortQuery('title')}">{{$t('build.title')}}</router-link>
-							</th>
-							<th :class="getHeadlineClass('gameModeID')">
-								<router-link :to="{name: 'buildList', query: getSortQuery('gameModeID')}">{{$t('build.gameMode')}}</router-link>
-							</th>
-							<th :class="getHeadlineClass('mapID')">
-								<router-link :to="{name: 'buildList', query: getSortQuery('mapID')}">{{$t('build.map')}}</router-link>
+								<router-link :to="{name: $route.name, query: getSortQuery('title')}">{{$t('build.title')}}</router-link>
 							</th>
 							<th :class="getHeadlineClass('difficultyID')">
-								<router-link :to="{name: 'buildList', query: getSortQuery('difficultyID')}">{{$t('build.difficulty')}}</router-link>
+								<router-link :to="{name: $route.name, query: getSortQuery('difficultyID')}">{{$t('build.difficulty')}}</router-link>
+							</th>
+							<th :class="getHeadlineClass('mapID')">
+								<router-link :to="{name: $route.name, query: getSortQuery('mapID')}">{{$t('build.map')}}</router-link>
+							</th>
+							<th :class="getHeadlineClass('gameModeID')">
+								<router-link :to="{name: $route.name, query: getSortQuery('gameModeID')}">{{$t('build.gameMode')}}</router-link>
+							</th>
+							<th :class="getHeadlineClass('author')">
+								<router-link :to="{name: $route.name, query: getSortQuery('author')}">{{$t('build.author')}}</router-link>
 							</th>
 							<th :class="getHeadlineClass('likes')" class="columnDigits">
-								<router-link :to="{name: 'buildList', query: getSortQuery('likes')}">{{$t('build.likes')}}</router-link>
+								<router-link :to="{name: $route.name, query: getSortQuery('likes')}">{{$t('build.likes')}}</router-link>
 							</th>
 							<th :class="getHeadlineClass('views')" class="columnDigits">
-								<router-link :to="{name: 'buildList', query: getSortQuery('views')}">{{$t('build.views')}}</router-link>
+								<router-link :to="{name: $route.name, query: getSortQuery('views')}">{{$t('build.views')}}</router-link>
 							</th>
 							<th :class="getHeadlineClass('date')" class="columnDate">
-								<router-link :to="{name: 'buildList', query: getSortQuery('date')}">{{$t('build.date')}}</router-link>
+								<router-link :to="{name: $route.name, query: getSortQuery('date')}">{{$t('build.date')}}</router-link>
 							</th>
 							<th class="text-right">
 								<a v-b-tooltip.left.hover="$t('buildList.viewType.' + (viewMode === 'table' ? 'grid' : 'table'))" class="pointer" @click="changeViewMode">
@@ -113,23 +113,26 @@
 					<tbody v-if="viewMode === 'table'">
 						<tr v-for="build in builds" :key="build.ID">
 							<td>
-								<router-link :to="{name: 'buildList', query: {author: build.author}}">{{build.author}}</router-link>
-							</td>
-							<td>
+								<span v-if="build.rifted" class="badge badge-success">{{$t('build.rifted')}}</span>
+								<span v-if="build.afkAble" class="badge badge-success">{{$t('build.afkAble')}}</span>
+								<span v-if="build.hardcore" class="badge badge-success">{{$t('build.hardcore')}}</span>
 								<router-link :to="{name: 'build', params: buildLinkParams(build)}">{{build.title}}</router-link>
 							</td>
+							<td :class="'difficulty-' + build.difficultyID">
+								<router-link :to="{name: $route.name, query: buildListSearch({difficulty: build.difficultyName})}">
+									{{$t('difficulty.' + build.difficultyName)}}
+								</router-link>
+							</td>
 							<td>
-								<router-link :to="{name: 'buildList', query: buildListSearch({gameMode: build.gameModeName})}">
+								<router-link :to="{name: $route.name, query: buildListSearch({map: build.mapName})}">{{$t('map.' + build.mapName)}}</router-link>
+							</td>
+							<td>
+								<router-link :to="{name: $route.name, query: buildListSearch({gameMode: build.gameModeName})}">
 									{{$t('gameMode.' + build.gameModeName)}}
 								</router-link>
 							</td>
 							<td>
-								<router-link :to="{name: 'buildList', query: buildListSearch({map: build.mapName})}">{{$t('map.' + build.mapName)}}</router-link>
-							</td>
-							<td :class="'difficulty-' + build.difficultyID">
-								<router-link :to="{name: 'buildList', query: buildListSearch({difficulty: build.difficultyName})}">
-									{{$t('difficulty.' + build.difficultyName)}}
-								</router-link>
+								<router-link :to="{name: $route.name, query: {author: build.author}}">{{build.author}}</router-link>
 							</td>
 							<td class="columnDigits">{{number(build.likes)}}</td>
 							<td class="columnDigits">{{number(build.views)}}</td>
@@ -146,15 +149,18 @@
 							class="fa fa-eye-slash buildUnlisted" />
 						<div class="box128">
 							<div class="buildDataContainer">
+								<span v-if="build.rifted" class="badge badge-success">{{$t('build.rifted')}}</span>
+								<span v-if="build.afkAble" class="badge badge-success">{{$t('build.afkAble')}}</span>
+								<span v-if="build.hardcore" class="badge badge-success">{{$t('build.hardcore')}}</span>
 								<h3 class="buildSubject">
 									<router-link :to="{name: 'build', params: buildLinkParams(build)}">{{build.title}}</router-link>
 								</h3>
 
 								<ul class="inlineList dotSeparated buildMetaData">
-									<li><i class="fa fa-user" /> <router-link :to="{name: 'buildList', query: {author: build.author}}">{{build.author}}</router-link></li>
+									<li><i class="fa fa-user" /> <router-link :to="{name: $route.name, query: {author: build.author}}">{{build.author}}</router-link></li>
 									<li><i class="fa fa-clock-o" /> {{formatDate(build.date)}}</li>
 									<li><i class="fa fa-eye" /> {{number(build.views)}}</li>
-									<li><i class="fa fa-comment-o" /> {{number(build.likes)}}</li>
+									<li><i class="fa fa-comment-o" /> {{number(build.comments)}}</li>
 									<li :class="{'text-success': build.likes > 0}">
 										<i class="fa fa-thumbs-o-up" /> {{(build.likes > 0 ? '+' : '') + number(build.likes)}}
 									</li>
@@ -167,17 +173,17 @@
 						<div class="buildFooter">
 							<ul class="inlineList dotSeparated buildInformation">
 								<li>
-									<i class="fa fa-map" /> <router-link :to="{name: 'buildList', query: buildListSearch({map: build.mapName})}">
+									<i class="fa fa-map" /> <router-link :to="{name: $route.name, query: buildListSearch({map: build.mapName})}">
 										{{$t('map.' + build.mapName)}}
 									</router-link>
 								</li>
 								<li>
-									<i class="fa fa-gamepad" /> <router-link :to="{name: 'buildList', query: buildListSearch({gameMode: build.gameModeName})}">
+									<i class="fa fa-gamepad" /> <router-link :to="{name: $route.name, query: buildListSearch({gameMode: build.gameModeName})}">
 										{{$t('gameMode.' + build.gameModeName)}}
 									</router-link>
 								</li>
 								<li :class="'difficulty-' + build.difficultyID">
-									<i class="fa fa-tachometer" /> <router-link :to="{name: 'buildList', query: buildListSearch({difficulty: build.difficultyName})}">
+									<i class="fa fa-tachometer" /> <router-link :to="{name: $route.name, query: buildListSearch({difficulty: build.difficultyName})}">
 										{{$t('difficulty.' + build.difficultyName)}}
 									</router-link>
 								</li>
@@ -254,12 +260,20 @@ export default {
 	},
 	created() {
 		this.fetchList();
+
+		this.$root.$on('updateLanguage', this.onLanguageUpdate);
+	},
+	destroyed() {
+		this.$root.$off('updateLanguage', this.onLanguageUpdate);
 	},
 	methods: {
 		number,
 		buildLinkParams,
 		buildListSearch,
 		formatDate,
+		onLanguageUpdate() {
+			this.updateFilterMap();
+		},
 		getDefaultFilter() {
 			return {
 				title: '',
@@ -281,12 +295,24 @@ export default {
 				ASC: !isDesc,
 			};
 		},
+		updateFilterMap() {
+			let maps = [];
+			for (let map of this.filter.map) {
+				if (typeof map === 'string') {
+					maps.push({ label: this.$t('map.' + map), value: map });
+				}
+				else {
+					maps.push({ label: this.$t('map.' + map.value), value: map.value });
+				}
+			}
+			this.filter.map = maps;
+		},
 		updateFilter() {
 			this.filter = this.getDefaultFilter();
 			for (let key of Object.keys(this.$route.query)) {
 				if (typeof this.filter[key] !== 'undefined') {
 					if (Array.isArray(this.filter[key])) {
-						this.filter[key] = lcfirst(this.$route.query[key]).split(',');
+						this.filter[key] = lcfirst(this.$route.query[key].split(','));
 					}
 					else {
 						this.filter[key] = lcfirst(this.$route.query[key]);
@@ -302,6 +328,8 @@ export default {
 				}
 			}
 
+			this.updateFilterMap();
+
 			this.isFilterActive = filterStatus;
 		},
 		getSortQuery(sortField) {
@@ -314,7 +342,7 @@ export default {
 				delete routeQuery.sortOrder;
 				delete routeQuery.sortField;
 			}
-			queryOptions = Object.assign(queryOptions, routeQuery);
+			queryOptions = Object.assign(routeQuery, queryOptions);
 
 			return queryOptions;
 		},

@@ -51,8 +51,8 @@ export default {
 	data() {
 		return {
 			text: '',
-			comments: this.commentList,
-			page: this.currentPage,
+			comments: [],
+			page: 1,
 			lastPage: 0,
 			identifier: 0,
 		};
@@ -77,7 +77,7 @@ export default {
 					this.page = currentPage + 1;
 					this.lastPage = lastPage;
 					this.comments.push(...data);
-					this.$emit('comments', { comments: data, currentPage });
+					this.$emit('comments', { comments: data, currentPage: this.page });
 					state.loaded();
 				})
 				.catch(() => {

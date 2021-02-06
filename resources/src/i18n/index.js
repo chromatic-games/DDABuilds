@@ -5,8 +5,10 @@ import i18nextHttpBackend from 'i18next-http-backend';
 import Vue from 'vue';
 
 const supportedLanguages = window.APP.supportedLocales;
+let isReady = false;
+let onReadyCallback;
 
-export function getBrowserLanguage() {
+function getBrowserLanguage() {
 	if (localStorage && localStorage.getItem) {
 		let language = localStorage.getItem('language');
 		if (language) {
@@ -14,7 +16,25 @@ export function getBrowserLanguage() {
 		}
 	}
 
-	return navigator.language;
+	let lang = navigator.language;
+	if (!supportedLanguages.includes(navigator.language)) {
+		lang = navigator.language.substr(0, 2).toLowerCase();
+	}
+
+	if (!supportedLanguages.includes(lang)) {
+		lang = 'en';
+	}
+
+	return lang;
+}
+
+function initI18n(callback) {
+	if (isReady) {
+		callback();
+	}
+	else {
+		onReadyCallback = callback;
+	}
 }
 
 Vue.prototype.$changeLanguage = function (newLanguage) {
@@ -26,6 +46,8 @@ Vue.prototype.$changeLanguage = function (newLanguage) {
 		if (localStorage && localStorage.setItem) {
 			localStorage.setItem('language', newLanguage);
 		}
+
+		this.$root.$emit('updateLanguage');
 
 		return done;
 	});
@@ -57,6 +79,11 @@ i18next.init({
 		console.error(err);
 	}
 	axios.defaults.headers.common['Accept-Language'] = i18next.language;
+
+	isReady = true;
+	if (typeof onReadyCallback !== 'undefined') {
+		onReadyCallback();
+	}
 });
 
 const i18n = new VueI18Next(i18next);
@@ -64,4 +91,6 @@ const i18n = new VueI18Next(i18next);
 export {
 	i18n as default,
 	supportedLanguages,
+	initI18n,
+	getBrowserLanguage,
 };

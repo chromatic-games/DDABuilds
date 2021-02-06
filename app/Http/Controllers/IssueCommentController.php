@@ -7,6 +7,7 @@ use App\Models\Issue;
 use App\Models\IssueComment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 class IssueCommentController extends AbstractController {
 	public function __construct() {
@@ -18,6 +19,10 @@ class IssueCommentController extends AbstractController {
 	}
 
 	public function store(Request $request, Issue $issue) {
+		if ( $issue->status === Issue::STATUS_CLOSED ) {
+			throw new AccessDeniedHttpException();
+		}
+
 		$values = $this->validate($request, [
 			'description' => 'required|string',
 		]);

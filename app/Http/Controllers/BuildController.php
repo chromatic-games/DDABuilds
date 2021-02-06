@@ -8,6 +8,7 @@ use App\Http\Requests\BuildRequest;
 use App\Http\Resources\BuildResource;
 use App\Models\Build;
 use App\Models\Build\BuildWave;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -34,15 +35,9 @@ class BuildController extends AbstractController {
 					->whereNotNull('build_watch.steamID');
 			}
 			elseif ( $request->query->getBoolean('liked') ) {
-				$builds
-					->leftJoin('like as like_object', function ($join) {
-						$join->on('build.ID', 'like_object.objectID');
-						$join->where([
-							['like_object.objectType', DB::raw("'like'")],
-							['like_object.steamID', auth()->id()],
-						]);
-					})
-					->whereNotNull('like_object.steamID');
+				$builds->whereHas('likeValue', function ($query) {
+					$query->whereNotNull('likeValue');
+				});
 			}
 		}
 

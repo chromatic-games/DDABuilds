@@ -33,9 +33,9 @@ class CreateMapsTable extends Migration {
 			['id' => 10, 'name' => 'Royal Gardens', 'units' => 130, 'sort' => 0, 'fk_mapcategory' => 1],
 			['id' => 11, 'name' => 'The Promenade', 'units' => 140, 'sort' => 0, 'fk_mapcategory' => 1],
 			['id' => 12, 'name' => 'The Summit', 'units' => 150, 'sort' => 0, 'fk_mapcategory' => 1],
-			['id' => 13, 'name' => 'Magus Quarters', 'units' => 90, 'sort' => 0, 'fk_mapcategory' => 1],
-			['id' => 14, 'name' => 'Endless Spires', 'units' => 110, 'sort' => 0, 'fk_mapcategory' => 1],
-			['id' => 15, 'name' => 'Glitterhelm Caverns', 'units' => 165, 'sort' => 0, 'fk_mapcategory' => 1],
+			['id' => 13, 'name' => 'Magus Quarters', 'units' => 90, 'sort' => 0, 'fk_mapcategory' => 2],
+			['id' => 14, 'name' => 'Endless Spires', 'units' => 110, 'sort' => 0, 'fk_mapcategory' => 2],
+			['id' => 15, 'name' => 'Glitterhelm Caverns', 'units' => 165, 'sort' => 0, 'fk_mapcategory' => 2],
 		]);
 	}
 

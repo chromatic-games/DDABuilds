@@ -25,8 +25,10 @@
 					<a :class="{active: selectedWave === -1}" class="nav-link pointer">{{$t('build.comments')}} (<span>{{build.comments}}</span>)</a>
 				</li>
 			</ul>
-			<build-comment-list v-if="selectedWave === -1" :build-id="build.ID" :comment-list="comments" :current-page="commentsPage" @comments="fetchedComments" @new-comment="build.comments ++" />
-			<template v-else>
+			<keep-alive>
+				<build-comment-list v-if="selectedWave === -1" :build-id="build.ID" @new-comment="build.comments ++" />
+			</keep-alive>
+			<template v-if="selectedWave !== -1">
 				<div class="row">
 					<div class="col-lg-9">
 						<!-- map container -->
@@ -321,8 +323,6 @@ export default {
 				afkAble: false,
 				rifted: false,
 			},
-			commentsPage: 1,
-			comments: [],
 			selectedWave: 0,
 			placedTowers: [],
 			units: {},
@@ -492,8 +492,6 @@ export default {
 				return;
 			}
 
-			this.commentsPage = 1;
-			this.comments = [];
 			this.fetching = this.$route.params.id;
 
 			showPageLoader();
@@ -538,66 +536,79 @@ export default {
 				loading = fetchMap().then(hidePageLoader);
 			}
 			else {
-				loading = axios.get('/builds/' + this.$route.params.id).then(async ({ data: data }) => {
-					// redirect to correct title url, if title not equal to the url title
-					let title = formatSEOTitle(data.title);
-					if (this.$route.params.title !== title) {
-						this.$router.push({
-							name: this.$route.name,
-							params: Object.assign({}, this.$route.params, { title }),
-						});
-					}
-
-					// fetch map data
-					mapID = data.mapID;
-					await fetchMap();
-
-					// parse hero stats
-					let heroStats = this.build.heroStats;
-					let towers = [];
-					for (let stats of data.heroStats) {
-						heroStats[stats.heroID] = stats;
-					}
-					data.heroStats = heroStats;
-
-					// load waves
-					let waveNames = [];
-					let waveID = 0;
-					for (let wave of data.waves) {
-						waveNames.push(wave.name);
-						for (let tower of wave.towers) {
-							towers.push({
-								ID: tower.towerID,
-								waveID,
-								size: tower.overrideUnits,
-								x: tower.x,
-								y: tower.y,
-								rotation: tower.rotation,
-								mouseOver: false,
+				loading = axios
+					.get('/builds/' + this.$route.params.id)
+					.then(async ({ data: data }) => {
+						// redirect to correct title url, if title not equal to the url title
+						let title = formatSEOTitle(data.title);
+						if (this.$route.params.title !== title) {
+							this.$router.push({
+								name: this.$route.name,
+								params: Object.assign({}, this.$route.params, { title }),
 							});
 						}
 
-						waveID++;
-					}
+						// fetch map data
+						mapID = data.mapID;
+						await fetchMap();
 
-					this.waveNames = waveNames;
-					this.build = data;
-					this.placedTowers = towers;
+						// parse hero stats
+						let heroStats = this.build.heroStats;
+						let towers = [];
+						for (let stats of data.heroStats) {
+							heroStats[stats.heroID] = stats;
+						}
+						data.heroStats = heroStats;
 
-					hidePageLoader();
-				});
+						// load waves
+						let waveNames = [];
+						let waveID = 0;
+						for (let wave of data.waves) {
+							waveNames.push(wave.name);
+							for (let tower of wave.towers) {
+								towers.push({
+									ID: tower.towerID,
+									waveID,
+									size: tower.overrideUnits,
+									x: tower.x,
+									y: tower.y,
+									rotation: tower.rotation,
+									mouseOver: false,
+								});
+							}
+
+							waveID++;
+						}
+
+						this.waveNames = waveNames;
+						this.build = data;
+						this.placedTowers = towers;
+
+						hidePageLoader();
+					})
+					.catch((response) => {
+						if (response.status === 403) {
+							this.$notify({
+								type: 'error',
+								text: this.$t('error.403'),
+							});
+
+							if ( window.history.length > 1 ) {
+								this.$router.go(-1);
+							}
+							else {
+								this.$router.push({name: 'buildList'});
+							}
+						}
+					});
 			}
 
 			loading.then(() => {
 				this.startDraggable();
 			});
 		},
-		fetchedComments(data) {
-			this.commentsPage = data.currentPage;
-			this.comments.push(...data.comments);
-		},
 		towerMouseOver(tower, key) {
-			if (!this.towers[tower.ID].isRotatable || this.rotateTower || !this.isEditMode || tower.mouseOver) {
+			if (!this.towers[tower.ID].isRotatable || this.rotateTower || !this.isEditMode) {
 				return;
 			}
 

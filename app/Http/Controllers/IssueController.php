@@ -41,6 +41,8 @@ class IssueController extends AbstractController {
 			]);
 		}
 
+		$values['description'] = $values['description'] ?? '';
+
 		return new IssueResource(Issue::create(array_merge($values, [
 			'time' => time(),
 			'steamID' => auth()->id(),
