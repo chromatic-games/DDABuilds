@@ -1,5 +1,11 @@
 <template>
 	<div class="container-fluid">
+		<template v-if="errors.towers">
+			<div v-for="(error, key) in errors.towers" :key="key" class="alert alert-danger">
+				{{error}}
+			</div>
+		</template>
+
 		<div class="tab-content">
 			<!-- wave tab menu -->
 			<ul class="nav nav-tabs">
@@ -19,7 +25,7 @@
 					<a :class="{active: selectedWave === -1}" class="nav-link pointer">{{$t('build.comments')}} (<span>{{build.comments}}</span>)</a>
 				</li>
 			</ul>
-			<build-comment-list v-if="selectedWave === -1" :build-id="build.ID" @new-comment="build.comments ++" />
+			<build-comment-list v-if="selectedWave === -1" :build-id="build.ID" :comment-list="comments" :current-page="commentsPage" @comments="fetchedComments" @new-comment="build.comments ++" />
 			<template v-else>
 				<div class="row">
 					<div class="col-lg-9">
@@ -68,13 +74,27 @@
 											<template v-if="isEditMode">
 												<div class="form-group">
 													<label for="buildName">{{$t('build.title')}}</label>
-													<input id="buildName" v-model.trim="build.title" :placeholder="$t('build.title')" class="form-control" maxlength="128"
+													<input id="buildName" v-model.trim="build.title" :class="{'is-invalid': errors.title}" :placeholder="$t('build.title')"
+														class="form-control"
+														maxlength="128"
 														type="text">
+													<template v-if="errors.title">
+														<div v-for="(error, key) in errors.title" :key="key" class="invalid-feedback">
+															{{error}}
+														</div>
+													</template>
 												</div>
 												<div class="form-group">
 													<label for="buildAuthor">{{$t('build.author')}}</label>
-													<input id="buildAuthor" v-model.trim="build.author" :placeholder="$t('build.author')" class="form-control" maxlength="20"
+													<input id="buildAuthor" v-model.trim="build.author" :class="{'is-invalid': errors.author}" :placeholder="$t('build.author')"
+														class="form-control"
+														maxlength="20"
 														type="text">
+													<template v-if="errors.author">
+														<div v-for="(error, key) in errors.author" :key="key" class="invalid-feedback">
+															{{error}}
+														</div>
+													</template>
 												</div>
 
 												<i class="fa fa-map" /> {{$t('map.' + map.name)}}<br>
@@ -186,13 +206,18 @@
 												</select>
 											</div>
 											<div class="form-group">
-												<label>{{$t('build.gameMode')}}</label>
+												<label :class="{'is-invalid': errors.gameModeID}">{{$t('build.gameMode')}}</label>
 												<br>
 												<div v-for="gameMode in gameModes" :key="gameMode.ID" class="form-check form-check-inline">
 													<input :id="'buildGameMode' + gameMode.ID" v-model="build.gameModeID" :value="gameMode.ID" class="form-check-input"
 														type="radio">
 													<label :for="'buildGameMode' + gameMode.ID" class="form-check-label">{{$t('gameMode.' + gameMode.name)}}</label>
 												</div>
+												<template v-if="errors.gameModeID">
+													<div v-for="(error, key) in errors.gameModeID" :key="key" class="invalid-feedback">
+														{{error}}
+													</div>
+												</template>
 											</div>
 
 											<div class="form-group">
@@ -248,7 +273,7 @@
 						<div v-if="isEditMode" class="card-body">
 							<classic-ckeditor v-model="build.description" />
 						</div>
-						<div v-else class="card-body" v-html="build.description" />
+						<div v-else class="card-body user-content" v-html="build.description" />
 					</div>
 				</div>
 			</template>
@@ -296,6 +321,8 @@ export default {
 				afkAble: false,
 				rifted: false,
 			},
+			commentsPage: 1,
+			comments: [],
 			selectedWave: 0,
 			placedTowers: [],
 			units: {},
@@ -306,6 +333,8 @@ export default {
 			waveNames: ['Build'],
 			towers: {},
 			difficulties: [],
+			errors: {},
+			fetching: 0,
 			demoMode: false,
 			rotateTower: false,
 		};
@@ -459,9 +488,18 @@ export default {
 			});
 		},
 		fetch() {
+			if (this.fetching === this.$route.params.id) {
+				return;
+			}
+
+			this.commentsPage = 1;
+			this.comments = [];
+			this.fetching = this.$route.params.id;
+
 			showPageLoader();
 
 			let mapID = 0;
+			this.selectedWave = 0;
 			// TODO temporary, would be optimized
 			const fetchMap = () => {
 				return axios
@@ -553,6 +591,10 @@ export default {
 			loading.then(() => {
 				this.startDraggable();
 			});
+		},
+		fetchedComments(data) {
+			this.commentsPage = data.currentPage;
+			this.comments.push(...data.comments);
 		},
 		towerMouseOver(tower, key) {
 			if (!this.towers[tower.ID].isRotatable || this.rotateTower || !this.isEditMode || tower.mouseOver) {
@@ -762,7 +804,10 @@ export default {
 					this.$router.push({ name: 'home' });
 				})
 				.catch(() => {
-					// TODO error handling
+					this.$notify({
+						type: 'error',
+						text: this.$t('error.default'),
+					});
 				})
 				.finally(hideAjaxLoader);
 		},
@@ -803,8 +848,29 @@ export default {
 						});
 					}
 				})
-				.catch(() => {
-					// TODO error handling
+				.catch((response) => {
+					// try to find the status from error
+					try {
+						if (response.status === 422) {
+							this.errors = response.errors;
+
+							this.$notify({
+								type: 'error',
+								text: this.$t('error.invalidInput'),
+							});
+							window.scrollTo(0, 0);
+
+							return;
+						}
+					}
+					catch (e) {
+						// do nothing
+					}
+
+					this.$notify({
+						type: 'error',
+						text: this.$t('error.default'),
+					});
 				})
 				.finally(hideAjaxLoader);
 		},

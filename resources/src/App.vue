@@ -25,7 +25,6 @@
 						<li class="nav-item position-relative">
 							<a class="pointer nav-link" @click="toggleDarkMode">
 								<i :class="{'fa-moon-o': !darkMode, 'fa-sun-o': darkMode}" class="fa pointer" />
-								<span v-if="!darkMode" class="badge badge-danger badge-beta">Beta</span>
 							</a>
 						</li>
 						<b-nav-item-dropdown right>
@@ -78,6 +77,8 @@
 			</div>
 			<div class="pageBackdrop" />
 		</div>
+
+		<notifications position="top center" />
 	</div>
 </template>
 

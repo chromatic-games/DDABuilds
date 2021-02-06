@@ -7,16 +7,20 @@
 			<div style="margin-left: 15px;">
 				<a :href="'https://steamcommunity.com/profiles/' + comment.steamID" target="_blank">{{comment.steamName}}</a><br>
 				{{$t('')}} <!-- TODO workaround for locale switching -->
-				<small class="text-muted time">{{formatDate(comment.date)}}</small>
+				<ul class="inlineList dotSeparated text-muted">
+					<li><i class="fa fa-clock-o" /> {{formatDate(comment.date)}}</li>
+					<li><i class="fa fa-thumbs-up" /> {{comment.likes}}</li>
+					<li><i class="fa fa-thumbs-down" /> {{comment.dislikes}}</li>
+				</ul>
 			</div>
 		</div>
 		<div class="marginTop">
-			<p v-html="comment.description" />
-			<div class="marginTop">
-				<button :class="{disabled: !canLike}" :disabled="!canLike" class="btn btn-default" @click="vote(like)">
+			<p class="user-content" v-html="comment.description" />
+			<div v-if="canLike" class="marginTop">
+				<button :class="['btn', {'btn-default': comment.likeValue !== like, 'btn-success': comment.likeValue === like}]" @click="vote(like)">
 					<i class="fa fa-thumbs-up icon" /> {{comment.likes}}
 				</button>
-				<button :class="{disabled: !canLike}" :disabled="!canLike" class="btn btn-default" @click="vote(dislike)">
+				<button :class="['btn', {'btn-default': comment.likeValue !== dislike, 'btn-danger': comment.likeValue === dislike}]" @click="vote(dislike)">
 					<i class="fa fa-thumbs-down icon" /> {{comment.dislikes}}
 				</button>
 			</div>
@@ -45,7 +49,7 @@ export default {
 	},
 	computed: {
 		canLike() {
-			if ( !this.$store.state.authentication.user.ID ) {
+			if (!this.$store.state.authentication.user.ID) {
 				return false;
 			}
 

@@ -5,7 +5,7 @@
 				Close
 			</button>
 		</div>
-		<table class="table table-bordered marginTop">
+		<table class="table table-bordered marginTop" :class="{'table-dark': $store.state.darkMode}">
 			<tbody>
 				<tr>
 					<td>{{$t('issueList.status')}}</td>
@@ -25,7 +25,7 @@
 				</tr>
 				<tr>
 					<td>{{$t('issue.description')}}</td>
-					<td v-html="issue.description" />
+					<td class="user-content" v-html="issue.description" />
 				</tr>
 			</tbody>
 		</table>
@@ -54,7 +54,7 @@
 					{{comment.steamName}} ({{formatDate(comment.time)}})
 				</h5>
 				<div class="card-body">
-					<div class="card-text" v-html="comment.description" />
+					<div class="card-text user-content" v-html="comment.description" />
 				</div>
 			</div>
 
@@ -168,7 +168,11 @@ export default {
 					}
 				})
 				.catch(() => {
-					// TODO error handling
+					this.$notify({
+						type: 'error',
+						text: this.$t('error.default'),
+					});
+					this.$router.push({name: 'home'});
 				});
 		},
 	},

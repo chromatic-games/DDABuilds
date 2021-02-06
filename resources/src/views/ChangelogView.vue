@@ -3,9 +3,9 @@
 		<h3>next</h3>
 		<ul>
 			<li><span class="badge badge-success">Added</span> Checkbox for the rifted mode.</li>
-			<li><span class="badge badge-success">Added</span> The first build wave can renamed.</li>
+			<li><span class="badge badge-success">Added</span> The first build wave can be renamed.</li>
 			<li><span class="badge badge-success">Added</span> GitHub Repository link to footer.</li>
-			<li><span class="badge badge-success">Added</span> German Localization.</li>
+			<li><span class="badge badge-success">Added</span> German Localization (Beta).</li>
 			<li><span class="badge badge-success">Added</span> Author, map, game mode and difficulty links in table view mode.</li>
 			<li><span class="badge badge-success">Added</span> Multiple map selection in build list filter.</li>
 			<li><span class="badge badge-success">Added</span> Reset option in build list, to reset all filters.</li>
@@ -15,6 +15,7 @@
 			<li><span class="badge badge-warning">Changed</span> Updated design (changed Bootstrap version to 4.x).</li>
 			<li><span class="badge badge-warning">Changed</span> Updated medium color for a better readability in light mode.</li>
 			<li><span class="badge badge-warning">Changed</span> Updated the require attributes view.</li>
+			<li><span class="badge badge-warning">Changed</span> Dark Mode for input fields and text editor.</li>
 			<li><span class="badge badge-danger">Fixed</span> Towers cant be placed anymore out of the map.</li>
 			<li><span class="badge badge-danger">Fixed</span> New towers from disabled heros are no more visible.</li>
 			<li><span class="badge badge-danger">Fixed</span> Fixed a memory leak in build edit mode.</li>

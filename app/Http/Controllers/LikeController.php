@@ -85,8 +85,8 @@ class LikeController extends AbstractController {
 				'likeValue' => $newLikeValue,
 				'date' => time(),
 			]);
-			// $likeObject->getObject()->decrement($oldCounter);
-			// $likeObject->getObject()->increment($newCounter);
+			$likeObject->getObject()->decrement($oldCounter);
+			$likeObject->getObject()->increment($newCounter);
 			$newState[$oldLikeValue] = -1;
 			$newState[$newLikeValue] = 1;
 

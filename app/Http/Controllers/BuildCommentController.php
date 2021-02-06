@@ -15,7 +15,7 @@ class BuildCommentController extends AbstractController {
 
 	public function index(Build $build) {
 		return BuildCommentResource::collection(
-			$build->commentList()->with('user')->simplePaginate()
+			$build->commentList()->with(['user', 'likeValue'])->simplePaginate()
 		);
 	}
 

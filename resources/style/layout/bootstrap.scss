@@ -13,17 +13,25 @@
 }
 
 .btn-default {
-	color: #333;
-	background-color: #fff;
-	border-color: #ccc;
+	color: #333333;
+	background-color: #FFFFFF;
+	border-color: #CCCCCC;
 
 	&:not(:disabled):hover {
-		color: #333;
-		background-color: #e6e6e6;
-		border-color: #adadad;
+		color: #333333;
+		background-color: #E6E6E6;
+		border-color: #ADADAD;
 	}
 }
 
 .card {
 	margin-bottom: 20px;
+}
+
+.table-transparent {
+	background: transparent;
+}
+
+.btn.disabled, .btn:disabled {
+	cursor: not-allowed;
 }

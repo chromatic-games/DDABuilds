@@ -1,6 +1,7 @@
+import Vue from 'vue';
+import i18n from '../i18n';
 import store from '../store';
 import AuthView from '../views/AuthView';
-import router from './index';
 
 const NotFound = () => import('../views/NotFound');
 const IndexView = () => import('../views/IndexView');
@@ -138,17 +139,19 @@ const routes = [
 				.dispatch('authentication/logout')
 				.then(() => {
 					if (from.meta.requiredAuth) {
-						router.push({ name: 'home' });
+						return next({ name: 'home' });
 					}
-					else {
-						router.push(from);
-					}
+
+					next(from);
 				})
 				.catch(() => {
-					console.error('failed logout');
-					// TODO error handling
-				})
-				.finally(() => next());
+					Vue.notify({
+						type: 'error',
+						text: i18n.t('error.default'),
+					});
+
+					next(false);
+				});
 		},
 	},
 	{

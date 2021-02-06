@@ -10,20 +10,6 @@ html, body {
 	cursor: pointer;
 }
 
-.badge-beta {
-	position: absolute;
-	left: 20px;
-	top: 10px;
-}
-
-@media (min-width: 768px) {
-	.badge-beta {
-		top: 0;
-		left: 0;
-		font-size: 60%;
-	}
-}
-
 .inlineList {
 	@include inlineList;
 }
@@ -56,4 +42,22 @@ footer {
 	flex: 0 0 auto;
 	margin-bottom: 0;
 	border-radius: 0;
+}
+
+.user-content, .ck-editor {
+	ul, ol {
+		margin-left: 20px;
+	}
+
+	ul {
+		list-style: disc;
+	}
+
+	ol {
+		list-style: decimal;
+	}
+}
+
+.vue-notification-wrapper {
+	cursor:pointer;
 }

@@ -70,6 +70,10 @@
 		"here": "here",
 		"save": "Save"
 	},
+	"error": {
+		"default": "An error has occurred, please try again later.",
+		"invalidInput": "Ihre Angaben sind ungültig. Bitte überprüfen Sie die markierten Eingabefelder."
+	},
 	"menu": {
 		"buildList": "Builds",
 		"buildAddSelect": "Create build",

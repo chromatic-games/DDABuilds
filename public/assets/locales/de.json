@@ -70,6 +70,10 @@
 		"search": "Suchen",
 		"save": "Speichern"
 	},
+	"error": {
+		"default": "Es ist ein Fehler aufgetreten, bitte versuche es später erneut.",
+		"invalidInput": "Please correct the erroneous fields marked below."
+	},
 	"menu": {
 		"buildList": "Builds",
 		"buildAddSelect": "Build erstellen",

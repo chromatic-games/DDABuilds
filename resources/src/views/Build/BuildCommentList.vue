@@ -37,12 +37,22 @@ export default {
 			required: true,
 			default: 0,
 		},
+		currentPage: {
+			type: Number,
+			default: 1,
+		},
+		commentList: {
+			type: Array,
+			default() {
+				return [];
+			}
+		},
 	},
 	data() {
 		return {
 			text: '',
-			comments: [],
-			page: 1,
+			comments: this.commentList,
+			page: this.currentPage,
 			lastPage: 0,
 			identifier: 0,
 		};
@@ -58,9 +68,7 @@ export default {
 	methods: {
 		infiniteHandler(state) {
 			if (this.lastPage > 0 && this.page >= this.lastPage) {
-				state.complete();
-
-				return;
+				return state.complete();
 			}
 
 			axios
@@ -69,6 +77,7 @@ export default {
 					this.page = currentPage + 1;
 					this.lastPage = lastPage;
 					this.comments.push(...data);
+					this.$emit('comments', { comments: data, currentPage });
 					state.loaded();
 				})
 				.catch(() => {

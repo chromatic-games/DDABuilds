@@ -22,4 +22,8 @@ class BuildComment extends AbstractModel implements ILikeableModel {
 		'steamID',
 		'date',
 	];
+
+	public function getLikeObjectType() {
+		return 'comment';
+	}
 }

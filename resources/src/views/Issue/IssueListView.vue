@@ -98,7 +98,11 @@ export default {
 					this.page = currentPage;
 				})
 				.catch(() => {
-					// TODO error handling
+					this.$notify({
+						type: 'error',
+						text: this.$t('error.default'),
+					});
+					this.$router.push({name: 'home'});
 				})
 				.finally(hidePageLoader);
 		},

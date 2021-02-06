@@ -1,4 +1,6 @@
 import axios from 'axios';
+import Vue from 'vue';
+import i18n from '../i18n';
 import {hideAjaxLoader, showAjaxLoader} from '../store';
 
 const LIKE = 1;
@@ -31,7 +33,10 @@ function like(objectType, object, likeType = LIKE) {
 			object.likeValue = newLikeValue;
 		})
 		.catch(() => {
-			// TODO error handling
+			Vue.notify({
+				type: 'error',
+				text: i18n.t('error.default'),
+			});
 		})
 		.finally(() => {
 			hideAjaxLoader();

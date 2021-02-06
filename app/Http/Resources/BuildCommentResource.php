@@ -22,6 +22,7 @@ class BuildCommentResource extends JsonResource {
 			'avatarHash' => $userLoaded ? $this->user->avatarHash : new MissingValue(),
 			'likes' => $this->likes,
 			'dislikes' => $this->dislikes,
+			'likeValue' => $this->relationLoaded('likeValue') ? ($this->likeValue ? $this->likeValue->likeValue : 0) : new MissingValue(),
 		];
 	}
 }

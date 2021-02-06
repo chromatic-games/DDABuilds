@@ -29,19 +29,19 @@ export default {
 		logout({ commit }) {
 			showAjaxLoader();
 
-			return axios
+			let request = axios
 				.delete('/auth')
 				.then(() => {
 					commit('SET_USER', {
 						ID: 0,
 					});
-				})
-				.catch(() => {
-					// TODO error handling
-				})
-				.finally(() => {
-					hideAjaxLoader();
 				});
+
+			request.finally(() => {
+				hideAjaxLoader();
+			});
+
+			return request;
 		},
 	},
 };

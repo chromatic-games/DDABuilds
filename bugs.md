@@ -1,2 +1,1 @@
 - tooltip buggy in build view at disable tower heros
-- anchor jumping in build pre select doesnt work correctly

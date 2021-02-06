@@ -85,7 +85,10 @@ export default {
 					}
 				})
 				.catch(() => {
-					// TODO add error handling
+					this.$notify({
+						type: 'error',
+						text: this.$t('error.default'),
+					});
 				});
 		},
 	},

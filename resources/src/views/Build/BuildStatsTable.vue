@@ -1,5 +1,5 @@
 <template>
-	<table v-if="editMode || heroStatsList.length" class="table">
+	<table v-if="editMode || heroStatsList.length" class="table table-transparent" :class="{'table-dark': $store.state.darkMode}">
 		<thead>
 			<tr>
 				<td class="text-right" colspan="2">{{$t('build.heroStats.fortify')}}</td>

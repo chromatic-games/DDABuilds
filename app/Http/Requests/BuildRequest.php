@@ -19,6 +19,13 @@ class BuildRequest extends FormRequest {
 		]);
 	}
 
+	public function messages() {
+		return [
+			'gameModeID.exists' => __('build.gameModeID.exists'),
+			'towers.required' => __('build.towers.required'),
+		];
+	}
+
 	public function rules() {
 		return [
 			'title' => 'required|min:3|max:128',

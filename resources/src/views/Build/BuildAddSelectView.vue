@@ -10,11 +10,11 @@
 				{{$t('mapCategory.' + mapCategory.name)}}
 			</h1>
 			<ol class="buildList mapSelection">
-				<li v-for="map in mapCategory.maps" :key="map.ID">
+				<li v-for="map in mapCategory.maps" :key="map.ID" class="pointer" @click="selectMap(map.routeParams)">
 					<div class="buildBox">
 						<div class="box128">
 							<div class="buildDataContainer">
-								<h4 class="buildSubject">
+								<h4 class="buildSubject text-center">
 									<router-link :to="{name: 'buildAdd', params: map.routeParams }">{{$t('map.' + map.name)}}</router-link>
 								</h4>
 								<router-link :to="{name: 'buildAdd', params: map.routeParams }">
@@ -61,9 +61,18 @@ export default {
 				this.mapCategories = data;
 			})
 			.catch(() => {
-				// TODO error handling
+				this.$notify({
+					type: 'error',
+					text: this.$t('error.default'),
+				});
+				this.$router.push({name: 'home'});
 			})
 			.finally(hidePageLoader);
+	},
+	methods: {
+		selectMap(params) {
+			this.$router.push({ name: 'buildAdd', params });
+		},
 	},
 };
 </script>
