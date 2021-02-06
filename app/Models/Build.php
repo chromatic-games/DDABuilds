@@ -237,15 +237,23 @@ class Build extends AbstractModel implements ILikeableModel {
 				$towerSizeY = $imageInfo[1];
 			}
 
-			$png = imagecreatetruecolor($towerSizeX, $towerSizeY);
-			imagesavealpha($png , true);
-			$pngTransparency = imagecolorallocatealpha($png , 0, 0, 0, 127);
+			$rotation = -$tower->rotation;
+			$x = $tower->x;
+			$y = $tower->y;
+			if ( $rotation ) {
+				$png = imagecreatetruecolor($towerSizeX, $towerSizeY);
+				imagesavealpha($png, true);
+				$pngTransparency = imagecolorallocatealpha($png, 0, 0, 0, 127);
+				$towerResource = imagerotate($towerResource, $rotation, $pngTransparency);
+				$newTowerSizeX = imagesx($towerResource);
+				$newTowerSizeY = imagesy($towerResource);
+				$x -= ($newTowerSizeX - $towerSizeX) / 2;
+				$y -= ($newTowerSizeY - $towerSizeY) / 2;
+				$towerSizeX = $newTowerSizeX;
+				$towerSizeY = $newTowerSizeY;
+			}
 
-			$towerResource = imagerotate($towerResource, -$tower->rotation, $pngTransparency);
-			$towerSizeX = imagesx($towerResource);
-			$towerSizeY = imagesy($towerResource);
-
-			imagecopy($mapResource, $towerResource, $tower->x, $tower->y, 0, 0, $towerSizeX, $towerSizeY);
+			imagecopy($mapResource, $towerResource, $x, $y, 0, 0, $towerSizeX, $towerSizeY);
 		}
 
 		return imagepng(

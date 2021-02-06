@@ -55,7 +55,7 @@
 			</div>
 		</b-navbar>
 
-		<loading-indicator v-if="$store.state.pageLoader" />
+		<loading-indicator v-if="$store.state.pageLoader" id="pageLoader" />
 		<section v-if="!$router.currentRoute.meta.ignoreSection" id="main" class="marginTop">
 			<router-view v-show="!$store.state.pageLoader" />
 		</section>
@@ -176,5 +176,9 @@ export default {
 		display: block;
 		margin-top: 5px;
 	}
+}
+
+#pageLoader {
+	flex: 1 0 auto; justify-content: center; display: flex; align-items: center;
 }
 </style>
