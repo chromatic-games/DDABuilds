@@ -10,7 +10,7 @@ class UserNavigation extends BaseComponent {
 	use TBrowserHelper;
 
 	public function selector() {
-		return $this->getVueSelector('user-dropdown');
+		return $this->getVueSelector('dropdown', 'user');
 	}
 
 	public function assert(Browser $browser) {

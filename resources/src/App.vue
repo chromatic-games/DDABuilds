@@ -4,8 +4,8 @@
 			<div class="container">
 				<router-link :to="{name: 'home'}" class="navbar-brand">DD:A Builder</router-link>
 				<b-navbar-toggle target="nav-collapse" />
-				<b-collapse id="nav-collapse" is-nav>
-					<ul v-acceptance-selector:navigation class="nav navbar-nav">
+				<b-collapse id="nav-collapse" v-acceptance-selector:navigation is-nav>
+					<ul v-acceptance-selector:menu-navigation class="nav navbar-nav">
 						<router-link :to="{name: 'buildList'}" class="nav-item" tag="li"><a class="nav-link">{{$t('menu.buildList')}}</a></router-link>
 						<template v-if="$store.state.authentication.user.ID">
 							<router-link :to="{name: 'buildAddSelect'}" class="nav-item" tag="li">
@@ -27,14 +27,14 @@
 								<i :class="{'fa-moon-o': !darkMode, 'fa-sun-o': darkMode}" class="fa pointer" />
 							</a>
 						</li>
-						<b-nav-item-dropdown right>
+						<b-nav-item-dropdown v-acceptance-selector:dropdown="'language'" right>
 							<template #button-content>
 								{{$t('locales.' + $i18n.i18next.language)}}
 							</template>
 							<a v-for="language in languages" :key="language" class="dropdown-item pointer" role="menuitem"
 								@click="$changeLanguage(language)">{{$t('locales.' + language)}}</a>
 						</b-nav-item-dropdown>
-						<b-nav-item-dropdown v-if="$store.state.authentication.user.ID" v-acceptance-selector:user-dropdown right>
+						<b-nav-item-dropdown v-if="$store.state.authentication.user.ID" v-acceptance-selector:dropdown="'user'" right>
 							<template #button-content>
 								{{$store.state.authentication.user.name}}
 							</template>

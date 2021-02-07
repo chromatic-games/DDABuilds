@@ -18,6 +18,19 @@ class Navigation extends BaseComponent {
 	}
 
 	public function navigateTo(Browser $I, string $menuTitle) {
-		$I->clickLink($menuTitle);
+		$I->clickLink($menuTitle, '@mainMenu a');
+	}
+
+	public function selectLanguage(Browser $I, string $language) {
+		$I->click('@language');
+		$I->clickLink($language);
+		$I->waitForTextIn('@language', $language);
+	}
+
+	public function elements() {
+		return [
+			'@mainMenu' => $this->getVueSelector('menu-navigation'),
+			'@language' => $this->getVueSelector('dropdown', 'language') . ' a',
+		];
 	}
 }
