@@ -27,6 +27,12 @@ class Navigation extends BaseComponent {
 		$I->waitForTextIn('@language', $language);
 	}
 
+	public function assertLogoutMenu(Browser $I) {
+		$I->assertDontSeeIn('@mainMenu', 'Create build');
+		$I->assertDontSeeIn('@mainMenu', 'Report Bug');
+		$I->assertDontSeeIn('@mainMenu', 'Bug Reports');
+	}
+
 	public function elements() {
 		return [
 			'@mainMenu' => $this->getVueSelector('menu-navigation'),

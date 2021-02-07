@@ -28,9 +28,7 @@ class UserTest extends DuskTestCase {
 		$this->browse(function (Browser $I) {
 			$I->visit('/');
 			$I->within(new Navigation(), function (Browser $I) {
-				$I->assertDontSeeIn('@mainMenu', 'Create build');
-				$I->assertDontSeeIn('@mainMenu', 'Report Bug');
-				$I->assertDontSeeIn('@mainMenu', 'Bug Reports');
+				$I->assertLogoutMenu();
 			});
 
 			$I->loginAsTester();
@@ -41,7 +39,21 @@ class UserTest extends DuskTestCase {
 				$I->assertDontSeeIn('@mainMenu', 'Bug Reports');
 			});
 			$I->within(new UserNavigation(), function (Browser $I) {
-				$I->assertSeeIn('> a', 'DuskTest');
+				$I->assertSeeIn('@username', 'DuskTest');
+			});
+		});
+	}
+
+	public function testLogout() {
+		$this->browse(function (Browser $I) {
+			$I->loginAsTester();
+			$I->visit('/');
+			$I->within(new UserNavigation(), function (Browser $I) {
+				$I->navigateTo('Logout');
+				$I->waitUntilMissing('@username');
+			});
+			$I->within(new Navigation(), function (Browser $I) {
+				$I->assertLogoutMenu();
 			});
 		});
 	}

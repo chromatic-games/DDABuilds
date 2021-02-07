@@ -18,7 +18,13 @@ class UserNavigation extends BaseComponent {
 	}
 
 	public function navigateTo(Browser $I, string $menuTitle) {
-		$I->click('> a');
+		$I->click('@username');
 		$I->clickLink($menuTitle);
+	}
+
+	public function elements() {
+		return [
+			'@username' => '> a',
+		];
 	}
 }
