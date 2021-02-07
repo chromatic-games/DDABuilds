@@ -8,9 +8,11 @@ use Facebook\WebDriver\Remote\DesiredCapabilities;
 use Facebook\WebDriver\Remote\RemoteWebDriver;
 use Faker\Generator;
 use Laravel\Dusk\TestCase as BaseTestCase;
+use Tests\Browser\Traits\TBrowserHelper;
 
 abstract class DuskTestCase extends BaseTestCase {
 	use CreatesApplication;
+	use TBrowserHelper;
 
 	public const STEAM_TEST_USER_ID = '1337';
 
@@ -54,15 +56,5 @@ abstract class DuskTestCase extends BaseTestCase {
 				ChromeOptions::CAPABILITY, $options
 			)
 		);
-	}
-
-	public function getVueSelector(string $arg, string $value = null) {
-		$selectorValue = '';
-
-		if ( $value !== null ) {
-			$selectorValue = '="'.(string) $value.'"';
-		}
-
-		return '[data-test-selector-'.$arg.$selectorValue.']';
 	}
 }

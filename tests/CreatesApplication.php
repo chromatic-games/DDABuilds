@@ -28,6 +28,8 @@ trait CreatesApplication {
 				$selector.' .ck-content',
 				'_'.$value // first character not typed in the ckeditor
 			);
+
+			$this->pause(500); // wait for ckeditor value
 		});
 
 		Browser::macro('loginAsTester', function () {

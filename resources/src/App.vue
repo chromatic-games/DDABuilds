@@ -34,11 +34,9 @@
 							<a v-for="language in languages" :key="language" class="dropdown-item pointer" role="menuitem"
 								@click="$changeLanguage(language)">{{$t('locales.' + language)}}</a>
 						</b-nav-item-dropdown>
-						<b-nav-item-dropdown v-if="$store.state.authentication.user.ID" right>
+						<b-nav-item-dropdown v-if="$store.state.authentication.user.ID" v-acceptance-selector:user-dropdown right>
 							<template #button-content>
-								<span v-acceptance-selector:user-dropdown>
-									{{$store.state.authentication.user.name}}
-								</span>
+								{{$store.state.authentication.user.name}}
 							</template>
 							<router-link :to="{name: 'myBuildList'}" class="dropdown-item" tag="li"><a>{{$t('menu.myBuilds')}}</a></router-link>
 							<router-link :to="{name: 'myIssueList'}" class="dropdown-item" tag="li"><a>{{$t('menu.myIssues')}}</a></router-link>
