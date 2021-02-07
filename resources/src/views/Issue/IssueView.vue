@@ -1,6 +1,6 @@
 <template>
-	<div class="container">
-		<div v-if="isMaintainer && issue.status !== 2" class="text-right">
+	<div v-acceptance-selector:page="'issueView'" class="container">
+		<div v-if="isMaintainer && issue.status !== 2" v-acceptance-selector:action-menu class="text-right">
 			<button class="btn btn-primary" @click="close">
 				Close
 			</button>
@@ -9,11 +9,11 @@
 			<tbody>
 				<tr>
 					<td>{{$t('issueList.status')}}</td>
-					<td>{{$t('issue.status.' + (issue.status === 2 ? 'closed' : 'open'))}}</td>
+					<td v-acceptance-selector:field="'status'">{{$t('issue.status.' + (issue.status === 2 ? 'closed' : 'open'))}}</td>
 				</tr>
 				<tr>
 					<td>{{$t('issueList.created')}}</td>
-					<td>{{formatDate(issue.time)}}</td> <!-- TODO -->
+					<td>{{formatDate(issue.time)}}</td>
 				</tr>
 				<tr>
 					<td>{{$t('issue.createdBy')}}</td>
@@ -21,11 +21,11 @@
 				</tr>
 				<tr>
 					<td style="width:10%;">{{$t('issueList.title')}}</td>
-					<td>{{issue.title}}</td>
+					<td v-acceptance-selector:field="'title'">{{issue.title}}</td>
 				</tr>
 				<tr>
 					<td>{{$t('issue.description')}}</td>
-					<td class="user-content" v-html="issue.description" />
+					<td v-acceptance-selector:field="'description'" class="user-content" v-html="issue.description" />
 				</tr>
 			</tbody>
 		</table>
@@ -68,6 +68,7 @@ import axios from 'axios';
 import {mapState} from 'vuex';
 import AppPagination from '../../components/AppPagination';
 import ClassicCkeditor from '../../components/ClassicCkeditor';
+import {hidePageLoader, showPageLoader} from '../../store';
 import formatDate from '../../utils/date';
 import {closeIssue} from '../../utils/issue';
 import {formatSEOTitle} from '../../utils/string';
@@ -155,6 +156,8 @@ export default {
 				return this.$router.push({ name: 'home' });
 			}
 
+			showPageLoader();
+
 			axios
 				.get(this.baseUrl)
 				.then(({ data }) => {
@@ -179,7 +182,8 @@ export default {
 						text: this.$t('error.default'),
 					});
 					this.$router.push({ name: 'home' });
-				});
+				})
+				.finally(hidePageLoader);
 		},
 		close() {
 			closeIssue(this.issue);

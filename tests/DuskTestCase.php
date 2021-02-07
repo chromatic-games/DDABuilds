@@ -6,12 +6,18 @@ use App\Models\SteamUser;
 use Facebook\WebDriver\Chrome\ChromeOptions;
 use Facebook\WebDriver\Remote\DesiredCapabilities;
 use Facebook\WebDriver\Remote\RemoteWebDriver;
+use Faker\Generator;
 use Laravel\Dusk\TestCase as BaseTestCase;
 
 abstract class DuskTestCase extends BaseTestCase {
 	use CreatesApplication;
 
 	public const STEAM_TEST_USER_ID = '1337';
+
+	/**
+	 * @var Generator
+	 */
+	public $faker;
 
 	public static function prepare() {
 		if ( !static::runningInSail() ) {
@@ -21,6 +27,8 @@ abstract class DuskTestCase extends BaseTestCase {
 
 	public function setUp():void {
 		parent::setUp();
+
+		$this->faker = app(Generator::class);
 
 		// create test steam user if not exists
 		SteamUser::query()->firstOrCreate([
@@ -36,6 +44,7 @@ abstract class DuskTestCase extends BaseTestCase {
 		$options = (new ChromeOptions)->addArguments([
 			'--disable-gpu',
 			'--headless',
+			'--lang=en',
 			'--window-size=1920,1080',
 		]);
 
