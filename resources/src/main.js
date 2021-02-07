@@ -4,6 +4,7 @@ import Vue from 'vue';
 import InfiniteLoading from 'vue-infinite-loading';
 import Notifications from 'vue-notification';
 import App from './App.vue';
+import acceptanceTest from './directives/acceptanceTest';
 import {initI18n} from './i18n';
 import i18n from './i18n';
 import router from './router';
@@ -20,7 +21,7 @@ axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
 axios.interceptors.response.use((response) => {
 	if (response.data._debug) {
-		console.log(response.request.responseURL, response.data._debug);
+		console.debug(response.request.responseURL, response.data._debug);
 		delete response.data._debug;
 	}
 
@@ -55,6 +56,9 @@ Vue.use(InfiniteLoading, {
 		},
 	},
 });
+
+// directives
+Vue.use(acceptanceTest);
 
 initI18n(() => {
 	new Vue({

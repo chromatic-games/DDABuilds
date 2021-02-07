@@ -5,7 +5,7 @@
 				<router-link :to="{name: 'home'}" class="navbar-brand">DD:A Builder</router-link>
 				<b-navbar-toggle target="nav-collapse" />
 				<b-collapse id="nav-collapse" is-nav>
-					<ul class="nav navbar-nav">
+					<ul v-acceptance-selector:navigation class="nav navbar-nav">
 						<router-link :to="{name: 'buildList'}" class="nav-item" tag="li"><a class="nav-link">{{$t('menu.buildList')}}</a></router-link>
 						<template v-if="$store.state.authentication.user.ID">
 							<router-link :to="{name: 'buildAddSelect'}" class="nav-item" tag="li">
@@ -36,7 +36,9 @@
 						</b-nav-item-dropdown>
 						<b-nav-item-dropdown v-if="$store.state.authentication.user.ID" right>
 							<template #button-content>
-								{{$store.state.authentication.user.name}}
+								<span v-acceptance-selector:user-dropdown>
+									{{$store.state.authentication.user.name}}
+								</span>
 							</template>
 							<router-link :to="{name: 'myBuildList'}" class="dropdown-item" tag="li"><a>{{$t('menu.myBuilds')}}</a></router-link>
 							<router-link :to="{name: 'myIssueList'}" class="dropdown-item" tag="li"><a>{{$t('menu.myIssues')}}</a></router-link>

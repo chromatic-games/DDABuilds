@@ -7,21 +7,21 @@
 		<form @submit.prevent="submit">
 			<div class="form-group">
 				<label>{{$t('issueList.title')}}</label>
-				<input v-model.trim="form.title" :class="{'is-valid': form.title.length >= 3}" class="form-control" required type="text">
+				<input v-model.trim="form.title" v-acceptance-selector:input="'title'" :class="{'is-valid': form.title.length >= 3}" class="form-control" required type="text">
 				<small class="form-text text-muted">Title requires 3 characters ore more</small>
 			</div>
 
-			<div class="form-group">
+			<div v-acceptance-selector:input="'description'" class="form-group">
 				<label>{{$t('issue.description')}}</label>
 				<classic-ckeditor v-model="form.description" />
 			</div>
 
 			<label>
-				<input v-model="checkbox" type="checkbox"> <span v-html="$t('issue.agreement')" />
+				<input v-model="checkbox" v-acceptance-selector:input="'checkbox'" type="checkbox"> <span v-html="$t('issue.agreement')" />
 			</label>
 
 			<div class="text-center marginTop">
-				<input :disabled="!checkbox || form.title.length < 3 || needWait > 0" :value="$t('words.save')" class="btn btn-primary" type="submit">
+				<input v-acceptance-selector:input="'save'" :disabled="!checkbox || form.title.length < 3 || needWait > 0" :value="$t('words.save')" class="btn btn-primary" type="submit">
 			</div>
 		</form>
 	</div>
