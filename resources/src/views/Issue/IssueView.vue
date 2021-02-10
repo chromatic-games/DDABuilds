@@ -91,6 +91,11 @@ export default {
 			},
 		};
 	},
+	computed: {
+		...mapState({
+			isMaintainer: (state) => state.authentication.user.isMaintainer,
+		}),
+	},
 	watch: {
 		'$route.params.id'() {
 			this.fetch();
@@ -104,11 +109,6 @@ export default {
 	},
 	beforeDestroy() {
 		this.destroyInterval();
-	},
-	computed: {
-		...mapState({
-			isMaintainer: (state) => state.authentication.user.isMaintainer,
-		}),
 	},
 	methods: {
 		formatDate,
