@@ -28,7 +28,7 @@ class IssueController extends AbstractController {
 	}
 
 	public function store(Request $request) {
-		$values = $this->validate($request, [
+		$values = $request->validate([
 			'title' => 'required|min:3|max:128',
 			'description' => 'nullable|string',
 		]);

@@ -311,7 +311,7 @@ export default {
 			buildStatusPublic: STATUS_PUBLIC,
 			build: {
 				title: '',
-				author: '',
+				author: this.$store.state.authentication.user.name,
 				description: '',
 				difficultyID: 1,
 				gameModeID: 0,

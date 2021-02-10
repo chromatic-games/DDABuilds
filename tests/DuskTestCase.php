@@ -7,14 +7,13 @@ use Facebook\WebDriver\Chrome\ChromeOptions;
 use Facebook\WebDriver\Remote\DesiredCapabilities;
 use Facebook\WebDriver\Remote\RemoteWebDriver;
 use Faker\Generator;
+use Laravel\Dusk\Browser;
 use Laravel\Dusk\TestCase as BaseTestCase;
 use Tests\Browser\Traits\TBrowserHelper;
 
 abstract class DuskTestCase extends BaseTestCase {
 	use CreatesApplication;
 	use TBrowserHelper;
-
-	public const STEAM_TEST_USER_ID = '1337';
 
 	/**
 	 * @var Generator
@@ -27,19 +26,15 @@ abstract class DuskTestCase extends BaseTestCase {
 		}
 	}
 
-	public function setUp():void {
+	public function setUp() : void {
 		parent::setUp();
 
+		Browser::$waitSeconds = 10;
 		$this->faker = app(Generator::class);
 
-		// create test steam user if not exists
-		SteamUser::query()->firstOrCreate([
-			'ID' => self::STEAM_TEST_USER_ID,
-		], [
-			'ID' => self::STEAM_TEST_USER_ID,
-			'name' => 'DuskTest',
-			'avatarHash' => 'ab788fdd0d6636f946729c3fa1456ec2858db472',
-		]);
+		foreach (static::$browsers as $browser) {
+			$browser->driver->manage()->deleteAllCookies();
+		}
 	}
 
 	protected function driver() {

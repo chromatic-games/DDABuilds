@@ -14,7 +14,7 @@ class UserNavigation extends BaseComponent {
 	}
 
 	public function assert(Browser $browser) {
-		$browser->assertVisible($this->selector());
+		$browser->waitFor($this->selector());
 	}
 
 	public function navigateTo(Browser $I, string $menuTitle) {

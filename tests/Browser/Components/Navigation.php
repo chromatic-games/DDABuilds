@@ -14,17 +14,20 @@ class Navigation extends BaseComponent {
 	}
 
 	public function assert(Browser $browser) {
-		$browser->assertVisible($this->selector());
+		$browser->waitFor($this->selector());
 	}
 
 	public function navigateTo(Browser $I, string $menuTitle) {
+		$I->waitForTextIn('@mainMenu', $menuTitle);
 		$I->clickLink($menuTitle, '@mainMenu a');
 	}
 
 	public function selectLanguage(Browser $I, string $language) {
 		$I->click('@language');
+		$I->waitForLink($language);
 		$I->clickLink($language);
 		$I->waitForTextIn('@language', $language);
+		$I->clickAtPoint(1,1); // click to close dropdown lol
 	}
 
 	public function assertLogoutMenu(Browser $I) {

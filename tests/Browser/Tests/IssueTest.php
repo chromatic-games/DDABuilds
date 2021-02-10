@@ -2,6 +2,7 @@
 
 namespace Tests\Browser\Tests;
 
+use App\Models\Issue;
 use Laravel\Dusk\Browser;
 use Tests\Browser\Components\Navigation;
 use Tests\Browser\Components\UserNavigation;
@@ -12,6 +13,8 @@ class IssueTest extends DuskTestCase {
 	protected static $title = '';
 
 	public function testCreate() {
+		Issue::query()->where('steamID', 1337)->delete();
+
 		$this->browse(function (Browser $I) {
 			$I->loginAsTester();
 			$I->visit('/');

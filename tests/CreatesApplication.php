@@ -2,7 +2,9 @@
 
 namespace Tests;
 
+use App\Models\SteamUser;
 use Illuminate\Contracts\Console\Kernel;
+use Illuminate\Database\Eloquent\Builder;
 use Laravel\Dusk\Browser;
 
 trait CreatesApplication {
@@ -14,11 +16,33 @@ trait CreatesApplication {
 	public function createApplication() {
 		$app = require __DIR__.'/../bootstrap/app.php';
 
+		if ( !defined('LARAVEL_START') ) {
+			define('LARAVEL_START', microtime(true));
+		}
+
 		$this->addMacros();
 
 		$app->make(Kernel::class)->bootstrap();
 
 		return $app;
+	}
+
+	/**
+	 * @return SteamUser|Builder
+	 */
+	public function getTestUser() {
+		static $testUser;
+		if ( $testUser === null ) {
+			$testUser = SteamUser::query()->firstOrCreate([
+				'ID' => 1337,
+			], [
+				'ID' => 1337,
+				'name' => 'DuskTest',
+				'avatarHash' => 'ab788fdd0d6636f946729c3fa1456ec2858db472',
+			]);
+		}
+
+		return $testUser;
 	}
 
 	public function addMacros() {
@@ -32,9 +56,10 @@ trait CreatesApplication {
 			$this->pause(500); // wait for ckeditor value
 		});
 
-		Browser::macro('loginAsTester', function () {
+		$self = $this;
+		Browser::macro('loginAsTester', function () use ($self) {
 			/** @var Browser $this */
-			$this->loginAs(DuskTestCase::STEAM_TEST_USER_ID);
+			$this->loginAs($self->getTestUser()->ID);
 		});
 	}
 }
