@@ -9,7 +9,7 @@ jobs:
         image: mysql:5.7
         env:
           MYSQL_ROOT_PASSWORD: rootPassword
-          MYSQL_DATABASE: laravel
+          MYSQL_DATABASE: dda_builds
         # map the "external" 33306 port with the "internal" 3306
         ports:
           - 33306:3306
