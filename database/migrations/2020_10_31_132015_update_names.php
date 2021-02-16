@@ -13,11 +13,6 @@ class UpdateNames extends Migration {
 		'tower',
 	];
 
-	/**
-	 * Run the migrations.
-	 *
-	 * @return void
-	 */
 	public function up() {
 		foreach ( $this->tables as $table ) {
 			echo 'updating '.$table.' name column'.PHP_EOL;
@@ -29,11 +24,6 @@ class UpdateNames extends Migration {
 		}
 	}
 
-	/**
-	 * Reverse the migrations.
-	 *
-	 * @return void
-	 */
 	public function down() {
 	}
 }

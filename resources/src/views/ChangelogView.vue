@@ -11,6 +11,7 @@
 			<li><span class="badge badge-success">Added</span> Reset option in build list, to reset all filters.</li>
 			<li><span class="badge badge-success">Added</span> Difficulty colors in build add view.</li>
 			<li><span class="badge badge-success">Added</span> Comments are visible in editor mode.</li>
+			<li><span class="badge badge-success">Added</span> Rifted, AFK Able, Hardcore.</li>
 			<li><span class="badge badge-warning">Changed</span> Updated design view for the build view.</li>
 			<li><span class="badge badge-warning">Changed</span> Updated design (changed Bootstrap version to 4.x).</li>
 			<li><span class="badge badge-warning">Changed</span> Updated medium color for a better readability in light mode.</li>

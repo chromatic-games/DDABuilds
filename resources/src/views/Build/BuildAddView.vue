@@ -114,7 +114,7 @@
 														<i class="fa fa-gamepad" /> {{$t('gameMode.' + build.gameModeName)}}
 													</li>
 													<li v-if="build.date">
-														<i class="fa fa-clock-o" /> {{build.date}}
+														<i class="fa fa-clock-o" /> {{formatDate(build.date)}}
 													</li>
 													<li v-if="build.expPerRun">
 														{{$t('build.expPerRun')}}: {{build.expPerRun}}
@@ -290,6 +290,7 @@ import Vue from 'vue';
 import ClassicCkeditor from '../../components/ClassicCkeditor';
 import {hideAjaxLoader, hidePageLoader, showAjaxLoader, showPageLoader} from '../../store';
 import {STATUS_PUBLIC} from '../../utils/build';
+import formatDate from '../../utils/date';
 import {LIKE, like} from '../../utils/like';
 import {formatSEOTitle} from '../../utils/string';
 import BuildCommentList from './BuildCommentList';
@@ -462,6 +463,7 @@ export default {
 		this.fetch();
 	},
 	methods: {
+		formatDate,
 		startDroppable() {
 			let canvas = $('#mapContainer');
 			canvas.droppable({
