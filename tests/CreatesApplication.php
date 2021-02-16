@@ -41,6 +41,12 @@ trait CreatesApplication {
 				'name' => 'DuskTest',
 				'avatarHash' => 'ab788fdd0d6636f946729c3fa1456ec2858db472',
 			]);
+
+			// create a second user to test permissions
+			SteamUser::query()->firstOrCreate(['ID' => 1336], [
+				'name' => 'DuskSecondTest',
+				'avatarHash' => 'ab788fdd0d6636f946729c3fa1456ec2858db472',
+			]);
 		}
 
 		return $testUser;

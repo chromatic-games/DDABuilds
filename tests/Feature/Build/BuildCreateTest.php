@@ -45,6 +45,5 @@ class BuildCreateTest extends TestCase {
 			'heroStats' => [],
 		]);
 		$response->assertStatus(422);
-		echo $response->getContent();
 	}
 }
