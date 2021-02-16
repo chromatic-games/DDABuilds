@@ -57,6 +57,10 @@ jobs:
           php artisan key:generate
           php artisan dusk:install
           php artisan migrate:fresh
+          chmod -R 0755 vendor/laravel/dusk/bin/
+          npm run dev-hot > /dev/null 2>&1 &
+          ./vendor/laravel/dusk/bin/chromedriver-linux > /dev/null 2>&1 &
+          php artisan serve > /dev/null 2>&1 &
         env:
           DB_CONNECTION: mysql
           DB_DATABASE: dda_builds
@@ -76,11 +80,7 @@ jobs:
           APP_ENV: testing
 
       - name: Run browser tests
-        run: |
-          npm run dev-hot > /dev/null 2>&1 &
-          chmod -R 0755 vendor/laravel/dusk/bin/
-          ./vendor/laravel/dusk/bin/chromedriver-linux > /dev/null 2>&1 &
-          php artisan serve > /dev/null 2>&1 &
+        run: php artisan dusk
         env:
           DB_CONNECTION: mysql
           DB_DATABASE: dda_builds
