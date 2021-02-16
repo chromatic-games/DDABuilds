@@ -39,6 +39,8 @@ class SteamUser extends AbstractModel implements AuthenticatableContract, Author
 
 	public $timestamps = false;
 
+	public $incrementing = false;
+
 	public function setRememberToken($value) {
 		// do nothing - ignore remember token
 	}

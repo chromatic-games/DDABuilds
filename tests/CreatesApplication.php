@@ -31,12 +31,13 @@ trait CreatesApplication {
 	 * @return SteamUser|Builder
 	 */
 	public function getTestUser() {
+		/** @var SteamUser $testUser */
 		static $testUser;
+
 		if ( $testUser === null ) {
 			$testUser = SteamUser::query()->firstOrCreate([
 				'ID' => 1337,
 			], [
-				'ID' => 1337,
 				'name' => 'DuskTest',
 				'avatarHash' => 'ab788fdd0d6636f946729c3fa1456ec2858db472',
 			]);
