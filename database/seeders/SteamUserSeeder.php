@@ -20,18 +20,20 @@ class SteamUserSeeder extends Seeder {
 		// generate steam user if no steam users available
 		$steamUsers = [
 			[
-				'ID'         => 76561198054589426,
-				'name'       => 'derpierre65',
+				'ID' => 76561198054589426,
+				'name' => 'derpierre65',
 				'avatarHash' => 'ab788fdd0d6636f946729c3fa1456ec2858db472',
 			],
 			[
-				'ID'         => 76561198080938830,
-				'name'       => 'dragongun100',
+				'ID' => 76561198080938830,
+				'name' => 'dragongun100',
 				'avatarHash' => 'ab788fdd0d6636f946729c3fa1456ec2858db472',
 			],
 		];
 		foreach ( $steamUsers as $steamUser ) {
-			SteamUser::create($steamUser);
+			if ( SteamUser::query()->find($steamUser['ID']) === null ) {
+				SteamUser::create($steamUser);
+			}
 		}
 	}
 }

@@ -122,16 +122,13 @@
 													<li v-if="build.timePerRun">
 														{{$t('build.timePerRun')}}: {{build.timePerRun}}
 													</li>
-													<li>{{$t('build.manaUsed')}}: {{waveTowersFiltered.length}}</li>
+													<li>{{$t('build.manaUsed')}}: {{manaUsed}}</li>
 													<li>{{$t('build.manaUpgradeUsed')}}: {{manaUpgrade}}</li>
 													<li>DU: <strong><span>{{unitsUsed}}</span>/<span>{{unitsMax}}</span></strong></li>
 												</ul>
 
 												<build-stats-table v-model="build.heroStats" :edit-mode="isEditMode" :hero-list="heroList" />
 
-												<button v-if="canEdit" class="btn btn-secondary" @click="buildChangeMode(false)">
-													{{$t('build.editorMode')}}
-												</button>
 												<button v-if="build.ID" :class="['btn', {'btn-default': !build.likeValue, 'btn-success': build.likeValue, disabled: !canLike}]"
 													:disabled="!canLike" @click="buildLike">
 													<i class="fa fa-thumbs-up" /> {{build.likes}}
@@ -249,16 +246,6 @@
 												<input id="buildTimePerRun" v-model="build.timePerRun" :placeholder="$t('build.timePerRun')" class="form-control" maxlength="20"
 													type="text">
 											</div>
-
-											<button class="btn btn-primary" @click="save">
-												{{$t('words.save')}}
-											</button>
-											<button class="btn btn-secondary" @click="buildChangeMode(true)">
-												{{$t('build.viewerMode')}}
-											</button>
-											<button v-if="build.ID" class="btn btn-danger" @click="buildDelete">
-												{{$t('build.delete')}}
-											</button>
 										</div>
 									</div>
 								</div>
@@ -279,6 +266,23 @@
 					</div>
 				</div>
 			</template>
+		</div>
+
+		<div v-if="canEdit" style="position:fixed; bottom:20px; right:20px;">
+			<template v-if="isEditMode">
+				<button class="btn btn-primary" @click="save">
+					{{$t('words.save')}}
+				</button>
+				<button v-if="build.ID" class="btn btn-danger" @click="buildDelete">
+					{{$t('build.delete')}}
+				</button>
+				<button class="btn btn-secondary" @click="buildChangeMode(true)">
+					{{$t('build.viewerMode')}}
+				</button>
+			</template>
+			<button v-else class="btn btn-secondary" @click="buildChangeMode(false)">
+				{{$t('build.editorMode')}}
+			</button>
 		</div>
 	</div>
 </template>
@@ -386,12 +390,12 @@ export default {
 			return this.waveTowers.length * 2620;
 		},
 		manaUsed() {
-			let unitCost = 0;
+			let manaCost = 0;
 			for (let tower of this.waveTowers) {
-				unitCost += this.towers[tower.ID].manaCost;
+				manaCost += this.towers[tower.ID].manaCost;
 			}
 
-			return unitCost;
+			return manaCost;
 		},
 		unitsUsed() {
 			let units = 0;
@@ -595,11 +599,11 @@ export default {
 								text: this.$t('error.403'),
 							});
 
-							if ( window.history.length > 1 ) {
+							if (window.history.length > 1) {
 								this.$router.go(-1);
 							}
 							else {
-								this.$router.push({name: 'buildList'});
+								this.$router.push({ name: 'buildList' });
 							}
 						}
 					});
