@@ -101,6 +101,8 @@ class BuildController extends AbstractController {
 			]));
 		}
 
+		$build->generateThumbnail();
+
 		return response()->json($build);
 	}
 

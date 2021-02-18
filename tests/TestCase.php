@@ -23,4 +23,8 @@ abstract class TestCase extends BaseTestCase
 	public function loginAsTester() {
 		$this->actingAs($this->getTestUser());
 	}
+
+	public function loginAsSubTester() {
+		$this->actingAs($this->getSubTestUser());
+	}
 }

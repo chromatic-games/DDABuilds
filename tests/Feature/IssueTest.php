@@ -67,8 +67,8 @@ class IssueTest extends TestCase {
 			'title' => 'title',
 			'description' => 'description',
 		]);
-
 		$response->assertOk();
+
 		$jsonResponse = json_decode($response->getContent(), true);
 		$this->assertArrayHasKey('needWait', $jsonResponse);
 	}
@@ -86,7 +86,7 @@ class IssueTest extends TestCase {
 	 */
 	public function testIssueViewForbiddenOthers() {
 		self::$issue->update([
-			'steamID' => $this->getTestUser()->ID - 1,
+			'steamID' => $this->getSubTestUser()->ID,
 		]);
 
 		$this->loginAsTester();
@@ -112,9 +112,17 @@ class IssueTest extends TestCase {
 		$response = $this->get('/api/issues/');
 		$response->assertForbidden();
 
+		// guests should not have permission on mine list
+		$response = $this->get('/api/issues/?mine=1');
+		$response->assertForbidden();
+
 		// non maintainer should not have permission
 		$this->loginAsTester();
 		$response = $this->get('/api/issues/');
 		$response->assertForbidden();
+
+		// non maintainer should have permission to mine issue list
+		$response = $this->get('/api/issues/?mine=1');
+		$response->assertOk();
 	}
 }

@@ -4,6 +4,8 @@ namespace App\Providers;
 
 use App\Faker\Provider\FakerProvider;
 use App\Laravel\Database\DatabaseSessionHandler;
+use App\Models\Build;
+use App\Observers\BuildObserver;
 use Faker\Factory;
 use Faker\Generator;
 use Illuminate\Foundation\Application;
@@ -29,5 +31,9 @@ class AppServiceProvider extends ServiceProvider {
 
 			return new DatabaseSessionHandler($connection, $table, $minutes, $app);
 		});
+	}
+
+	public function boot() {
+		Build::observe(BuildObserver::class);
 	}
 }
