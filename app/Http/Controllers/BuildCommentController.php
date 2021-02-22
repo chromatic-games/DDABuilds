@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Resources\BuildCommentResource;
 use App\Models\Build;
 use App\Models\Build\BuildComment;
+use App\Notifications\BuildCommentNotification;
 use Illuminate\Http\Request;
 
 class BuildCommentController extends AbstractController {
@@ -29,8 +30,6 @@ class BuildCommentController extends AbstractController {
 			'steamID' => auth()->id(),
 		]));
 		$comment->loadMissing(['user']);
-
-		$build->increment('comments');
 
 		return new BuildCommentResource($comment);
 	}

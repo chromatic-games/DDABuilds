@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\Faker\Provider\FakerProvider;
 use App\Laravel\Database\DatabaseSessionHandler;
 use App\Models\Build;
+use App\Observers\BuildCommentObserver;
 use App\Observers\BuildObserver;
 use Faker\Factory;
 use Faker\Generator;
@@ -35,5 +36,6 @@ class AppServiceProvider extends ServiceProvider {
 
 	public function boot() {
 		Build::observe(BuildObserver::class);
+		Build\BuildComment::observe(BuildCommentObserver::class);
 	}
 }

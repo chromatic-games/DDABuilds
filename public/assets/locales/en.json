@@ -181,6 +181,10 @@
 		"status": "Status",
 		"noEntries": "No issues found."
 	},
+	"notification": {
+		"noEntities": "You have no notifications.",
+		"buildComment": "{{user}} wrote a comment on your build {{buildLink}}."
+	},
 	"hero": {
 		"apprentice":"Apprentice",
 		"squire": "Squire",

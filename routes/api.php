@@ -7,6 +7,7 @@ use App\Http\Controllers\IssueCommentController;
 use App\Http\Controllers\IssueController;
 use App\Http\Controllers\LikeController;
 use App\Http\Controllers\MapController;
+use App\Http\Controllers\NotificationController;
 use Illuminate\Support\Facades\Route;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -21,6 +22,8 @@ Route::group(['middleware' => ['auth:user']], function () {
 
 	Route::post('/builds/{build}/watch', [BuildController::class, 'watch']);
 
+	Route::get('/notifications/', [NotificationController::class, 'index']);
+
 	Route::post('/like/', [LikeController::class, 'like']);
 
 	Route::apiResources([
@@ -28,6 +31,10 @@ Route::group(['middleware' => ['auth:user']], function () {
 		'issues' => IssueController::class,
 		'issues.comments' => IssueCommentController::class,
 	]);
+
+	if ( app()->environment('local') ) {
+		Route::get('/notifications/debug', [NotificationController::class, 'debug']);
+	}
 });
 
 Route::get('/maps/editor/{map}', [MapController::class, 'editor']);

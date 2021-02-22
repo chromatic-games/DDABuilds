@@ -268,7 +268,7 @@
 			</template>
 		</div>
 
-		<div v-if="canEdit" style="position:fixed; bottom:20px; right:20px;">
+		<div v-if="canEdit" style="position:fixed; bottom:20px; right:20px;z-index:10;">
 			<template v-if="isEditMode">
 				<button class="btn btn-primary" @click="save">
 					{{$t('words.save')}}

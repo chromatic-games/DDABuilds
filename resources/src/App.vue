@@ -27,6 +27,12 @@
 								<i :class="{'fa-moon-o': !darkMode, 'fa-sun-o': darkMode}" class="fa pointer" />
 							</a>
 						</li>
+						<li class="notificationBell">
+							<router-link :to="{name: 'notificationList'}" class="pointer nav-link">
+								<i class="fa fa-bell" :class="{'fa-bell-o': false}" />
+								<span class="badge badge-danger">{{unreadNotifications}}</span>
+							</router-link>
+						</li>
 						<b-nav-item-dropdown v-acceptance-selector:dropdown="'language'" right>
 							<template #button-content>
 								{{$t('locales.' + $i18n.i18next.language)}}
@@ -83,6 +89,7 @@
 </template>
 
 <script>
+import {mapState} from 'vuex';
 import LoadingIndicator from './components/LoadingIndicator';
 import {supportedLanguages} from './i18n';
 
@@ -104,6 +111,9 @@ export default {
 		};
 	},
 	computed: {
+		...mapState({
+			unreadNotifications: (state) => state.authentication.user.unreadNotifications,
+		}),
 		languages() {
 			let language = this.$i18n.i18next.language;
 			let languages = [];
@@ -149,6 +159,19 @@ export default {
 </script>
 
 <style lang="scss">
+
+.notificationBell > a {
+	position: relative;
+}
+
+.notificationBell .badge {
+	padding: 1px 4px;
+	position: absolute;
+	top: 0;
+	right: 0;
+	background-color: #D9534F;
+}
+
 .pageBackdrop {
 	background-color: rgba(0, 0, 0, .4);
 	bottom: 0;

@@ -2,6 +2,7 @@ import Vue from 'vue';
 import i18n from '../i18n';
 import store from '../store';
 import AuthView from '../views/AuthView';
+import NotificationListView from '../views/NotificationListView';
 
 const NotFound = () => import('../views/NotFound');
 const IndexView = () => import('../views/IndexView');
@@ -128,6 +129,14 @@ const routes = [
 		props: {
 			fetchParams: { watch: 1 },
 			hideFilter: true,
+		},
+	},
+	{
+		name: 'notificationList',
+		path: '/notifications/:page?',
+		component: NotificationListView,
+		meta: {
+			requiredAuth: true,
 		},
 	},
 	// auth

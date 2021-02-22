@@ -8,6 +8,7 @@ use App\Models\Build\BuildTower;
 use App\Models\Build\BuildWatch;
 use App\Models\Build\BuildWave;
 use App\Models\Like\ILikeableModel;
+use App\Models\Traits\HasSteamUser;
 use App\Models\Traits\TLikeable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -41,6 +42,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  */
 class Build extends AbstractModel implements ILikeableModel {
 	use HasFactory;
+	use HasSteamUser;
 	use TLikeable;
 
 	/** @var int public build status (everyone can view the build) */
@@ -264,5 +266,12 @@ class Build extends AbstractModel implements ILikeableModel {
 
 	public function getPublicThumbnailPath() {
 		return public_path('assets/images/thumbnail/'.$this->ID.'.png');
+	}
+
+	public function getNotificationData() {
+		return [
+			'ID' => $this->ID,
+			'title' => $this->title,
+		];
 	}
 }

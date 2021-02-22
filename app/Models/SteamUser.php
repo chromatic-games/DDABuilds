@@ -8,6 +8,7 @@ use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\Access\Authorizable;
+use Illuminate\Notifications\Notifiable;
 
 /**
  * @property-read string ID
@@ -15,7 +16,7 @@ use Illuminate\Foundation\Auth\Access\Authorizable;
  * @property-read string avatarHash
  */
 class SteamUser extends AbstractModel implements AuthenticatableContract, AuthorizableContract {
-	use Authenticatable, Authorizable, HasFactory;
+	use Authenticatable, Authorizable, HasFactory, Notifiable;
 
 	public const AVATAR_SMALL = 1;
 
@@ -64,13 +65,25 @@ class SteamUser extends AbstractModel implements AuthenticatableContract, Author
 		return 'https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/'.substr($this->avatarHash, 0, 2).'/'.$this->avatarHash.$hashAdditional.'.jpg';
 	}
 
+	public function notifications() {
+		return $this->morphMany(DatabaseNotification::class, 'notifiable')->orderBy('created_at', 'desc');
+	}
+
 	public function isMaintainer() {
 		return in_array($this->ID, IssuePolicy::MAINTAINER);
 	}
 
 	public function authInfo() {
 		return array_merge($this->toArray(), [
+			'unreadNotifications' => $this->unreadNotifications->count(),
 			'isMaintainer' => $this->isMaintainer(),
 		]);
+	}
+
+	public function getNotificationData() {
+		return [
+			'ID' => $this->ID,
+			'name' => $this->name,
+		];
 	}
 }

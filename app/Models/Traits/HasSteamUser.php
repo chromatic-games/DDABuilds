@@ -7,6 +7,8 @@ use App\Models\SteamUser;
 
 /**
  * @mixin AbstractModel
+ *
+ * @property-read SteamUser $user
  */
 trait HasSteamUser {
 	public function user() {
