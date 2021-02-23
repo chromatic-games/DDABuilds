@@ -7,16 +7,6 @@
 		"datetimeFormat": "$t(date.dateFormat), $t(date.timeFormat)",
 		"dateFormat": "M jS Y",
 		"timeFormat": "g:i a",
-		"relative": {
-			"never": "Never",
-			"now": "A moment ago",
-			"hours": "A hour ago",
-			"hours_plural": "{{count}} hours ago",
-			"minutes": "A minute ago",
-			"minutes_plural": "{{count}} minutes ago",
-			"pastDays": "Yesterday, {{time}}",
-			"pastDays_plural": "{{day}}, {{time}}"
-		},
 		"monthNames": [
 			"January",
 			"February",
@@ -183,7 +173,12 @@
 	},
 	"notification": {
 		"noEntities": "You have no notifications.",
-		"buildComment": "{{user}} wrote a comment on your build {{buildLink}}."
+		"markAllAsRead": "Mark all as read",
+		"buildComment": "{{user}} wrote a comment on your build {{buildLink}}.",
+		"like_build": "Your build {{buildLink}} got voted up.",
+		"like_comment": "$t(notification.like_comment_#$?notification.likeValue?$#)",
+		"like_comment_1": "Your comment on the build {{buildLink}} got voted up.",
+		"like_comment_-1": "Your comment on the build {{buildLink}} got voted down."
 	},
 	"hero": {
 		"apprentice":"Apprentice",

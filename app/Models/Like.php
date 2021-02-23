@@ -8,6 +8,7 @@ namespace App\Models;
  * @property-read string $steamID
  * @property-read int $likeValue
  * @property-read string $date
+ * @property-read string $notificationID
  */
 class Like extends AbstractModel {
 	protected $table = 'like';
@@ -24,5 +25,6 @@ class Like extends AbstractModel {
 		'steamID',
 		'likeValue',
 		'date',
+		'notificationID',
 	];
 }

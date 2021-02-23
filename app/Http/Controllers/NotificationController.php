@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\NotificationResource;
 use App\Models\Build\BuildComment;
+use App\Models\DatabaseNotification;
+use App\Models\SteamUser;
 use App\Notifications\BuildCommentNotification;
 
 class NotificationController extends AbstractController {
@@ -20,5 +22,25 @@ class NotificationController extends AbstractController {
 		return NotificationResource::collection(
 			request()->user()->notifications()->simplePaginate()
 		);
+	}
+
+	public function markAsRead(string $notificationID) {
+		/**
+		 * @var SteamUser $user
+		 * @var DatabaseNotification $notification
+		 */
+		$user = auth()->user();
+		$notification = $user->unreadNotifications->where('id', $notificationID);
+		$notification->markAsRead();
+
+		return response()->noContent();
+	}
+
+	public function markAllAsRead() {
+		/** @var SteamUser $user */
+		$user = auth()->user();
+		$user->unreadNotifications()->update(['read_at' => now()]);
+
+		return response()->noContent();
 	}
 }

@@ -9,6 +9,7 @@ export default {
 			name: '',
 			avatarHash: '',
 			isMaintainer: false,
+			unreadNotifications: 0,
 		},
 	},
 	getters: {
@@ -17,6 +18,9 @@ export default {
 		},
 	},
 	mutations: {
+		ADD_UNREAD_NOTIFICATIONS(state, payload) {
+			state.user.unreadNotifications += payload;
+		},
 		SET_USER(state, payload) {
 			for (let key in payload) {
 				if (Object.prototype.hasOwnProperty.call(payload, key)) {

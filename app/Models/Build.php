@@ -32,7 +32,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @property-read int        $afkAble
  * @property-read int        $hardcore
  * @property-read int        $likes
- * @property-read int        $steamID
+ * @property-read string        $steamID
  *
  * @property-read Like       $likeValue
  * @property-read GameMode   $gameMode

@@ -23,6 +23,8 @@ Route::group(['middleware' => ['auth:user']], function () {
 	Route::post('/builds/{build}/watch', [BuildController::class, 'watch']);
 
 	Route::get('/notifications/', [NotificationController::class, 'index']);
+	Route::get('/notifications/mark-all-as-read', [NotificationController::class, 'markAllAsRead']);
+	Route::post('/notifications/mark-as-read/{notificationID}', [NotificationController::class, 'markAsRead']);
 
 	Route::post('/like/', [LikeController::class, 'like']);
 

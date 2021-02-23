@@ -29,8 +29,8 @@
 						</li>
 						<li class="notificationBell">
 							<router-link :to="{name: 'notificationList'}" class="pointer nav-link">
-								<i class="fa fa-bell" :class="{'fa-bell-o': false}" />
-								<span class="badge badge-danger">{{unreadNotifications}}</span>
+								<i class="fa" :class="{'fa-bell-o': !unreadNotifications, 'fa-bell': unreadNotifications}" />
+								<span v-if="unreadNotifications" class="badge badge-danger">{{unreadNotifications}}</span>
 							</router-link>
 						</li>
 						<b-nav-item-dropdown v-acceptance-selector:dropdown="'language'" right>
