@@ -17,7 +17,6 @@ class RenameTables extends Migration {
 		'comments' => 'build_comment',
 		'gamemode' => 'game_mode',
 		'mapcategories' => 'map_category',
-		'notifications' => 'notification',
 	];
 
 	public function up() {
