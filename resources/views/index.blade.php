@@ -5,8 +5,8 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-	<link rel="icon" type="image/png" href="{{mix('assets/images/tower/crystalCore.png')}}">
-	<link href="{{mix('assets/css/style.css')}}" rel="stylesheet">
+	<link rel="icon" type="image/png" href="/assets/images/tower/crystalCore.png">
+	<link href="{{mix('css/style.css', 'assets')}}" rel="stylesheet">
 </head>
 <body>
 	<div id="app"></div>
@@ -16,7 +16,7 @@
 			supportedLocales: {!! json_encode(\App\Models\Locale::getSupportedLocales()) !!}
 		};
 	</script>
-	<script src="{{mix('assets/js/main.js')}}"></script>
+	<script src="{{mix('js/main.js', 'assets')}}"></script>
 	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-39334248-36"></script>
 	<script>
 		window.dataLayer = window.dataLayer || [];

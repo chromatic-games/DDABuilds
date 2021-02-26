@@ -6,23 +6,11 @@ use Illuminate\Support\Facades\Schema;
 
 class DeleteSession extends Migration
 {
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
     public function up()
     {
-	    Schema::table('session', function (Blueprint $table) {
-		    $table->drop();
-	    });
+    	Schema::dropIfExists('session');
     }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
     public function down()
     {
 	    Schema::create('session', function (Blueprint $table) {

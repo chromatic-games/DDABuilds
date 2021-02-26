@@ -33,7 +33,7 @@
 </template>
 
 <script>
-import axios from 'axios';
+// import axios from 'axios';
 
 export default {
 	name: 'IndexView',
@@ -51,9 +51,9 @@ export default {
 		},
 	},
 	created() {
-		axios.get('https://api.github.com/repos/RefreshingWater/DDABuilds/contributors').then(({ data }) => {
-			this.contributors = data;
-		});
+		// axios.get('https://api.github.com/repos/RefreshingWater/DDABuilds/contributors').then(({ data }) => {
+		// 	this.contributors = data;
+		// });
 	},
 };
 </script>

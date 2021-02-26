@@ -4,6 +4,7 @@ namespace App\Notifications;
 
 use App\Models\Like;
 use App\Models\Like\AbstractLike;
+use App\Models\SteamUser;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 
@@ -33,7 +34,7 @@ class LikeNotification extends Notification {
 		return array_merge($this->likeModel->getNotificationData(), [
 			'likeValue' => $this->getLikeObject()->likeValue,
 			'context' => $this->likeModel->objectType,
-			'user' => auth()->user()->getNotificationData(),
+			'user' => SteamUser::query()->find($this->getLikeObject()->steamID)->first()->getNotificationData(),
 		]);
 	}
 }

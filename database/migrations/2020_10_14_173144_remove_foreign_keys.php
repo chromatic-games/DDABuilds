@@ -13,9 +13,13 @@ class RemoveForeignKeys extends Migration {
 			$table->dropForeign('build_stats_ibfk_1');
 			$table->dropForeign('build_stats_ibfk_2');
 		});
-		Schema::table('build_watch', function (Blueprint $table) {
-			$table->dropForeign('build_watch_ibfk_1');
-		});
+		try {
+			Schema::table('build_watch', function (Blueprint $table) {
+				$table->dropForeign('build_watch_ibfk_1');
+				$table->dropForeign('build_watch_ibfk_2');
+			});
+		} catch ( Exception $e ) {
+		}
 		Schema::table('buildwaves', function (Blueprint $table) {
 			$table->dropForeign('buildwaves_ibfk_1');
 		});
@@ -32,6 +36,12 @@ class RemoveForeignKeys extends Migration {
 			$table->dropForeign('builds_ibfk_3');
 			$table->dropForeign('builds_ibfk_4');
 		});
+		try {
+			Schema::table('maps', function (Blueprint $table) {
+				$table->dropForeign('maps_ibfk_1');
+			});
+		} catch ( Exception $e ) {
+		}
 	}
 
 	public function down() {

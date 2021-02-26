@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Resources\BuildCommentResource;
 use App\Models\Build;
 use App\Models\Build\BuildComment;
-use App\Notifications\BuildCommentNotification;
 use Illuminate\Http\Request;
 
 class BuildCommentController extends AbstractController {
