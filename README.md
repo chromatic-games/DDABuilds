@@ -1,16 +1,55 @@
 coming soon
 
-# First setup
+## Development
 
-Run `php artisan key:generate` to generate keys.
+### Setup project
 
-# Update/Rollback Database
+Copy `.env.example` to `.env`, configure `DB_*`, `APP_URL` and `STEAM_API_KEY`.
 
-Update: `php artisan migrate`  
-rollback: `php artisan rollback`
+```shell
+composer install
+php artisan key:generate
 
-# Coding
+# required devDependencies
+npm install
+npm run build
+```
 
-## ESLint
+### Update project
+
+```shell
+# start maintenance
+php artisan down --secret=SECRET
+
+# migrate database
+php artisan migrate
+
+# required devDependencies
+npm install
+npm run build
+
+# stop maintenance
+php artisan up
+```
+
+### Run tests
+
+#### Unit Tests
+
+```shell
+composer test
+```
+
+#### Browser Tests
+
+⚠ Required `npm run dev-hot` and `php artisan serve`.
+
+```shell
+composer test:browser
+```
+
+### Code checker
+
+#### ESLint
 
 Run the ESLint checker with `npm run eslint`.

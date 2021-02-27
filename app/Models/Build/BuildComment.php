@@ -9,9 +9,14 @@ use App\Models\Traits\HasSteamUser;
 use App\Models\Traits\TLikeable;
 
 /**
+ * @property-read int $ID
+ * @property-read int $steamID
+ * @property-read string $description
+ * @property-read int $buildID
+ * @property-read int $likes
+ * @property-read int $dislikes
+ * @property-read int $date
  * @property-read Build $build
- *
- * TODO properties
  */
 class BuildComment extends AbstractModel implements ILikeableModel {
 	use HasSteamUser;

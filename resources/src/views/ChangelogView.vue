@@ -5,13 +5,13 @@
 			<li><span class="badge badge-success">Added</span> Checkbox for the rifted mode.</li>
 			<li><span class="badge badge-success">Added</span> The first build wave can be renamed.</li>
 			<li><span class="badge badge-success">Added</span> GitHub Repository link to footer.</li>
-			<li><span class="badge badge-success">Added</span> German Localization (Beta).</li>
-			<li><span class="badge badge-success">Added</span> Author, map, game mode and difficulty links in table view mode.</li>
+			<li><span class="badge badge-success">Added</span> Basic german localization (Beta).</li>
+			<li><span class="badge badge-success">Added</span> Author, map, game mode and difficulty filter links in table view mode.</li>
 			<li><span class="badge badge-success">Added</span> Multiple map selection in build list filter.</li>
 			<li><span class="badge badge-success">Added</span> Reset option in build list, to reset all filters.</li>
 			<li><span class="badge badge-success">Added</span> Difficulty colors in build add view.</li>
 			<li><span class="badge badge-success">Added</span> Comments are visible in editor mode.</li>
-			<li><span class="badge badge-success">Added</span> Rifted, AFK Able, Hardcore.</li>
+			<li><span class="badge badge-success">Added</span> Rifted, AFK Able, Hardcore tags to build list and view.</li>
 			<li><span class="badge badge-warning">Changed</span> Updated design view for the build view.</li>
 			<li><span class="badge badge-warning">Changed</span> Updated design (changed Bootstrap version to 4.x).</li>
 			<li><span class="badge badge-warning">Changed</span> Updated medium color for a better readability in light mode.</li>

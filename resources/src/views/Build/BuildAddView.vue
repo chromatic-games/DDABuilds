@@ -108,8 +108,8 @@
 												<ul>
 													<li><i class="fa fa-map" /> {{$t('map.' + map.name)}}</li>
 													<li v-if="build.author">
-														<i class="fa fa-user" /> <a>{{build.author}}</a>
-													</li> <!-- TODO link to build list with filter author -->
+														<i class="fa fa-user" /> <router-link :to="authorLink">{{build.author}}</router-link>
+													</li>
 													<li v-if="build.gameModeName">
 														<i class="fa fa-gamepad" /> {{$t('gameMode.' + build.gameModeName)}}
 													</li>
@@ -268,16 +268,16 @@
 			</template>
 		</div>
 
-		<div v-if="canEdit" style="position:fixed; bottom:20px; right:20px;z-index:10;">
+		<div v-if="canEdit" style="position:fixed;bottom:20px;z-index:10;display:flex;justify-content:center;width:100%;">
 			<template v-if="isEditMode">
 				<button class="btn btn-primary" @click="save">
 					{{$t('words.save')}}
 				</button>
-				<button v-if="build.ID" class="btn btn-danger" @click="buildDelete">
-					{{$t('build.delete')}}
-				</button>
 				<button class="btn btn-secondary" @click="buildChangeMode(true)">
 					{{$t('build.viewerMode')}}
+				</button>
+				<button v-if="build.ID" class="btn btn-danger" @click="buildDelete">
+					{{$t('build.delete')}}
 				</button>
 			</template>
 			<button v-else class="btn btn-secondary" @click="buildChangeMode(false)">
@@ -293,7 +293,7 @@ import $ from 'jquery';
 import Vue from 'vue';
 import ClassicCkeditor from '../../components/ClassicCkeditor';
 import {hideAjaxLoader, hidePageLoader, showAjaxLoader, showPageLoader} from '../../store';
-import {STATUS_PUBLIC} from '../../utils/build';
+import {buildListSearch, STATUS_PUBLIC} from '../../utils/build';
 import formatDate from '../../utils/date';
 import {LIKE, like} from '../../utils/like';
 import {formatSEOTitle} from '../../utils/string';
@@ -340,11 +340,18 @@ export default {
 			difficulties: [],
 			errors: {},
 			fetching: 0,
+			loaded: false,
 			demoMode: false,
 			rotateTower: false,
 		};
 	},
 	computed: {
+		authorLink() {
+			return {
+				name: 'buildList',
+				query: buildListSearch({author: this.build.author}),
+			};
+		},
 		canLike() {
 			if (!this.$store.state.authentication.user.ID) {
 				return false;
@@ -502,44 +509,10 @@ export default {
 
 			showPageLoader();
 
-			let mapID = 0;
 			this.selectedWave = 0;
-			// TODO temporary, would be optimized
-			const fetchMap = () => {
-				return axios
-					.get('/maps/editor/' + mapID)
-					.then(({ data }) => {
-						let towers = {};
-						for (let hero of data.heros) {
-							if (hero.isHero && !this.build.heroStats[hero.ID]) {
-								Vue.set(this.build.heroStats, hero.ID, {
-									hp: 0,
-									damage: 0,
-									range: 0,
-									rate: 0,
-								});
-							}
-
-							for (let tower of hero.towers) {
-								towers[tower.ID] = tower;
-							}
-						}
-
-						this.map = data.map;
-						this.heros = data.heros;
-						this.difficulties = data.difficulties;
-						this.gameModes = data.gameModes;
-						this.towers = towers;
-					})
-					.catch(() => {
-						this.$router.push({ name: 'home' });
-					});
-			};
-
 			let loading;
 			if (!this.isView) {
-				mapID = this.$route.params.mapID;
-				loading = fetchMap().then(hidePageLoader);
+				loading = this.fetchMap(this.$route.params.mapID);
 			}
 			else {
 				loading = axios
@@ -555,8 +528,7 @@ export default {
 						}
 
 						// fetch map data
-						mapID = data.mapID;
-						await fetchMap();
+						await this.fetchMap(data.mapID);
 
 						// parse hero stats
 						let heroStats = this.build.heroStats;
@@ -589,8 +561,6 @@ export default {
 						this.waveNames = waveNames;
 						this.build = data;
 						this.placedTowers = towers;
-
-						hidePageLoader();
 					})
 					.catch((response) => {
 						if (response.status === 403) {
@@ -598,13 +568,19 @@ export default {
 								type: 'error',
 								text: this.$t('error.403'),
 							});
+						}
+						else if (response.status === 404) {
+							this.$notify({
+								type: 'error',
+								text: this.$t('build.error.404'),
+							});
+						}
 
-							if (window.history.length > 1) {
-								this.$router.go(-1);
-							}
-							else {
-								this.$router.push({ name: 'buildList' });
-							}
+						if (window.history.length > 1) {
+							this.$router.go(-1);
+						}
+						else {
+							this.$router.push({ name: 'buildList' });
 						}
 					});
 			}
@@ -612,6 +588,37 @@ export default {
 			loading.then(() => {
 				this.startDraggable();
 			});
+			loading.finally(hidePageLoader);
+		},
+		fetchMap(mapID) {
+			return axios
+				.get('/maps/editor/' + mapID)
+				.then(({ data }) => {
+					let towers = {};
+					for (let hero of data.heros) {
+						if (hero.isHero && !this.build.heroStats[hero.ID]) {
+							Vue.set(this.build.heroStats, hero.ID, {
+								hp: 0,
+								damage: 0,
+								range: 0,
+								rate: 0,
+							});
+						}
+
+						for (let tower of hero.towers) {
+							towers[tower.ID] = tower;
+						}
+					}
+
+					this.map = data.map;
+					this.heros = data.heros;
+					this.difficulties = data.difficulties;
+					this.gameModes = data.gameModes;
+					this.towers = towers;
+				})
+				.catch(() => {
+					this.$router.push({ name: 'home' });
+				});
 		},
 		towerMouseOver(tower, key) {
 			if (!this.towers[tower.ID].isRotatable || this.rotateTower || !this.isEditMode) {
@@ -813,6 +820,10 @@ export default {
 			like('build', this.build, LIKE);
 		},
 		buildDelete() {
+			if (!window.confirm(this.$t('build.deleteSure'))) {
+				return;
+			}
+
 			showAjaxLoader();
 
 			axios
@@ -831,6 +842,10 @@ export default {
 		save() {
 			showAjaxLoader();
 
+			// reset errors
+			this.errors = {};
+
+			// build data
 			let build = {
 				...this.build,
 				waves: this.waveNames,
@@ -844,6 +859,7 @@ export default {
 			});
 			build.mapID = this.map.ID;
 
+			// send xhr
 			let request;
 			if (this.build.ID) {
 				request = axios.patch('/builds/' + this.build.ID, build);
