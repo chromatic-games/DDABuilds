@@ -322,16 +322,6 @@ INSERT INTO map_available_unit (mapID, difficultyID, units)
 	       (3, 5, 90), -- nightmare
 	       (3, 6, 90); -- massacre
 
-CREATE TABLE bug_report (
-	reportID INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-	steamID VARCHAR(20) NOT NULL,
-	time INT(10) UNSIGNED DEFAULT 0 NOT NULL,
-	title VARCHAR(64) NOT NULL,
-	description TEXT NOT NULL,
-	status TINYINT(1) UNSIGNED DEFAULT 0 NOT NULL,
-	PRIMARY KEY (reportID)
-);
-
 CREATE TABLE bug_report_comment (
 	commentID INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
 	bugReportID INT(10) UNSIGNED NOT NULL,
