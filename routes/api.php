@@ -3,13 +3,13 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BuildCommentController;
 use App\Http\Controllers\BuildController;
+use App\Http\Controllers\IndexController;
 use App\Http\Controllers\IssueCommentController;
 use App\Http\Controllers\IssueController;
 use App\Http\Controllers\LikeController;
 use App\Http\Controllers\MapController;
 use App\Http\Controllers\NotificationController;
 use Illuminate\Support\Facades\Route;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 // routes where an authentication is not required
 Route::group(['middleware' => ['auth:guest']], function () {
@@ -47,6 +47,4 @@ Route::apiResources([
 ]);
 
 // every other route -> not found
-Route::get('{any}', function () {
-	throw new NotFoundHttpException();
-})->where('any', '.*?');
+Route::get('{any}', [IndexController::class, 'notFound'])->where('any', '.*?');
