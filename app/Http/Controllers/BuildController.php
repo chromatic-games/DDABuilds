@@ -3,15 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Events\BuildViewEvent;
-use App\Http\Exception\InternalServerErrorHttpException;
 use App\Http\Requests\BuildRequest;
 use App\Http\Resources\BuildResource;
 use App\Models\Build;
 use App\Models\Build\BuildWave;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class BuildController extends AbstractController {
 	use AuthorizesRequests;
@@ -20,6 +20,30 @@ class BuildController extends AbstractController {
 		$this->authorizeResource(Build::class);
 	}
 
+	/**
+	 * test comment
+	 *
+	 * @api {get} /builds/ List all builds
+	 * @apiGroup Build
+	 * @apiError UserNotFound The <code>id</code> of the User was not found.
+	 * @apiErrorExample {json} Error-Response:
+	 *     HTTP/1.1 404 Not Found
+	 *     {
+	 *       "error": "UserNotFound"
+	 *     }
+	 * @apiVersion 0.1.0
+	 * @apiParam {String} [firstname]       Optional Firstname of the User.
+	 * @apiParam {String} lastname          Mandatory Lastname.
+	 * @apiPermission test
+	 * @apiExample {curl} Example usage:
+	 *     curl -i http://localhost/user/4711
+	 * @apiSuccessExample {json} Success-Response:
+	 *     HTTP/1.1 200 OK
+	 *     {
+	 *       "firstname": "John",
+	 *       "lastname": "Doe"
+	 *     }
+	 */
 	public function index(Request $request) {
 		$builds = Build::with(['map', 'gameMode', 'difficulty', 'likeValue'])->sort($request->query('sortField'), $request->query('sortOrder'));
 		if ( auth()->id() ) {
@@ -51,6 +75,27 @@ class BuildController extends AbstractController {
 		])->simplePaginate());
 	}
 
+	/**
+	 * @api {get} /builds/:id Show build
+	 * @apiGroup Build
+	 * @apiError UserNotFound The <code>id</code> of the User was not found.
+	 * @apiErrorExample {json} Error-Response:
+	 *     HTTP/1.1 404 Not Found
+	 *     {
+	 *       "error": "UserNotFound"
+	 *     }
+	 * @apiVersion 1.6.2
+	 * @apiParam {String} id          id of build
+	 * @apiPermission test
+	 * @apiExample {curl} Example usage:
+	 *     curl -i http://localhost/user/4711
+	 * @apiSuccessExample {json} Success-Response:
+	 *     HTTP/1.1 200 OK
+	 *     {
+	 *       "firstname": "John",
+	 *       "lastname": "Doe"
+	 *     }
+	 */
 	public function show(Request $request, Build $build) {
 		BuildViewEvent::dispatch($build, $request->session());
 
@@ -180,7 +225,7 @@ class BuildController extends AbstractController {
 			return response()->noContent();
 		}
 
-		throw new InternalServerErrorHttpException();
+		throw new HttpException(Response::HTTP_INTERNAL_SERVER_ERROR);
 	}
 
 	public function watch(Build $build) {

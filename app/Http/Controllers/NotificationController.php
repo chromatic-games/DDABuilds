@@ -10,6 +10,7 @@ use App\Notifications\BuildCommentNotification;
 
 class NotificationController extends AbstractController {
 	public function debug() {
+		/** @var BuildComment $buildComment */
 		$buildComment = BuildComment::query()->first();
 		for ( $i = 0;$i < 20;$i++ ) {
 			$buildComment->build->user->notify(new BuildCommentNotification($buildComment));

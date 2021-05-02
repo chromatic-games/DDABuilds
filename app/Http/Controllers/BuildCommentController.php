@@ -20,7 +20,7 @@ class BuildCommentController extends AbstractController {
 	}
 
 	public function store(Request $request, Build $build) {
-		$values = $this->validate($request, [
+		$values = $request->validate([
 			'description' => 'required|string',
 		]);
 

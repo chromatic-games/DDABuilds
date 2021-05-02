@@ -54,7 +54,6 @@ class AddForeignKeys extends Migration {
 	];
 
 	public function up() {
-		// add steam ids
 		foreach ( $this->keys as $tableName => $keys ) {
 			Schema::table($tableName, function (Blueprint $table) use ($tableName, $keys) {
 				$i = 1;

@@ -53,7 +53,7 @@ class SteamUser extends AbstractModel implements AuthenticatableContract, Author
 	 *
 	 * @return string
 	 */
-	public function getAvatar($size = self::AVATAR_MEDIUM) {
+	public function getAvatar($size = self::AVATAR_MEDIUM) : string {
 		$hashAdditional = '';
 		if ( $size === self::AVATAR_BIG ) {
 			$hashAdditional = '_full';
@@ -65,18 +65,18 @@ class SteamUser extends AbstractModel implements AuthenticatableContract, Author
 		return 'https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/'.substr($this->avatarHash, 0, 2).'/'.$this->avatarHash.$hashAdditional.'.jpg';
 	}
 
-	public function isMaintainer() {
+	public function isMaintainer() : bool {
 		return in_array($this->ID, IssuePolicy::MAINTAINER);
 	}
 
-	public function authInfo() {
+	public function authInfo() : array {
 		return array_merge($this->toArray(), [
 			'unreadNotifications' => $this->unreadNotifications->count(),
 			'isMaintainer' => $this->isMaintainer(),
 		]);
 	}
 
-	public function getNotificationData() {
+	public function getNotificationData() : array {
 		return [
 			'ID' => $this->ID,
 			'name' => $this->name,

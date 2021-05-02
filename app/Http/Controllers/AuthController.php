@@ -4,12 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Auth\SteamAuth;
 use App\Models\SteamUser;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 class AuthController extends AbstractController {
-	public $steamAuth;
+	public SteamAuth $steamAuth;
 
 	public function __construct(SteamAuth $steamAuth) {
 		$this->steamAuth = $steamAuth;
@@ -17,8 +18,9 @@ class AuthController extends AbstractController {
 
 	public function auth(Request $request) {
 		if ( $request->query('debug') && app()->environment('local') ) {
-			// localhost:8000/api/auth/steam?debug=steamID
-			$user = SteamUser::find($request->query('debug'));
+			// /api/auth/steam?debug=steamID
+			/** @var SteamUser $user */
+			$user = SteamUser::query()->find($request->query('debug'));
 			if ( $user ) {
 				Auth::login($user, true);
 			}
@@ -30,23 +32,13 @@ class AuthController extends AbstractController {
 			$steamID = $this->steamAuth->auth();
 			if ( $steamID ) {
 				$userInfo = $this->steamAuth->getUserInfo();
-				$user = SteamUser::find($steamID);
-
-				// create new steam user
-				if ( $user === null ) {
-					$user = SteamUser::create([
-						'ID' => $steamID,
-						'name' => $userInfo['personaname'],
-						'avatarHash' => $userInfo['avatarhash'],
-					]);
-				}
-				// update steam user
-				else {
-					$user->update([
-						'name' => $userInfo['personaname'],
-						'avatarHash' => $userInfo['avatarhash'],
-					]);
-				}
+				/** @var SteamUser $user */
+				$user = SteamUser::query()->updateOrCreate([
+					'ID' => $steamID,
+				], [
+					'name' => $userInfo['personaname'],
+					'avatarHash' => $userInfo['avatarhash'],
+				]);
 
 				Auth::login($user, true);
 
@@ -57,7 +49,7 @@ class AuthController extends AbstractController {
 		throw new BadRequestHttpException();
 	}
 
-	public function logout() {
+	public function logout() : JsonResponse {
 		Auth::logout();
 
 		return response()->json(['status' => 'OK']);

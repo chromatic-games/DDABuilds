@@ -34,7 +34,13 @@ class IssueController extends AbstractController {
 		]);
 
 		/** @var Issue $issue */
-		$issue = Issue::select(['time'])->where([['steamID', auth()->id()], [DB::raw('UNIX_TIMESTAMP() - time'), '<', Issue::WAIT_TIME]])->first();
+		$issue = Issue::query()
+			->select(['time'])
+			->where([
+				['steamID', '=', auth()->id()],
+				[DB::raw('UNIX_TIMESTAMP() - time'), '<', Issue::WAIT_TIME],
+			])
+			->first();
 		if ( $issue ) {
 			return response()->json([
 				'needWait' => Issue::WAIT_TIME - (time() - $issue->time),
@@ -51,7 +57,7 @@ class IssueController extends AbstractController {
 	}
 
 	public function show(Issue $issue) {
-		$issue->load('user');
+		$issue->loadMissing('user');
 
 		return new IssueResource($issue);
 	}

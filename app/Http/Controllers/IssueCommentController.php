@@ -20,10 +20,10 @@ class IssueCommentController extends AbstractController {
 
 	public function store(Request $request, Issue $issue) {
 		if ( $issue->status === Issue::STATUS_CLOSED ) {
-			throw new AccessDeniedHttpException();
+			throw new AccessDeniedHttpException('Issue closed');
 		}
 
-		$values = $this->validate($request, [
+		$values = $request->validate([
 			'description' => 'required|string',
 		]);
 

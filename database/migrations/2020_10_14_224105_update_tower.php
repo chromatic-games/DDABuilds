@@ -18,7 +18,6 @@ class UpdateTower extends Migration
 	    	$table->renameColumn('fk_class', 'heroClassID');
 	    	$table->renameColumn('manacost', 'manaCost');
 	    	$table->renameColumn('unitcost', 'unitCost');
-	    	$table->renameColumn('maxUnitCost', 'maxUnitCost');
 	    	$table->renameColumn('mu', 'unitType');
 	    });
     }
