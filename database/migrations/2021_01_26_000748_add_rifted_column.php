@@ -13,6 +13,7 @@ class AddRiftedColumn extends Migration {
 
 		$replaceStrings = [
 			"%, rifted",
+			"%rifted, ",
 			"% rift mode",
 			"% (rifted)",
 			"% | rifted",

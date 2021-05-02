@@ -21,8 +21,8 @@
 				<h3 class="marginTop">
 					Contributors
 				</h3>
-				<div style="display:flex;">
-					<div v-for="contributor in contributors" :key="contributor.id" class="text-center">
+				<div class="d-flex flex-wrap">
+					<div v-for="contributor in contributors" :key="contributor.id" class="text-center mt-3" style="flex-basis: 150px">
 						<img :src="contributor.avatar_url" class="text-center rounded-circle" style="width: 64px; height:64px;"><br>
 						<a :href="contributor.html_url" target="_blank">@{{contributor.login}}</a>
 					</div>

@@ -93,7 +93,7 @@
 	"build": {
 		"error": {
 			"403": "Sorry, but this build is private.",
-			"404": "Sorry, but the page you are looking for has not been found. Try checking the URL for errors, then hit the refresh button on your browser."
+			"404": "Sorry, but the page you are looking for has not been found."
 		},
 		"status": [
 			"Public",
@@ -106,6 +106,7 @@
 			"range": "Range",
 			"defRate": "Def. Rate"
 		},
+		"saved": "Your build successfully saved.",
 		"author": "Author",
 		"title": "Build Title",
 		"noTitle": "Enter a build name",
@@ -169,6 +170,7 @@
 		"action": "Action",
 		"created": "Created",
 		"title": "Title",
+		"title_requirements": "Title requires 3 characters ore more",
 		"status": "Status",
 		"noEntries": "No issues found."
 	},

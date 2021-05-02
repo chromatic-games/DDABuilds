@@ -8,7 +8,7 @@
 			<div class="form-group">
 				<label>{{$t('issueList.title')}}</label>
 				<input v-model.trim="form.title" v-acceptance-selector:input="'title'" :class="{'is-valid': form.title.length >= 3}" class="form-control" required type="text">
-				<small class="form-text text-muted">Title requires 3 characters ore more</small>
+				<small class="form-text text-muted">{{$t('issueList.title_requirements')}}</small>
 			</div>
 
 			<div v-acceptance-selector:input="'description'" class="form-group">

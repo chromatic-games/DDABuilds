@@ -1,6 +1,6 @@
 <template>
 	<div class="container">
-		<h3>next</h3>
+		<h3>2021-05-02</h3>
 		<ul>
 			<li><span class="badge badge-success">Added</span> Checkbox for the rifted mode.</li>
 			<li><span class="badge badge-success">Added</span> The first build wave can be renamed.</li>

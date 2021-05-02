@@ -7,16 +7,6 @@
 		"datetimeFormat": "$t(date.dateFormat), $t(date.timeFormat)",
 		"dateFormat": "j. F Y",
 		"timeFormat": "H:i",
-		"relative": {
-			"never": "Nie",
-			"now": "Vor einem Moment",
-			"hours": "Vor einer Stunde",
-			"hours_plural": "Vor {{count}} Stunden",
-			"minutes": "Vor einer Minute",
-			"minutes_plural": "Vor {{count}} Minuten",
-			"pastDays": "Gestern, {{time}}",
-			"pastDays_plural": "{{day}}, {{time}}"
-		},
 		"monthNames": [
 			"Januar",
 			"Februar",
@@ -34,7 +24,7 @@
 		"monthNamesShort": [
 			"Jan",
 			"Feb",
-			"Mär",
+			"Mrz",
 			"Apr",
 			"Mai",
 			"Jun",
@@ -72,7 +62,7 @@
 	},
 	"error": {
 		"default": "Es ist ein Fehler aufgetreten, bitte versuche es später erneut.",
-		"invalidInput": "Please correct the erroneous fields marked below."
+		"invalidInput": "Bitte korrigiere die unten markierten Felder."
 	},
 	"menu": {
 		"buildList": "Baupläne",
@@ -102,8 +92,8 @@
 	},
 	"build": {
 		"error": {
-			"403": "Sorry, but this build is private.",
-			"404": "Sorry, but the page you are looking for has not been found. Try checking the URL for errors, then hit the refresh button on your browser."
+			"403": "Dieser Bauplan ist privat.",
+			"404": "Es tut uns leid, aber die Seite wurde nicht gefunden."
 		},
 		"status": [
 			"Öffentlich",
@@ -116,11 +106,12 @@
 			"range": "Range",
 			"defRate": "Def. Rate"
 		},
+		"saved": "Dein Bauplan wurde erfolgreich gespeichert.",
 		"author": "Autor",
 		"title": "Titel",
 		"noTitle": "Gib ein Build Namen ein",
 		"gameMode": "Spielmodus",
-		"buildStatus": "Build Status",
+		"buildStatus": "Status",
 		"requiredAttributes": "Benötigte Helden-Werte",
 		"map": "Karte",
 		"difficulty": "Schwierigkeitsgrad",
@@ -142,6 +133,7 @@
 		"editorMode": "Editor Modus",
 		"viewerMode": "Viewer Modus",
 		"delete": "Löschen",
+		"deleteSure": "Möchtest du diesen Bauplan wirklich löschen?",
 		"timePerRun": "Zeit pro Runde",
 		"expPerRun": "EP pro Runde",
 		"wantWaveDelete": "Möchtest du die Welle wirklich löschen?",
@@ -152,7 +144,7 @@
 			"grid": "Als Raster anzeigen",
 			"table": "Als Tabelle anzeigen"
 		},
-		"noEntries": "Es wurden keine Builds gefunden.",
+		"noEntries": "Es wurden keine Baupläne gefunden.",
 		"filterReset": "Der Filter ist aktiv, du kannst {{link}} den Filter komplett zurücksetzen.",
 		"filter": "Filter",
 		"isPrivate": "Dieses Build ist nicht gelistet oder privat und nur für dich sichtbar."
@@ -178,8 +170,18 @@
 		"action": "Aktion",
 		"created": "Erstellungsdatum",
 		"title": "Titel",
+		"title_requirements": "Der Titel benötigt mindestens 3 Zeichen.",
 		"status": "Status",
 		"noEntries": "Es wurden keine Fehler gefunden."
+	},
+	"notification": {
+		"noEntities": "Du hast keine Benachrichtigungen",
+		"markAllAsRead": "Alle als gelesen markieren",
+		"buildComment": "{{user}} hat ein Kommentar zu deinem Bauplan {{buildLink}} erstellt.",
+		"like_build": "Dein Bauplan {{buildLink}} hat ein Like bekommen.",
+		"like_comment": "$t(notification.like_comment_#$?notification.likeValue?$#)",
+		"like_comment_1": "Dein Kommentar zu dem Bauplan {{buildLink}} hat ein Like bekommen.",
+		"like_comment_-1": "Dein Kommentar zu dem Bauplan {{buildLink}} hat ein Dislike bekommen."
 	},
 	"hero": {
 		"squire": "Knappe",
@@ -244,7 +246,7 @@
 		"tornadoValley": "Tornado Valley",
 		"tornadoHighlands": "Tornado Highlands",
 		"theRamparts": "The Ramparts",
-		"theThroneRoom": "The Throne 2 Room",
+		"theThroneRoom": "The Throne Room",
 		"arcaneLibrary": "Arcane Library",
 		"royalGardens": "Royal Gardens",
 		"thePromenade": "The Promenade",

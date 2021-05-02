@@ -880,6 +880,11 @@ export default {
 							},
 						});
 					}
+
+					this.$notify({
+						type: 'success',
+						text: this.$t('build.saved'),
+					});
 				})
 				.catch((response) => {
 					// try to find the status from error
