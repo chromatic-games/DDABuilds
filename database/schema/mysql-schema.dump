@@ -270,44 +270,44 @@ CREATE TABLE `towers` (
 -- ----------------------------
 -- Records of towers
 -- ----------------------------
-INSERT INTO `towers` VALUES ('1', null, '3', '30', '1', 'Spiked Blockade');
-INSERT INTO `towers` VALUES ('2', null, '6', '80', '1', 'Harpoon Turret');
-INSERT INTO `towers` VALUES ('3', null, '4', '40', '1', 'Bouncer Blockade');
-INSERT INTO `towers` VALUES ('4', null, '7', '100', '1', 'Bowling Ball Turret');
-INSERT INTO `towers` VALUES ('5', null, '8', '140', '1', 'Slice N Dice Blockade');
-INSERT INTO `towers` VALUES ('6', null, '3', '40', '2', 'Magic Missile Tower');
-INSERT INTO `towers` VALUES ('7', null, '1', '20', '2', 'Elemental Barrier');
-INSERT INTO `towers` VALUES ('8', null, '5', '80', '2', 'Flameburst Tower');
-INSERT INTO `towers` VALUES ('9', null, '7', '120', '2', 'Lightning Tower');
-INSERT INTO `towers` VALUES ('10', null, '8', '150', '2', 'Deadly Striker Tower');
-INSERT INTO `towers` VALUES ('11', null, '3', '40', '3', 'Explosive Trap');
-INSERT INTO `towers` VALUES ('12', null, '3', '30', '3', 'Poison Gas Trap');
-INSERT INTO `towers` VALUES ('13', null, '4', '60', '3', 'Inferno Trap');
-INSERT INTO `towers` VALUES ('14', null, '3', '70', '3', 'Darkness Trap');
-INSERT INTO `towers` VALUES ('15', null, '3', '80', '3', 'Thunder Spike Trap');
-INSERT INTO `towers` VALUES ('16', null, '3', '30', '4', 'Ensnare Aura');
-INSERT INTO `towers` VALUES ('17', null, '5', '50', '4', 'Electric Aura');
-INSERT INTO `towers` VALUES ('18', null, '4', '40', '4', 'Healing Aura');
-INSERT INTO `towers` VALUES ('19', null, '5', '60', '4', 'Strength Drain Aura');
-INSERT INTO `towers` VALUES ('20', null, '5', '100', '4', 'Enrage Aura');
-INSERT INTO `towers` VALUES ('200', null, '0', '0', '20', 'Crystal Core');
-INSERT INTO `towers` VALUES ('211', null, '0', '0', '21', 'Hint 1');
-INSERT INTO `towers` VALUES ('212', null, '0', '0', '21', 'Hint 2');
-INSERT INTO `towers` VALUES ('213', null, '0', '0', '21', 'Hint 3');
-INSERT INTO `towers` VALUES ('214', null, '0', '0', '21', 'Hint 4');
-INSERT INTO `towers` VALUES ('215', null, '0', '0', '21', 'Hint 5');
-INSERT INTO `towers` VALUES ('222', null, '0', '0', '22', 'Black Arrow');
-INSERT INTO `towers` VALUES ('223', null, '0', '0', '22', 'Black Arrow Head');
-INSERT INTO `towers` VALUES ('224', null, '0', '0', '22', 'Black Arrow String');
-INSERT INTO `towers` VALUES ('225', null, '0', '0', '22', 'Green Arrow');
-INSERT INTO `towers` VALUES ('226', null, '0', '0', '22', 'Green Arrow Head');
-INSERT INTO `towers` VALUES ('227', null, '0', '0', '22', 'Green Arrow String');
-INSERT INTO `towers` VALUES ('228', null, '0', '0', '22', 'Blue Arrow');
-INSERT INTO `towers` VALUES ('229', null, '0', '0', '22', 'Blue Arrow Head');
-INSERT INTO `towers` VALUES ('230', null, '0', '0', '22', 'Blue Arrow String');
-INSERT INTO `towers` VALUES ('231', null, '0', '0', '22', 'Yellow Arrow');
-INSERT INTO `towers` VALUES ('232', null, '0', '0', '22', 'Yellow Arrow Head');
-INSERT INTO `towers` VALUES ('233', null, '0', '0', '22', 'Yellow Arrow String');
+INSERT INTO `towers` VALUES ('1', 0, '3', '30', '1', 'Spiked Blockade');
+INSERT INTO `towers` VALUES ('2', 0, '6', '80', '1', 'Harpoon Turret');
+INSERT INTO `towers` VALUES ('3', 0, '4', '40', '1', 'Bouncer Blockade');
+INSERT INTO `towers` VALUES ('4', 0, '7', '100', '1', 'Bowling Ball Turret');
+INSERT INTO `towers` VALUES ('5', 0, '8', '140', '1', 'Slice N Dice Blockade');
+INSERT INTO `towers` VALUES ('6', 0, '3', '40', '2', 'Magic Missile Tower');
+INSERT INTO `towers` VALUES ('7', 0, '1', '20', '2', 'Elemental Barrier');
+INSERT INTO `towers` VALUES ('8', 0, '5', '80', '2', 'Flameburst Tower');
+INSERT INTO `towers` VALUES ('9', 0, '7', '120', '2', 'Lightning Tower');
+INSERT INTO `towers` VALUES ('10', 0, '8', '150', '2', 'Deadly Striker Tower');
+INSERT INTO `towers` VALUES ('11', 0, '3', '40', '3', 'Explosive Trap');
+INSERT INTO `towers` VALUES ('12', 0, '3', '30', '3', 'Poison Gas Trap');
+INSERT INTO `towers` VALUES ('13', 0, '4', '60', '3', 'Inferno Trap');
+INSERT INTO `towers` VALUES ('14', 0, '3', '70', '3', 'Darkness Trap');
+INSERT INTO `towers` VALUES ('15', 0, '3', '80', '3', 'Thunder Spike Trap');
+INSERT INTO `towers` VALUES ('16', 0, '3', '30', '4', 'Ensnare Aura');
+INSERT INTO `towers` VALUES ('17', 0, '5', '50', '4', 'Electric Aura');
+INSERT INTO `towers` VALUES ('18', 0, '4', '40', '4', 'Healing Aura');
+INSERT INTO `towers` VALUES ('19', 0, '5', '60', '4', 'Strength Drain Aura');
+INSERT INTO `towers` VALUES ('20', 0, '5', '100', '4', 'Enrage Aura');
+INSERT INTO `towers` VALUES ('200', 0, '0', '0', '20', 'Crystal Core');
+INSERT INTO `towers` VALUES ('211', 0, '0', '0', '21', 'Hint 1');
+INSERT INTO `towers` VALUES ('212', 0, '0', '0', '21', 'Hint 2');
+INSERT INTO `towers` VALUES ('213', 0, '0', '0', '21', 'Hint 3');
+INSERT INTO `towers` VALUES ('214', 0, '0', '0', '21', 'Hint 4');
+INSERT INTO `towers` VALUES ('215', 0, '0', '0', '21', 'Hint 5');
+INSERT INTO `towers` VALUES ('222', 0, '0', '0', '22', 'Black Arrow');
+INSERT INTO `towers` VALUES ('223', 0, '0', '0', '22', 'Black Arrow Head');
+INSERT INTO `towers` VALUES ('224', 0, '0', '0', '22', 'Black Arrow String');
+INSERT INTO `towers` VALUES ('225', 0, '0', '0', '22', 'Green Arrow');
+INSERT INTO `towers` VALUES ('226', 0, '0', '0', '22', 'Green Arrow Head');
+INSERT INTO `towers` VALUES ('227', 0, '0', '0', '22', 'Green Arrow String');
+INSERT INTO `towers` VALUES ('228', 0, '0', '0', '22', 'Blue Arrow');
+INSERT INTO `towers` VALUES ('229', 0, '0', '0', '22', 'Blue Arrow Head');
+INSERT INTO `towers` VALUES ('230', 0, '0', '0', '22', 'Blue Arrow String');
+INSERT INTO `towers` VALUES ('231', 0, '0', '0', '22', 'Yellow Arrow');
+INSERT INTO `towers` VALUES ('232', 0, '0', '0', '22', 'Yellow Arrow Head');
+INSERT INTO `towers` VALUES ('233', 0, '0', '0', '22', 'Yellow Arrow String');
 
 CREATE TABLE map_available_unit (
 	mapID INT(10) UNSIGNED NOT NULL,
@@ -371,7 +371,7 @@ ALTER TABLE towers
 ALTER TABLE towers
 	MODIFY COLUMN id INT(10) UNSIGNED NOT NULL AUTO_INCREMENT FIRST;
 
-ALTER IGNORE TABLE towers
+ALTER TABLE towers
 	MODIFY COLUMN mu TINYINT(1) UNSIGNED NOT NULL DEFAULT 0 AFTER id;
 
 ALTER TABLE buildwaves
