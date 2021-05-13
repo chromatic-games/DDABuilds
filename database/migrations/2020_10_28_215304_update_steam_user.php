@@ -3,6 +3,7 @@
 use App\Models\Build;
 use App\Models\Issue;
 use App\Models\IssueComment;
+use App\Models\Like;
 use App\Models\SteamUser;
 use App\Services\Steam;
 use Illuminate\Database\Migrations\Migration;
@@ -26,11 +27,13 @@ class UpdateSteamUser extends Migration
 	    $buildComments = Build\BuildComment::query()->whereDoesntHave('user')->get();
 	    $issues = Issue::query()->whereDoesntHave('user')->get();
 	    $issueComments = IssueComment::query()->whereDoesntHave('user')->get();
+	    $likes = Like::query()->whereDoesntHave('user')->get();
 	    $steamIDs = array_unique(array_merge(
 		    ($builds->pluck('steamID')->all()),
 		    ($issues->pluck('steamID')->all()),
 		    ($issueComments->pluck('steamID')->all()),
 		    ($buildComments->pluck('steamID')->all())
+		    ($likes->pluck('steamID')->all())
 	    ));
 
 	    if ( count($steamIDs) === 0 ) {
