@@ -2,6 +2,7 @@
 
 namespace App\Auth;
 
+use App\Services\Steam;
 use Illuminate\Http\Request;
 
 class SteamAuth {
@@ -14,12 +15,16 @@ class SteamAuth {
 	/** @var array */
 	public $steamConfig = [];
 
+	/** @var Steam */
+	public $steam;
+
 	/**
 	 * @param Request $request
 	 */
 	public function __construct(Request $request) {
 		$this->request = $request;
 		$this->steamConfig = config('services')['steam'];
+		$this->steam = app(Steam::class);
 	}
 
 	/**
@@ -37,17 +42,7 @@ class SteamAuth {
 	 * @return null|array
 	 */
 	public function getUserInfo() {
-		if ( !$this->steamID ) {
-			return null;
-		}
-
-		$url = file_get_contents('http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key='.$this->steamConfig['apiKey'].'&steamids='.$this->steamID);
-		$data = json_decode($url, true);
-		if ( !is_array($data['response']['players'][0]) ) {
-			return null;
-		}
-
-		return $data['response']['players'][0];
+		return $this->steam->getUserInfo($this->steamID);
 	}
 
 	/**
