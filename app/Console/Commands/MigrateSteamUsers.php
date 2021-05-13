@@ -3,6 +3,8 @@
 namespace App\Console\Commands;
 
 use App\Models\Build;
+use App\Models\Issue;
+use App\Models\IssueComment;
 use App\Models\SteamUser;
 use App\Services\Steam;
 use Illuminate\Console\Command;
@@ -12,7 +14,15 @@ class MigrateSteamUsers extends Command {
 
 	public function handle() : int {
 		$builds = Build::query()->whereDoesntHave('user')->get();
-		$steamIDs = array_unique($builds->pluck('steamID')->all());
+		$buildComments = Build\BuildComment::query()->whereDoesntHave('user')->get();
+		$issues = Issue::query()->whereDoesntHave('user')->get();
+		$issueComments = IssueComment::query()->whereDoesntHave('user')->get();
+		$steamIDs = array_unique(array_merge(
+			($builds->pluck('steamID')->all()),
+			($issues->pluck('steamID')->all()),
+			($issueComments->pluck('steamID')->all()),
+			($buildComments->pluck('steamID')->all())
+		));
 
 		if ( count($steamIDs) === 0 ) {
 			$this->info('all fine :)');
