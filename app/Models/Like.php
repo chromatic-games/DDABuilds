@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Models\Traits\HasSteamUser;
+
 /**
  * @property-read string $objectType
  * @property-read int $objectID
@@ -11,6 +13,8 @@ namespace App\Models;
  * @property-read string $notificationID
  */
 class Like extends AbstractModel {
+	use HasSteamUser;
+
 	protected $table = 'like';
 
 	protected $primaryKey = null;
