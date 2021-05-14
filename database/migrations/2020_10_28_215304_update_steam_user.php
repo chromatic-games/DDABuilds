@@ -32,7 +32,7 @@ class UpdateSteamUser extends Migration
 		    ($builds->pluck('steamID')->all()),
 		    ($issues->pluck('steamID')->all()),
 		    ($issueComments->pluck('steamID')->all()),
-		    ($buildComments->pluck('steamID')->all())
+		    ($buildComments->pluck('steamID')->all()),
 		    ($likes->pluck('steamID')->all())
 	    ));
 
