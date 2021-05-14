@@ -1,0 +1,27 @@
+<?php
+
+namespace {{ namespace }};
+
+use Illuminate\Http\Request;
+
+class {{ class }} extends AbstractController {
+    public function index() {
+        // TODO implement
+    }
+
+    public function store(Request $request) {
+        // TODO implement
+    }
+
+    public function show($id) {
+        // TODO implement
+    }
+
+    public function update(Request $request, $id) {
+        // TODO implement
+    }
+
+    public function destroy($id) {
+        // TODO implement
+    }
+}

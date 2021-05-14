@@ -1,0 +1,262 @@
+{
+	"locales": {
+		"de": "Deutsch (Beta)",
+		"en": "English"
+	},
+	"date": {
+		"datetimeFormat": "$t(date.dateFormat), $t(date.timeFormat)",
+		"dateFormat": "M jS Y",
+		"timeFormat": "g:i a",
+		"monthNames": [
+			"January",
+			"February",
+			"March",
+			"April",
+			"May",
+			"June",
+			"July",
+			"August",
+			"September",
+			"October",
+			"November",
+			"December"
+		],
+		"monthNamesShort": [
+			"Jan",
+			"Feb",
+			"Mar",
+			"Apr",
+			"May",
+			"June",
+			"July",
+			"Aug",
+			"Sep",
+			"Oct",
+			"Nov",
+			"Dec"
+		],
+		"dayNames": [
+			"Sunday",
+			"Monday",
+			"Tuesday",
+			"Wednesday",
+			"Thursday",
+			"Friday",
+			"Saturday"
+		],
+		"dayNamesShort": [
+			"Sun",
+			"Mon",
+			"Tue",
+			"Wed",
+			"Thu",
+			"Fri",
+			"Sat"
+		]
+	},
+	"words": {
+		"any": "Any",
+		"search": "Search",
+		"here": "here",
+		"save": "Save"
+	},
+	"error": {
+		"default": "An error has occurred, please try again later.",
+		"invalidInput": "Ihre Angaben sind ungültig. Bitte überprüfen Sie die markierten Eingabefelder."
+	},
+	"menu": {
+		"buildList": "Builds",
+		"buildAddSelect": "Create build",
+		"bugReportAdd": "Report Bug",
+		"issueList": "Bug Reports",
+		"myBuilds": "My Builds",
+		"myIssues": "My Issues",
+		"likedBuilds": "Liked Builds",
+		"favoriteBuilds": "Favorite Builds",
+		"logout": "Logout"
+	},
+	"gameMode": {
+		"campaign": "Campaign",
+		"survival": "Survival",
+		"challenge": "Challenge",
+		"pureStrategy": "Pure Strategy",
+		"mixMode": "Mix Mode"
+	},
+	"difficulty": {
+		"easy": "Easy",
+		"medium": "Medium",
+		"hard": "Hard",
+		"insane": "Insane",
+		"nightmare": "Nightmare",
+		"massacre": "Massacre"
+	},
+	"build": {
+		"error": {
+			"403": "Sorry, but this build is private.",
+			"404": "Sorry, but the page you are looking for has not been found."
+		},
+		"status": [
+			"Public",
+			"Unlisted",
+			"Private"
+		],
+		"heroStats": {
+			"fortify": "Fortify",
+			"power": "Power",
+			"range": "Range",
+			"defRate": "Def. Rate"
+		},
+		"saved": "Your build successfully saved.",
+		"author": "Author",
+		"title": "Build Title",
+		"noTitle": "Enter a build name",
+		"gameMode": "Game Mode",
+		"buildStatus": "Build status",
+		"requiredAttributes": "Required Attributes",
+		"map": "Map",
+		"difficulty": "Difficulty",
+		"likes": "Likes",
+		"views": "Views",
+		"date": "Date",
+		"description": "Description",
+		"isPrivate": "This build is unlisted or private.",
+		"comments": "Comments",
+		"manaUsed": "Mana used",
+		"manaUpgradeUsed": "Mana to upgrade",
+		"disableTowers": "Disable Tower",
+		"disableTowersHint": "Click the image to enable or disable the type of towers",
+		"details": "Details",
+		"modifiers": "Modifiers",
+		"rifted": "Rifted",
+		"afkAble": "AFK able",
+		"hardcore": "Hardcore",
+		"editorMode": "Editor Mode",
+		"viewerMode": "Viewer Mode",
+		"delete": "Delete",
+		"deleteSure": "Do you really want to Delete your Build?",
+		"timePerRun": "Time per Run",
+		"expPerRun": "EXP per Run",
+		"wantWaveDelete": "Want delete the wave?",
+		"promptWaveName": "Wave name (max {{count}} characters)"
+	},
+	"buildList": {
+		"viewType": {
+			"grid": "Show as grid",
+			"table": "Show as table"
+		},
+		"noEntries": "No builds found.",
+		"filterReset": "Filter are active, reset the filter {{link}} completely.",
+		"filter": "Filter",
+		"isPrivate": "This build is private or unlisted and is only visible for you."
+	},
+	"comment": {
+		"write": "Write a comment",
+		"send": "Send",
+		"noMore": "No more comments."
+	},
+	"issue": {
+		"status": {
+			"open": "Open",
+			"closed": "Closed"
+		},
+		"createdBy":  "Created by",
+		"description": "Description",
+		"agreement": "This is an issue about the DD:A Builder website and <strong>not related to anything in game</strong>.",
+		"info": "Please write issue reports only in <strong>English</strong> or <strong>German</strong>.",
+		"notRelated": "Issues reported here are community reviewed and the reviewers are not related to Chromatic Games or Dungeon Defenders: Awakened employees in anyway.",
+		"waiting": "Please wait {{count}} seconds for next issue report."
+	},
+	"issueList": {
+		"action": "Action",
+		"created": "Created",
+		"title": "Title",
+		"title_requirements": "Title requires 3 characters ore more",
+		"status": "Status",
+		"noEntries": "No issues found."
+	},
+	"notification": {
+		"noEntities": "You have no notifications.",
+		"markAllAsRead": "Mark all as read",
+		"buildComment": "{{user}} wrote a comment on your build {{buildLink}}.",
+		"like_build": "Your build {{buildLink}} got voted up.",
+		"like_comment": "$t(notification.like_comment_#$?notification.likeValue?$#)",
+		"like_comment_1": "Your comment on the build {{buildLink}} got voted up.",
+		"like_comment_-1": "Your comment on the build {{buildLink}} got voted down."
+	},
+	"hero": {
+		"apprentice":"Apprentice",
+		"squire": "Squire",
+		"huntress": "Huntress",
+		"monk": "Monk",
+		"hints": "Hints",
+		"seriesEVA": "Series EV-A",
+		"world": "World",
+		"arrows": "Arrows"
+	},
+	"tower": {
+		"spikedBlockade": "Spiked Blockade",
+		"harpoonTurret":"Harpoon Turret",
+		"bouncerBlockade": "Bouncer Blockade",
+		"bowlingBallTurret":"Bowling Ball Turret",
+		"sliceNDiceBlockade": "Slice N Dice Blockade",
+		"magicMissileTower":"Magic Missile Tower",
+		"elementalBarrier": "Elemental Barrier",
+		"flameburstTower":"Flameburst Tower",
+		"lightningTower": "Lightning Tower",
+		"deadlyStrikerTower":"Deadly Striker Tower",
+		"explosiveTrap": "Explosive Trap",
+		"poisonGasTrap":"Poison Gas Trap",
+		"infernoTrap": "Inferno Trap",
+		"darknessTrap":"Darkness Trap",
+		"thunderSpikeTrap": "Thunder Spike Trap",
+		"ensnareAura":"Ensnare Aura",
+		"electricAura": "Electric Aura",
+		"healingAura":"Healing Aura",
+		"strengthDrainAura": "Strength Drain Aura",
+		"enrageAura":"Enrage Aura",
+		"protonBeam": "Proton Beam",
+		"blockingField":"Blocking Field",
+		"reflectBeam": "Reflect Beam",
+		"shockBeam":"Shock Beam",
+		"overclockBeam": "Overclock Beam",
+		"crystalCore":"Crystal Core",
+		"hint1": "Hint 1",
+		"hint2":"Hint 2",
+		"hint3": "Hint 3",
+		"hint4":"Hint 4",
+		"hint5": "Hint 5",
+		"blackArrow":"Black Arrow",
+		"blackArrowHead": "Black Arrow Head",
+		"blackArrowString":"Black Arrow String",
+		"greenArrow": "Green Arrow",
+		"greenArrowHead":"Green Arrow Head",
+		"greenArrowString": "Green Arrow String",
+		"blueArrow":"Blue Arrow",
+		"blueArrowHead": "Blue Arrow Head",
+		"blueArrowString":"Blue Arrow String",
+		"yellowArrow": "Yellow Arrow",
+		"yellowArrowHead":"Yellow Arrow Head",
+		"yellowArrowString": "Yellow Arrow String"
+	},
+	"map": {
+		"theDeeperWell": "The Deeper Well",
+		"ancientMines": "Ancient Mines",
+		"lavaMines": "Lava Mines",
+		"alchemicalLaboratory": "Alchemical Laboratory",
+		"tornadoValley": "Tornado Valley",
+		"tornadoHighlands": "Tornado Highlands",
+		"theRamparts": "The Ramparts",
+		"theThroneRoom": "The Throne Room",
+		"arcaneLibrary": "Arcane Library",
+		"royalGardens": "Royal Gardens",
+		"thePromenade": "The Promenade",
+		"theSummit": "The Summit",
+		"magusQuarters": "Magus Quarters",
+		"endlessSpires": "Endless Spires",
+		"glitterhelmCaverns": "Glitterhelm Caverns"
+	},
+	"mapCategory": {
+		"campaign": "Campaign",
+		"encore": "Encore"
+	}
+}

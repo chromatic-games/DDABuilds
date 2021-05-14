@@ -1,0 +1,1 @@
+- tooltip buggy in build view at disable tower heros

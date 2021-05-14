@@ -1,0 +1,98 @@
+table {
+	th {
+		text-align: left;
+		white-space: nowrap;
+
+		&.ASC, &.DESC {
+			> a::after {
+				display: inline-block;
+				font-family: FontAwesome;
+				margin-left: 5px;
+			}
+		}
+
+		&.ASC > a::after {
+			content: $fa-var-caret-up;
+		}
+
+		&.DESC > a::after {
+			content: $fa-var-caret-down;
+		}
+
+		/* alignment only */
+		&.columnMark,
+		&.columnStatus {
+			text-align: center;
+		}
+
+		&.columnDate,
+		&.columnDigits,
+		&.columnID {
+			text-align: right;
+		}
+	}
+
+	td {
+		&.columnMark,
+		&.columnStatus {
+			text-align: center;
+			width: 1px;
+			white-space: nowrap;
+			word-wrap: normal;
+		}
+
+		&.columnDigits,
+		&.columnID {
+			text-align: right;
+			width: 1px;
+			white-space: nowrap;
+			word-wrap: normal;
+		}
+
+		&.columnIcon {
+			text-align: left;
+			width: 1px;
+			white-space: nowrap;
+			word-wrap: normal;
+		}
+
+		&.columnTitle {
+			font-weight: bold;
+			text-align: left;
+		}
+
+		&.columnText {
+			font-weight: normal;
+			text-align: left;
+			max-width: 20%;
+		}
+
+		&.columnHyphensText {
+			-moz-hyphens: auto;
+			-o-hyphens: auto;
+			-webkit-hyphens: auto;
+			-ms-hyphens: auto;
+			hyphens: auto;
+		}
+
+		&.columnDate {
+			text-align: right;
+			width: 1px;
+			white-space: nowrap;
+			word-wrap: normal;
+		}
+
+		&.columnURL, &.columnSmallText {
+			text-align: left;
+		}
+
+		&.columnTitle,
+		&.columnText,
+		&.columnURL,
+		&.columnSmallText {
+			@include screen-sm-down {
+				min-width: 200px;
+			}
+		}
+	}
+}

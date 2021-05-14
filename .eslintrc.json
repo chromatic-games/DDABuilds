@@ -1,0 +1,111 @@
+{
+	"extends": [
+		"eslint:recommended",
+		"plugin:vue/recommended"
+	],
+	"parserOptions": {
+		"ecmaVersion": 12,
+		"sourceType": "module"
+	},
+	"plugins": [
+		"vue"
+	],
+	"env": {
+		"browser": true,
+		"es2021": true,
+		"es6": true,
+		"node": true
+	},
+	"rules": {
+		"semi": [
+			"error",
+			"always"
+		],
+		"quotes": [
+			"error",
+			"single"
+		],
+		"indent": [
+			"error",
+			"tab"
+		],
+		"no-promise-executor-return": 2,
+		"no-var": 2,
+		"eol-last": [
+			"error",
+			"never"
+		],
+		"newline-per-chained-call": "error",
+		"no-unreachable-loop": "error",
+		"vue/no-v-html": 0,
+		"vue/html-indent": [
+			"error",
+			"tab"
+		],
+		"vue/order-in-components": "error",
+		"vue/html-self-closing": "error",
+		"vue/require-prop-types": "error",
+		"vue/component-tags-order": "error",
+		"vue/no-template-shadow": "error",
+		"vue/singleline-html-element-content-newline": [
+			"error",
+			{
+				"ignores": [
+					"a",
+					"abbr",
+					"audio",
+					"b",
+					"bdi",
+					"bdo",
+					"canvas",
+					"cite",
+					"code",
+					"data",
+					"del",
+					"dfn",
+					"em",
+					"i",
+					"iframe",
+					"ins",
+					"kbd",
+					"label",
+					"map",
+					"mark",
+					"noscript",
+					"object",
+					"output",
+					"picture",
+					"q",
+					"ruby",
+					"s",
+					"samp",
+					"small",
+					"span",
+					"strong",
+					"sub",
+					"sup",
+					"svg",
+					"time",
+					"u",
+					"var",
+					"video",
+					"td",
+					"router-link",
+					"th"
+				]
+			}
+		],
+		"vue/mustache-interpolation-spacing": [
+			"error",
+			"never"
+		],
+		"vue/html-closing-bracket-newline": [
+			"error",
+			{
+				"singleline": "never",
+				"multiline": "never"
+			}
+		],
+		"vue/max-attributes-per-line": 0
+	}
+}

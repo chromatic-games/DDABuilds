@@ -1,8 +1,17 @@
-# project files
-config.inc.php
-mysql.inc.php
-assets/images/thumbnails
-logs/*.txt
+/node_modules
+/public/hot
+/public/storage
+/storage/*.key
+/vendor
+.env
+.env.backup
+.phpunit.result.cache
+Homestead.json
+Homestead.yaml
+npm-debug.log
+yarn-error.log
+/public/assets/js/main.js
+/public/assets/css/style.css
 
 # ide files
 .idea

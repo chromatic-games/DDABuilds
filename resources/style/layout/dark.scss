@@ -1,0 +1,304 @@
+$baseFontColor: #C8C8C8;
+
+// ckeditor
+.bg-dark {
+	--ck-border-radius: 4px;
+	--ck-font-size-base: 14px;
+	--ck-custom-background: #4A494B;
+	--ck-custom-foreground: #2D2D2F;
+	--ck-custom-border: #393839;
+	--ck-custom-white: #FFFFFF;
+	--ck-color-base-foreground: var(--ck-custom-background);
+	--ck-color-base-background: var(--ck-custom-foreground);
+	--ck-color-base-border: var(--ck-custom-border);
+	--ck-color-focus-border: #47A4F5;
+	--ck-color-text: #FAFAFA;
+	--ck-color-shadow-drop: rgba(0, 0, 0, 0.2);
+	--ck-color-shadow-inner: rgba(0, 0, 0, 0.1);
+	--ck-color-button-default-background: var(--ck-custom-background);
+	--ck-color-button-default-hover-background: #383839;
+	--ck-color-button-default-active-background: #333234;
+	--ck-color-button-default-active-shadow: #3B393C;
+	--ck-color-button-default-disabled-background: var(--ck-custom-background);
+	--ck-color-button-on-background: var(--ck-custom-foreground);
+	--ck-color-button-on-hover-background: #28272A;
+	--ck-color-button-on-active-background: #232225;
+	--ck-color-button-on-active-shadow: #2F2F32;
+	--ck-color-button-on-disabled-background: var(--ck-custom-foreground);
+	--ck-color-button-action-background: #1ABC9C;
+	--ck-color-button-action-hover-background: #17AB8D;
+	--ck-color-button-action-active-background: #16A286;
+	--ck-color-button-action-active-shadow: #16987E;
+	--ck-color-button-action-disabled-background: #1ABC9C;
+	--ck-color-button-action-text: var(--ck-custom-white);
+	--ck-color-button-save: #00EB00;
+	--ck-color-button-cancel: #FF571F;
+	--ck-color-dropdown-panel-background: var(--ck-custom-background);
+	--ck-color-dropdown-panel-border: var(--ck-custom-foreground);
+	--ck-color-split-button-hover-background: var(--ck-color-button-default-hover-background);
+	--ck-color-split-button-hover-border: var(--ck-custom-foreground);
+	--ck-color-input-background: var(--ck-custom-background);
+	--ck-color-input-border: #6C6A71;
+	--ck-color-input-text: #FAFAFA;
+	--ck-color-input-disabled-background: #343338;
+	--ck-color-input-disabled-border: #5F5E64;
+	--ck-color-input-disabled-text: #C7C7C7;
+	--ck-color-labeled-field-label-background: var(--ck-custom-background);
+	--ck-color-list-background: var(--ck-custom-background);
+	--ck-color-list-button-hover-background: var(--ck-custom-foreground);
+	--ck-color-list-button-on-background: #198CF0;
+	--ck-color-list-button-on-text: var(--ck-custom-white);
+	--ck-color-panel-background: var(--ck-custom-background);
+	--ck-color-panel-border: var(--ck-custom-border);
+	--ck-color-toolbar-background: var(--ck-custom-background);
+	--ck-color-toolbar-border: var(--ck-custom-border);
+	--ck-color-tooltip-background: #222126;
+	--ck-color-tooltip-text: #EDEDED;
+	--ck-color-image-caption-background: #F7F7F7;
+	--ck-color-image-caption-text: #333333;
+	--ck-color-widget-blurred-border: #DEDEDE;
+	--ck-color-widget-hover-border: #FFD15C;
+	--ck-color-widget-editable-focus-background: var(--ck-custom-white);
+	--ck-color-link-default: #80EAFF;
+}
+
+body.bg-dark {
+	color: $baseFontColor;
+	background-color: #272B30;
+
+	.table-dark {
+		color: inherit;
+	}
+
+	a {
+		color: #FFFFFF;
+
+		&:hover, &:focus {
+			//color: #FFFFFF;
+		}
+	}
+
+	.buildList .buildBox {
+		border-color: #4E5458;
+
+		.buildFooter {
+			border-color: #4E5458;
+			background-color: #2E3338;
+		}
+	}
+
+	// buttons
+	.btn {
+		border-color: rgba(0,0,0,0.6);
+		text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.3);
+
+		&.btn-primary {
+			background-color: #404448;
+			background-image: linear-gradient(#8A9196, #7A8288 60%, #70787D);
+			filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff8a9196', endColorstr='#ff70787d', GradientType=0);
+			background-repeat: no-repeat;
+			-webkit-filter: none;
+			filter: none;
+
+			&:hover {
+				background-image: linear-gradient(#404448, #4E5458 40%, #53595D);
+				filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff404448', endColorstr='#ff53595d', GradientType=0);
+			}
+		}
+
+		&.btn-default {
+			color: #ffffff;
+			background-color: #3a3f44;
+			background-image: linear-gradient(#484e55, #3a3f44 60%, #313539);
+			filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff484e55', endColorstr='#ff313539', GradientType=0);
+			background-repeat: no-repeat;
+			-webkit-filter: none;
+			filter: none;
+		}
+	}
+
+	.page-header {
+		border-bottom: 1px solid #4E5458;
+	}
+
+	.list-group-item-action {
+		color: inherit;
+	}
+
+	.list-group-item {
+		background-color: #32383E;
+		border: 1px solid rgba(0, 0, 0, 0.6);
+
+		&:hover, &:focus {
+			text-decoration: none;
+			background-color: #3E444C;
+		}
+	}
+
+	// pagination
+	.pagination {
+		> li {
+			> a, span {
+				color: #FFFFFF;
+				background-color: #3A3F44;
+				border: 1px solid rgba(0, 0, 0, 0.6);
+
+				&:hover {
+					color: #FFFFFF;
+					background-color: transparent;
+					border-color: rgba(0, 0, 0, 0.6)
+				}
+			}
+		}
+
+		> .active {
+			> span, a {
+				color: #FFFFFF;
+				cursor: default;
+				background-color: #232628;
+				border-color: rgba(0, 0, 0, 0.6)
+			}
+		}
+
+		> .disabled {
+			> span, a {
+				color: #7A8288;
+				cursor: not-allowed;
+				background-color: #FFFFFF;
+				border-color: rgba(0, 0, 0, 0.6);
+			}
+		}
+	}
+
+	// dropdown
+	.dropdown-menu {
+		background-color: #3A3F44;
+		background-clip: padding-box;
+		border: 1px solid #272B30;
+		border: 1px solid rgba(0, 0, 0, 0.15);
+		box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175)
+	}
+
+	.dropdown-item {
+		color: $baseFontColor;
+
+		a {
+			text-decoration: none;
+			color: inherit;
+		}
+
+		&.divider {
+			background-color: #272B30
+		}
+
+		&:hover, &:focus, &.active {
+			color: #FFFFFF;
+			text-decoration: none;
+			background-color: #272B30;
+		}
+
+		&.disabled {
+			cursor: not-allowed;
+
+			a > {
+				color: #7A8288;
+				text-decoration: none;
+				background-color: transparent;
+				background-image: none;
+				filter: progid:DXImageTransform.Microsoft.gradient(enabled=false)
+			}
+		}
+	}
+
+	// alerts
+	.alert-danger {
+		color: #E1868F;
+		background-color: #590F15;
+		border-color: #68121B;
+	}
+
+	.alert-info {
+		color: #8EE3F1;
+		background-color: #143B43;
+		border-color: #1E5961;
+	}
+
+	// vue select design
+	.vs__dropdown-toggle {
+		min-height: 35px;
+
+		.vs__actions svg {
+			fill: #B5AFA6;
+		}
+	}
+
+	.vs__dropdown-menu {
+		color: #B5AFA6;
+		background-color: rgb(24, 26, 27);
+
+		.vs__dropdown-option {
+			color: #B5AFA6;
+
+			&:hover {
+				color: white;
+			}
+		}
+	}
+
+	.vs__selected-options {
+		.vs__selected {
+			background-color: #35393C;
+			color: #B5AFA6;
+
+			svg {
+				fill: #B5AFA6;
+			}
+		}
+	}
+
+	// form input fields
+	.form-control, .vs__dropdown-toggle {
+		color: rgb(181, 175, 166);
+		background-color: rgb(24, 26, 27);
+		box-shadow: none;
+	}
+
+	.form-control:not(.is-invalid):not(.is-valid) {
+		border-color: rgb(60, 65, 68);
+	}
+
+	// cards
+	.card {
+		background-color: #2E3338;
+		border-color: rgba(0, 0, 0, 0.6);
+
+		.card-header {
+			color: #C8C8C8;
+			background-color: #3E444C;
+			border-color: rgba(0, 0, 0, 0.6);
+		}
+	}
+
+	.nav-tabs {
+		border-bottom: 1px solid #1C1E22
+	}
+
+	.nav-tabs .nav-link {
+		border: 1px solid transparent;
+		border-radius: 4px 4px 0 0
+	}
+
+	.nav-tabs .nav-link:hover {
+		border-color: #1C1E22;
+		background: #3E444C;
+	}
+
+	.nav-tabs .nav-link.active,
+	.nav-tabs .nav-link.active:hover,
+	.nav-tabs .nav-link.active:focus {
+		color: #FFFFFF;
+		background-color: #3E444C;
+		border: 1px solid #1C1E22;
+		border-bottom-color: transparent
+	}
+}

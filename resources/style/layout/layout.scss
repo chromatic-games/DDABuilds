@@ -1,0 +1,63 @@
+html, body {
+	height: 100%;
+}
+
+.marginTop {
+	margin-top: 15px;
+}
+
+.pointer {
+	cursor: pointer;
+}
+
+.inlineList {
+	@include inlineList;
+}
+
+.box128 {
+	display: flex;
+
+	> :last-child {
+		flex: 1 1 auto;
+		overflow: hidden;
+	}
+}
+
+section {
+	margin-bottom: 60px;
+}
+
+#pageContainer {
+	padding-top: 50px;
+	display: flex;
+	height: 100%;
+	flex-direction: column;
+}
+
+#main {
+	flex: 1 0 auto;
+}
+
+footer {
+	flex: 0 0 auto;
+	margin-bottom: 0;
+	border-radius: 0;
+}
+
+.user-content, .ck-editor {
+	ul, ol {
+		margin-left: 20px;
+	}
+
+	ul {
+		list-style: disc;
+	}
+
+	ol {
+		list-style: decimal;
+	}
+}
+
+.vue-notification-wrapper {
+	cursor:pointer;
+}

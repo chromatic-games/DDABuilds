@@ -1,0 +1,37 @@
+.img-circle {
+	border-radius: 50%;
+}
+
+.list-group-item {
+	padding: 10px 15px;
+}
+
+.page-header {
+	padding-bottom: 9px;
+	margin: 40px 0 20px;
+	border-bottom: 1px solid #EEEEEE;
+}
+
+.btn-default {
+	color: #333333;
+	background-color: #FFFFFF;
+	border-color: #CCCCCC;
+
+	&:not(:disabled):hover {
+		color: #333333;
+		background-color: #E6E6E6;
+		border-color: #ADADAD;
+	}
+}
+
+.card {
+	margin-bottom: 20px;
+}
+
+.table-transparent {
+	background: transparent;
+}
+
+.btn.disabled, .btn:disabled {
+	cursor: not-allowed;
+}

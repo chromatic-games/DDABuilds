@@ -1,0 +1,262 @@
+{
+	"locales": {
+		"de": "Deutsch (Beta)",
+		"en": "English"
+	},
+	"date": {
+		"datetimeFormat": "$t(date.dateFormat), $t(date.timeFormat)",
+		"dateFormat": "j. F Y",
+		"timeFormat": "H:i",
+		"monthNames": [
+			"Januar",
+			"Februar",
+			"März",
+			"April",
+			"Mai",
+			"Juni",
+			"Juli",
+			"August",
+			"September",
+			"Oktober",
+			"November",
+			"Dezember"
+		],
+		"monthNamesShort": [
+			"Jan",
+			"Feb",
+			"Mrz",
+			"Apr",
+			"Mai",
+			"Jun",
+			"Jul",
+			"Aug",
+			"Sep",
+			"Okt",
+			"Nov",
+			"Dez"
+		],
+		"dayNames": [
+			"Sonntag",
+			"Montag",
+			"Dienstag",
+			"Mittwoch",
+			"Donnerstag",
+			"Freitag",
+			"Samstag"
+		],
+		"dayNamesShort": [
+			"So",
+			"Mo",
+			"Di",
+			"Mi",
+			"Do",
+			"Fr",
+			"Sa"
+		]
+	},
+	"words": {
+		"any": "Alle",
+		"here": "hier",
+		"search": "Suchen",
+		"save": "Speichern"
+	},
+	"error": {
+		"default": "Es ist ein Fehler aufgetreten, bitte versuche es später erneut.",
+		"invalidInput": "Bitte korrigiere die unten markierten Felder."
+	},
+	"menu": {
+		"buildList": "Baupläne",
+		"buildAddSelect": "Bauplan erstellen",
+		"bugReportAdd": "Fehler melden",
+		"issueList": "Fehlerliste",
+		"myBuilds": "Meine Pläne",
+		"myIssues": "Meine Fehler",
+		"likedBuilds": "Gelikte Baupläne",
+		"favoriteBuilds": "Favorisierte Pläne",
+		"logout": "Abmelden"
+	},
+	"gameMode": {
+		"campaign": "Kampagne",
+		"survival": "Überleben",
+		"challenge": "Herausforderung",
+		"pureStrategy": "Pure Strategie",
+		"mixMode": "Mix Modus"
+	},
+	"difficulty": {
+		"easy": "Einfach",
+		"medium": "Mittel",
+		"hard": "Hart",
+		"insane": "Wahnsinnig",
+		"nightmare": "Nightmare",
+		"massacre": "Massaker"
+	},
+	"build": {
+		"error": {
+			"403": "Dieser Bauplan ist privat.",
+			"404": "Es tut uns leid, aber die Seite wurde nicht gefunden."
+		},
+		"status": [
+			"Öffentlich",
+			"Ungelistet",
+			"Privat"
+		],
+		"heroStats": {
+			"fortify": "Fortify",
+			"power": "Power",
+			"range": "Range",
+			"defRate": "Def. Rate"
+		},
+		"saved": "Dein Bauplan wurde erfolgreich gespeichert.",
+		"author": "Autor",
+		"title": "Titel",
+		"noTitle": "Gib ein Build Namen ein",
+		"gameMode": "Spielmodus",
+		"buildStatus": "Status",
+		"requiredAttributes": "Benötigte Helden-Werte",
+		"map": "Karte",
+		"difficulty": "Schwierigkeitsgrad",
+		"likes": "Likes",
+		"views": "Aufrufe",
+		"date": "Datum",
+		"description": "Beschreibung",
+		"isPrivate": "Dieses Build ist nicht gelistet oder privat.",
+		"comments": "Kommentare",
+		"manaUsed": "Mana benötigt",
+		"manaUpgradeUsed": "Mana für Verbesserungen",
+		"disableTowers": "Towers ausblenden",
+		"disableTowersHint": "Klicke auf das Bild vom Gebäude-Typ um diesen Typ ein- oder auszublenden.",
+		"details": "Informationen",
+		"modifiers": "Modifikatoren",
+		"rifted": "Rifted",
+		"afkAble": "AFK möglich",
+		"hardcore": "Hardcore",
+		"editorMode": "Editor Modus",
+		"viewerMode": "Viewer Modus",
+		"delete": "Löschen",
+		"deleteSure": "Möchtest du diesen Bauplan wirklich löschen?",
+		"timePerRun": "Zeit pro Runde",
+		"expPerRun": "EP pro Runde",
+		"wantWaveDelete": "Möchtest du die Welle wirklich löschen?",
+		"promptWaveName": "Wellen-Name (maximal {{count}} Zeichen)"
+	},
+	"buildList": {
+		"viewType": {
+			"grid": "Als Raster anzeigen",
+			"table": "Als Tabelle anzeigen"
+		},
+		"noEntries": "Es wurden keine Baupläne gefunden.",
+		"filterReset": "Der Filter ist aktiv, du kannst {{link}} den Filter komplett zurücksetzen.",
+		"filter": "Filter",
+		"isPrivate": "Dieses Build ist nicht gelistet oder privat und nur für dich sichtbar."
+	},
+	"comment": {
+		"write": "Kommentar erstellen",
+		"send": "Absenden",
+		"noMore": "Keine weiteren Kommentare."
+	},
+	"issue": {
+		"status": {
+			"open": "Offen",
+			"closed": "Geschlossen"
+		},
+		"createdBy": "Erstellt von",
+		"description": "Beschreibung",
+		"agreement": "Es handelt sich hier um einen Fehler für die DD:A Builder Webseite und <strong>hat nichts mit dem Spiel zu tun</strong>.",
+		"info": "Bitte formuliere den Fehler ausschließlich in <strong>Englisch</strong> oder <strong>Deutsch</strong>.",
+		"notRelated": "Die hier gemeldeten Fehler werden von der Community geprüft und die Prüfer stehen in keiner Beziehung zu Chromatic Games oder Dungeon Defenders: Awakened-Mitarbeiter in irgendeiner Weise.",
+		"waiting": "Bitte warte {{count}} Sekunden für die nächste Fehlermeldung."
+	},
+	"issueList": {
+		"action": "Aktion",
+		"created": "Erstellungsdatum",
+		"title": "Titel",
+		"title_requirements": "Der Titel benötigt mindestens 3 Zeichen.",
+		"status": "Status",
+		"noEntries": "Es wurden keine Fehler gefunden."
+	},
+	"notification": {
+		"noEntities": "Du hast keine Benachrichtigungen",
+		"markAllAsRead": "Alle als gelesen markieren",
+		"buildComment": "{{user}} hat ein Kommentar zu deinem Bauplan {{buildLink}} erstellt.",
+		"like_build": "Dein Bauplan {{buildLink}} hat ein Like bekommen.",
+		"like_comment": "$t(notification.like_comment_#$?notification.likeValue?$#)",
+		"like_comment_1": "Dein Kommentar zu dem Bauplan {{buildLink}} hat ein Like bekommen.",
+		"like_comment_-1": "Dein Kommentar zu dem Bauplan {{buildLink}} hat ein Dislike bekommen."
+	},
+	"hero": {
+		"squire": "Knappe",
+		"apprentice": "Lehrling",
+		"huntress": "Jägerin",
+		"monk": "Mönch",
+		"seriesEVA": "Series E-VA",
+		"world": "Welt",
+		"hints": "Hinweise",
+		"arrows": "Pfeile"
+	},
+	"tower": {
+		"spikedBlockade": "Spiked Blockade",
+		"harpoonTurret":"Harpoon Turret",
+		"bouncerBlockade": "Bouncer Blockade",
+		"bowlingBallTurret":"Bowling Ball Turret",
+		"sliceNDiceBlockade": "Slice N Dice Blockade",
+		"magicMissileTower":"Magic Missile Tower",
+		"elementalBarrier": "Elemental Barrier",
+		"flameburstTower":"Flameburst Tower",
+		"lightningTower": "Lightning Tower",
+		"deadlyStrikerTower":"Deadly Striker Tower",
+		"explosiveTrap": "Explosive Trap",
+		"poisonGasTrap":"Poison Gas Trap",
+		"infernoTrap": "Inferno Trap",
+		"darknessTrap":"Darkness Trap",
+		"thunderSpikeTrap": "Thunder Spike Trap",
+		"ensnareAura":"Ensnare Aura",
+		"electricAura": "Electric Aura",
+		"healingAura":"Healing Aura",
+		"strengthDrainAura": "Strength Drain Aura",
+		"enrageAura":"Enrage Aura",
+		"protonBeam": "Proton Beam",
+		"blockingField":"Blocking Field",
+		"reflectBeam": "Reflect Beam",
+		"shockBeam":"Shock Beam",
+		"overclockBeam": "Overclock Beam",
+		"crystalCore":"Crystal Core",
+		"hint1": "Hint 1",
+		"hint2":"Hint 2",
+		"hint3": "Hint 3",
+		"hint4":"Hint 4",
+		"hint5": "Hint 5",
+		"blackArrow":"Black Arrow",
+		"blackArrowHead": "Black Arrow Head",
+		"blackArrowString":"Black Arrow String",
+		"greenArrow": "Green Arrow",
+		"greenArrowHead":"Green Arrow Head",
+		"greenArrowString": "Green Arrow String",
+		"blueArrow":"Blue Arrow",
+		"blueArrowHead": "Blue Arrow Head",
+		"blueArrowString":"Blue Arrow String",
+		"yellowArrow": "Yellow Arrow",
+		"yellowArrowHead":"Yellow Arrow Head",
+		"yellowArrowString": "Yellow Arrow String"
+	},
+	"map": {
+		"theDeeperWell": "The Deeper Well",
+		"ancientMines": "Ancient Mines",
+		"lavaMines": "Lava Mines",
+		"alchemicalLaboratory": "Alchemical Laboratory",
+		"tornadoValley": "Tornado Valley",
+		"tornadoHighlands": "Tornado Highlands",
+		"theRamparts": "The Ramparts",
+		"theThroneRoom": "The Throne Room",
+		"arcaneLibrary": "Arcane Library",
+		"royalGardens": "Royal Gardens",
+		"thePromenade": "The Promenade",
+		"theSummit": "The Summit",
+		"magusQuarters": "Magus Quarters",
+		"endlessSpires": "Endless Spires",
+		"glitterhelmCaverns": "Glitterhelm Caverns"
+	},
+	"mapCategory": {
+		"campaign": "Kampagne",
+		"encore": "Encore"
+	}
+}
