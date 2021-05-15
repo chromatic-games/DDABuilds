@@ -1,5 +1,5 @@
 <template>
-	<ul v-if="pages > 1" class="pagination justify-content-center marginTop">
+	<ul v-if="pages > 1" class="pagination justify-content-center flex-wrap marginTop">
 		<li v-for="page in availablePages" :key="page.number" :class="{active: !page.to}" class="page-item">
 			<router-link v-if="page.to" :to="page.to" class="page-link">{{page.number}}</router-link>
 			<span v-else class="page-link">{{page.number}}</span>
