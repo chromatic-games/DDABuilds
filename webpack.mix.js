@@ -6,7 +6,6 @@ if (mix.inProduction()) {
 	mix.version();
 }
 
-mix.setPublicPath('public/assets');
 mix.webpackConfig({
 	output: {
 		chunkFilename: 'assets/js/[name].js',

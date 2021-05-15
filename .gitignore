@@ -10,8 +10,8 @@ Homestead.json
 Homestead.yaml
 npm-debug.log
 yarn-error.log
-/public/assets/js/main.js
-/public/assets/css/style.css
+/public/assets/js/*
+/public/assets/css/*.css
 
 # ide files
 .idea

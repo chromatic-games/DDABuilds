@@ -62,7 +62,7 @@
 	},
 	"error": {
 		"default": "An error has occurred, please try again later.",
-		"invalidInput": "Ihre Angaben sind ungültig. Bitte überprüfen Sie die markierten Eingabefelder."
+		"invalidInput": "Please correct the erroneous fields marked below."
 	},
 	"menu": {
 		"buildList": "Builds",
