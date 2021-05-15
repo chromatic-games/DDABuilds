@@ -12,5 +12,5 @@ mix.webpackConfig({
 	},
 });
 
-mix.js('resources/src/main.js', 'public/assets/js');
+mix.js('resources/src/main.js', 'public/assets/js').vue();
 mix.sass('resources/style/style.scss', 'public/assets/css');
