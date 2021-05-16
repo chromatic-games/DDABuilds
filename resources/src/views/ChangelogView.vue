@@ -1,6 +1,12 @@
 <template>
 	<div class="container">
-		<h3>2021-05-02</h3>
+		<h3>current</h3>
+		<ul>
+			<li><span class="badge badge-danger">Fixed</span> Incorrect translation in the english localization.</li>
+			<li><span class="badge badge-danger">Fixed</span> The pagination was displayed wrong with a high page count.</li>
+		</ul>
+
+		<h3>2021-05-15</h3>
 		<ul>
 			<li><span class="badge badge-success">Added</span> Checkbox for the rifted mode.</li>
 			<li><span class="badge badge-success">Added</span> The first build wave can be renamed.</li>
