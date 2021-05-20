@@ -86,6 +86,9 @@ jobs:
       - name: Tests - Dusk (Browser Tests)
         run: php artisan dusk
 
+      - name: Tests - NPM Build
+        run: npm run build
+
       - name: Upload artifacts - Laravel Logs
         uses: actions/upload-artifact@master
         if: failure()
