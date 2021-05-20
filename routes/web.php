@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\IndexController;
 use Illuminate\Support\Facades\Route;
 
-Route::view('{any}', 'index')->where('any', '^(?!api).*$');
+Route::any('{any}', [IndexController::class, 'index'])->where('any', '^(?!api).*$');

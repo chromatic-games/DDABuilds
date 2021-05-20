@@ -6,12 +6,11 @@ if (mix.inProduction()) {
 	mix.version();
 }
 
-mix.setPublicPath('public/assets');
 mix.webpackConfig({
 	output: {
 		chunkFilename: 'assets/js/[name].js',
 	},
 });
 
-mix.js('resources/src/main.js', 'public/assets/js');
+mix.js('resources/src/main.js', 'public/assets/js').vue();
 mix.sass('resources/style/style.scss', 'public/assets/css');
