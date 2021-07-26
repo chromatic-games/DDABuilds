@@ -153,7 +153,7 @@
 								</div>
 							</div>
 							<template v-if="isEditMode">
-								<div v-for="hero in heros" :key="hero.ID" :class="{'col-sm-6': hero.towers.length < 8, 'col-sm-12': hero.towers.length >= 8}">
+								<div v-if="hero.towers.length > 0" v-for="hero in heros" :key="hero.ID" :class="{'col-sm-6': hero.towers.length < 8, 'col-sm-12': hero.towers.length >= 8}">
 									<div class="card">
 										<div class="card-header">
 											{{$t('hero.' + hero.name)}}
