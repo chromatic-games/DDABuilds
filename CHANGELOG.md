@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Multiple Filter for Game Modes and Difficulties.
 ### Fixed
+- Tower moving with the mouse movement cause sometime "invalid field errors".
 - Tower moving in saved builds.
 
 ## 2.0.1 - 2021-05-21

@@ -11,7 +11,7 @@
         "php": "^7.4|^8.0",
         "ext-gd": "*",
         "ext-json": "*",
-        "derpierre65/laravel-debug-bar": "dev-master",
+        "derpierre65/laravel-debug-bar": "dev-main",
         "doctrine/dbal": "^2.11",
         "fideloper/proxy": "^4.2",
         "fruitcake/laravel-cors": "^2.0",

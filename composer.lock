@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "24d92606a2fc3f2b8f8ea378bb286652",
+    "content-hash": "709e9a6fbac05441ca7bb7fc03b0e25a",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -112,11 +112,11 @@
         },
         {
             "name": "derpierre65/laravel-debug-bar",
-            "version": "dev-master",
+            "version": "dev-main",
             "source": {
                 "type": "git",
                 "url": "https://github.com/derpierre65/laravel-debug-bar.git",
-                "reference": "b050f305d2e83c1ca968eced683eb8b69d3647b1"
+                "reference": "9a291a3f1a8e6da51bd7cf95b1da5cebe9b2d3ef"
             },
             "require": {
                 "ext-json": "*",
@@ -138,7 +138,7 @@
                     "email": "git@derpierre65.de"
                 }
             ],
-            "time": "2021-05-22T11:42:05+00:00"
+            "time": "2021-08-02T10:28:49+00:00"
         },
         {
             "name": "dnoegel/php-xdg-base-dir",
