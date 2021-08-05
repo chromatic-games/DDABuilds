@@ -153,7 +153,7 @@
 								</div>
 							</div>
 							<template v-if="isEditMode">
-								<div v-if="hero.towers.length > 0" v-for="hero in heros" :key="hero.ID" :class="{'col-sm-6': hero.towers.length < 8, 'col-sm-12': hero.towers.length >= 8}">
+								<div v-for="hero in heroPanels" :key="hero.ID" :class="{'col-sm-6': hero.towers.length < 8, 'col-sm-12': hero.towers.length >= 8}">
 									<div class="card">
 										<div class="card-header">
 											{{$t('hero.' + hero.name)}}
@@ -346,6 +346,9 @@ export default {
 		};
 	},
 	computed: {
+		heroPanels() {
+			return this.heros.filter((hero) => hero.towers.length > 0);
+		},
 		authorLink() {
 			return {
 				name: 'buildList',
@@ -692,7 +695,11 @@ export default {
 				let mouse_x = e.pageX - offset.left - width;
 				let mouse_y = e.pageY - offset.top - height;
 				let mouse_cur_angle = Math.atan2(mouse_y, mouse_x);
-				tower.rotation = mouse_cur_angle * (180 / Math.PI) + 90;
+				let rotation = mouse_cur_angle * (180 / Math.PI) + 90;
+				if ( rotation < 0 ) {
+					rotation += 360;
+				}
+				tower.rotation = rotation;
 			};
 		},
 		towerMouseOut(tower, key) {
