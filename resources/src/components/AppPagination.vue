@@ -48,6 +48,7 @@ export default {
 					number: pageNumber,
 					to: pageNumber !== this.currentPage ? {
 						name: this.routeName,
+						query: this.$route.query,
 						params: Object.assign({}, this.routeParams, {
 							page: pageNumber,
 						}),
