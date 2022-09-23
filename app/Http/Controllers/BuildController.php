@@ -13,39 +13,21 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
-class BuildController extends AbstractController {
+class BuildController extends AbstractController
+{
 	use AuthorizesRequests;
 
-	public function __construct() {
+	public function __construct()
+	{
 		$this->authorizeResource(Build::class);
 	}
 
-	/**
-	 * test comment
-	 *
-	 * @api {get} /builds/ List all builds
-	 * @apiGroup Build
-	 * @apiError UserNotFound The <code>id</code> of the User was not found.
-	 * @apiErrorExample {json} Error-Response:
-	 *     HTTP/1.1 404 Not Found
-	 *     {
-	 *       "error": "UserNotFound"
-	 *     }
-	 * @apiVersion 0.1.0
-	 * @apiParam {String} [firstname]       Optional Firstname of the User.
-	 * @apiParam {String} lastname          Mandatory Lastname.
-	 * @apiPermission test
-	 * @apiExample {curl} Example usage:
-	 *     curl -i http://localhost/user/4711
-	 * @apiSuccessExample {json} Success-Response:
-	 *     HTTP/1.1 200 OK
-	 *     {
-	 *       "firstname": "John",
-	 *       "lastname": "Doe"
-	 *     }
-	 */
-	public function index(Request $request) {
-		$builds = Build::with(['map', 'gameMode', 'difficulty', 'likeValue'])->sort($request->query('sortField'), $request->query('sortOrder'));
+	public function index(Request $request)
+	{
+		$builds = Build::query()
+			->with(['map', 'gameMode', 'difficulty', 'likeValue'])
+			->sort($request->query('sortField'), $request->query('sortOrder'));
+
 		if ( auth()->id() ) {
 			if ( $request->query->getBoolean('mine') ) {
 				$builds->where('build.steamID', auth()->id());
@@ -72,31 +54,14 @@ class BuildController extends AbstractController {
 			'map' => $request->query('map'),
 			'difficulty' => $request->query('difficulty'),
 			'gameMode' => $request->query('gameMode'),
+			'hardcore' => $request->query('hardcore'),
+			'rifted' => $request->query('rifted'),
+			'afkAble' => $request->query('afkAble'),
 		])->simplePaginate());
 	}
 
-	/**
-	 * @api {get} /builds/:id Show build
-	 * @apiGroup Build
-	 * @apiError UserNotFound The <code>id</code> of the User was not found.
-	 * @apiErrorExample {json} Error-Response:
-	 *     HTTP/1.1 404 Not Found
-	 *     {
-	 *       "error": "UserNotFound"
-	 *     }
-	 * @apiVersion 1.6.2
-	 * @apiParam {String} id          id of build
-	 * @apiPermission test
-	 * @apiExample {curl} Example usage:
-	 *     curl -i http://localhost/user/4711
-	 * @apiSuccessExample {json} Success-Response:
-	 *     HTTP/1.1 200 OK
-	 *     {
-	 *       "firstname": "John",
-	 *       "lastname": "Doe"
-	 *     }
-	 */
-	public function show(Request $request, Build $build) {
+	public function show(Request $request, Build $build)
+	{
 		BuildViewEvent::dispatch($build, $request->session());
 
 		$build->loadMissing(['map:ID,name', 'difficulty:ID,name', 'gameMode:ID,name', 'waves.towers', 'heroStats', 'likeValue', 'watchStatus']);
@@ -104,7 +69,8 @@ class BuildController extends AbstractController {
 		return new BuildResource($build);
 	}
 
-	public function store(BuildRequest $request) {
+	public function store(BuildRequest $request)
+	{
 		$data = $request->all();
 		/** @var Build $build */
 		$build = Build::create(array_merge([
@@ -151,7 +117,8 @@ class BuildController extends AbstractController {
 		return response()->json($build);
 	}
 
-	public function update(BuildRequest $request, Build $build) {
+	public function update(BuildRequest $request, Build $build)
+	{
 		$data = $request->all();
 
 		$build->heroStats()->delete();
@@ -220,7 +187,8 @@ class BuildController extends AbstractController {
 		return response()->noContent();
 	}
 
-	public function destroy(Request $request, Build $build) {
+	public function destroy(Request $request, Build $build)
+	{
 		if ( $build->update(['isDeleted' => 1]) ) {
 			return response()->noContent();
 		}
@@ -228,7 +196,8 @@ class BuildController extends AbstractController {
 		throw new HttpException(Response::HTTP_INTERNAL_SERVER_ERROR);
 	}
 
-	public function watch(Build $build) {
+	public function watch(Build $build)
+	{
 		$this->authorize('watch', $build);
 
 		$select = DB::select('SELECT * FROM build_watch WHERE buildID = ? AND steamID = ?', [

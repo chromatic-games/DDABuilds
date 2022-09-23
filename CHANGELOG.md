@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Tooltip for Towers.
 - Defense Units in Tower Tooltip.
+- Rifted, Hardcore and AFK Able filter for builds.
 
 ### Changed
 - Updated all defense units for old towers.

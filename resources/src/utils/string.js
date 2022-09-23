@@ -1,24 +1,36 @@
-function ucfirst(string) {
-	if (Array.isArray(string)) {
-		return string.map((str) => ucfirst(str));
+function ucfirst(value) {
+	if ( value === null ) {
+		return '';
+	}
+	else if (Array.isArray(value)) {
+		return value.map((str) => ucfirst(str));
+	}
+	else if (typeof value === 'boolean') {
+		value = value.toString();
 	}
 
-	return string.substr(0, 1).toUpperCase() + string.substr(1);
+	return value.substring(0, 1).toUpperCase() + value.substring(1);
 }
 
-function lcfirst(string) {
-	if (Array.isArray(string)) {
-		return string.map((str) => lcfirst(str));
+function lcfirst(value) {
+	if ( value === null ) {
+		return '';
+	}
+	else if (Array.isArray(value)) {
+		return value.map((str) => lcfirst(str));
+	}
+	else if (typeof value === 'boolean') {
+		return value.toString();
 	}
 
-	return string.substr(0, 1).toLowerCase() + string.substr(1);
+	return value.substring(0, 1).toLowerCase() + value.substring(1);
 }
 
 function formatSEOTitle(title) {
 	title = title
 		.toLowerCase()
 		.replace(/[^\p{L}\p{N}]+/ug, '-')
-		.substr(0, 80);
+		.substring(0, 80);
 	if (title[title.length - 1] === '-') {
 		title = title.substr(0, title.length - 1);
 	}

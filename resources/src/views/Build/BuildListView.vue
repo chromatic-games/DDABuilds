@@ -53,6 +53,31 @@
 							</div>
 						</div>
 					</div>
+
+					<div class="form-group">
+						<label>{{$t('build.modifiers')}}</label>
+						<div class="d-flex flex-shrink-1 flex-wrap" style="gap: 16px">
+							<div>
+								<div class="form-check">
+									<input id="buildHardcore" v-model="filter.hardcore" class="form-check-input" type="checkbox">
+									<label class="form-check-label" for="buildHardcore"> {{$t('build.hardcore')}}</label>
+								</div>
+							</div>
+							<div>
+								<div class="form-check">
+									<input id="buildAFKAble" v-model="filter.afkAble" class="form-check-input" type="checkbox">
+									<label class="form-check-label" for="buildAFKAble"> {{$t('build.afkAble')}}</label>
+								</div>
+							</div>
+							<div>
+								<div class="form-check">
+									<input id="buildRifted" v-model="filter.rifted" class="form-check-input" type="checkbox">
+									<label class="form-check-label" for="buildRifted"> {{$t('build.rifted')}}</label>
+								</div>
+							</div>
+						</div>
+					</div>
+
 					<div class="text-center">
 						<button id="search" class="btn btn-primary" type="submit">
 							{{$t('words.search')}}
@@ -154,7 +179,7 @@
 									</li>
 								</ul>
 
-								<img :src="'/assets/images/thumbnail/' + build.ID + '.png'" class="img-responsive" style="height: 200px;margin: 15px auto auto;">
+								<img :src="`/assets/images/thumbnail/${build.ID}.png`" alt="" class="img-responsive" style="height: 200px;margin: 15px auto auto;">
 							</div>
 						</div>
 						<div class="buildFiller" />
@@ -285,6 +310,9 @@ export default {
 				difficulty: [],
 				gameMode: [],
 				map: [],
+				rifted: false,
+				hardcore: false,
+				afkAble: false,
 			};
 		},
 		getHeadlineClass(field) {
@@ -316,14 +344,23 @@ export default {
 		},
 		updateFilter() {
 			this.filter = this.getDefaultFilter();
+
 			for (let key of Object.keys(this.$route.query)) {
-				if (typeof this.filter[key] !== 'undefined') {
-					if (Array.isArray(this.filter[key])) {
-						this.filter[key] = lcfirst(this.$route.query[key].split(','));
-					}
-					else {
-						this.filter[key] = lcfirst(this.$route.query[key]);
-					}
+				if (typeof this.filter[key] === 'undefined') {
+					continue;
+				}
+
+				if (Array.isArray(this.filter[key])) {
+					this.filter[key] = lcfirst(this.$route.query[key].split(','));
+				}
+				else if (typeof this.filter[key] === 'boolean') {
+					this.filter[key] = typeof this.$route.query[key] === 'boolean' && this.$route.query[key]
+						|| this.$route.query[key] === null
+						|| parseInt(this.$route.query[key]) === 1
+						|| this.$route.query[key] === 'true';
+				}
+				else {
+					this.filter[key] = lcfirst(this.$route.query[key]);
 				}
 			}
 
@@ -357,7 +394,16 @@ export default {
 			showPageLoader();
 			this.updateFilter();
 
-			let queryParams = (new URLSearchParams(Object.assign({}, this.$route.query, this.fetchParams))).toString();
+			const defaults = this.getDefaultFilter();
+			const filters = JSON.parse(JSON.stringify(this.filter));
+			for (const key of Object.keys(defaults)) {
+				if (defaults[key] === filters[key] || Array.isArray(defaults[key]) && !filters[key].length) {
+					console.log(key, filters[key]);
+					delete filters[key];
+				}
+			}
+
+			let queryParams = (new URLSearchParams(Object.assign({}, filters, this.fetchParams))).toString();
 			let page = this.$route.params.page || 0;
 
 			axios
