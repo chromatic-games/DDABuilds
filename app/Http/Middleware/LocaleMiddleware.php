@@ -7,29 +7,31 @@ use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 
-class LocaleMiddleware {
+class LocaleMiddleware
+{
 	/**
 	 * Handle an incoming request.
 	 *
 	 * @param \Illuminate\Http\Request $request
-	 * @param \Closure                 $next
+	 * @param \Closure $next
 	 *
 	 * @return mixed
 	 */
-	public function handle(Request $request, Closure $next) {
+	public function handle(Request $request, Closure $next)
+	{
 		$supportedLocales = Locale::getLocales();
 
 		$requestedLocale = $request->header('accept-language');
 		$locale = $supportedLocales[config('app.locale')] ?? reset($supportedLocales); // get default locale or first supportedLocale
 
 		// check if requestedLocale is a supported locale
-		if ( isset($supportedLocales[$requestedLocale]) ) {
+		if (isset($supportedLocales[$requestedLocale])) {
 			$locale = $supportedLocales[$requestedLocale];
 		}
-		// no directly locale name given, try to find a supported locale from header
 		else {
-			foreach ( explode(',', str_replace(';', ',', $requestedLocale)) as $value ) {
-				if ( isset($supportedLocales[$value]) ) {
+			// no directly locale name given, try to find any supported locale from header value
+			foreach (explode(',', str_replace(';', ',', $requestedLocale)) as $value) {
+				if (isset($supportedLocales[$value])) {
 					$locale = $supportedLocales[$value];
 					break;
 				}

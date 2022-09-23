@@ -2,26 +2,29 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Relations\HasMany;
+
 /**
- * @property-read int    $ID
- * @property-read string $name
- * @property-read int    $units
- * @property-read int    $mapCategoryID
- *
- * @property-read string $image
+ * @property int $ID
+ * @property string $name
+ * @property int $units
+ * @property int $mapCategoryID
  */
-class Map extends AbstractModel {
+class Map extends AbstractModel
+{
 	protected $table = 'map';
 
 	protected $primaryKey = 'ID';
 
 	public $timestamps = false;
 
-	public function difficultyUnits() {
+	public function difficultyUnits(): HasMany
+	{
 		return $this->hasMany(MapAvailableUnit::class, 'mapID', 'ID');
 	}
 
-	public function getPublicPath() {
-		return public_path('assets/images/map/'.$this->name.'.png');
+	public function getPublicPath(): string
+	{
+		return public_path('assets/images/map/' . $this->name . '.png');
 	}
 }
