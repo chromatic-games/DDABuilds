@@ -74,10 +74,10 @@ class UpdateDefenseUnits extends Migration
 				continue;
 			}
 
-			$hero->towers()->create(array_merge([
+			Tower::query()->create(array_merge([
+				'heroClassID' => 6,
 				'unitType' => 0,
 				'maxUnitCost' => 0,
-				'heroClassID' => $hero->getKey(),
 				'name' => $towerName,
 				'isResizable' => false,
 			], $values));

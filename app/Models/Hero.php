@@ -22,6 +22,6 @@ class Hero extends AbstractModel
 
 	public function towers(): HasMany
 	{
-		return $this->hasMany(Tower::class, 'heroClassID');
+		return $this->hasMany(Tower::class, 'heroClassID', 'ID');
 	}
 }
