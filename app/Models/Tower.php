@@ -2,29 +2,38 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Relations\HasOne;
+
 /**
- * @property-read int    $ID
- * @property-read int    $unitType (0 = du, 1 = mu)
- * @property-read int    $unitCost
- * @property-read int    $maxUnitCost
- * @property-read int    $manaCost
- * @property-read int    $heroClassID
- * @property-read string $name
- * @property-read int    $isResizable
- * @property-read int    $isRotatable
+ * @property int $ID
+ * @property int $unitType (0 = du, 1 = mu)
+ * @property int $unitCost
+ * @property int $maxUnitCost
+ * @property int $manaCost
+ * @property int $heroClassID
+ * @property string $name
+ * @property int $isResizable
+ * @property int $isRotatable
  *
- * @property-read Hero    $hero
+ * @property Hero $hero
  */
-class Tower extends AbstractModel {
+class Tower extends AbstractModel
+{
 	protected $table = 'tower';
 
 	protected $primaryKey = 'ID';
 
-	public function hero() {
+	public $timestamps = false;
+
+	protected $guarded = [];
+
+	public function hero(): HasOne
+	{
 		return $this->hasOne(Hero::class, 'ID', 'heroClassID');
 	}
 
-	public function getPublicPath() {
-		return public_path('assets/images/tower/'.$this->name.'.png');
+	public function getPublicPath(): string
+	{
+		return public_path('assets/images/tower/' . $this->name . '.png');
 	}
 }

@@ -17,7 +17,7 @@ class AuthController extends AbstractController {
 	}
 
 	public function auth(Request $request) {
-		if ( $request->query('debug') && app()->environment('local') ) {
+		if ( $request->query('debug') && app()->isLocal() ) {
 			// /api/auth/steam?debug=steamID
 			/** @var SteamUser $user */
 			$user = SteamUser::query()->find($request->query('debug'));

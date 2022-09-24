@@ -165,7 +165,7 @@
 												:data-class="hero.ID"
 												:data-tower="tower.ID"
 												class="tower-container pointer dummy">
-												<img :src="'/assets/images/tower/' + tower.name + '.png'" :title="$t('tower.' + tower.name)" class="tower">
+												<img v-b-tooltip.hover="`${$t(`tower.${tower.name}`)} (${tower.unitCost})`" :src="`/assets/images/tower/${tower.name}.png`" class="tower">
 											</div>
 										</div>
 									</div>

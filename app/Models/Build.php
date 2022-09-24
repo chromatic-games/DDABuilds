@@ -12,6 +12,7 @@ use App\Models\Traits\HasSteamUser;
 use App\Models\Traits\TLikeable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Support\Facades\Log;
 
 /**
  * @property-read int $ID
@@ -39,7 +40,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @property-read Map $map
  * @property-read BuildWatch $watchStatus
  */
-class Build extends AbstractModel implements ILikeableModel {
+class Build extends AbstractModel implements ILikeableModel
+{
 	use HasFactory;
 	use HasSteamUser;
 	use TLikeable;
@@ -93,35 +95,43 @@ class Build extends AbstractModel implements ILikeableModel {
 		'gameModeID',
 	];
 
-	public function watchStatus() {
+	public function watchStatus()
+	{
 		return $this->hasOne(BuildWatch::class, 'buildID', 'ID')->where('steamID', auth()->id() ?? 0);
 	}
 
-	public function map() {
+	public function map()
+	{
 		return $this->hasOne(Map::class, 'ID', 'mapID');
 	}
 
-	public function difficulty() {
+	public function difficulty()
+	{
 		return $this->hasOne(Difficulty::class, 'ID', 'difficultyID');
 	}
 
-	public function gameMode() {
+	public function gameMode()
+	{
 		return $this->hasOne(GameMode::class, 'ID', 'gameModeID');
 	}
 
-	public function waves() {
+	public function waves()
+	{
 		return $this->hasMany(BuildWave::class, 'buildID', 'ID');
 	}
 
-	public function heroStats() {
+	public function heroStats()
+	{
 		return $this->hasMany(BuildHeroStats::class, 'buildID', 'ID');
 	}
 
-	public function commentList() {
+	public function commentList()
+	{
 		return $this->hasMany(BuildComment::class, 'buildID', 'ID')->orderBy('date', 'desc');
 	}
 
-	public function addStats($stats) {
+	public function addStats($stats)
+	{
 		if ( !$this->ID ) {
 			return false;
 		}
@@ -134,7 +144,8 @@ class Build extends AbstractModel implements ILikeableModel {
 		return true;
 	}
 
-	public function scopeSort(Builder $query, $column = 'date', $direction = 'asc') {
+	public function scopeSort(Builder $query, $column = 'date', $direction = 'asc')
+	{
 		if ( $column === null && $direction === null ) {
 			$column = 'date';
 			$direction = 'desc';
@@ -152,7 +163,8 @@ class Build extends AbstractModel implements ILikeableModel {
 		}
 	}
 
-	public function scopeSearch(Builder $query, array $searchParameters) {
+	public function scopeSearch(Builder $query, array $searchParameters)
+	{
 		$searchParameters = array_merge([
 			'isDeleted' => 0,
 			'title' => null,
@@ -163,7 +175,7 @@ class Build extends AbstractModel implements ILikeableModel {
 		], $searchParameters);
 
 		$where = [
-			['isDeleted', '=', 0],
+			'isDeleted' => 0,
 		];
 
 		if ( $searchParameters['title'] ) {
@@ -192,15 +204,29 @@ class Build extends AbstractModel implements ILikeableModel {
 			}
 		}
 
-		$query->where($where)->where(function ($query) {
-			$query->where('buildStatus', '=', self::STATUS_PUBLIC);
-			if ( auth()->id() ) {
-				$query->orWhere($this->table.'.steamID', '=', auth()->id());
+		foreach ( ['hardcore', 'afkAble', 'rifted'] as $field ) {
+			if ( isset($searchParameters[$field]) && $searchParameters[$field] === 'true' ) {
+				$query->where([
+					$field => true,
+				]);
 			}
-		});
+		}
+
+		$query
+			->where($where)
+			->where(function ($query) {
+				$query->where('buildStatus', '=', self::STATUS_PUBLIC);
+
+				if ( auth()->id() ) {
+					$query->orWhere([
+						$this->table.'.steamID' => auth()->id(),
+					]);
+				}
+			});
 	}
 
-	public function generateThumbnail() {
+	public function generateThumbnail() : bool
+	{
 		$mapResource = imagecreatefrompng($this->map->getPublicPath());
 		if ( !$mapResource ) {
 			return false;
@@ -260,11 +286,13 @@ class Build extends AbstractModel implements ILikeableModel {
 		);
 	}
 
-	public function getPublicThumbnailPath() {
+	public function getPublicThumbnailPath() : string
+	{
 		return public_path('assets/images/thumbnail/'.$this->ID.'.png');
 	}
 
-	public function getNotificationData() {
+	public function getNotificationData() : array
+	{
 		return [
 			'ID' => $this->ID,
 			'title' => $this->title,

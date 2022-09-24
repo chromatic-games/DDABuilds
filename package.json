@@ -3,7 +3,6 @@
     "name": "dda-builds-2",
     "scripts": {
         "dev-hot": "mix watch --hot",
-        "dev-php": "php artisan serve --host 0.0.0.0",
         "build": "mix --production",
         "eslint": "eslint -c .eslintrc.json --ext .js,.vue resources/src/",
         "eslint-fix": "eslint -c .eslintrc.json --ext .js,.vue resources/src/ --fix"
